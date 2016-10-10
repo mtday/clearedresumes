@@ -14,58 +14,58 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * A container for a collection of labor categories.
+ * A container for a collection of user accounts.
  */
-public class LaborCategoryCollection implements Comparable<LaborCategoryCollection> {
+public class UserCollection implements Comparable<UserCollection> {
     @Nonnull
-    private final SortedSet<LaborCategory> laborCategories;
+    private final SortedSet<User> users;
 
     /**
      * Default constructor required for Jackson deserialization.
      */
-    LaborCategoryCollection() {
+    UserCollection() {
         this(Collections.emptyList());
     }
 
     /**
      * Parameter constructor.
      *
-     * @param laborCategories the labor categories to include in this collection
+     * @param users the user accounts to include in this collection
      */
-    public LaborCategoryCollection(@Nonnull final Collection<LaborCategory> laborCategories) {
-        this.laborCategories = new TreeSet<>(laborCategories); // Defensive copy
+    public UserCollection(@Nonnull final Collection<User> users) {
+        this.users = new TreeSet<>(users); // Defensive copy
     }
 
     /**
-     * Retrieve the labor categories contained in this collection.
+     * Retrieve the user accounts contained in this collection.
      *
-     * @return the (unmodifiable) set of labor categories contained in this collection
+     * @return the (unmodifiable) set of users contained in this collection
      */
     @Nonnull
-    public SortedSet<LaborCategory> getLaborCategories() {
-        return Collections.unmodifiableSortedSet(this.laborCategories);
+    public SortedSet<User> getUsers() {
+        return Collections.unmodifiableSortedSet(this.users);
     }
 
     @Override
-    public int compareTo(@Nullable final LaborCategoryCollection other) {
+    public int compareTo(@Nullable final UserCollection other) {
         if (other == null) {
             return 1;
         }
 
         final CompareToBuilder cmp = new CompareToBuilder();
-        cmp.append(getLaborCategories(), other.getLaborCategories(), new CollectionComparator<>());
+        cmp.append(getUsers(), other.getUsers(), new CollectionComparator<>());
         return cmp.toComparison();
     }
 
     @Override
     public boolean equals(@CheckForNull final Object other) {
-        return other instanceof LaborCategoryCollection && compareTo((LaborCategoryCollection) other) == 0;
+        return other instanceof UserCollection && compareTo((UserCollection) other) == 0;
     }
 
     @Override
     public int hashCode() {
         final HashCodeBuilder hash = new HashCodeBuilder();
-        hash.append(getLaborCategories());
+        hash.append(getUsers());
         return hash.toHashCode();
     }
 
@@ -73,7 +73,7 @@ public class LaborCategoryCollection implements Comparable<LaborCategoryCollecti
     @Nonnull
     public String toString() {
         final ToStringBuilder str = new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE);
-        str.append("laborCategories", getLaborCategories());
+        str.append("users", getUsers());
         return str.build();
     }
 }

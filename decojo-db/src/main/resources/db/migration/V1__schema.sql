@@ -1,19 +1,23 @@
 
 CREATE TABLE users (
-    username   VARCHAR(40)  NOT NULL,
+    id         VARCHAR(36)  NOT NULL,
+    login      VARCHAR(40)  NOT NULL,
+    email      VARCHAR(256) NOT NULL,
     password   VARCHAR(256) NOT NULL,
     enabled    BOOLEAN,
 
-    CONSTRAINT users_pk PRIMARY KEY (username)
+    CONSTRAINT users_pk PRIMARY KEY (id),
+    CONSTRAINT users_uniq_login UNIQUE (login),
+    CONSTRAINT users_uniq_email UNIQUE (email)
 );
 
 
 CREATE TABLE authorities (
-    username   VARCHAR(40)  NOT NULL,
+    user_id    VARCHAR(36)  NOT NULL,
     authority  VARCHAR(20)  NOT NULL,
 
-    CONSTRAINT authorities_pk PRIMARY KEY (username, authority),
-    CONSTRAINT authorities_fk_username FOREIGN KEY (username) REFERENCES users (username) ON DELETE CASCADE
+    CONSTRAINT authorities_pk PRIMARY KEY (user_id, authority),
+    CONSTRAINT authorities_fk_user_id FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
 

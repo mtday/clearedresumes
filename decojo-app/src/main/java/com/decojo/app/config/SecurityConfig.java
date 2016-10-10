@@ -1,15 +1,16 @@
 package com.decojo.app.config;
 
+import com.decojo.app.security.DefaultUserDetailsService;
+import com.decojo.db.UserDao;
 import javax.annotation.Nonnull;
-import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -20,7 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
-    private DataSource dataSource;
+    private UserDao userDao;
 
     @Override
     protected void configure(@Nonnull final HttpSecurity http) throws Exception {
@@ -38,8 +39,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    public void configure(@Nonnull final AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication().dataSource(this.dataSource).passwordEncoder(passwordEncoder());
+    @Nonnull
+    public UserDetailsService userDetailsService() {
+        return new DefaultUserDetailsService(userDao);
     }
 
     /**
