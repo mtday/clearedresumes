@@ -17,7 +17,7 @@
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring.boot.version>1.4.0.RELEASE</spring.boot.version>
+        <spring.boot.version>1.4.1.RELEASE</spring.boot.version>
     </properties>
 
     <dependencyManagement>
@@ -64,6 +64,13 @@
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-core</artifactId>
                 <version>4.0.3</version>
+            </dependency>
+
+            <!-- Webjars (bundled JS/CSS libraries) -->
+            <dependency>
+                <groupId>org.webjars</groupId>
+                <artifactId>bootstrap</artifactId>
+                <version>3.3.7-1</version>
             </dependency>
 
             <!-- Null checking annotations -->
@@ -145,6 +152,7 @@
                         <ignoredUnusedDeclaredDependency>org.hsqldb:hsqldb</ignoredUnusedDeclaredDependency>
                         <ignoredUnusedDeclaredDependency>org.postgresql:postgresql</ignoredUnusedDeclaredDependency>
                         <ignoredUnusedDeclaredDependency>org.springframework.boot:</ignoredUnusedDeclaredDependency>
+                        <ignoredUnusedDeclaredDependency>org.webjars:</ignoredUnusedDeclaredDependency>
                     </ignoredUnusedDeclaredDependencies>
                 </configuration>
                 <executions>

@@ -2,6 +2,6 @@
 <configuration>
     <include resource="org/springframework/boot/logging/logback/base.xml" />
     <logger name="com.decojo" level="ERROR" />
-    <logger name="org.flyway" level="WARN" />
+    <logger name="org.flywaydb" level="WARN" />
     <logger name="org.springframework" level="ERROR" />
 </configuration>
