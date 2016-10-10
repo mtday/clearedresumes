@@ -10,8 +10,6 @@ import com.decojo.common.model.UserCollection;
 import com.decojo.db.TestApplication;
 import com.decojo.db.UserDao;
 import java.util.SortedSet;
-import org.flywaydb.core.Flyway;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,18 +24,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class DefaultUserDaoIT {
     @Autowired
     private UserDao userDao;
-
-    @Autowired
-    private Flyway flyway;
-
-    /**
-     * Do a flyway clean and migrate first for consistency.
-     */
-    @Before
-    public void clean() {
-        this.flyway.clean();
-        this.flyway.migrate();
-    }
 
     /**
      * Perform testing on the auto-wired {@link DefaultUserDao} instance.

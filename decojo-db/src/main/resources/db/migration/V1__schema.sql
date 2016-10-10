@@ -21,6 +21,16 @@ CREATE TABLE authorities (
 );
 
 
+CREATE TABLE companies (
+    id         VARCHAR(36)  NOT NULL,
+    name       VARCHAR(100) NOT NULL,
+    website    VARCHAR(256) NOT NULL,
+
+    CONSTRAINT companies_pk PRIMARY KEY (id),
+    CONSTRAINT companies_uniq_name UNIQUE (name)
+);
+
+
 CREATE TABLE labor_categories (
     id         VARCHAR(36)  NOT NULL,
     name       VARCHAR(50)  NOT NULL,

@@ -11,8 +11,6 @@ import com.decojo.common.model.LaborCategory;
 import com.decojo.common.model.LaborCategoryCollection;
 import com.decojo.db.LaborCategoryDao;
 import java.util.UUID;
-import org.flywaydb.core.Flyway;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,18 +33,6 @@ public class LaborCategoryAdminControllerIT {
 
     @Autowired
     private TestRestTemplate testRestTemplate;
-
-    @Autowired
-    private Flyway flyway;
-
-    /**
-     * Do a flyway clean and migrate first for consistency.
-     */
-    @Before
-    public void clean() {
-        this.flyway.clean();
-        this.flyway.migrate();
-    }
 
     /**
      * Perform testing on the {@link LaborCategoryAdminController} class.
