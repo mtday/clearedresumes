@@ -88,7 +88,6 @@ public class LaborCategoryCollectionTest {
         final LaborCategoryCollection lcatColl = new LaborCategoryCollection(Arrays.asList(lcat1, lcat2));
         assertEquals(
                 "LaborCategoryCollection[laborCategories=[LaborCategory[id=id-1,name=name-1], LaborCategory[id=id-2,"
-                        + "name=name-2]]]",
-                lcatColl.toString());
+                        + "name=name-2]]]", lcatColl.toString());
     }
 }

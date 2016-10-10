@@ -66,7 +66,6 @@ public class LaborCategoryTest {
 
     @Test
     public void testToString() {
-        assertEquals(
-                "LaborCategory[id=id,name=name]", new LaborCategory("id", "name").toString());
+        assertEquals("LaborCategory[id=id,name=name]", new LaborCategory("id", "name").toString());
     }
 }

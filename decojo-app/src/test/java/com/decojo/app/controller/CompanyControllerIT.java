@@ -46,9 +46,8 @@ public class CompanyControllerIT {
             fail("unable to find test user");
         }
 
-        final ResponseEntity<CompanyCollection> beforeAddColl =
-                this.testRestTemplate.withBasicAuth("test", "test")
-                        .getForEntity("/api/company", CompanyCollection.class);
+        final ResponseEntity<CompanyCollection> beforeAddColl = this.testRestTemplate.withBasicAuth("test", "test")
+                .getForEntity("/api/company", CompanyCollection.class);
         assertEquals(HttpStatus.OK, beforeAddColl.getStatusCode());
         assertNotNull(beforeAddColl.getBody());
         assertEquals(0, beforeAddColl.getBody().getCompanies().size());

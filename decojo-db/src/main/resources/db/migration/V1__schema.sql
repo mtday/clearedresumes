@@ -4,7 +4,7 @@ CREATE TABLE users (
     login      VARCHAR(40)  NOT NULL,
     email      VARCHAR(256) NOT NULL,
     password   VARCHAR(256) NOT NULL,
-    enabled    BOOLEAN,
+    enabled    BOOLEAN      NOT NULL,
 
     CONSTRAINT users_pk PRIMARY KEY (id),
     CONSTRAINT users_uniq_login UNIQUE (login),
@@ -38,6 +38,18 @@ CREATE TABLE company_users (
     CONSTRAINT company_users_pk PRIMARY KEY (user_id, company_id),
     CONSTRAINT company_users_fk_user_id FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
     CONSTRAINT company_users_fk_company_id FOREIGN KEY (company_id) REFERENCES companies (id) ON DELETE CASCADE
+);
+
+
+CREATE TABLE resumes (
+    id         VARCHAR(36)  NOT NULL,
+    user_id    VARCHAR(36)  NOT NULL,
+    status     VARCHAR(20)  NOT NULL,
+    created    VARCHAR(24)  NOT NULL,
+    expiration VARCHAR(24),
+
+    CONSTRAINT resumes_pk PRIMARY KEY (id),
+    CONSTRAINT resumes_fk_user_id FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
 
