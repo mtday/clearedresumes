@@ -50,6 +50,14 @@ public class DefaultCompanyDao implements CompanyDao {
         }
     }
 
+    @Nonnull
+    @Override
+    public CompanyCollection getForUser(@Nonnull final String userId) {
+        return new CompanyCollection(this.jdbcTemplate.query("SELECT companies.* FROM companies "
+                + "JOIN company_users ON (companies.id = company_users.company_id) "
+                + "WHERE company_users.user_id = ?", this.rowMapper, userId));
+    }
+
     @Override
     public void add(@Nonnull final Company company) {
         this.jdbcTemplate.update("INSERT INTO companies (id, name, website) VALUES (?, ?, ?)", company.getId(),
@@ -65,6 +73,16 @@ public class DefaultCompanyDao implements CompanyDao {
     @Override
     public void delete(@Nonnull final String id) {
         this.jdbcTemplate.update("DELETE FROM companies WHERE id = ?", id);
+    }
+
+    @Override
+    public void addUser(@Nonnull final String companyId, @Nonnull final String userId) {
+        this.jdbcTemplate.update("INSERT INTO company_users (user_id, company_id) VALUES (?, ?)", userId, companyId);
+    }
+
+    @Override
+    public void deleteUser(@Nonnull final String companyId, @Nonnull final String userId) {
+        this.jdbcTemplate.update("DELETE FROM company_users WHERE user_id = ? AND company_id = ?", userId, companyId);
     }
 
     private static final class CompanyRowMapper implements RowMapper<Company> {

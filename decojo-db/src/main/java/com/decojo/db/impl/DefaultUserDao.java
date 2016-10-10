@@ -64,6 +64,14 @@ public class DefaultUserDao implements UserDao {
         }
     }
 
+    @Nonnull
+    @Override
+    public UserCollection getForCompany(@Nonnull final String companyId) {
+        return new UserCollection(this.jdbcTemplate
+                .query("SELECT users.* FROM users JOIN company_users ON (users.id = company_users.user_id) "
+                        + "WHERE company_users.company_id = ?", this.userMapper, companyId));
+    }
+
     @Override
     public void add(@Nonnull final User user) {
         this.jdbcTemplate
@@ -97,6 +105,16 @@ public class DefaultUserDao implements UserDao {
     @Override
     public void deleteAuthority(@Nonnull final String id, @Nonnull final String authority) {
         this.jdbcTemplate.update("DELETE FROM authorities WHERE user_id = ? AND authority = ?", id, authority);
+    }
+
+    @Override
+    public void addCompany(@Nonnull final String userId, @Nonnull final String companyId) {
+        this.jdbcTemplate.update("INSERT INTO company_users (user_id, company_id) VALUES (?, ?)", userId, companyId);
+    }
+
+    @Override
+    public void deleteCompany(@Nonnull final String userId, @Nonnull final String companyId) {
+        this.jdbcTemplate.update("DELETE FROM company_users WHERE user_id = ? AND company_id = ?", userId, companyId);
     }
 
     private static final class UserRowMapper implements RowMapper<User> {

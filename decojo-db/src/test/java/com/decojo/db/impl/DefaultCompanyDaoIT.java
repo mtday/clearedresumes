@@ -7,8 +7,10 @@ import static org.junit.Assert.assertTrue;
 
 import com.decojo.common.model.Company;
 import com.decojo.common.model.CompanyCollection;
+import com.decojo.common.model.User;
 import com.decojo.db.CompanyDao;
 import com.decojo.db.TestApplication;
+import com.decojo.db.UserDao;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class DefaultCompanyDaoIT {
     @Autowired
     private CompanyDao companyDao;
+
+    @Autowired
+    private UserDao userDao;
 
     /**
      * Perform testing on the auto-wired {@link DefaultCompanyDao} instance.
@@ -59,6 +64,26 @@ public class DefaultCompanyDaoIT {
         final Company afterUpdate = this.companyDao.get(updated.getId());
         assertNotNull(afterUpdate);
         assertEquals(updated, afterUpdate);
+
+        final CompanyCollection forUserDne = this.companyDao.getForUser("does-not-exist");
+        assertNotNull(forUserDne);
+        assertEquals(0, forUserDne.getCompanies().size());
+
+        final User user = new User("uid", "login", "email", "password", true);
+        this.userDao.add(user);
+        this.companyDao.addUser(company.getId(), user.getId());
+
+        final CompanyCollection forUser = this.companyDao.getForUser(user.getId());
+        assertNotNull(forUser);
+        assertEquals(1, forUser.getCompanies().size());
+        assertTrue(forUser.getCompanies().contains(updated));
+
+        this.companyDao.deleteUser(company.getId(), user.getId());
+        this.userDao.delete(user.getId());
+
+        final CompanyCollection remUser = this.companyDao.getForUser(user.getId());
+        assertNotNull(remUser);
+        assertEquals(0, remUser.getCompanies().size());
 
         this.companyDao.delete(company.getId());
 

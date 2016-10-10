@@ -27,6 +27,15 @@ public interface CompanyDao {
     Company get(@Nonnull String id);
 
     /**
+     * Retrieve the companies associated with the specified unique user id.
+     *
+     * @param userId the unique id of the user for which companies will be retrieved
+     * @return the requested user accounts
+     */
+    @Nonnull
+    CompanyCollection getForUser(@Nonnull String userId);
+
+    /**
      * Add a new company into the database.
      *
      * @param company the new company to insert
@@ -46,4 +55,20 @@ public interface CompanyDao {
      * @param id the unique id of the company to be deleted
      */
     void delete(@Nonnull String id);
+
+    /**
+     * Add a relationship between a user and a company.
+     *
+     * @param companyId the unique id of the company to which the user will be added
+     * @param userId the unique id of the user account to be added
+     */
+    void addUser(@Nonnull String companyId, @Nonnull String userId);
+
+    /**
+     * Remove a relationship between a user and a company.
+     *
+     * @param companyId the unique id of the company from which the user will be removed
+     * @param userId the unique id of the user account to be removed
+     */
+    void deleteUser(@Nonnull String companyId, @Nonnull String userId);
 }

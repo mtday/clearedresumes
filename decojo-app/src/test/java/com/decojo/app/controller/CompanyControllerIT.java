@@ -4,11 +4,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import com.decojo.app.TestApplication;
 import com.decojo.common.model.Company;
 import com.decojo.common.model.CompanyCollection;
+import com.decojo.common.model.User;
 import com.decojo.db.CompanyDao;
+import com.decojo.db.UserDao;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +31,9 @@ public class CompanyControllerIT {
     private CompanyDao companyDao;
 
     @Autowired
+    private UserDao userDao;
+
+    @Autowired
     private TestRestTemplate testRestTemplate;
 
     /**
@@ -35,6 +41,11 @@ public class CompanyControllerIT {
      */
     @Test
     public void test() {
+        final User user = this.userDao.getByLogin("test");
+        if (user == null) {
+            fail("unable to find test user");
+        }
+
         final ResponseEntity<CompanyCollection> beforeAddColl =
                 this.testRestTemplate.withBasicAuth("test", "test")
                         .getForEntity("/api/company", CompanyCollection.class);
@@ -49,6 +60,7 @@ public class CompanyControllerIT {
 
         final Company company = new Company("id", "Company Name", "https://company-website.com");
         this.companyDao.add(company);
+        this.companyDao.addUser(company.getId(), user.getId());
 
         final ResponseEntity<CompanyCollection> afterAddColl = this.testRestTemplate.withBasicAuth("test", "test")
                 .getForEntity("/api/company", CompanyCollection.class);
@@ -62,5 +74,7 @@ public class CompanyControllerIT {
         assertEquals(HttpStatus.OK, afterAdd.getStatusCode());
         assertNotNull(afterAdd.getBody());
         assertEquals(company, afterAdd.getBody());
+
+        this.companyDao.delete(company.getId());
     }
 }

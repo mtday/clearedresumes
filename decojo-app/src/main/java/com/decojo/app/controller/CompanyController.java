@@ -1,5 +1,6 @@
 package com.decojo.app.controller;
 
+import com.decojo.app.security.DefaultUserDetails;
 import com.decojo.common.model.Company;
 import com.decojo.common.model.CompanyCollection;
 import com.decojo.db.CompanyDao;
@@ -8,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -40,9 +43,11 @@ public class CompanyController {
      */
     @RequestMapping(value = "/api/company", method = RequestMethod.GET)
     @Nonnull
-    public ResponseEntity<CompanyCollection> getAll() {
-        LOG.debug("Retrieving all companies");
-        return ResponseEntity.ok(this.companyDao.getAll());
+    public ResponseEntity<CompanyCollection> get() {
+        LOG.debug("Retrieving my companies");
+        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        final DefaultUserDetails defaultUserDetails = (DefaultUserDetails) authentication.getPrincipal();
+        return ResponseEntity.ok(this.companyDao.getForUser(defaultUserDetails.getUser().getId()));
     }
 
     /**

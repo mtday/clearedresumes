@@ -31,6 +31,16 @@ CREATE TABLE companies (
 );
 
 
+CREATE TABLE company_users (
+    user_id    VARCHAR(36)  NOT NULL,
+    company_id VARCHAR(36)  NOT NULL,
+
+    CONSTRAINT company_users_pk PRIMARY KEY (user_id, company_id),
+    CONSTRAINT company_users_fk_user_id FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+    CONSTRAINT company_users_fk_company_id FOREIGN KEY (company_id) REFERENCES companies (id) ON DELETE CASCADE
+);
+
+
 CREATE TABLE labor_categories (
     id         VARCHAR(36)  NOT NULL,
     name       VARCHAR(50)  NOT NULL,

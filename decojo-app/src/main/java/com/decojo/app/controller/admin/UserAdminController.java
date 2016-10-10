@@ -107,7 +107,7 @@ public class UserAdminController {
      * Remove a user from the backing store.
      *
      * @param id the unique id of the user to delete
-     * @return the unique id of the deleted user
+     * @return a void response
      */
     @RequestMapping(value = "/api/admin/user/{id}", method = RequestMethod.DELETE)
     @Nonnull
@@ -115,6 +115,40 @@ public class UserAdminController {
             @Nonnull @PathVariable("id") final String id) {
         LOG.debug("Deleting user: {}", id);
         this.userDao.delete(id);
+        return ResponseEntity.ok(null);
+    }
+
+    /**
+     * Create a the link between a user and a company in the backing store.
+     *
+     * @param userId the unique id of the user in which a company will be added
+     * @param companyId the unique id of the company to be added
+     * @return a void response
+     */
+    @RequestMapping(value = "/api/admin/user/{userId}/company/{companyId}", method = RequestMethod.POST)
+    @Nonnull
+    public ResponseEntity<Void> addCompany(
+            @Nonnull @PathVariable("userId") final String userId,
+            @Nonnull @PathVariable("companyId") final String companyId) {
+        LOG.debug("Adding user {} company {}", userId, companyId);
+        this.userDao.addCompany(userId, companyId);
+        return ResponseEntity.ok(null);
+    }
+
+    /**
+     * Remove a the link between a user and a company from the backing store.
+     *
+     * @param userId the unique id of the user from which a company will be removed
+     * @param companyId the unique id of the company to be removed
+     * @return a void response
+     */
+    @RequestMapping(value = "/api/admin/user/{userId}/company/{companyId}", method = RequestMethod.DELETE)
+    @Nonnull
+    public ResponseEntity<Void> deleteCompany(
+            @Nonnull @PathVariable("userId") final String userId,
+            @Nonnull @PathVariable("companyId") final String companyId) {
+        LOG.debug("Deleting user {} company {}", userId, companyId);
+        this.userDao.deleteCompany(userId, companyId);
         return ResponseEntity.ok(null);
     }
 }

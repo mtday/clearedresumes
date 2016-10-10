@@ -8,8 +8,10 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import com.decojo.app.TestApplication;
+import com.decojo.common.model.Company;
 import com.decojo.common.model.User;
 import com.decojo.common.model.UserCollection;
+import com.decojo.db.CompanyDao;
 import com.decojo.db.UserDao;
 import java.util.UUID;
 import org.junit.Test;
@@ -31,6 +33,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class UserAdminControllerIT {
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private CompanyDao companyDao;
 
     @Autowired
     private TestRestTemplate testRestTemplate;
@@ -104,6 +109,30 @@ public class UserAdminControllerIT {
         final UserCollection afterUpdate = this.userDao.getAll();
         assertEquals(2, afterUpdate.getUsers().size());
         assertTrue(afterUpdate.getUsers().contains(updated));
+
+        final Company company = new Company("cid", "name", "website");
+        this.companyDao.add(company);
+
+        final ResponseEntity<String> addCompanyResponse = this.testRestTemplate.withBasicAuth("test", "test")
+                .postForEntity("/api/admin/user/{userId}/company/{companyId}", null, String.class, updated.getId(),
+                        company.getId());
+        assertEquals(HttpStatus.OK, addCompanyResponse.getStatusCode());
+        assertNull(addCompanyResponse.getBody());
+        final UserCollection afterCompanyAdd = this.userDao.getForCompany(company.getId());
+        assertNotNull(afterCompanyAdd);
+        assertEquals(1, afterCompanyAdd.getUsers().size());
+        assertTrue(afterCompanyAdd.getUsers().contains(updated));
+
+        final ResponseEntity<String> remCompanyResponse = this.testRestTemplate.withBasicAuth("test", "test")
+                .exchange("/api/admin/user/{userId}/company/{companyId}", HttpMethod.DELETE, null, String.class,
+                        updated.getId(), company.getId());
+        assertEquals(HttpStatus.OK, remCompanyResponse.getStatusCode());
+        assertNull(remCompanyResponse.getBody());
+        final UserCollection afterCompanyDel = this.userDao.getForCompany(company.getId());
+        assertNotNull(afterCompanyDel);
+        assertEquals(0, afterCompanyDel.getUsers().size());
+
+        this.companyDao.delete(company.getId());
 
         final ResponseEntity<String> deleteResponse = this.testRestTemplate.withBasicAuth("test", "test")
                 .exchange("/api/admin/user/{id}", HttpMethod.DELETE, HttpEntity.EMPTY, String.class, updated.getId());
