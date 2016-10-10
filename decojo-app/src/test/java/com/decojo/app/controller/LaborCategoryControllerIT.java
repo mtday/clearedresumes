@@ -50,28 +50,29 @@ public class LaborCategoryControllerIT {
     @Test
     public void test() {
         final ResponseEntity<LaborCategoryCollection> beforeAddColl =
-                this.testRestTemplate.getForEntity("/api/lcat", LaborCategoryCollection.class);
+                this.testRestTemplate.withBasicAuth("test", "test")
+                        .getForEntity("/api/lcat", LaborCategoryCollection.class);
         assertEquals(HttpStatus.OK, beforeAddColl.getStatusCode());
         assertNotNull(beforeAddColl.getBody());
         assertEquals(0, beforeAddColl.getBody().getLaborCategories().size());
 
         final ResponseEntity<LaborCategory> beforeAdd =
-                this.testRestTemplate.getForEntity("/api/lcat/id", LaborCategory.class);
+                this.testRestTemplate.withBasicAuth("test", "test").getForEntity("/api/lcat/id", LaborCategory.class);
         assertEquals(HttpStatus.NOT_FOUND, beforeAdd.getStatusCode());
         assertNull(beforeAdd.getBody());
 
         final LaborCategory lcat = new LaborCategory("id", "Software Engineer");
         this.laborCategoryDao.add(lcat);
 
-        final ResponseEntity<LaborCategoryCollection> afterAddColl =
-                this.testRestTemplate.getForEntity("/api/lcat", LaborCategoryCollection.class);
+        final ResponseEntity<LaborCategoryCollection> afterAddColl = this.testRestTemplate.withBasicAuth("test", "test")
+                .getForEntity("/api/lcat", LaborCategoryCollection.class);
         assertEquals(HttpStatus.OK, afterAddColl.getStatusCode());
         assertNotNull(afterAddColl.getBody());
         assertEquals(1, afterAddColl.getBody().getLaborCategories().size());
         assertTrue(afterAddColl.getBody().getLaborCategories().contains(lcat));
 
-        final ResponseEntity<LaborCategory> afterAdd =
-                this.testRestTemplate.getForEntity(String.format("/api/lcat/%s", lcat.getId()), LaborCategory.class);
+        final ResponseEntity<LaborCategory> afterAdd = this.testRestTemplate.withBasicAuth("test", "test")
+                .getForEntity(String.format("/api/lcat/%s", lcat.getId()), LaborCategory.class);
         assertEquals(HttpStatus.OK, afterAdd.getStatusCode());
         assertNotNull(afterAdd.getBody());
         assertEquals(lcat, afterAdd.getBody());

@@ -1,5 +1,6 @@
 package com.decojo.common.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
@@ -87,6 +88,7 @@ public class User implements Serializable, Comparable<User> {
      *
      * @return the encoded password for this user account
      */
+    @JsonIgnore // Don't send this field to the UI
     @Nonnull
     public String getPassword() {
         return this.password;
@@ -110,7 +112,6 @@ public class User implements Serializable, Comparable<User> {
         final CompareToBuilder cmp = new CompareToBuilder();
         cmp.append(getLogin(), other.getLogin());
         cmp.append(getEmail(), other.getEmail());
-        cmp.append(getPassword(), other.getPassword());
         cmp.append(isEnabled(), other.isEnabled());
         cmp.append(getId(), other.getId());
         return cmp.toComparison();
@@ -127,7 +128,6 @@ public class User implements Serializable, Comparable<User> {
         hash.append(getId());
         hash.append(getLogin());
         hash.append(getEmail());
-        hash.append(getPassword());
         hash.append(isEnabled());
         return hash.toHashCode();
     }

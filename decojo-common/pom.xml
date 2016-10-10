@@ -13,6 +13,12 @@
     <artifactId>decojo-common</artifactId>
 
     <dependencies>
+        <!-- Jackson annotations -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+        </dependency>
+
         <!-- Common utilities -->
         <dependency>
             <groupId>org.apache.commons</groupId>

@@ -43,7 +43,7 @@ public class UserTest {
         assertEquals(1, a.compareTo(null));
         assertEquals(0, a.compareTo(a));
         assertEquals(1, a.compareTo(b));
-        assertEquals(-1, a.compareTo(c));
+        assertEquals(0, a.compareTo(c)); // password is not included in comparison
         assertEquals(-1, a.compareTo(d));
         assertEquals(-1, a.compareTo(e));
         assertEquals(-1, a.compareTo(f));
@@ -53,12 +53,12 @@ public class UserTest {
         assertEquals(-1, b.compareTo(d));
         assertEquals(-1, b.compareTo(e));
         assertEquals(-1, b.compareTo(f));
-        assertEquals(1, c.compareTo(a));
+        assertEquals(0, c.compareTo(a)); // password is not included in comparison
         assertEquals(1, c.compareTo(b));
         assertEquals(0, c.compareTo(c));
         assertEquals(-1, c.compareTo(d));
         assertEquals(-1, c.compareTo(e));
-        assertEquals(1, c.compareTo(f));
+        assertEquals(-1, c.compareTo(f));
         assertEquals(1, d.compareTo(a));
         assertEquals(1, d.compareTo(b));
         assertEquals(1, d.compareTo(c));
@@ -73,7 +73,7 @@ public class UserTest {
         assertEquals(1, e.compareTo(f));
         assertEquals(1, f.compareTo(a));
         assertEquals(1, f.compareTo(b));
-        assertEquals(-1, f.compareTo(c));
+        assertEquals(1, f.compareTo(c));
         assertEquals(-1, f.compareTo(d));
         assertEquals(-1, f.compareTo(e));
         assertEquals(0, f.compareTo(f));
@@ -91,7 +91,7 @@ public class UserTest {
         assertNotEquals(a, null);
         assertEquals(a, a);
         assertNotEquals(a, b);
-        assertNotEquals(a, c);
+        assertEquals(a, c); // password is not included in comparison
         assertNotEquals(a, d);
         assertNotEquals(a, e);
         assertNotEquals(a, f);
@@ -101,7 +101,7 @@ public class UserTest {
         assertNotEquals(b, d);
         assertNotEquals(b, e);
         assertNotEquals(b, f);
-        assertNotEquals(c, a);
+        assertEquals(c, a); // password is not included in comparison
         assertNotEquals(c, b);
         assertEquals(c, c);
         assertNotEquals(c, d);
@@ -129,7 +129,7 @@ public class UserTest {
 
     @Test
     public void testHashCode() {
-        assertEquals(-2064257320, new User("id", "login", "email", "password", true).hashCode());
+        assertEquals(-1040616099, new User("id", "login", "email", "password", true).hashCode());
     }
 
     @Test

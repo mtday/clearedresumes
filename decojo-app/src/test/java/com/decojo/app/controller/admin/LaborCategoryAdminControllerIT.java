@@ -58,8 +58,8 @@ public class LaborCategoryAdminControllerIT {
 
         final LaborCategory toAdd = new LaborCategory("ignored", "Software Engineer");
 
-        final ResponseEntity<LaborCategory> addResponse =
-                this.testRestTemplate.postForEntity("/api/admin/lcat", toAdd, LaborCategory.class);
+        final ResponseEntity<LaborCategory> addResponse = this.testRestTemplate.withBasicAuth("test", "test")
+                .postForEntity("/api/admin/lcat", toAdd, LaborCategory.class);
         assertEquals(HttpStatus.OK, addResponse.getStatusCode());
         final LaborCategory added = addResponse.getBody();
         assertNotNull(added);
@@ -72,7 +72,7 @@ public class LaborCategoryAdminControllerIT {
         assertTrue(afterAdd.getLaborCategories().contains(added));
 
         final LaborCategory toUpdate = new LaborCategory("ignored", "New Name");
-        final ResponseEntity<LaborCategory> updateResponse = this.testRestTemplate
+        final ResponseEntity<LaborCategory> updateResponse = this.testRestTemplate.withBasicAuth("test", "test")
                 .exchange("/api/admin/lcat/{id}", HttpMethod.PUT, new HttpEntity<>(toUpdate), LaborCategory.class,
                         added.getId());
         assertEquals(HttpStatus.OK, updateResponse.getStatusCode());
@@ -85,7 +85,7 @@ public class LaborCategoryAdminControllerIT {
         assertEquals(1, afterUpdate.getLaborCategories().size());
         assertTrue(afterUpdate.getLaborCategories().contains(updated));
 
-        final ResponseEntity<String> deleteResponse = this.testRestTemplate
+        final ResponseEntity<String> deleteResponse = this.testRestTemplate.withBasicAuth("test", "test")
                 .exchange("/api/admin/lcat/{id}", HttpMethod.DELETE, HttpEntity.EMPTY, String.class, updated.getId());
         assertEquals(HttpStatus.OK, deleteResponse.getStatusCode());
         assertNull(deleteResponse.getBody());

@@ -78,7 +78,7 @@ public class UserCollectionTest {
         final User user1 = new User("id-1", "login-1", "email-1", "password", true);
         final User user2 = new User("id-2", "login-2", "email-2", "password", true);
         final UserCollection userColl = new UserCollection(Arrays.asList(user1, user2));
-        assertEquals(1106662980, userColl.hashCode());
+        assertEquals(497943842, userColl.hashCode());
     }
 
     @Test

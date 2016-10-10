@@ -19,7 +19,7 @@ public class FlywayConfig {
      * @return the configured {@link Flyway} instance
      */
     @Bean
-    @Profile("development")
+    @Profile({"development", "test"})
     @Nonnull
     public Flyway flyway(@Nonnull final DataSource dataSource) {
         final Flyway flyway = new Flyway();

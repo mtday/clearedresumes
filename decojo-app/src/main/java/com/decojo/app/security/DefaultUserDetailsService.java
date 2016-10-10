@@ -39,6 +39,6 @@ public class DefaultUserDetailsService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("Failed to find user with name: " + username);
         }
-        return new DefaultUserDetails(user, this.userDao.getAuthorities(username));
+        return new DefaultUserDetails(user, this.userDao.getAuthorities(user.getId()));
     }
 }
