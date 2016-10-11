@@ -22,7 +22,7 @@ public class ResumeTest {
     public void testParameterConstructor() {
         final LocalDateTime created = LocalDateTime.of(2016, 1, 1, 2, 3, 4);
         final LocalDateTime expires = LocalDateTime.of(2016, 1, 1, 3, 4, 5);
-        final Resume resume = new Resume("id", "uid", ResumeStatus.IN_PROGRESS, created, expires);
+        final Resume resume = new Resume("id", "uid", ResumeStatus.IN_PROGRESS, created, expires, "lcat", 10, "obj");
         assertEquals("id", resume.getId());
         assertEquals("uid", resume.getUserId());
         assertEquals(ResumeStatus.IN_PROGRESS, resume.getStatus());
@@ -35,11 +35,11 @@ public class ResumeTest {
         final LocalDateTime created = LocalDateTime.of(2016, 1, 1, 2, 3, 4);
         final LocalDateTime expires = LocalDateTime.of(2016, 1, 1, 3, 4, 5);
 
-        final Resume a = new Resume("id-1", "uid-1", ResumeStatus.IN_PROGRESS, created, null);
-        final Resume b = new Resume("id-1", "uid-1", ResumeStatus.IN_PROGRESS, created, expires);
-        final Resume c = new Resume("id-1", "uid-1", ResumeStatus.PUBLISHED, created, expires);
-        final Resume d = new Resume("id-1", "uid-2", ResumeStatus.IN_PROGRESS, created, expires);
-        final Resume e = new Resume("id-2", "uid-1", ResumeStatus.IN_PROGRESS, created, expires);
+        final Resume a = new Resume("id-1", "uid-1", ResumeStatus.IN_PROGRESS, created, null, "lcat", 10, "obj");
+        final Resume b = new Resume("id-1", "uid-1", ResumeStatus.IN_PROGRESS, created, expires, "lcat", 10, "obj");
+        final Resume c = new Resume("id-1", "uid-1", ResumeStatus.PUBLISHED, created, expires, "lcat", 10, "obj");
+        final Resume d = new Resume("id-1", "uid-2", ResumeStatus.IN_PROGRESS, created, expires, "lcat", 10, "obj");
+        final Resume e = new Resume("id-2", "uid-1", ResumeStatus.IN_PROGRESS, created, expires, "lcat", 10, "obj");
 
         assertEquals(1, a.compareTo(null));
         assertEquals(0, a.compareTo(a));
@@ -74,11 +74,11 @@ public class ResumeTest {
         final LocalDateTime created = LocalDateTime.of(2016, 1, 1, 2, 3, 4);
         final LocalDateTime expires = LocalDateTime.of(2016, 1, 1, 3, 4, 5);
 
-        final Resume a = new Resume("id-1", "uid-1", ResumeStatus.IN_PROGRESS, created, null);
-        final Resume b = new Resume("id-1", "uid-1", ResumeStatus.IN_PROGRESS, created, expires);
-        final Resume c = new Resume("id-1", "uid-1", ResumeStatus.PUBLISHED, created, expires);
-        final Resume d = new Resume("id-1", "uid-2", ResumeStatus.IN_PROGRESS, created, expires);
-        final Resume e = new Resume("id-2", "uid-1", ResumeStatus.IN_PROGRESS, created, expires);
+        final Resume a = new Resume("id-1", "uid-1", ResumeStatus.IN_PROGRESS, created, null, "lcat", 10, "obj");
+        final Resume b = new Resume("id-1", "uid-1", ResumeStatus.IN_PROGRESS, created, expires, "lcat", 10, "obj");
+        final Resume c = new Resume("id-1", "uid-1", ResumeStatus.PUBLISHED, created, expires, "lcat", 10, "obj");
+        final Resume d = new Resume("id-1", "uid-2", ResumeStatus.IN_PROGRESS, created, expires, "lcat", 10, "obj");
+        final Resume e = new Resume("id-2", "uid-1", ResumeStatus.IN_PROGRESS, created, expires, "lcat", 10, "obj");
 
         assertNotEquals(a, null);
         assertEquals(a, a);
@@ -113,7 +113,9 @@ public class ResumeTest {
         final LocalDateTime created = LocalDateTime.of(2016, 1, 1, 2, 3, 4);
         final LocalDateTime expires = LocalDateTime.of(2016, 1, 1, 3, 4, 5);
 
-        assertEquals(1972662294, new Resume("id", "uid", ResumeStatus.PUBLISHED, created, expires).hashCode());
+        assertEquals(
+                -906640959,
+                new Resume("id", "uid", ResumeStatus.PUBLISHED, created, expires, "lcat", 10, "obj").hashCode());
     }
 
     @Test
@@ -122,7 +124,8 @@ public class ResumeTest {
         final LocalDateTime expires = LocalDateTime.of(2016, 1, 1, 3, 4, 5);
 
         assertEquals(
-                "Resume[id=id,userId=uid,status=PUBLISHED,created=2016-01-01T02:03:04,expiration=2016-01-01T03:04:05]",
-                new Resume("id", "uid", ResumeStatus.PUBLISHED, created, expires).toString());
+                "Resume[id=id,userId=uid,status=PUBLISHED,created=2016-01-01T02:03:04,expiration=2016-01-01T03:04:05,"
+                        + "laborCategory=lcat,experience=10,objective=obj]",
+                new Resume("id", "uid", ResumeStatus.PUBLISHED, created, expires, "lcat", 10, "obj").toString());
     }
 }

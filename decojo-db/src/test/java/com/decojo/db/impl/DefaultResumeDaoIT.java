@@ -46,7 +46,8 @@ public class DefaultResumeDaoIT {
         final Resume beforeAddByUser = this.resumeDao.getForUser(user.getId());
         assertNull(beforeAddByUser);
 
-        final Resume resume = new Resume("id", user.getId(), ResumeStatus.IN_PROGRESS, LocalDateTime.now(), null);
+        final Resume resume =
+                new Resume("id", user.getId(), ResumeStatus.IN_PROGRESS, LocalDateTime.now(), null, "lcat", 10, "obj");
         this.resumeDao.add(resume);
 
         final Resume getById = this.resumeDao.get(resume.getId());
@@ -58,7 +59,7 @@ public class DefaultResumeDaoIT {
         assertEquals(resume, getByUser);
 
         final Resume updated = new Resume(resume.getId(), user.getId(), ResumeStatus.PUBLISHED, resume.getCreated(),
-                LocalDateTime.now().plusDays(30));
+                LocalDateTime.now().plusDays(30), "new-lcat", 11, "new-obj");
         this.resumeDao.update(updated);
 
         final Resume afterUpdate = this.resumeDao.get(resume.getId());
@@ -71,7 +72,8 @@ public class DefaultResumeDaoIT {
         assertNull(afterDelete);
 
         final Resume withExpir =
-                new Resume("id", user.getId(), ResumeStatus.PUBLISHED, LocalDateTime.now(), LocalDateTime.now());
+                new Resume("id", user.getId(), ResumeStatus.PUBLISHED, LocalDateTime.now(), LocalDateTime.now(), "lcat",
+                        10, "obj");
         this.resumeDao.add(withExpir);
         this.resumeDao.update(withExpir);
 

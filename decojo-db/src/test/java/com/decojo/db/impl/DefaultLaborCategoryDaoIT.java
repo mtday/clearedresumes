@@ -31,17 +31,17 @@ public class DefaultLaborCategoryDaoIT {
     public void test() {
         final LaborCategoryCollection beforeAddColl = this.laborCategoryDao.getAll();
         assertNotNull(beforeAddColl);
-        assertEquals(0, beforeAddColl.getLaborCategories().size());
+        assertEquals(25, beforeAddColl.getLaborCategories().size()); // because of the flyway-loaded data
 
         final LaborCategory beforeAdd = this.laborCategoryDao.get("id");
         assertNull(beforeAdd);
 
-        final LaborCategory lcat = new LaborCategory("id", "Software Engineering");
+        final LaborCategory lcat = new LaborCategory("id", "Labor Category");
         this.laborCategoryDao.add(lcat);
 
         final LaborCategoryCollection afterAddColl = this.laborCategoryDao.getAll();
         assertNotNull(afterAddColl);
-        assertEquals(1, afterAddColl.getLaborCategories().size());
+        assertEquals(26, afterAddColl.getLaborCategories().size());
         assertTrue(afterAddColl.getLaborCategories().contains(lcat));
 
         final LaborCategory afterAdd = this.laborCategoryDao.get(lcat.getId());
@@ -53,7 +53,7 @@ public class DefaultLaborCategoryDaoIT {
 
         final LaborCategoryCollection afterUpdateColl = this.laborCategoryDao.getAll();
         assertNotNull(afterUpdateColl);
-        assertEquals(1, afterUpdateColl.getLaborCategories().size());
+        assertEquals(26, afterUpdateColl.getLaborCategories().size());
         assertTrue(afterUpdateColl.getLaborCategories().contains(updated));
 
         final LaborCategory afterUpdate = this.laborCategoryDao.get(updated.getId());
@@ -64,7 +64,7 @@ public class DefaultLaborCategoryDaoIT {
 
         final LaborCategoryCollection afterDeleteColl = this.laborCategoryDao.getAll();
         assertNotNull(afterDeleteColl);
-        assertEquals(0, afterDeleteColl.getLaborCategories().size());
+        assertEquals(25, afterDeleteColl.getLaborCategories().size());
 
         final LaborCategory afterDelete = this.laborCategoryDao.get(lcat.getId());
         assertNull(afterDelete);

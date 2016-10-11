@@ -40,21 +40,21 @@ public class LaborCategoryControllerIT {
                         .getForEntity("/api/lcat", LaborCategoryCollection.class);
         assertEquals(HttpStatus.OK, beforeAddColl.getStatusCode());
         assertNotNull(beforeAddColl.getBody());
-        assertEquals(0, beforeAddColl.getBody().getLaborCategories().size());
+        assertEquals(25, beforeAddColl.getBody().getLaborCategories().size()); // account for the flyway-inserted data
 
-        final ResponseEntity<LaborCategory> beforeAdd =
-                this.testRestTemplate.withBasicAuth("test", "test").getForEntity("/api/lcat/id", LaborCategory.class);
+        final ResponseEntity<LaborCategory> beforeAdd = this.testRestTemplate.withBasicAuth("test", "test")
+                .getForEntity("/api/lcat/{id}", LaborCategory.class, "id");
         assertEquals(HttpStatus.NOT_FOUND, beforeAdd.getStatusCode());
         assertNull(beforeAdd.getBody());
 
-        final LaborCategory lcat = new LaborCategory("id", "Software Engineer");
+        final LaborCategory lcat = new LaborCategory("id", "Labor Category");
         this.laborCategoryDao.add(lcat);
 
         final ResponseEntity<LaborCategoryCollection> afterAddColl = this.testRestTemplate.withBasicAuth("test", "test")
                 .getForEntity("/api/lcat", LaborCategoryCollection.class);
         assertEquals(HttpStatus.OK, afterAddColl.getStatusCode());
         assertNotNull(afterAddColl.getBody());
-        assertEquals(1, afterAddColl.getBody().getLaborCategories().size());
+        assertEquals(26, afterAddColl.getBody().getLaborCategories().size());
         assertTrue(afterAddColl.getBody().getLaborCategories().contains(lcat));
 
         final ResponseEntity<LaborCategory> afterAdd = this.testRestTemplate.withBasicAuth("test", "test")
@@ -62,5 +62,7 @@ public class LaborCategoryControllerIT {
         assertEquals(HttpStatus.OK, afterAdd.getStatusCode());
         assertNotNull(afterAdd.getBody());
         assertEquals(lcat, afterAdd.getBody());
+
+        this.laborCategoryDao.delete(lcat.getId());
     }
 }

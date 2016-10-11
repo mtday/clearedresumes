@@ -40,9 +40,9 @@ public class LaborCategoryAdminControllerIT {
     @Test
     public void test() {
         final LaborCategoryCollection beforeAdd = this.laborCategoryDao.getAll();
-        assertEquals(0, beforeAdd.getLaborCategories().size());
+        assertEquals(25, beforeAdd.getLaborCategories().size()); // account for the flyway-inserted data
 
-        final LaborCategory toAdd = new LaborCategory("ignored", "Software Engineer");
+        final LaborCategory toAdd = new LaborCategory("ignored", "Labor Category");
 
         final ResponseEntity<LaborCategory> addResponse = this.testRestTemplate.withBasicAuth("test", "test")
                 .postForEntity("/api/admin/lcat", toAdd, LaborCategory.class);
@@ -54,7 +54,7 @@ public class LaborCategoryAdminControllerIT {
         assertEquals(toAdd.getName(), added.getName());
 
         final LaborCategoryCollection afterAdd = this.laborCategoryDao.getAll();
-        assertEquals(1, afterAdd.getLaborCategories().size());
+        assertEquals(26, afterAdd.getLaborCategories().size());
         assertTrue(afterAdd.getLaborCategories().contains(added));
 
         final LaborCategory toUpdate = new LaborCategory("ignored", "New Name");
@@ -68,7 +68,7 @@ public class LaborCategoryAdminControllerIT {
         assertEquals(toUpdate.getName(), updated.getName());
 
         final LaborCategoryCollection afterUpdate = this.laborCategoryDao.getAll();
-        assertEquals(1, afterUpdate.getLaborCategories().size());
+        assertEquals(26, afterUpdate.getLaborCategories().size());
         assertTrue(afterUpdate.getLaborCategories().contains(updated));
 
         final ResponseEntity<String> deleteResponse = this.testRestTemplate.withBasicAuth("test", "test")
@@ -77,6 +77,6 @@ public class LaborCategoryAdminControllerIT {
         assertNull(deleteResponse.getBody());
 
         final LaborCategoryCollection afterDelete = this.laborCategoryDao.getAll();
-        assertEquals(0, afterDelete.getLaborCategories().size());
+        assertEquals(25, afterDelete.getLaborCategories().size());
     }
 }
