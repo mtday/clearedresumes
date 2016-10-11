@@ -136,7 +136,7 @@ CREATE TABLE work_summaries (
     job_title         VARCHAR(200)   NOT NULL,
     employer          VARCHAR(200)   NOT NULL,
     begin_date        DATE           NOT NULL,
-    end_date          DATE           NOT NULL,
+    end_date          DATE,
     responsibilities  VARCHAR(20000) NOT NULL,
     accomplishments   VARCHAR(20000) NOT NULL,
 

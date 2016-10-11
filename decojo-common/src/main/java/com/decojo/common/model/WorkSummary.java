@@ -23,7 +23,7 @@ public class WorkSummary implements Comparable<WorkSummary> {
     private final String employer;
     @Nonnull
     private final LocalDate beginDate;
-    @Nonnull
+    @Nullable
     private final LocalDate endDate;
     @Nonnull
     private final String responsibilities;
@@ -51,7 +51,7 @@ public class WorkSummary implements Comparable<WorkSummary> {
      */
     public WorkSummary(
             @Nonnull final String id, @Nonnull final String resumeId, @Nonnull final String jobTitle,
-            @Nonnull final String employer, @Nonnull final LocalDate beginDate, @Nonnull final LocalDate endDate,
+            @Nonnull final String employer, @Nonnull final LocalDate beginDate, @Nullable final LocalDate endDate,
             @Nonnull final String responsibilities, @Nonnull final String accomplishments) {
         this.id = id;
         this.resumeId = resumeId;
@@ -118,7 +118,7 @@ public class WorkSummary implements Comparable<WorkSummary> {
      *
      * @return the ending of the time period for this work summary
      */
-    @Nonnull
+    @Nullable
     public LocalDate getEndDate() {
         return this.endDate;
     }

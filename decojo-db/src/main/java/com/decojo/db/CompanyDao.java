@@ -30,7 +30,7 @@ public interface CompanyDao {
      * Retrieve the companies associated with the specified unique user id.
      *
      * @param userId the unique id of the user for which companies will be retrieved
-     * @return the requested user accounts
+     * @return the requested companies
      */
     @Nonnull
     CompanyCollection getForUser(@Nonnull String userId);
