@@ -221,3 +221,11 @@ CREATE TABLE states (
     CONSTRAINT states_uniq UNIQUE (name)
 );
 
+
+CREATE TABLE prices (
+    type              VARCHAR(50)    NOT NULL,
+    price             FLOAT          NOT NULL,
+
+    CONSTRAINT pricing_pk PRIMARY KEY (type)
+);
+

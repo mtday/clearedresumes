@@ -96,3 +96,8 @@ INSERT INTO states (id, name) VALUES
 ('bc283173-76a0-400d-b1f7-5eb021cb4f40', 'Wyoming'),
 ('f41a83f5-eee9-4da7-b45f-c9010df55bb3', 'Washington D.C.');
 
+INSERT INTO prices (type, price) VALUES
+('INDIVIDUAL_RESUME', 15.00),
+('PREMIUM_PACKAGE', 50.00),
+('ENTERPRISE_PACKAGE', 500.00);
+
