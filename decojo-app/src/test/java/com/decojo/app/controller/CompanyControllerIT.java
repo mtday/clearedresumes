@@ -57,7 +57,7 @@ public class CompanyControllerIT {
         assertEquals(HttpStatus.NOT_FOUND, beforeAdd.getStatusCode());
         assertNull(beforeAdd.getBody());
 
-        final Company company = new Company("id", "Company Name", "https://company-website.com");
+        final Company company = new Company("id", "Company Name", "https://company-website.com", 10);
         this.companyDao.add(company);
         this.companyDao.addUser(company.getId(), user.getId());
 

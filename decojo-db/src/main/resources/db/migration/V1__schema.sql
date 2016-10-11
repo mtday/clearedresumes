@@ -25,6 +25,7 @@ CREATE TABLE companies (
     id                VARCHAR(36)    NOT NULL,
     name              VARCHAR(100)   NOT NULL,
     website           VARCHAR(256)   NOT NULL,
+    slots             INTEGER        NOT NULL,
 
     CONSTRAINT companies_pk PRIMARY KEY (id),
     CONSTRAINT companies_uniq_name UNIQUE (name)
@@ -53,6 +54,21 @@ CREATE TABLE resumes (
 
     CONSTRAINT resumes_pk PRIMARY KEY (id),
     CONSTRAINT resumes_fk_user_id FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+);
+
+
+CREATE TABLE company_resumes (
+    id                VARCHAR(36)    NOT NULL,
+    company_id        VARCHAR(36)    NOT NULL,
+    resume_id         VARCHAR(36)    NOT NULL,
+    purchaser_id      VARCHAR(36)    NOT NULL,
+    purchased         VARCHAR(24)    NOT NULL,
+
+    CONSTRAINT company_resumes_pk PRIMARY KEY (id),
+    CONSTRAINT company_resumes_uniq UNIQUE (company_id, resume_id),
+    CONSTRAINT company_resumes_fk_company_id FOREIGN KEY (company_id) REFERENCES companies (id) ON DELETE CASCADE,
+    CONSTRAINT company_resumes_fk_resume_id FOREIGN KEY (resume_id) REFERENCES resumes (id) ON DELETE CASCADE,
+    CONSTRAINT company_resumes_fk_purchaser_id FOREIGN KEY (purchaser_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
 
