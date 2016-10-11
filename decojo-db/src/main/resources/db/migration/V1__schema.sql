@@ -87,6 +87,16 @@ CREATE TABLE company_resumes (
 );
 
 
+CREATE TABLE resume_exclusions (
+    resume_id         VARCHAR(36)    NOT NULL,
+    company_id        VARCHAR(36)    NOT NULL,
+
+    CONSTRAINT resume_exclusions_pk PRIMARY KEY (resume_id, company_id),
+    CONSTRAINT resume_exclusions_fk_resume_id FOREIGN KEY (resume_id) REFERENCES resumes (id) ON DELETE CASCADE,
+    CONSTRAINT resume_exclusions_fk_company_id FOREIGN KEY (company_id) REFERENCES companies (id) ON DELETE CASCADE
+);
+
+
 CREATE TABLE contact_infos (
     id                VARCHAR(36)    NOT NULL,
     resume_id         VARCHAR(36)    NOT NULL,

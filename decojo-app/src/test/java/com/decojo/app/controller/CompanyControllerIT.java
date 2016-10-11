@@ -9,8 +9,10 @@ import static org.junit.Assert.fail;
 import com.decojo.app.TestApplication;
 import com.decojo.common.model.Company;
 import com.decojo.common.model.CompanyCollection;
+import com.decojo.common.model.CompanyUser;
 import com.decojo.common.model.User;
 import com.decojo.db.CompanyDao;
+import com.decojo.db.CompanyUserDao;
 import com.decojo.db.UserDao;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,6 +34,9 @@ public class CompanyControllerIT {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private CompanyUserDao companyUserDao;
 
     @Autowired
     private TestRestTemplate testRestTemplate;
@@ -59,7 +64,7 @@ public class CompanyControllerIT {
 
         final Company company = new Company("id", "Company Name", "https://company-website.com", 10, true);
         this.companyDao.add(company);
-        this.companyDao.addUser(company.getId(), user.getId());
+        this.companyUserDao.add(new CompanyUser(user.getId(), company.getId()));
 
         final ResponseEntity<CompanyCollection> afterAddColl = this.testRestTemplate.withBasicAuth("test", "test")
                 .getForEntity("/api/company", CompanyCollection.class);

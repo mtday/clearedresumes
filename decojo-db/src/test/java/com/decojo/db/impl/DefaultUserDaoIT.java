@@ -6,9 +6,11 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import com.decojo.common.model.Company;
+import com.decojo.common.model.CompanyUser;
 import com.decojo.common.model.User;
 import com.decojo.common.model.UserCollection;
 import com.decojo.db.CompanyDao;
+import com.decojo.db.CompanyUserDao;
 import com.decojo.db.TestApplication;
 import com.decojo.db.UserDao;
 import java.util.SortedSet;
@@ -29,6 +31,9 @@ public class DefaultUserDaoIT {
 
     @Autowired
     private CompanyDao companyDao;
+
+    @Autowired
+    private CompanyUserDao companyUserDao;
 
     /**
      * Perform testing on the auto-wired {@link DefaultUserDao} instance.
@@ -98,14 +103,15 @@ public class DefaultUserDaoIT {
 
         final Company company = new Company("cid", "name", "website", 10, true);
         this.companyDao.add(company);
-        this.userDao.addCompany(user.getId(), company.getId());
+        final CompanyUser companyUser = new CompanyUser(user.getId(), company.getId());
+        this.companyUserDao.add(companyUser);
 
         final UserCollection forCompany = this.userDao.getForCompany(company.getId());
         assertNotNull(forCompany);
         assertEquals(1, forCompany.getUsers().size());
         assertTrue(forCompany.getUsers().contains(updated));
 
-        this.userDao.deleteCompany(user.getId(), company.getId());
+        this.companyUserDao.delete(companyUser);
         this.companyDao.delete(company.getId());
 
         final UserCollection remCompany = this.userDao.getForCompany(company.getId());

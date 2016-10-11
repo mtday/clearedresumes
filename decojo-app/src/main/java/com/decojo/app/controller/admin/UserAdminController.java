@@ -1,7 +1,9 @@
 package com.decojo.app.controller.admin;
 
+import com.decojo.common.model.CompanyUser;
 import com.decojo.common.model.User;
 import com.decojo.common.model.UserCollection;
+import com.decojo.db.CompanyUserDao;
 import com.decojo.db.UserDao;
 import java.util.UUID;
 import javax.annotation.Nonnull;
@@ -27,17 +29,24 @@ public class UserAdminController {
     private final UserDao userDao;
 
     @Nonnull
+    private final CompanyUserDao companyUserDao;
+
+    @Nonnull
     private final PasswordEncoder passwordEncoder;
 
     /**
      * Create an instance of this controller.
      *
      * @param userDao the DAO used to manage user accounts in the database
+     * @param companyUserDao the DAO used to manage company users in the database
      * @param passwordEncoder the encoder used to transform the plain-text user password
      */
     @Autowired
-    public UserAdminController(@Nonnull final UserDao userDao, @Nonnull final PasswordEncoder passwordEncoder) {
+    public UserAdminController(
+            @Nonnull final UserDao userDao, @Nonnull final CompanyUserDao companyUserDao,
+            @Nonnull final PasswordEncoder passwordEncoder) {
         this.userDao = userDao;
+        this.companyUserDao = companyUserDao;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -131,7 +140,7 @@ public class UserAdminController {
             @Nonnull @PathVariable("userId") final String userId,
             @Nonnull @PathVariable("companyId") final String companyId) {
         LOG.debug("Adding user {} company {}", userId, companyId);
-        this.userDao.addCompany(userId, companyId);
+        this.companyUserDao.add(new CompanyUser(userId, companyId));
         return ResponseEntity.ok(null);
     }
 
@@ -148,7 +157,7 @@ public class UserAdminController {
             @Nonnull @PathVariable("userId") final String userId,
             @Nonnull @PathVariable("companyId") final String companyId) {
         LOG.debug("Deleting user {} company {}", userId, companyId);
-        this.userDao.deleteCompany(userId, companyId);
+        this.companyUserDao.delete(new CompanyUser(userId, companyId));
         return ResponseEntity.ok(null);
     }
 }

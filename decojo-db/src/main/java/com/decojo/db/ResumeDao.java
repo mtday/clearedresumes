@@ -1,6 +1,7 @@
 package com.decojo.db;
 
 import com.decojo.common.model.Resume;
+import com.decojo.common.model.ResumeCollection;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -25,6 +26,15 @@ public interface ResumeDao {
      */
     @Nullable
     Resume getForUser(@Nonnull String userId);
+
+    /**
+     * Retrieve the resumes available for viewing by the specified user account.
+     *
+     * @param userId the unique id of the user for which resumes will be retrieved
+     * @return the requested resumes
+     */
+    @Nonnull
+    ResumeCollection getViewable(@Nonnull String userId);
 
     /**
      * Add a new resume into the database.

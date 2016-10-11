@@ -1,6 +1,7 @@
 package com.decojo.db.impl;
 
 import com.decojo.common.model.Resume;
+import com.decojo.common.model.ResumeCollection;
 import com.decojo.common.model.ResumeStatus;
 import com.decojo.db.ResumeDao;
 import java.sql.ResultSet;
@@ -56,6 +57,16 @@ public class DefaultResumeDao implements ResumeDao {
         } catch (final EmptyResultDataAccessException notFound) {
             return null;
         }
+    }
+
+    @Nonnull
+    @Override
+    public ResumeCollection getViewable(@Nonnull final String userId) {
+        return new ResumeCollection(this.jdbcTemplate
+                .query("SELECT * FROM resumes WHERE id NOT IN (SELECT resume_exclusions.resume_id "
+                        + "FROM resume_exclusions JOIN company_users ON "
+                        + "(company_users.company_id = resume_exclusions.company_id) "
+                        + "WHERE company_users.user_id = ?)", this.rowMapper, userId));
     }
 
     @Override

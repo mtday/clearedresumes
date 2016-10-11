@@ -7,8 +7,10 @@ import static org.junit.Assert.assertTrue;
 
 import com.decojo.common.model.Company;
 import com.decojo.common.model.CompanyCollection;
+import com.decojo.common.model.CompanyUser;
 import com.decojo.common.model.User;
 import com.decojo.db.CompanyDao;
+import com.decojo.db.CompanyUserDao;
 import com.decojo.db.TestApplication;
 import com.decojo.db.UserDao;
 import org.junit.Test;
@@ -28,6 +30,9 @@ public class DefaultCompanyDaoIT {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private CompanyUserDao companyUserDao;
 
     /**
      * Perform testing on the auto-wired {@link DefaultCompanyDao} instance.
@@ -71,14 +76,15 @@ public class DefaultCompanyDaoIT {
 
         final User user = new User("uid", "login", "email", "password", true);
         this.userDao.add(user);
-        this.companyDao.addUser(company.getId(), user.getId());
+        final CompanyUser companyUser = new CompanyUser(user.getId(), company.getId());
+        this.companyUserDao.add(companyUser);
 
         final CompanyCollection forUser = this.companyDao.getForUser(user.getId());
         assertNotNull(forUser);
         assertEquals(1, forUser.getCompanies().size());
         assertTrue(forUser.getCompanies().contains(updated));
 
-        this.companyDao.deleteUser(company.getId(), user.getId());
+        this.companyUserDao.delete(companyUser);
         this.userDao.delete(user.getId());
 
         final CompanyCollection remUser = this.companyDao.getForUser(user.getId());

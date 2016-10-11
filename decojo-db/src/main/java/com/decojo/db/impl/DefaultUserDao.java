@@ -107,16 +107,6 @@ public class DefaultUserDao implements UserDao {
         this.jdbcTemplate.update("DELETE FROM authorities WHERE user_id = ? AND authority = ?", id, authority);
     }
 
-    @Override
-    public void addCompany(@Nonnull final String userId, @Nonnull final String companyId) {
-        this.jdbcTemplate.update("INSERT INTO company_users (user_id, company_id) VALUES (?, ?)", userId, companyId);
-    }
-
-    @Override
-    public void deleteCompany(@Nonnull final String userId, @Nonnull final String companyId) {
-        this.jdbcTemplate.update("DELETE FROM company_users WHERE user_id = ? AND company_id = ?", userId, companyId);
-    }
-
     private static final class UserRowMapper implements RowMapper<User> {
         @Override
         @Nonnull

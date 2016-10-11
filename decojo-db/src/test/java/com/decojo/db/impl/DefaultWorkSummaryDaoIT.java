@@ -59,37 +59,57 @@ public class DefaultWorkSummaryDaoIT {
         assertNotNull(beforeAddByResumeColl);
         assertEquals(0, beforeAddByResumeColl.getWorkSummaries().size());
 
-        final WorkSummary workSummary =
-                new WorkSummary("id", resume.getId(), "Title", "Employer", LocalDate.of(2016, 1, 1),
+        final WorkSummary workSummary1 =
+                new WorkSummary("id1", resume.getId(), "Title", "Employer", LocalDate.of(2016, 1, 1),
                         LocalDate.of(2016, 12, 1), "Responsibilities", "Accomplishments");
-        this.workSummaryDao.add(workSummary);
+        final WorkSummary workSummary2 =
+                new WorkSummary("id2", resume.getId(), "Title", "Employer", LocalDate.of(2016, 1, 1),
+                        null, "Responsibilities", "Accomplishments");
+        this.workSummaryDao.add(workSummary1);
+        this.workSummaryDao.add(workSummary2);
 
-        final WorkSummary getById = this.workSummaryDao.get(workSummary.getId());
-        assertNotNull(getById);
-        assertEquals(workSummary, getById);
+        final WorkSummary get1ById = this.workSummaryDao.get(workSummary1.getId());
+        assertNotNull(get1ById);
+        assertEquals(workSummary1, get1ById);
+
+        final WorkSummary get2ById = this.workSummaryDao.get(workSummary2.getId());
+        assertNotNull(get2ById);
+        assertEquals(workSummary2, get2ById);
 
         final WorkSummaryCollection getByResumeColl = this.workSummaryDao.getForResume(resume.getId());
         assertNotNull(getByResumeColl);
-        assertEquals(1, getByResumeColl.getWorkSummaries().size());
-        assertTrue(getByResumeColl.getWorkSummaries().contains(workSummary));
+        assertEquals(2, getByResumeColl.getWorkSummaries().size());
+        assertTrue(getByResumeColl.getWorkSummaries().contains(workSummary1));
+        assertTrue(getByResumeColl.getWorkSummaries().contains(workSummary2));
 
-        final WorkSummary updated = new WorkSummary(workSummary.getId(), resume.getId(), "New Title", "New Employer",
+        final WorkSummary updated1 = new WorkSummary(workSummary1.getId(), resume.getId(), "New Title", "New Employer",
                 LocalDate.of(2016, 2, 1), LocalDate.of(2016, 11, 1), "New Responsibilities", "New Accomplishments");
-        this.workSummaryDao.update(updated);
+        final WorkSummary updated2 = new WorkSummary(workSummary2.getId(), resume.getId(), "New Title", "New Employer",
+                LocalDate.of(2016, 2, 1), null, "New Responsibilities", "New Accomplishments");
+        this.workSummaryDao.update(updated1);
+        this.workSummaryDao.update(updated2);
 
-        final WorkSummary afterUpdate = this.workSummaryDao.get(workSummary.getId());
-        assertNotNull(afterUpdate);
-        assertEquals(updated, afterUpdate);
+        final WorkSummary afterUpdate1 = this.workSummaryDao.get(workSummary1.getId());
+        assertNotNull(afterUpdate1);
+        assertEquals(updated1, afterUpdate1);
+
+        final WorkSummary afterUpdate2 = this.workSummaryDao.get(workSummary2.getId());
+        assertNotNull(afterUpdate2);
+        assertEquals(updated2, afterUpdate2);
 
         final WorkSummaryCollection afterUpdateByResumeColl = this.workSummaryDao.getForResume(resume.getId());
         assertNotNull(afterUpdateByResumeColl);
-        assertEquals(1, afterUpdateByResumeColl.getWorkSummaries().size());
-        assertTrue(afterUpdateByResumeColl.getWorkSummaries().contains(updated));
+        assertEquals(2, afterUpdateByResumeColl.getWorkSummaries().size());
+        assertTrue(afterUpdateByResumeColl.getWorkSummaries().contains(updated1));
+        assertTrue(afterUpdateByResumeColl.getWorkSummaries().contains(updated2));
 
-        this.workSummaryDao.delete(workSummary.getId());
+        this.workSummaryDao.delete(workSummary1.getId());
+        this.workSummaryDao.delete(workSummary2.getId());
 
-        final WorkSummary afterDelete = this.workSummaryDao.get(workSummary.getId());
-        assertNull(afterDelete);
+        final WorkSummary afterDelete1 = this.workSummaryDao.get(workSummary1.getId());
+        assertNull(afterDelete1);
+        final WorkSummary afterDelete2 = this.workSummaryDao.get(workSummary2.getId());
+        assertNull(afterDelete2);
 
         final WorkSummaryCollection afterDeleteByResume = this.workSummaryDao.getForResume(user.getId());
         assertNotNull(afterDeleteByResume);

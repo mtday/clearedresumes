@@ -75,16 +75,6 @@ public class DefaultCompanyDao implements CompanyDao {
         this.jdbcTemplate.update("DELETE FROM companies WHERE id = ?", id);
     }
 
-    @Override
-    public void addUser(@Nonnull final String companyId, @Nonnull final String userId) {
-        this.jdbcTemplate.update("INSERT INTO company_users (user_id, company_id) VALUES (?, ?)", userId, companyId);
-    }
-
-    @Override
-    public void deleteUser(@Nonnull final String companyId, @Nonnull final String userId) {
-        this.jdbcTemplate.update("DELETE FROM company_users WHERE user_id = ? AND company_id = ?", userId, companyId);
-    }
-
     private static final class CompanyRowMapper implements RowMapper<Company> {
         @Override
         @Nonnull

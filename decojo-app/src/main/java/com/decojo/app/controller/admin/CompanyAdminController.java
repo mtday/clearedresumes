@@ -1,7 +1,9 @@
 package com.decojo.app.controller.admin;
 
 import com.decojo.common.model.Company;
+import com.decojo.common.model.CompanyUser;
 import com.decojo.db.CompanyDao;
+import com.decojo.db.CompanyUserDao;
 import java.util.UUID;
 import javax.annotation.Nonnull;
 import org.slf4j.Logger;
@@ -24,14 +26,19 @@ public class CompanyAdminController {
     @Nonnull
     private final CompanyDao companyDao;
 
+    @Nonnull
+    private final CompanyUserDao companyUserDao;
+
     /**
      * Create an instance of this controller.
      *
      * @param companyDao the DAO used to manage companies in the database
+     * @param companyUserDao the DAO used to manage company users in the database
      */
     @Autowired
-    public CompanyAdminController(@Nonnull final CompanyDao companyDao) {
+    public CompanyAdminController(@Nonnull final CompanyDao companyDao, @Nonnull final CompanyUserDao companyUserDao) {
         this.companyDao = companyDao;
+        this.companyUserDao = companyUserDao;
     }
 
     /**
@@ -97,7 +104,7 @@ public class CompanyAdminController {
             @Nonnull @PathVariable("companyId") final String companyId,
             @Nonnull @PathVariable("userId") final String userId) {
         LOG.debug("Adding company {} user {}", companyId, userId);
-        this.companyDao.addUser(companyId, userId);
+        this.companyUserDao.add(new CompanyUser(userId, companyId));
         return ResponseEntity.ok(null);
     }
 
@@ -114,7 +121,7 @@ public class CompanyAdminController {
             @Nonnull @PathVariable("companyId") final String companyId,
             @Nonnull @PathVariable("userId") final String userId) {
         LOG.debug("Deleting company {} user {}", companyId, userId);
-        this.companyDao.deleteUser(companyId, userId);
+        this.companyUserDao.delete(new CompanyUser(userId, companyId));
         return ResponseEntity.ok(null);
     }
 }

@@ -90,20 +90,4 @@ public interface UserDao {
      * @param authority the authority to remove from the user account
      */
     void deleteAuthority(@Nonnull String id, @Nonnull String authority);
-
-    /**
-     * Add a relationship between a company and a user.
-     *
-     * @param userId the unique id of the user account to which the company will be added
-     * @param companyId the unique id of the company to add to the user account
-     */
-    void addCompany(@Nonnull String userId, @Nonnull String companyId);
-
-    /**
-     * Remove a relationship between a company and a user.
-     *
-     * @param userId the unique id of the user account from which the company will be remove
-     * @param companyId the unique id of the company to remove from the user account
-     */
-    void deleteCompany(@Nonnull String userId, @Nonnull String companyId);
 }
