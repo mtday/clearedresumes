@@ -22,8 +22,8 @@ public class CompanyCollectionTest {
 
     @Test
     public void testParameterConstructor() {
-        final Company company1 = new Company("id-1", "name-1", "http://website1.com/", 10);
-        final Company company2 = new Company("id-2", "name-2", "http://website2.com/", 15);
+        final Company company1 = new Company("id-1", "name-1", "http://website1.com/", 10, true);
+        final Company company2 = new Company("id-2", "name-2", "http://website2.com/", 15, true);
         final CompanyCollection companyColl = new CompanyCollection(Arrays.asList(company1, company2));
         assertNotNull(companyColl.getCompanies());
         assertEquals(2, companyColl.getCompanies().size());
@@ -33,8 +33,8 @@ public class CompanyCollectionTest {
 
     @Test
     public void testCompareTo() {
-        final Company company1 = new Company("id-1", "name-1", "http://website1.com/", 10);
-        final Company company2 = new Company("id-2", "name-2", "http://website2.com/", 15);
+        final Company company1 = new Company("id-1", "name-1", "http://website1.com/", 10, true);
+        final Company company2 = new Company("id-2", "name-2", "http://website2.com/", 15, true);
 
         final CompanyCollection a = new CompanyCollection(Collections.emptyList());
         final CompanyCollection b = new CompanyCollection(Collections.singleton(company1));
@@ -54,8 +54,8 @@ public class CompanyCollectionTest {
 
     @Test
     public void testEquals() {
-        final Company company1 = new Company("id-1", "name-1", "http://website1.com/", 10);
-        final Company company2 = new Company("id-2", "name-2", "http://website2.com/", 15);
+        final Company company1 = new Company("id-1", "name-1", "http://website1.com/", 10, true);
+        final Company company2 = new Company("id-2", "name-2", "http://website2.com/", 15, true);
 
         final CompanyCollection a = new CompanyCollection(Collections.emptyList());
         final CompanyCollection b = new CompanyCollection(Collections.singleton(company1));
@@ -75,18 +75,21 @@ public class CompanyCollectionTest {
 
     @Test
     public void testHashCode() {
-        final Company company1 = new Company("id-1", "name-1", "http://website1.com/", 10);
-        final Company company2 = new Company("id-2", "name-2", "http://website2.com/", 15);
+        final Company company1 = new Company("id-1", "name-1", "http://website1.com/", 10, true);
+        final Company company2 = new Company("id-2", "name-2", "http://website2.com/", 15, true);
         final CompanyCollection companyColl = new CompanyCollection(Arrays.asList(company1, company2));
-        assertEquals(242468541, companyColl.hashCode());
+        assertEquals(381378781, companyColl.hashCode());
     }
 
     @Test
     public void testToString() {
-        final Company company1 = new Company("id-1", "name-1", "http://website1.com/", 10);
-        final Company company2 = new Company("id-2", "name-2", "http://website2.com/", 15);
+        final Company company1 = new Company("id-1", "name-1", "http://website1.com/", 10, true);
+        final Company company2 = new Company("id-2", "name-2", "http://website2.com/", 15, true);
         final CompanyCollection companyColl = new CompanyCollection(Arrays.asList(company1, company2));
-        assertEquals("CompanyCollection[companies=[Company[id=id-1,name=name-1,website=http://website1.com/,slots=10], "
-                + "Company[id=id-2,name=name-2,website=http://website2.com/,slots=15]]]", companyColl.toString());
+        assertEquals(
+                "CompanyCollection[companies=[Company[id=id-1,name=name-1,website=http://website1.com/,slots=10,"
+                        + "active=true], Company[id=id-2,name=name-2,website=http://website2.com/,slots=15,"
+                        + "active=true]]]",
+                companyColl.toString());
     }
 }

@@ -1,7 +1,9 @@
 package com.decojo.common.model;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -16,24 +18,26 @@ public class CompanyTest {
         assertEquals("", company.getName());
         assertEquals("", company.getWebsite());
         assertEquals(0, company.getSlots());
+        assertFalse(company.isActive());
     }
 
     @Test
     public void testParameterConstructor() {
-        final Company company = new Company("id", "name", "website", 10);
+        final Company company = new Company("id", "name", "website", 10, true);
         assertEquals("id", company.getId());
         assertEquals("name", company.getName());
         assertEquals("website", company.getWebsite());
         assertEquals(10, company.getSlots());
+        assertTrue(company.isActive());
     }
 
     @Test
     public void testCompareTo() {
-        final Company ca = new Company("id-1", "name-1", "website-1", 10);
-        final Company cb = new Company("id-1", "name-1", "website-1", 15);
-        final Company cc = new Company("id-1", "name-1", "website-2", 10);
-        final Company cd = new Company("id-1", "name-2", "website-1", 10);
-        final Company ce = new Company("id-2", "name-1", "website-1", 10);
+        final Company ca = new Company("id-1", "name-1", "website-1", 10, true);
+        final Company cb = new Company("id-1", "name-1", "website-1", 15, true);
+        final Company cc = new Company("id-1", "name-1", "website-2", 10, true);
+        final Company cd = new Company("id-1", "name-2", "website-1", 10, true);
+        final Company ce = new Company("id-2", "name-1", "website-1", 10, true);
 
         assertEquals(1, ca.compareTo(null));
         assertEquals(0, ca.compareTo(ca));
@@ -65,11 +69,11 @@ public class CompanyTest {
 
     @Test
     public void testEquals() {
-        final Company a = new Company("id-1", "name-1", "website-1", 10);
-        final Company b = new Company("id-1", "name-1", "website-1", 15);
-        final Company c = new Company("id-1", "name-1", "website-2", 10);
-        final Company d = new Company("id-1", "name-2", "website-1", 10);
-        final Company e = new Company("id-2", "name-1", "website-1", 10);
+        final Company a = new Company("id-1", "name-1", "website-1", 10, true);
+        final Company b = new Company("id-1", "name-1", "website-1", 15, true);
+        final Company c = new Company("id-1", "name-1", "website-2", 10, true);
+        final Company d = new Company("id-1", "name-2", "website-1", 10, true);
+        final Company e = new Company("id-2", "name-1", "website-1", 10, true);
 
         assertNotEquals(a, null);
         assertEquals(a, a);
@@ -101,13 +105,13 @@ public class CompanyTest {
 
     @Test
     public void testHashCode() {
-        assertEquals(-1418787052, new Company("id", "name", "website", 10).hashCode());
+        assertEquals(-955513372, new Company("id", "name", "website", 10, true).hashCode());
     }
 
     @Test
     public void testToString() {
         assertEquals(
-                "Company[id=id,name=name,website=website,slots=10]",
-                new Company("id", "name", "website", 10).toString());
+                "Company[id=id,name=name,website=website,slots=10,active=true]",
+                new Company("id", "name", "website", 10, true).toString());
     }
 }

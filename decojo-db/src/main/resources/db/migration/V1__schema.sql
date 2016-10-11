@@ -26,6 +26,7 @@ CREATE TABLE companies (
     name              VARCHAR(100)   NOT NULL,
     website           VARCHAR(256)   NOT NULL,
     slots             INTEGER        NOT NULL,
+    active            BOOLEAN        NOT NULL,
 
     CONSTRAINT companies_pk PRIMARY KEY (id),
     CONSTRAINT companies_uniq_name UNIQUE (name)
@@ -39,6 +40,20 @@ CREATE TABLE company_users (
     CONSTRAINT company_users_pk PRIMARY KEY (user_id, company_id),
     CONSTRAINT company_users_fk_user_id FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
     CONSTRAINT company_users_fk_company_id FOREIGN KEY (company_id) REFERENCES companies (id) ON DELETE CASCADE
+);
+
+
+CREATE TABLE transactions (
+    id                VARCHAR(36)    NOT NULL,
+    company_id        VARCHAR(36)    NOT NULL,
+    user_id           VARCHAR(36)    NOT NULL,
+    description       VARCHAR(3000)  NOT NULL,
+    created           VARCHAR(24)    NOT NULL,
+    amount            FLOAT          NOT NULL,
+
+    CONSTRAINT transactions_pk PRIMARY KEY (user_id, company_id),
+    CONSTRAINT transactions_fk_company_id FOREIGN KEY (company_id) REFERENCES companies (id) ON DELETE CASCADE,
+    CONSTRAINT transactions_fk_user_id FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
 

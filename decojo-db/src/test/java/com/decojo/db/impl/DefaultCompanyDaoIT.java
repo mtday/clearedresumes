@@ -41,7 +41,7 @@ public class DefaultCompanyDaoIT {
         final Company beforeAdd = this.companyDao.get("id");
         assertNull(beforeAdd);
 
-        final Company company = new Company("id", "Company Name", "https://company-website.com/", 10);
+        final Company company = new Company("id", "Company Name", "https://company-website.com/", 10, true);
         this.companyDao.add(company);
 
         final CompanyCollection afterAddColl = this.companyDao.getAll();
@@ -53,7 +53,7 @@ public class DefaultCompanyDaoIT {
         assertNotNull(afterAdd);
         assertEquals(company, afterAdd);
 
-        final Company updated = new Company(company.getId(), "New Company Name", "https://updated-website.com/", 15);
+        final Company updated = new Company(company.getId(), "New Company Name", "https://updated-website.com/", 15, true);
         this.companyDao.update(updated);
 
         final CompanyCollection afterUpdateColl = this.companyDao.getAll();

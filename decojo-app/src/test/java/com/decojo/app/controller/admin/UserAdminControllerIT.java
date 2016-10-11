@@ -110,7 +110,7 @@ public class UserAdminControllerIT {
         assertEquals(2, afterUpdate.getUsers().size());
         assertTrue(afterUpdate.getUsers().contains(updated));
 
-        final Company company = new Company("cid", "name", "website", 10);
+        final Company company = new Company("cid", "name", "website", 10, true);
         this.companyDao.add(company);
 
         final ResponseEntity<String> addCompanyResponse = this.testRestTemplate.withBasicAuth("test", "test")

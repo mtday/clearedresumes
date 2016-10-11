@@ -96,7 +96,7 @@ public class DefaultUserDaoIT {
         assertNotNull(forCompanyDne);
         assertEquals(0, forCompanyDne.getUsers().size());
 
-        final Company company = new Company("cid", "name", "website", 10);
+        final Company company = new Company("cid", "name", "website", 10, true);
         this.companyDao.add(company);
         this.userDao.addCompany(user.getId(), company.getId());
 

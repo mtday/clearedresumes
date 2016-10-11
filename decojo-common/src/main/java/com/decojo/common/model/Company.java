@@ -19,12 +19,13 @@ public class Company implements Comparable<Company> {
     @Nonnull
     private final String website;
     private final int slots;
+    private final boolean active;
 
     /**
      * Default constructor required for Jackson deserialization.
      */
     Company() {
-        this("", "", "", 0);
+        this("", "", "", 0, false);
     }
 
     /**
@@ -34,13 +35,16 @@ public class Company implements Comparable<Company> {
      * @param name the name for this company
      * @param website the website address for this company
      * @param slots the number of open resume slots available
+     * @param active whether this company is active
      */
     public Company(
-            @Nonnull final String id, @Nonnull final String name, @Nonnull final String website, final int slots) {
+            @Nonnull final String id, @Nonnull final String name, @Nonnull final String website, final int slots,
+            final boolean active) {
         this.id = id;
         this.name = name;
         this.website = website;
         this.slots = slots;
+        this.active = active;
     }
 
     /**
@@ -82,6 +86,15 @@ public class Company implements Comparable<Company> {
         return this.slots;
     }
 
+    /**
+     * Retrieve whether this company is active.
+     *
+     * @return whether this company is active
+     */
+    public boolean isActive() {
+        return this.active;
+    }
+
     @Override
     public int compareTo(@Nullable final Company other) {
         if (other == null) {
@@ -92,6 +105,7 @@ public class Company implements Comparable<Company> {
         cmp.append(getName(), other.getName());
         cmp.append(getWebsite(), other.getWebsite());
         cmp.append(getSlots(), other.getSlots());
+        cmp.append(isActive(), other.isActive());
         cmp.append(getId(), other.getId());
         return cmp.toComparison();
     }
@@ -108,6 +122,7 @@ public class Company implements Comparable<Company> {
         hash.append(getName());
         hash.append(getWebsite());
         hash.append(getSlots());
+        hash.append(isActive());
         return hash.toHashCode();
     }
 
@@ -119,6 +134,7 @@ public class Company implements Comparable<Company> {
         str.append("name", getName());
         str.append("website", getWebsite());
         str.append("slots", getSlots());
+        str.append("active", isActive());
         return str.build();
     }
 }

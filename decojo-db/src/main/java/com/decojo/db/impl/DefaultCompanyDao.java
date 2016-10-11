@@ -60,16 +60,14 @@ public class DefaultCompanyDao implements CompanyDao {
 
     @Override
     public void add(@Nonnull final Company company) {
-        this.jdbcTemplate
-                .update("INSERT INTO companies (id, name, website, slots) VALUES (?, ?, ?, ?)", company.getId(),
-                        company.getName(), company.getWebsite(), company.getSlots());
+        this.jdbcTemplate.update("INSERT INTO companies (id, name, website, slots, active) VALUES (?, ?, ?, ?, ?)",
+                company.getId(), company.getName(), company.getWebsite(), company.getSlots(), company.isActive());
     }
 
     @Override
     public void update(@Nonnull final Company company) {
-        this.jdbcTemplate
-                .update("UPDATE companies SET name = ?, website = ?, slots = ? WHERE id = ?", company.getName(),
-                        company.getWebsite(), company.getSlots(), company.getId());
+        this.jdbcTemplate.update("UPDATE companies SET name = ?, website = ?, slots = ?, active = ? WHERE id = ?",
+                company.getName(), company.getWebsite(), company.getSlots(), company.isActive(), company.getId());
     }
 
     @Override
@@ -95,7 +93,8 @@ public class DefaultCompanyDao implements CompanyDao {
             final String name = resultSet.getString("name");
             final String website = resultSet.getString("website");
             final int slots = resultSet.getInt("slots");
-            return new Company(id, name, website, slots);
+            final boolean active = resultSet.getBoolean("active");
+            return new Company(id, name, website, slots, active);
         }
     }
 }
