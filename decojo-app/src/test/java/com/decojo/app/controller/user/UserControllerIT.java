@@ -1,4 +1,4 @@
-package com.decojo.app.controller;
+package com.decojo.app.controller.user;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -50,7 +50,7 @@ public class UserControllerIT {
         SecurityContextHolder.getContext().setAuthentication(auth);
 
         final ResponseEntity<User> getResponse =
-                this.testRestTemplate.withBasicAuth("test", "test").getForEntity("/api/user", User.class);
+                this.testRestTemplate.withBasicAuth("test", "test").getForEntity("/api/user/me", User.class);
         assertEquals(HttpStatus.OK, getResponse.getStatusCode());
         final User getUser = getResponse.getBody();
         assertNotNull(getUser);
@@ -58,7 +58,7 @@ public class UserControllerIT {
 
         final User toUpdate = new User("ignored", currentUser.getLogin(), "New Email", "New Password", false);
         final ResponseEntity<User> updateResponse = this.testRestTemplate.withBasicAuth("test", "test")
-                .exchange("/api/user", HttpMethod.PUT, new HttpEntity<>(toUpdate), User.class);
+                .exchange("/api/user/me", HttpMethod.PUT, new HttpEntity<>(toUpdate), User.class);
         assertEquals(HttpStatus.OK, updateResponse.getStatusCode());
         final User updated = updateResponse.getBody();
         assertNotNull(updated);

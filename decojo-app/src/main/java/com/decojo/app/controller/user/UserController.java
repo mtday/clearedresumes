@@ -1,4 +1,4 @@
-package com.decojo.app.controller;
+package com.decojo.app.controller.user;
 
 import com.decojo.app.security.DefaultUserDetails;
 import com.decojo.common.model.User;
@@ -40,7 +40,7 @@ public class UserController {
      *
      * @return the current user account
      */
-    @RequestMapping(value = "/api/user", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/user/me", method = RequestMethod.GET)
     @Nonnull
     public ResponseEntity<User> get() {
         LOG.debug("Retrieving logged-in user");
@@ -55,7 +55,7 @@ public class UserController {
      * @param user the user containing the updated values
      * @return the updated user
      */
-    @RequestMapping(value = "/api/user", method = RequestMethod.PUT)
+    @RequestMapping(value = "/api/user/me", method = RequestMethod.PUT)
     @Nonnull
     public ResponseEntity<User> update(@Nonnull @RequestBody final User user) {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

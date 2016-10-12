@@ -1,4 +1,4 @@
-package com.decojo.app.controller;
+package com.decojo.app.controller.user;
 
 import com.decojo.app.security.DefaultUserDetails;
 import com.decojo.common.model.Company;
@@ -41,7 +41,7 @@ public class CompanyController {
      *
      * @return all of the available companies
      */
-    @RequestMapping(value = "/api/company", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/user/company", method = RequestMethod.GET)
     @Nonnull
     public ResponseEntity<CompanyCollection> get() {
         LOG.debug("Retrieving my companies");
@@ -56,7 +56,7 @@ public class CompanyController {
      * @param id the unique id of the company to retrieve
      * @return the requested company if available
      */
-    @RequestMapping(value = "/api/company/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/user/company/{id}", method = RequestMethod.GET)
     @Nonnull
     public ResponseEntity<?> get(@Nonnull @PathVariable("id") final String id) {
         LOG.debug("Retrieving company with id {}", id);

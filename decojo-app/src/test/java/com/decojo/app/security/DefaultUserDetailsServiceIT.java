@@ -56,7 +56,8 @@ public class DefaultUserDetailsServiceIT {
 
         assertEquals("test", userDetails.getUsername());
         assertNotNull(userDetails.getPassword());
-        assertEquals(1, userDetails.getAuthorities().size());
+        assertEquals(2, userDetails.getAuthorities().size());
         assertTrue(userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ADMIN")));
+        assertTrue(userDetails.getAuthorities().contains(new SimpleGrantedAuthority("USER")));
     }
 }

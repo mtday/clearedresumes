@@ -1,4 +1,4 @@
-package com.decojo.app.controller;
+package com.decojo.app.controller.user;
 
 import com.decojo.common.model.LaborCategory;
 import com.decojo.common.model.LaborCategoryCollection;
@@ -38,7 +38,7 @@ public class LaborCategoryController {
      *
      * @return all of the available labor categories
      */
-    @RequestMapping(value = "/api/lcat", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/user/lcat", method = RequestMethod.GET)
     @Nonnull
     public ResponseEntity<LaborCategoryCollection> getAll() {
         LOG.debug("Retrieving all labor categories");
@@ -51,7 +51,7 @@ public class LaborCategoryController {
      * @param id the unique id of the labor category to retrieve
      * @return the requested labor category if available
      */
-    @RequestMapping(value = "/api/lcat/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/user/lcat/{id}", method = RequestMethod.GET)
     @Nonnull
     public ResponseEntity<?> get(@Nonnull @PathVariable("id") final String id) {
         LOG.debug("Retrieving labor category with id {}", id);

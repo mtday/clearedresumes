@@ -1,4 +1,4 @@
-package com.decojo.app.controller;
+package com.decojo.app.controller.user;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -52,13 +52,13 @@ public class CompanyControllerIT {
         }
 
         final ResponseEntity<CompanyCollection> beforeAddColl = this.testRestTemplate.withBasicAuth("test", "test")
-                .getForEntity("/api/company", CompanyCollection.class);
+                .getForEntity("/api/user/company", CompanyCollection.class);
         assertEquals(HttpStatus.OK, beforeAddColl.getStatusCode());
         assertNotNull(beforeAddColl.getBody());
         assertEquals(0, beforeAddColl.getBody().getCompanies().size());
 
         final ResponseEntity<Company> beforeAdd =
-                this.testRestTemplate.withBasicAuth("test", "test").getForEntity("/api/company/id", Company.class);
+                this.testRestTemplate.withBasicAuth("test", "test").getForEntity("/api/user/company/id", Company.class);
         assertEquals(HttpStatus.NOT_FOUND, beforeAdd.getStatusCode());
         assertNull(beforeAdd.getBody());
 
@@ -67,14 +67,14 @@ public class CompanyControllerIT {
         this.companyUserDao.add(new CompanyUser(user.getId(), company.getId()));
 
         final ResponseEntity<CompanyCollection> afterAddColl = this.testRestTemplate.withBasicAuth("test", "test")
-                .getForEntity("/api/company", CompanyCollection.class);
+                .getForEntity("/api/user/company", CompanyCollection.class);
         assertEquals(HttpStatus.OK, afterAddColl.getStatusCode());
         assertNotNull(afterAddColl.getBody());
         assertEquals(1, afterAddColl.getBody().getCompanies().size());
         assertTrue(afterAddColl.getBody().getCompanies().contains(company));
 
         final ResponseEntity<Company> afterAdd = this.testRestTemplate.withBasicAuth("test", "test")
-                .getForEntity(String.format("/api/company/%s", company.getId()), Company.class);
+                .getForEntity(String.format("/api/user/company/%s", company.getId()), Company.class);
         assertEquals(HttpStatus.OK, afterAdd.getStatusCode());
         assertNotNull(afterAdd.getBody());
         assertEquals(company, afterAdd.getBody());

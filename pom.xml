@@ -66,13 +66,6 @@
                 <version>4.0.3</version>
             </dependency>
 
-            <!-- Webjars (bundled JS/CSS libraries) -->
-            <dependency>
-                <groupId>org.webjars</groupId>
-                <artifactId>bootstrap</artifactId>
-                <version>3.3.7-1</version>
-            </dependency>
-
             <!-- Null checking annotations -->
             <dependency>
                 <groupId>com.google.code.findbugs</groupId>
@@ -152,7 +145,6 @@
                         <ignoredUnusedDeclaredDependency>org.hsqldb:hsqldb</ignoredUnusedDeclaredDependency>
                         <ignoredUnusedDeclaredDependency>org.postgresql:postgresql</ignoredUnusedDeclaredDependency>
                         <ignoredUnusedDeclaredDependency>org.springframework.boot:</ignoredUnusedDeclaredDependency>
-                        <ignoredUnusedDeclaredDependency>org.webjars:</ignoredUnusedDeclaredDependency>
                     </ignoredUnusedDeclaredDependencies>
                 </configuration>
                 <executions>

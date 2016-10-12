@@ -1,31 +1,47 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <title>Login</title>
-    <link rel="stylesheet" th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" href="bootstrap" />
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <title>DeCoJo - Login</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          crossorigin="anonymous"/>
+    <link rel="stylesheet" th:href="@{/css/login.css}"/>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
 </head>
-<body onload="document.f.username.focus();">
-    <div class="container">
-        <div class="navbar">
-            <div class="navbar-inner">
-                <a class="brand" href="http://www.thymeleaf.org"> Thymeleaf - Plain </a>
-                <ul class="nav">
-                    <li><a th:href="@{/}" href="home.html"> Home </a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="content">
-            <p th:if="${param.logout}" class="alert">You have been logged out</p>
-            <p th:if="${param.error}" class="alert alert-error">There was an error, please try again</p>
-            <h2>Login with Username and Password</h2>
-            <form name="form" th:action="@{/login}" action="/login" method="POST">
-                <fieldset>
-                    <input type="text" name="username" value="" placeholder="Username" />
-                    <input type="password" name="password" placeholder="Password" />
-                </fieldset>
-                <input type="submit" id="login" value="Login" class="btn btn-primary" />
-            </form>
-        </div>
-    </div>
+<body>
+
+<div class="container">
+    <form class="form-login" name="form" th:action="@{/login}" method="POST">
+        <h2 class="form-login-heading">Please Login</h2>
+
+        <p th:if="${param.logout}" class="alert">You have been logged out</p>
+        <p th:if="${param.error}" class="alert alert-error">There was an error, please try again</p>
+
+        <label for="username" class="sr-only">User Name</label>
+        <input type="text" name="username" id="username" class="form-control" placeholder="User Name"
+               required="required" autofocus="autofocus"/>
+
+        <label for="password" class="sr-only">Password</label>
+        <input type="password" name="password" id="password" class="form-control" placeholder="Password"
+               required="required"/>
+
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+    </form>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" crossorigin="anonymous"></script>
 </body>
 </html>

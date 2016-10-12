@@ -93,7 +93,7 @@ public class UserAdminControllerIT {
         assertNotNull(afterAddGetUser);
         assertEquals(added, afterAddGetUser);
 
-        final User toUpdate = new User("ignored", "New Login", "New Email", "New Password", false);
+        final User toUpdate = new User("ignored", "New Login", "new@email.com", "New Password", false);
         final ResponseEntity<User> updateResponse = this.testRestTemplate.withBasicAuth("test", "test")
                 .exchange("/api/admin/user/{id}", HttpMethod.PUT, new HttpEntity<>(toUpdate), User.class,
                         added.getId());
