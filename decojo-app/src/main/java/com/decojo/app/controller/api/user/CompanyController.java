@@ -47,7 +47,7 @@ public class CompanyController {
         LOG.debug("Retrieving my companies");
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         final DefaultUserDetails defaultUserDetails = (DefaultUserDetails) authentication.getPrincipal();
-        return ResponseEntity.ok(this.companyDao.getForUser(defaultUserDetails.getUser().getId()));
+        return ResponseEntity.ok(this.companyDao.getForUser(defaultUserDetails.getAccount().getUser().getId()));
     }
 
     /**

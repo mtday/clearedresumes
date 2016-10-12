@@ -1,7 +1,7 @@
 package com.decojo.app.security;
 
+import com.decojo.common.model.Account;
 import com.decojo.common.model.Authority;
-import com.decojo.common.model.User;
 import java.util.Collection;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
@@ -17,30 +17,29 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class DefaultUserDetails implements UserDetails {
     private static final long serialVersionUID = 134785991543L;
     @Nonnull
-    private final User user;
+    private final Account account;
     @Nonnull
     private final Collection<? extends GrantedAuthority> authorities;
 
     /**
      * Parameter constructor.
      *
-     * @param user the user account associated with this user details
-     * @param authorities the authorities granted to the user account
+     * @param account the account associated with this user details
      */
-    public DefaultUserDetails(@Nonnull final User user, @Nonnull final Collection<Authority> authorities) {
-        this.user = user;
-        this.authorities =
-                authorities.stream().map(Authority::name).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+    public DefaultUserDetails(@Nonnull final Account account) {
+        this.account = account;
+        this.authorities = account.getAuthorities().stream().map(Authority::name).map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
     }
 
     /**
-     * Retrieve the user account associated with this user details.
+     * Retrieve the account associated with this user details.
      *
-     * @return the user account associated with this user details
+     * @return the account associated with this user details
      */
     @Nonnull
-    public User getUser() {
-        return this.user;
+    public Account getAccount() {
+        return this.account;
     }
 
     @Override
@@ -52,41 +51,40 @@ public class DefaultUserDetails implements UserDetails {
     @Override
     @Nonnull
     public String getUsername() {
-        return this.user.getLogin();
+        return this.account.getUser().getLogin();
     }
 
     @Override
     @Nonnull
     public String getPassword() {
-        return this.user.getPassword();
+        return this.account.getUser().getPassword();
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return this.user.isEnabled();
+        return this.account.getUser().isEnabled();
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return this.user.isEnabled();
+        return this.account.getUser().isEnabled();
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return this.user.isEnabled();
+        return this.account.getUser().isEnabled();
     }
 
     @Override
     public boolean isEnabled() {
-        return this.user.isEnabled();
+        return this.account.getUser().isEnabled();
     }
 
     @Override
     @Nonnull
     public String toString() {
         final ToStringBuilder str = new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE);
-        str.append("user", getUser());
-        str.append("authorities", getAuthorities());
+        str.append("account", getAccount());
         return str.toString();
     }
 }

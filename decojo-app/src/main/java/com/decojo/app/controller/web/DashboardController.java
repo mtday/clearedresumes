@@ -23,7 +23,7 @@ public class DashboardController extends BaseController {
     @GetMapping("/dashboard")
     @Nonnull
     public String dashboard(@Nonnull final Map<String, Object> model) {
-        setCurrentUser(model);
+        setCurrentAccount(model);
         if (isEmployer()) {
             return "employer/dashboard";
         }

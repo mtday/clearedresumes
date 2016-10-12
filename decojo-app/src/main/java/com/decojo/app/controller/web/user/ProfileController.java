@@ -24,7 +24,7 @@ public class ProfileController extends BaseController {
     @GetMapping("/user/profile")
     @Nonnull
     public String profile(@Nonnull final Map<String, Object> model) {
-        setCurrentUser(model);
+        setCurrentAccount(model);
         return "user/profile";
     }
 }

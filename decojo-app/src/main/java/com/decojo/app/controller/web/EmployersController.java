@@ -23,7 +23,7 @@ public class EmployersController extends BaseController {
     @GetMapping("/employers")
     @Nonnull
     public String employers(@Nonnull final Map<String, Object> model) {
-        setCurrentUser(model);
+        setCurrentAccount(model);
         return "employers";
     }
 }

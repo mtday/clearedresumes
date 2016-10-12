@@ -23,7 +23,7 @@ public class IndexController extends BaseController {
     @GetMapping("/")
     @Nonnull
     public String index(@Nonnull final Map<String, Object> model) {
-        setCurrentUser(model);
+        setCurrentAccount(model);
         return "index";
     }
 }

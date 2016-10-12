@@ -23,7 +23,7 @@ public class LegalController extends BaseController {
     @GetMapping("/privacy")
     @Nonnull
     public String privacy(@Nonnull final Map<String, Object> model) {
-        setCurrentUser(model);
+        setCurrentAccount(model);
         return "privacy";
     }
 
@@ -36,7 +36,7 @@ public class LegalController extends BaseController {
     @GetMapping("/terms")
     @Nonnull
     public String terms(@Nonnull final Map<String, Object> model) {
-        setCurrentUser(model);
+        setCurrentAccount(model);
         return "terms";
     }
 }

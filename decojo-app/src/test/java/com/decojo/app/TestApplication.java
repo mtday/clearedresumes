@@ -2,6 +2,8 @@ package com.decojo.app;
 
 import com.decojo.app.security.DefaultUserDetailsService;
 import com.decojo.common.model.Authority;
+import com.decojo.db.CompanyDao;
+import com.decojo.db.ResumeDao;
 import com.decojo.db.UserDao;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -35,6 +37,12 @@ public class TestApplication {
         @Autowired
         private UserDao userDao;
 
+        @Autowired
+        private CompanyDao companyDao;
+
+        @Autowired
+        private ResumeDao resumeDao;
+
         @Override
         protected void configure(@Nonnull final HttpSecurity http) throws Exception {
             // @formatter:off
@@ -53,7 +61,7 @@ public class TestApplication {
         @Override
         @Nonnull
         public UserDetailsService userDetailsService() {
-            return new DefaultUserDetailsService(userDao);
+            return new DefaultUserDetailsService(userDao, companyDao, resumeDao);
         }
 
         /**

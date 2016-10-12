@@ -1,15 +1,23 @@
 package com.decojo.app.controller.web;
 
+import com.decojo.app.security.DefaultUserDetails;
+import com.decojo.common.model.Account;
+import com.decojo.common.model.Authority;
+import com.decojo.common.model.User;
 import com.decojo.db.UserDao;
+import java.util.Collections;
 import java.util.Map;
+import java.util.UUID;
 import javax.annotation.Nonnull;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -47,7 +55,7 @@ public class SignupController extends BaseController {
      * @param model the web model
      * @return the name of the template to display
      */
-    @GetMapping("/signup")
+    @PostMapping("/signup")
     @Nonnull
     public String signup(
             @Nonnull @RequestParam("username") final String username,
@@ -84,7 +92,26 @@ public class SignupController extends BaseController {
             return "login";
         }
 
+        createAccount(username, email, password);
 
-        return "start";
+        setCurrentAccount(model);
+        return "user/actions";
+    }
+
+    private void createAccount(
+            @Nonnull final String login, @Nonnull final String email, @Nonnull final String password) {
+        // TODO: Need to verify that the email is valid by sending an email to it for confirmation.
+
+        final User user =
+                new User(UUID.randomUUID().toString(), login, email, this.passwordEncoder.encode(password), true);
+        this.userDao.add(user);
+        this.userDao.addAuthority(user.getId(), Authority.USER);
+
+        final Account account = new Account(user, Collections.singleton(Authority.USER), Collections.emptyList(), null);
+
+        // Now that the user account has been created, sign the user in.
+        final DefaultUserDetails userDetails = new DefaultUserDetails(account);
+        SecurityContextHolder.getContext().setAuthentication(
+                new UsernamePasswordAuthenticationToken(userDetails, user.getPassword(), userDetails.getAuthorities()));
     }
 }

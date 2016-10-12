@@ -23,7 +23,7 @@ public class ContactController extends BaseController {
     @GetMapping("/contact")
     @Nonnull
     public String contact(@Nonnull final Map<String, Object> model) {
-        setCurrentUser(model);
+        setCurrentAccount(model);
         return "contact";
     }
 }

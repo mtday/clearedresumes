@@ -24,7 +24,7 @@ public class UserDashboardController extends BaseController {
     @GetMapping("/user/dashboard")
     @Nonnull
     public String dashboard(@Nonnull final Map<String, Object> model) {
-        setCurrentUser(model);
+        setCurrentAccount(model);
         return "user/dashboard";
     }
 }

@@ -1,6 +1,7 @@
 package com.decojo.app.controller.api.user;
 
 import com.decojo.app.security.DefaultUserDetails;
+import com.decojo.common.model.Account;
 import com.decojo.common.model.User;
 import com.decojo.db.UserDao;
 import javax.annotation.Nonnull;
@@ -42,11 +43,11 @@ public class UserController {
      */
     @RequestMapping(value = "/api/user/me", method = RequestMethod.GET)
     @Nonnull
-    public ResponseEntity<User> get() {
+    public ResponseEntity<Account> get() {
         LOG.debug("Retrieving logged-in user");
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         final DefaultUserDetails userDetails = (DefaultUserDetails) authentication.getPrincipal();
-        return ResponseEntity.ok(userDetails.getUser());
+        return ResponseEntity.ok(userDetails.getAccount());
     }
 
     /**
@@ -60,7 +61,7 @@ public class UserController {
     public ResponseEntity<User> update(@Nonnull @RequestBody final User user) {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         final DefaultUserDetails userDetails = (DefaultUserDetails) authentication.getPrincipal();
-        final User currentUser = userDetails.getUser();
+        final User currentUser = userDetails.getAccount().getUser();
         final User updated = new User(currentUser.getId(), user.getLogin(), user.getEmail(), user.getPassword(),
                 currentUser.isEnabled());
         LOG.debug("Updating user: {}", updated);

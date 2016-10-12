@@ -21,11 +21,11 @@
             </ul>
 
             <!-- When logged in, show the user menu -->
-            <ul th:if="${currentUser} != null" class="nav navbar-nav navbar-right">
+            <ul th:if="${account} != null" class="nav navbar-nav navbar-right">
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false">
-                        Logged in as: <span th:text="${currentUser.login}"></span>
+                        Logged in as: <span th:text="${account.user.login}"></span>
                         <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a th:href="@{/user/profile}">Profile</a></li>
@@ -37,7 +37,7 @@
             </ul>
 
             <!-- When NOT logged in, show the login link -->
-            <ul th:if="${currentUser} == null" class="nav navbar-nav navbar-right">
+            <ul th:if="${account} == null" class="nav navbar-nav navbar-right">
                 <li th:class="${currentPage == 'login'}? 'active'"><a th:href="@{/login}">Login</a></li>
             </ul>
         </div>

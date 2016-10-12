@@ -1,4 +1,4 @@
-package com.decojo.app.controller.web.employer;
+package com.decojo.app.controller.web.admin;
 
 import com.decojo.app.controller.web.BaseController;
 import java.util.Map;
@@ -9,22 +9,22 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 /**
- * Used to manage the employer dashboard page.
+ * Used to manage the admin dashboard page.
  */
 @Controller
-public class EmployerDashboardController extends BaseController {
-    private static final Logger LOG = LoggerFactory.getLogger(EmployerDashboardController.class);
+public class AdminDashboardController extends BaseController {
+    private static final Logger LOG = LoggerFactory.getLogger(AdminDashboardController.class);
 
     /**
-     * Display the employer dashboard page.
+     * Display the admin dashboard page.
      *
      * @param model the web model
      * @return the name of the template to display
      */
-    @GetMapping("/employer/dashboard")
+    @GetMapping("/admin/dashboard")
     @Nonnull
     public String dashboard(@Nonnull final Map<String, Object> model) {
         setCurrentAccount(model);
-        return "employer/dashboard";
+        return "admin/dashboard";
     }
 }

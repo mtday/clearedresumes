@@ -1,5 +1,6 @@
 package com.decojo.common.model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
@@ -12,7 +13,10 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 /**
  * Defines the information associated with a user's online resume in this system.
  */
-public class Resume implements Comparable<Resume> {
+public class Resume implements Serializable, Comparable<Resume> {
+    // Needs to be serializable since this class is used inside DefaultUserDetails.
+    private static final long serialVersionUID = 7819038901345L;
+
     @Nonnull
     private final String id;
     @Nonnull
