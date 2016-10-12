@@ -6,7 +6,31 @@
 <nav th:replace="fragments/navbar :: navbar (currentPage=contact)"></nav>
 <div class="container">
 
-    TODO
+    <!-- Contact Us Panel -->
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Contact Us</h3>
+        </div>
+        <div class="panel-body">
+            <div class="contact-text">
+                Please feel free to contact us about any questions, problems, or feedback about this site:
+            </div>
+
+            <form class="form-contact" name="contactform" th:action="@{/contact}" method="POST">
+                <label for="contact-email" class="sr-only">User Name</label>
+                <input type="email" name="email" id="contact-email" class="form-control"
+                       placeholder="Your E-Mail Address" required="required" autofocus="autofocus"/>
+
+                <label for="contact-message" class="sr-only">Message</label>
+                <textarea rows="12" name="message" id="contact-message" class="form-control" placeholder="Message"
+                          required="required"/>
+
+                <div class="btn-group pull-right">
+                    <button class="btn btn-default btn-primary" type="submit">Send</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
 </div>
 

@@ -25,8 +25,6 @@ public class ActionsController extends BaseController {
     @RequestMapping(value = "/user/actions", method = {RequestMethod.GET, RequestMethod.POST})
     @Nonnull
     public String actions(@Nonnull final Map<String, Object> model) {
-        LOG.info("User Actions Controller");
-
         setCurrentAccount(model);
         return "user/actions";
     }

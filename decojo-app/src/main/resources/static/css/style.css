@@ -66,3 +66,21 @@ body {
   margin-bottom: 10px;
 }
 
+
+.contact-text {
+  padding: 0 15px;
+}
+.form-contact {
+  padding: 15px;
+  margin: 0 auto;
+}
+.form-contact .form-control:focus {
+  z-index: 2;
+}
+.form-contact input {
+  margin-bottom: 10px;
+}
+.form-contact textarea {
+  margin-bottom: 10px;
+}
+

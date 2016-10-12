@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="fragments/head :: head (title='Message Sent')"></head>
+<body>
+
+<nav th:replace="fragments/navbar :: navbar (currentPage=contactsent)"></nav>
+<div class="container">
+
+    Your message has been sent, and thanks for contacting us. We should acknowledge receipt of your message
+    soon, and take action as necessary.
+
+</div>
+
+<footer th:replace="fragments/footer :: footer"></footer>
+<div th:replace="fragments/scripts :: scripts"></div>
+</body>
+</html>
