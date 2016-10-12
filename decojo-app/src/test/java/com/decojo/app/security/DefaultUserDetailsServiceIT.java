@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import com.decojo.app.TestApplication;
+import com.decojo.common.model.Authority;
 import org.flywaydb.core.Flyway;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,17 +48,50 @@ public class DefaultUserDetailsServiceIT {
     }
 
     /**
-     * Attempt a user lookup.
+     * Attempt a user lookup by login.
      */
     @Test
-    public void testLoad() {
+    public void testLoadByLogin() {
         final UserDetails userDetails = this.userDetailsService.loadUserByUsername("test");
         assertTrue(userDetails instanceof DefaultUserDetails);
 
         assertEquals("test", userDetails.getUsername());
         assertNotNull(userDetails.getPassword());
-        assertEquals(2, userDetails.getAuthorities().size());
-        assertTrue(userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ADMIN")));
-        assertTrue(userDetails.getAuthorities().contains(new SimpleGrantedAuthority("USER")));
+        assertEquals(3, userDetails.getAuthorities().size());
+        assertTrue(userDetails.getAuthorities().contains(new SimpleGrantedAuthority(Authority.ADMIN.name())));
+        assertTrue(userDetails.getAuthorities().contains(new SimpleGrantedAuthority(Authority.EMPLOYER.name())));
+        assertTrue(userDetails.getAuthorities().contains(new SimpleGrantedAuthority(Authority.USER.name())));
+    }
+
+    /**
+     * Attempt a user lookup by email matching case.
+     */
+    @Test
+    public void testLoadByEmailMatchingCase() {
+        final UserDetails userDetails = this.userDetailsService.loadUserByUsername("test@decojo.com");
+        assertTrue(userDetails instanceof DefaultUserDetails);
+
+        assertEquals("test", userDetails.getUsername());
+        assertNotNull(userDetails.getPassword());
+        assertEquals(3, userDetails.getAuthorities().size());
+        assertTrue(userDetails.getAuthorities().contains(new SimpleGrantedAuthority(Authority.ADMIN.name())));
+        assertTrue(userDetails.getAuthorities().contains(new SimpleGrantedAuthority(Authority.EMPLOYER.name())));
+        assertTrue(userDetails.getAuthorities().contains(new SimpleGrantedAuthority(Authority.USER.name())));
+    }
+
+    /**
+     * Attempt a user lookup by email incorrect case.
+     */
+    @Test
+    public void testLoadByEmailIncorrectCase() {
+        final UserDetails userDetails = this.userDetailsService.loadUserByUsername("TEST@DECOJO.COM");
+        assertTrue(userDetails instanceof DefaultUserDetails);
+
+        assertEquals("test", userDetails.getUsername());
+        assertNotNull(userDetails.getPassword());
+        assertEquals(3, userDetails.getAuthorities().size());
+        assertTrue(userDetails.getAuthorities().contains(new SimpleGrantedAuthority(Authority.ADMIN.name())));
+        assertTrue(userDetails.getAuthorities().contains(new SimpleGrantedAuthority(Authority.EMPLOYER.name())));
+        assertTrue(userDetails.getAuthorities().contains(new SimpleGrantedAuthority(Authority.USER.name())));
     }
 }

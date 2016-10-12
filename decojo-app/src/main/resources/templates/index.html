@@ -1,37 +1,23 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head>
-    <meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-
-    <title>DeCoJo - Home</title>
-
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-          crossorigin="anonymous"/>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
-          crossorigin="anonymous"/>
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-</head>
+<head th:replace="fragments/head :: head (title='Home')"></head>
 <body>
 
+<nav th:replace="fragments/navbar :: navbar (currentPage=home)"></nav>
 <div class="container">
-    <h1>Hello, world!</h1>
 
-    <a th:href="@{/api/user/me}">Me</a>
+    <div class="jumbotron">
+        <h2>Publish Your Resume</h2>
+        <p>Get noticed by defense contracting companies in your area by publishing your resume.</p>
+        <p>
+            <a class="btn btn-lg btn-primary" th:href="@{/user/dashboard}" role="button">Get Started for Free &raquo;</a>
+        </p>
+    </div>
 
-    <form th:action="@{/logout}" method="POST">
-        <input type="submit" value="Logout"/>
-    </form>
+
 </div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" crossorigin="anonymous"></script>
+<footer th:replace="fragments/footer :: footer"></footer>
+<div th:replace="fragments/scripts :: scripts"></div>
 </body>
 </html>

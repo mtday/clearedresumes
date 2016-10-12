@@ -1,10 +1,12 @@
 package com.decojo.db.impl;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import com.decojo.common.model.Authority;
 import com.decojo.common.model.Company;
 import com.decojo.common.model.CompanyUser;
 import com.decojo.common.model.User;
@@ -13,6 +15,7 @@ import com.decojo.db.CompanyDao;
 import com.decojo.db.CompanyUserDao;
 import com.decojo.db.TestApplication;
 import com.decojo.db.UserDao;
+import java.util.Locale;
 import java.util.SortedSet;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,13 +47,22 @@ public class DefaultUserDaoIT {
         assertNotNull(beforeAddColl);
         assertEquals(1, beforeAddColl.getUsers().size()); // at 1 since we have a test user
 
+        assertFalse(this.userDao.loginExists("login"));
+        assertFalse(this.userDao.emailExists("email"));
+
         final User beforeAddGet = this.userDao.get("id");
         assertNull(beforeAddGet);
         final User beforeAddGetLogin = this.userDao.getByLogin("login");
         assertNull(beforeAddGetLogin);
+        final User beforeAddGetEmail = this.userDao.getByEmail("email");
+        assertNull(beforeAddGetEmail);
 
         final User user = new User("id", "login", "email", "password", true);
         this.userDao.add(user);
+
+        assertTrue(this.userDao.loginExists(user.getLogin()));
+        assertTrue(this.userDao.emailExists(user.getEmail().toLowerCase(Locale.ENGLISH)));
+        assertTrue(this.userDao.emailExists(user.getEmail().toUpperCase(Locale.ENGLISH)));
 
         final UserCollection afterAddColl = this.userDao.getAll();
         assertNotNull(afterAddColl);
@@ -64,6 +76,13 @@ public class DefaultUserDaoIT {
         final User afterAddGetLogin = this.userDao.getByLogin(user.getLogin());
         assertNotNull(afterAddGetLogin);
         assertEquals(user, afterAddGetLogin);
+
+        final User afterAddGetEmailLower = this.userDao.getByEmail(user.getEmail().toLowerCase(Locale.ENGLISH));
+        assertNotNull(afterAddGetEmailLower);
+        assertEquals(user, afterAddGetEmailLower);
+        final User afterAddGetEmailUpper = this.userDao.getByEmail(user.getEmail().toUpperCase(Locale.ENGLISH));
+        assertNotNull(afterAddGetEmailUpper);
+        assertEquals(user, afterAddGetEmailUpper);
 
         final User updated = new User(user.getId(), "new-login", user.getEmail(), user.getPassword(), true);
         this.userDao.update(updated);
@@ -81,19 +100,26 @@ public class DefaultUserDaoIT {
         assertNotNull(afterUpdateGetLogin);
         assertEquals(updated, afterUpdateGetLogin);
 
-        final SortedSet<String> noAuths = this.userDao.getAuthorities(updated.getId());
+        final User afterUpdateGetEmailLower = this.userDao.getByEmail(updated.getEmail().toLowerCase(Locale.ENGLISH));
+        assertNotNull(afterUpdateGetEmailLower);
+        assertEquals(updated, afterUpdateGetEmailLower);
+        final User afterUpdateGetEmailUpper = this.userDao.getByEmail(updated.getEmail().toUpperCase(Locale.ENGLISH));
+        assertNotNull(afterUpdateGetEmailUpper);
+        assertEquals(updated, afterUpdateGetEmailUpper);
+
+        final SortedSet<Authority> noAuths = this.userDao.getAuthorities(updated.getId());
         assertNotNull(noAuths);
         assertEquals(0, noAuths.size());
 
-        this.userDao.addAuthority(updated.getId(), "ADMIN");
+        this.userDao.addAuthority(updated.getId(), Authority.ADMIN);
 
-        final SortedSet<String> withAuths = this.userDao.getAuthorities(updated.getId());
+        final SortedSet<Authority> withAuths = this.userDao.getAuthorities(updated.getId());
         assertEquals(1, withAuths.size());
-        assertTrue(withAuths.contains("ADMIN"));
+        assertTrue(withAuths.contains(Authority.ADMIN));
 
-        this.userDao.deleteAuthority(updated.getId(), "ADMIN");
+        this.userDao.deleteAuthority(updated.getId(), Authority.ADMIN);
 
-        final SortedSet<String> delAuths = this.userDao.getAuthorities(updated.getId());
+        final SortedSet<Authority> delAuths = this.userDao.getAuthorities(updated.getId());
         assertNotNull(delAuths);
         assertEquals(0, delAuths.size());
 
@@ -120,6 +146,10 @@ public class DefaultUserDaoIT {
 
         this.userDao.delete(user.getId());
 
+        assertFalse(this.userDao.loginExists(updated.getLogin()));
+        assertFalse(this.userDao.emailExists(updated.getEmail().toLowerCase(Locale.ENGLISH)));
+        assertFalse(this.userDao.emailExists(updated.getEmail().toUpperCase(Locale.ENGLISH)));
+
         final UserCollection afterDeleteColl = this.userDao.getAll();
         assertNotNull(afterDeleteColl);
         assertEquals(1, afterDeleteColl.getUsers().size());
@@ -128,5 +158,7 @@ public class DefaultUserDaoIT {
         assertNull(afterDeleteGet);
         final User afterDeleteGetLogin = this.userDao.getByLogin(updated.getLogin());
         assertNull(afterDeleteGetLogin);
+        final User afterDeleteGetEmail = this.userDao.getByEmail(updated.getEmail());
+        assertNull(afterDeleteGetEmail);
     }
 }

@@ -1,5 +1,6 @@
 package com.decojo.app.security;
 
+import com.decojo.common.model.Authority;
 import com.decojo.common.model.User;
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -26,9 +27,10 @@ public class DefaultUserDetails implements UserDetails {
      * @param user the user account associated with this user details
      * @param authorities the authorities granted to the user account
      */
-    public DefaultUserDetails(@Nonnull final User user, @Nonnull final Collection<String> authorities) {
+    public DefaultUserDetails(@Nonnull final User user, @Nonnull final Collection<Authority> authorities) {
         this.user = user;
-        this.authorities = authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+        this.authorities =
+                authorities.stream().map(Authority::name).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
     }
 
     /**

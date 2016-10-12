@@ -4,5 +4,6 @@ INSERT INTO users (id, login, email, password, enabled) VALUES
 
 INSERT INTO authorities (user_id, authority) VALUES
 ('1', 'ADMIN'),
+('1', 'EMPLOYER'),
 ('1', 'USER');
 

@@ -3,6 +3,7 @@ package com.decojo.app.security;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import com.decojo.common.model.Authority;
 import com.decojo.common.model.User;
 import java.util.Arrays;
 import org.junit.Test;
@@ -15,7 +16,8 @@ public class DefaultUserDetailsTest {
     @Test
     public void test() {
         final User user = new User("id", "login", "email", "password", true);
-        final DefaultUserDetails defaultUserDetails = new DefaultUserDetails(user, Arrays.asList("A", "B"));
+        final DefaultUserDetails defaultUserDetails =
+                new DefaultUserDetails(user, Arrays.asList(Authority.USER, Authority.EMPLOYER));
 
         assertEquals(user, defaultUserDetails.getUser());
         assertEquals(user.getLogin(), defaultUserDetails.getUsername());
@@ -25,9 +27,9 @@ public class DefaultUserDetailsTest {
         assertEquals(user.isEnabled(), defaultUserDetails.isCredentialsNonExpired());
         assertEquals(user.isEnabled(), defaultUserDetails.isEnabled());
         assertEquals(2, defaultUserDetails.getAuthorities().size());
-        assertTrue(defaultUserDetails.getAuthorities().contains(new SimpleGrantedAuthority("A")));
-        assertTrue(defaultUserDetails.getAuthorities().contains(new SimpleGrantedAuthority("B")));
+        assertTrue(defaultUserDetails.getAuthorities().contains(new SimpleGrantedAuthority(Authority.USER.name())));
+        assertTrue(defaultUserDetails.getAuthorities().contains(new SimpleGrantedAuthority(Authority.EMPLOYER.name())));
         assertEquals("DefaultUserDetails[user=User[id=id,login=login,email=email,password=password,enabled=true],"
-                + "authorities=[A, B]]", defaultUserDetails.toString());
+                + "authorities=[USER, EMPLOYER]]", defaultUserDetails.toString());
     }
 }

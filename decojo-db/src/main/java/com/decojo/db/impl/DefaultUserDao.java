@@ -1,5 +1,6 @@
 package com.decojo.db.impl;
 
+import com.decojo.common.model.Authority;
 import com.decojo.common.model.User;
 import com.decojo.common.model.UserCollection;
 import com.decojo.db.UserDao;
@@ -38,6 +39,16 @@ public class DefaultUserDao implements UserDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    @Override
+    public boolean loginExists(@Nonnull final String login) {
+        return getByLogin(login) != null;
+    }
+
+    @Override
+    public boolean emailExists(@Nonnull final String email) {
+        return getByEmail(email) != null;
+    }
+
     @Nonnull
     @Override
     public UserCollection getAll() {
@@ -64,6 +75,29 @@ public class DefaultUserDao implements UserDao {
         }
     }
 
+    @Nullable
+    @Override
+    public User getByEmail(@Nonnull final String email) {
+        try {
+            return this.jdbcTemplate
+                    .queryForObject("SELECT * FROM users WHERE email = LOWER(?)", this.userMapper, email);
+        } catch (final EmptyResultDataAccessException notFound) {
+            return null;
+        }
+    }
+
+    @Nullable
+    @Override
+    public User getByLoginOrEmail(@Nonnull final String loginOrEmail) {
+        try {
+            return this.jdbcTemplate
+                    .queryForObject("SELECT * FROM users WHERE login = ? OR email = LOWER(?)", this.userMapper,
+                            loginOrEmail, loginOrEmail);
+        } catch (final EmptyResultDataAccessException notFound) {
+            return null;
+        }
+    }
+
     @Nonnull
     @Override
     public UserCollection getForCompany(@Nonnull final String companyId) {
@@ -75,14 +109,15 @@ public class DefaultUserDao implements UserDao {
     @Override
     public void add(@Nonnull final User user) {
         this.jdbcTemplate
-                .update("INSERT INTO users (id, login, email, password, enabled) VALUES (?, ?, ?, ?, ?)", user.getId(),
-                        user.getLogin(), user.getEmail(), user.getPassword(), user.isEnabled());
+                .update("INSERT INTO users (id, login, email, password, enabled) VALUES (?, ?, LOWER(?), ?, ?)",
+                        user.getId(), user.getLogin(), user.getEmail(), user.getPassword(), user.isEnabled());
     }
 
     @Override
     public void update(@Nonnull final User user) {
-        this.jdbcTemplate.update("UPDATE users SET login = ?, email = ?, enabled = ? WHERE id = ?", user.getLogin(),
-                user.getEmail(), user.isEnabled(), user.getId());
+        this.jdbcTemplate
+                .update("UPDATE users SET login = ?, email = LOWER(?), enabled = ? WHERE id = ?", user.getLogin(),
+                        user.getEmail(), user.isEnabled(), user.getId());
     }
 
     @Override
@@ -92,19 +127,19 @@ public class DefaultUserDao implements UserDao {
 
     @Nonnull
     @Override
-    public SortedSet<String> getAuthorities(@Nonnull final String id) {
+    public SortedSet<Authority> getAuthorities(@Nonnull final String id) {
         return new TreeSet<>(this.jdbcTemplate.query("SELECT authorities.authority FROM users JOIN authorities "
                 + "ON (users.id = authorities.user_id) WHERE users.id = ?", this.authMapper, id));
     }
 
     @Override
-    public void addAuthority(@Nonnull final String id, @Nonnull final String authority) {
-        this.jdbcTemplate.update("INSERT INTO authorities (user_id, authority) VALUES (?, ?)", id, authority);
+    public void addAuthority(@Nonnull final String id, @Nonnull final Authority authority) {
+        this.jdbcTemplate.update("INSERT INTO authorities (user_id, authority) VALUES (?, ?)", id, authority.name());
     }
 
     @Override
-    public void deleteAuthority(@Nonnull final String id, @Nonnull final String authority) {
-        this.jdbcTemplate.update("DELETE FROM authorities WHERE user_id = ? AND authority = ?", id, authority);
+    public void deleteAuthority(@Nonnull final String id, @Nonnull final Authority authority) {
+        this.jdbcTemplate.update("DELETE FROM authorities WHERE user_id = ? AND authority = ?", id, authority.name());
     }
 
     private static final class UserRowMapper implements RowMapper<User> {
@@ -120,11 +155,11 @@ public class DefaultUserDao implements UserDao {
         }
     }
 
-    private static final class AuthorityRowMapper implements RowMapper<String> {
+    private static final class AuthorityRowMapper implements RowMapper<Authority> {
         @Override
         @Nonnull
-        public String mapRow(@Nonnull final ResultSet resultSet, final int rowNum) throws SQLException {
-            return resultSet.getString("authority");
+        public Authority mapRow(@Nonnull final ResultSet resultSet, final int rowNum) throws SQLException {
+            return Authority.valueOf(resultSet.getString("authority"));
         }
     }
 }
