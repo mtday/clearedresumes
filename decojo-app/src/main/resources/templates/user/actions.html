@@ -6,7 +6,36 @@
 <nav th:replace="fragments/navbar :: navbar (currentPage=actions)"></nav>
 <div class="container">
 
-    TODO - Actions
+    <div class="row action-row">
+        <div class="col-md-6">
+            <div class="thumbnail">
+                <!-- TODO: Add an image here. -->
+                <div class="caption">
+                    <h3>Create Resume</h3>
+                    <div class="action-text">
+                        <p>Create and publish your resume to get noticed by defense contracting companies in your
+                            area.</p>
+                    </div>
+                    <p><a th:href="@{/user/resume}" class="btn btn-default btn-primary" role="button">
+                        Create Resume &raquo;</a></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="thumbnail">
+                <!-- TODO: Add an image here. -->
+                <div class="caption">
+                    <h3>Company Sign-Up</h3>
+                    <div class="action-text">
+                        <p>Sign up with your company and begin receiving resumes for free.</p>
+                    </div>
+                    <p><a th:href="@{/user/company}" class="btn btn-default btn-primary" role="button">
+                        Company Sign-Up &raquo;</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>
 

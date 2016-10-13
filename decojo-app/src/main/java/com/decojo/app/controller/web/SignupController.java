@@ -1,6 +1,5 @@
 package com.decojo.app.controller.web;
 
-import com.decojo.app.security.DefaultUserDetails;
 import com.decojo.common.model.Account;
 import com.decojo.common.model.Authority;
 import com.decojo.common.model.User;
@@ -13,10 +12,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -46,6 +44,19 @@ public class SignupController extends BaseController {
     }
 
     /**
+     * Go to the signup page.
+     *
+     * @param model the web model
+     * @return the name of the template to display
+     */
+    @GetMapping("/signup")
+    @Nonnull
+    public String signup(@Nonnull final Map<String, Object> model) {
+        setCurrentAccount(model);
+        return "signup";
+    }
+
+    /**
      * Handle a user sign-up.
      *
      * @param username the user name requested by the user
@@ -62,40 +73,52 @@ public class SignupController extends BaseController {
             @Nonnull @RequestParam("email") final String email,
             @Nonnull @RequestParam("password") final String password,
             @Nonnull @RequestParam("confirm") final String confirm, @Nonnull final Map<String, Object> model) {
-        if (StringUtils.isBlank(username)) {
-            model.put("signupError", "A valid user name must be provided.");
-            return "login";
-        }
-
-        if (StringUtils.isBlank(email)) {
-            model.put("signupError", "A valid email address must be provided.");
-            return "login";
-        }
-
-        if (StringUtils.isBlank(password)) {
-            model.put("signupError", "A valid password must be provided.");
-            return "login";
-        }
-
-        if (!password.equals(confirm)) {
-            model.put("signupError", "The provided password and confirmation password did not match.");
-            return "login";
-        }
-
-        if (this.userDao.loginExists(username)) {
-            model.put("signupError", "An account with the specified user name already exists.");
-            return "login";
-        }
-
-        if (this.userDao.emailExists(email)) {
-            model.put("signupError", "An account with the specified email address already exists.");
-            return "login";
+        if (!validate(username, email, password, confirm, model)) {
+            return "signup";
         }
 
         createAccount(username, email, password);
 
         setCurrentAccount(model);
         return "user/actions";
+    }
+
+    private boolean validate(
+            @Nonnull @RequestParam("username") final String username,
+            @Nonnull @RequestParam("email") final String email,
+            @Nonnull @RequestParam("password") final String password,
+            @Nonnull @RequestParam("confirm") final String confirm, @Nonnull final Map<String, Object> model) {
+        if (StringUtils.isBlank(username)) {
+            model.put("signupError", "A valid user name must be provided.");
+            return false;
+        }
+
+        if (StringUtils.isBlank(email)) {
+            model.put("signupError", "A valid email address must be provided.");
+            return false;
+        }
+
+        if (StringUtils.isBlank(password)) {
+            model.put("signupError", "A valid password must be provided.");
+            return false;
+        }
+
+        if (!password.equals(confirm)) {
+            model.put("signupError", "The provided password and confirmation password did not match.");
+            return false;
+        }
+
+        if (this.userDao.loginExists(username)) {
+            model.put("signupError", "An account with the specified user name already exists.");
+            return false;
+        }
+
+        if (this.userDao.emailExists(email)) {
+            model.put("signupError", "An account with the specified email address already exists.");
+            return false;
+        }
+
+        return true;
     }
 
     private void createAccount(
@@ -108,10 +131,6 @@ public class SignupController extends BaseController {
         this.userDao.addAuthority(user.getId(), Authority.USER);
 
         final Account account = new Account(user, Collections.singleton(Authority.USER), Collections.emptyList(), null);
-
-        // Now that the user account has been created, sign the user in.
-        final DefaultUserDetails userDetails = new DefaultUserDetails(account);
-        SecurityContextHolder.getContext().setAuthentication(
-                new UsernamePasswordAuthenticationToken(userDetails, user.getPassword(), userDetails.getAuthorities()));
+        setCurrentAccount(account);
     }
 }

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="fragments/head :: head (title=Login)"></head>
+<body>
+
+<nav th:replace="fragments/navbar :: navbar (currentPage=login)"></nav>
+<div class="container">
+
+    <!-- Forgot Panel -->
+    <div class="forgot-panel-container">
+        <div class="panel panel-default forgot-panel">
+            <div class="panel-heading">
+                <h3 class="panel-title">Password Reset</h3>
+            </div>
+            <div class="panel-body">
+                <div class="forgot-text">
+                    Forgot your user name or password? Use this form to find out how to login.
+                    A new random password will be created for your account, and your login
+                    information will be sent to your e-mail address.
+                </div>
+
+                <form class="form-forgot" name="forgotform" th:action="@{/forgot}" method="POST">
+                    <label for="forgot-loginOrEmail" class="sr-only">User Name or E-Mail Address</label>
+                    <input type="text" name="loginOrEmail" id="forgot-loginOrEmail" class="form-control"
+                           placeholder="User Name or E-Mail Address" required="required" autofocus="autofocus"/>
+
+                    <div class="btn-group pull-right">
+                        <button class="btn btn-default btn-primary" type="submit">Reset Password</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<footer th:replace="fragments/footer :: footer"></footer>
+<div th:replace="fragments/scripts :: scripts"></div>
+</body>
+</html>

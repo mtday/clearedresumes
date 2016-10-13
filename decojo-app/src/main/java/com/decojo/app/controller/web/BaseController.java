@@ -10,6 +10,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
@@ -58,6 +59,18 @@ public abstract class BaseController {
         if (account != null) {
             model.put("account", account);
         }
+    }
+
+    /**
+     * Set the currently logged in account in the user's session.
+     *
+     * @param account the new account representing the currently logged in user
+     */
+    protected void setCurrentAccount(@Nonnull final Account account) {
+        final DefaultUserDetails userDetails = new DefaultUserDetails(account);
+        SecurityContextHolder.getContext().setAuthentication(
+                new UsernamePasswordAuthenticationToken(userDetails, account.getUser().getPassword(),
+                        userDetails.getAuthorities()));
     }
 
     /**

@@ -121,6 +121,11 @@ public class DefaultUserDao implements UserDao {
     }
 
     @Override
+    public void setPassword(@Nonnull final String id, @Nonnull final String encodedPassword) {
+        this.jdbcTemplate.update("UPDATE users SET password = ? WHERE id = ?", encodedPassword, id);
+    }
+
+    @Override
     public void delete(@Nonnull final String id) {
         this.jdbcTemplate.update("DELETE FROM users WHERE id = ?", id);
     }

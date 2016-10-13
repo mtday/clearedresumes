@@ -91,6 +91,15 @@ public class Account implements Serializable, Comparable<Account> {
     }
 
     /**
+     * Retrieve whether this user account is a member of a company.
+     *
+     * @return whether this user account is a member of a company
+     */
+    public boolean hasCompany() {
+        return !getCompanies().isEmpty();
+    }
+
+    /**
      * Retrieve the companies in which the user is a member.
      *
      * @return the (unmodifiable) companies in which the user is a member
@@ -107,6 +116,15 @@ public class Account implements Serializable, Comparable<Account> {
      */
     public boolean hasResume() {
         return this.resume != null;
+    }
+
+    /**
+     * Retrieve whether this account has a published resume.
+     *
+     * @return whether this account has a published resume
+     */
+    public boolean hasPublishedResume() {
+        return this.resume != null && this.resume.getStatus() == ResumeStatus.PUBLISHED;
     }
 
     /**

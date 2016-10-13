@@ -88,11 +88,19 @@ public interface UserDao {
     void add(@Nonnull User user);
 
     /**
-     * Update the specified user in the database.
+     * Update the specified user in the database. Note that the password is not modified.
      *
      * @param user the user to update
      */
     void update(@Nonnull User user);
+
+    /**
+     * Update the specified user in the database. Note that the password is not modified.
+     *
+     * @param id the unique id of the user whose password is to be updated
+     * @param encodedPassword the new encoded password for the user account
+     */
+    void setPassword(@Nonnull String id, @Nonnull String encodedPassword);
 
     /**
      * Remove the user from the database with the specified unique id.

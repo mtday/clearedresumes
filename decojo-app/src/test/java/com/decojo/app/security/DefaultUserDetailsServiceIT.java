@@ -57,9 +57,8 @@ public class DefaultUserDetailsServiceIT {
 
         assertEquals("test", userDetails.getUsername());
         assertNotNull(userDetails.getPassword());
-        assertEquals(3, userDetails.getAuthorities().size());
+        assertEquals(2, userDetails.getAuthorities().size());
         assertTrue(userDetails.getAuthorities().contains(new SimpleGrantedAuthority(Authority.ADMIN.name())));
-        assertTrue(userDetails.getAuthorities().contains(new SimpleGrantedAuthority(Authority.EMPLOYER.name())));
         assertTrue(userDetails.getAuthorities().contains(new SimpleGrantedAuthority(Authority.USER.name())));
     }
 
@@ -73,9 +72,8 @@ public class DefaultUserDetailsServiceIT {
 
         assertEquals("test", userDetails.getUsername());
         assertNotNull(userDetails.getPassword());
-        assertEquals(3, userDetails.getAuthorities().size());
+        assertEquals(2, userDetails.getAuthorities().size());
         assertTrue(userDetails.getAuthorities().contains(new SimpleGrantedAuthority(Authority.ADMIN.name())));
-        assertTrue(userDetails.getAuthorities().contains(new SimpleGrantedAuthority(Authority.EMPLOYER.name())));
         assertTrue(userDetails.getAuthorities().contains(new SimpleGrantedAuthority(Authority.USER.name())));
     }
 
@@ -89,9 +87,8 @@ public class DefaultUserDetailsServiceIT {
 
         assertEquals("test", userDetails.getUsername());
         assertNotNull(userDetails.getPassword());
-        assertEquals(3, userDetails.getAuthorities().size());
+        assertEquals(2, userDetails.getAuthorities().size());
         assertTrue(userDetails.getAuthorities().contains(new SimpleGrantedAuthority(Authority.ADMIN.name())));
-        assertTrue(userDetails.getAuthorities().contains(new SimpleGrantedAuthority(Authority.EMPLOYER.name())));
         assertTrue(userDetails.getAuthorities().contains(new SimpleGrantedAuthority(Authority.USER.name())));
     }
 }
