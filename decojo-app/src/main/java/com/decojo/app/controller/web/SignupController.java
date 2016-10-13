@@ -82,7 +82,7 @@ public class SignupController extends BaseController {
      */
     @GetMapping("/signup")
     @Nonnull
-    public String signup(@Nonnull final Map<String, Object> model) {
+    public String signupPage(@Nonnull final Map<String, Object> model) {
         setCurrentAccount(model);
         return "signup";
     }
@@ -96,7 +96,7 @@ public class SignupController extends BaseController {
      */
     @GetMapping("/signup/{plan}")
     @Nonnull
-    public String signup(
+    public String signupPlan(
             @Nullable @PathVariable("plan") final String plan, @Nonnull final Map<String, Object> model) {
         setCurrentAccount(model);
 

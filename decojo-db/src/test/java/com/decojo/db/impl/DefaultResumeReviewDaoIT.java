@@ -10,13 +10,14 @@ import com.decojo.common.model.CompanyUser;
 import com.decojo.common.model.PlanType;
 import com.decojo.common.model.Resume;
 import com.decojo.common.model.ResumeCollection;
-import com.decojo.common.model.ResumeExclusion;
+import com.decojo.common.model.ResumeReview;
+import com.decojo.common.model.ResumeReviewStatus;
 import com.decojo.common.model.ResumeStatus;
 import com.decojo.common.model.User;
 import com.decojo.db.CompanyDao;
 import com.decojo.db.CompanyUserDao;
 import com.decojo.db.ResumeDao;
-import com.decojo.db.ResumeExclusionDao;
+import com.decojo.db.ResumeReviewDao;
 import com.decojo.db.TestApplication;
 import com.decojo.db.UserDao;
 import java.time.LocalDateTime;
@@ -27,11 +28,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 /**
- * Perform testing on the {@link DefaultResumeExclusionDao} class.
+ * Perform testing on the {@link DefaultResumeReviewDao} class.
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = TestApplication.class, webEnvironment = SpringBootTest.WebEnvironment.MOCK)
-public class DefaultResumeExclusionDaoIT {
+public class DefaultResumeReviewDaoIT {
     @Autowired
     private CompanyDao companyDao;
 
@@ -45,10 +46,10 @@ public class DefaultResumeExclusionDaoIT {
     private CompanyUserDao companyUserDao;
 
     @Autowired
-    private ResumeExclusionDao resumeExclusionDao;
+    private ResumeReviewDao resumeReviewDao;
 
     /**
-     * Perform testing on the auto-wired {@link DefaultResumeExclusionDao} instance.
+     * Perform testing on the auto-wired {@link DefaultResumeReviewDao} instance.
      */
     @Test
     public void test() {
@@ -72,14 +73,25 @@ public class DefaultResumeExclusionDaoIT {
         assertEquals(1, viewable.getResumes().size());
         assertTrue(viewable.getResumes().contains(resume));
 
-        final ResumeExclusion resumeExclusion = new ResumeExclusion(resume.getId(), company.getId());
-        this.resumeExclusionDao.add(resumeExclusion);
+        final ResumeReview excludeReview =
+                new ResumeReview(resume.getId(), company.getId(), ResumeReviewStatus.EXCLUDED);
+        this.resumeReviewDao.add(excludeReview);
 
         final ResumeCollection notViewable = this.resumeDao.getViewable(user.getId());
         assertNotNull(notViewable);
         assertEquals(0, notViewable.getResumes().size());
 
-        this.resumeExclusionDao.delete(resumeExclusion);
+        this.resumeReviewDao.delete(excludeReview.getResumeId(), excludeReview.getCompanyId());
+
+        final ResumeReview savedReview = new ResumeReview(resume.getId(), company.getId(), ResumeReviewStatus.SAVED);
+        this.resumeReviewDao.add(savedReview);
+
+        final ResumeCollection savedViewable = this.resumeDao.getViewable(user.getId());
+        assertNotNull(savedViewable);
+        assertEquals(1, savedViewable.getResumes().size());
+        assertTrue(savedViewable.getResumes().contains(resume));
+
+        this.resumeReviewDao.delete(savedReview.getResumeId(), savedReview.getCompanyId());
 
         final ResumeCollection viewableAgain = this.resumeDao.getViewable(user.getId());
         assertNotNull(viewableAgain);

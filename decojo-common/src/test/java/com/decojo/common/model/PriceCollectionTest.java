@@ -87,8 +87,7 @@ public class PriceCollectionTest {
         final Price price1 = new Price(PriceType.ENTERPRISE_PACKAGE, new BigDecimal("300.00"));
         final Price price2 = new Price(PriceType.PREMIUM_PACKAGE, new BigDecimal("100.00"));
         final PriceCollection priceColl = new PriceCollection(Arrays.asList(price1, price2));
-        assertEquals(
-                "PriceCollection[prices=[Price[type=PREMIUM_PACKAGE,price=100.00], Price[type=ENTERPRISE_PACKAGE,price=300.00]]]",
-                priceColl.toString());
+        assertEquals("PriceCollection[prices=[Price[type=PREMIUM_PACKAGE,price=100.00], Price[type=ENTERPRISE_PACKAGE,"
+                + "price=300.00]]]", priceColl.toString());
     }
 }

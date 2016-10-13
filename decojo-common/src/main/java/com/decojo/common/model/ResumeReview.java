@@ -9,19 +9,21 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * Used to prevent a company from seeing a resume.
+ * Used to track resume reviews within a company.
  */
-public class ResumeExclusion implements Comparable<ResumeExclusion> {
+public class ResumeReview implements Comparable<ResumeReview> {
     @Nonnull
     private final String resumeId;
     @Nonnull
     private final String companyId;
+    @Nonnull
+    private final ResumeReviewStatus status;
 
     /**
      * Default constructor required for Jackson deserialization.
      */
-    ResumeExclusion() {
-        this("", "");
+    ResumeReview() {
+        this("", "", ResumeReviewStatus.EXCLUDED);
     }
 
     /**
@@ -29,10 +31,13 @@ public class ResumeExclusion implements Comparable<ResumeExclusion> {
      *
      * @param resumeId the unique id of the resume
      * @param companyId the unique id of the company that should not have access to the resume
+     * @param status the status of the company review of the resume
      */
-    public ResumeExclusion(@Nonnull final String resumeId, @Nonnull final String companyId) {
+    public ResumeReview(
+            @Nonnull final String resumeId, @Nonnull final String companyId, @Nonnull final ResumeReviewStatus status) {
         this.resumeId = resumeId;
         this.companyId = companyId;
+        this.status = status;
     }
 
     /**
@@ -55,8 +60,18 @@ public class ResumeExclusion implements Comparable<ResumeExclusion> {
         return this.companyId;
     }
 
+    /**
+     * Retrieve the status of the company review of the resume.
+     *
+     * @return the status of the company review of the resume
+     */
+    @Nonnull
+    public ResumeReviewStatus getStatus() {
+        return this.status;
+    }
+
     @Override
-    public int compareTo(@Nullable final ResumeExclusion other) {
+    public int compareTo(@Nullable final ResumeReview other) {
         if (other == null) {
             return 1;
         }
@@ -64,12 +79,13 @@ public class ResumeExclusion implements Comparable<ResumeExclusion> {
         final CompareToBuilder cmp = new CompareToBuilder();
         cmp.append(getResumeId(), other.getResumeId());
         cmp.append(getCompanyId(), other.getCompanyId());
+        cmp.append(getStatus(), other.getStatus());
         return cmp.toComparison();
     }
 
     @Override
     public boolean equals(@CheckForNull final Object other) {
-        return other instanceof ResumeExclusion && compareTo((ResumeExclusion) other) == 0;
+        return other instanceof ResumeReview && compareTo((ResumeReview) other) == 0;
     }
 
     @Override
@@ -77,6 +93,7 @@ public class ResumeExclusion implements Comparable<ResumeExclusion> {
         final HashCodeBuilder hash = new HashCodeBuilder();
         hash.append(getResumeId());
         hash.append(getCompanyId());
+        hash.append(getStatus().name());
         return hash.toHashCode();
     }
 
@@ -86,6 +103,7 @@ public class ResumeExclusion implements Comparable<ResumeExclusion> {
         final ToStringBuilder str = new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE);
         str.append("resumeId", getResumeId());
         str.append("companyId", getCompanyId());
+        str.append("status", getStatus());
         return str.build();
     }
 }
