@@ -25,6 +25,7 @@ CREATE TABLE companies (
     id                VARCHAR(36)    NOT NULL,
     name              VARCHAR(100)   NOT NULL,
     website           VARCHAR(256)   NOT NULL,
+    plan_type         VARCHAR(20)    NOT NULL,
     slots             INTEGER        NOT NULL,
     active            BOOLEAN        NOT NULL,
 

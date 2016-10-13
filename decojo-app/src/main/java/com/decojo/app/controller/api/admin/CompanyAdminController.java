@@ -50,9 +50,8 @@ public class CompanyAdminController {
     @RequestMapping(value = "/api/admin/company", method = RequestMethod.POST)
     @Nonnull
     public ResponseEntity<Company> add(@Nonnull @RequestBody final Company company) {
-        final Company withId =
-                new Company(UUID.randomUUID().toString(), company.getName(), company.getWebsite(), company.getSlots(),
-                        company.isActive());
+        final Company withId = new Company(UUID.randomUUID().toString(), company.getName(), company.getWebsite(),
+                company.getPlanType(), company.getSlots(), company.isActive());
         LOG.debug("Adding company: {}", withId);
         this.companyDao.add(withId);
         return ResponseEntity.ok(withId);
@@ -70,7 +69,8 @@ public class CompanyAdminController {
     public ResponseEntity<Company> update(
             @Nonnull @PathVariable("id") final String id, @Nonnull @RequestBody final Company company) {
         final Company withId =
-                new Company(id, company.getName(), company.getWebsite(), company.getSlots(), company.isActive());
+                new Company(id, company.getName(), company.getWebsite(), company.getPlanType(), company.getSlots(),
+                        company.isActive());
         LOG.debug("Updating company: {}", withId);
         this.companyDao.update(withId);
         return ResponseEntity.ok(withId);

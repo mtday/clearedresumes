@@ -7,6 +7,7 @@ import static org.junit.Assert.fail;
 
 import com.decojo.common.model.Company;
 import com.decojo.common.model.CompanyUser;
+import com.decojo.common.model.PlanType;
 import com.decojo.common.model.Resume;
 import com.decojo.common.model.ResumeCollection;
 import com.decojo.common.model.ResumeExclusion;
@@ -60,7 +61,8 @@ public class DefaultResumeExclusionDaoIT {
                 new Resume("id", user.getId(), ResumeStatus.IN_PROGRESS, LocalDateTime.now(), null, "lcat", 10, "obj");
         this.resumeDao.add(resume);
 
-        final Company company = new Company("id", "Company Name", "https://company-website.com/", 10, true);
+        final Company company =
+                new Company("id", "Company Name", "https://company-website.com/", PlanType.BASIC, 10, true);
         this.companyDao.add(company);
         final CompanyUser companyUser = new CompanyUser(user.getId(), company.getId());
         this.companyUserDao.add(companyUser);

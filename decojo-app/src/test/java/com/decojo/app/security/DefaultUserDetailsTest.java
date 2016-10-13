@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import com.decojo.common.model.Account;
 import com.decojo.common.model.Authority;
 import com.decojo.common.model.Company;
+import com.decojo.common.model.PlanType;
 import com.decojo.common.model.Resume;
 import com.decojo.common.model.ResumeStatus;
 import com.decojo.common.model.User;
@@ -24,7 +25,7 @@ public class DefaultUserDetailsTest {
     public void test() {
         final User user = new User("id", "login", "email", "password", true);
         final Collection<Authority> authorities = Arrays.asList(Authority.USER, Authority.EMPLOYER);
-        final Company company = new Company("cid", "Company Name", "website", 10, true);
+        final Company company = new Company("cid", "Company Name", "website", PlanType.BASIC, 10, true);
         final Collection<Company> companies = Collections.singleton(company);
         final LocalDateTime created = LocalDateTime.of(2016, 1, 1, 2, 3, 4);
         final Resume resume =
@@ -45,8 +46,8 @@ public class DefaultUserDetailsTest {
         assertTrue(defaultUserDetails.getAuthorities().contains(new SimpleGrantedAuthority(Authority.EMPLOYER.name())));
         assertEquals("DefaultUserDetails[account=Account[user=User[id=id,login=login,email=email,password=password,"
                 + "enabled=true],authorities=[EMPLOYER, USER],companies=[Company[id=cid,name=Company Name,"
-                + "website=website,slots=10,active=true]],resume=Resume[id=rid,userId=id,status=IN_PROGRESS,"
-                + "created=2016-01-01T02:03:04,expiration=<null>,laborCategory=lcat,experience=10,"
-                + "objective=objective]]]", defaultUserDetails.toString());
+                + "website=website,planType=BASIC,slots=10,active=true]],resume=Resume[id=rid,userId=id,"
+                + "status=IN_PROGRESS,created=2016-01-01T02:03:04,expiration=<null>,laborCategory=lcat,"
+                + "experience=10,objective=objective]]]", defaultUserDetails.toString());
     }
 }

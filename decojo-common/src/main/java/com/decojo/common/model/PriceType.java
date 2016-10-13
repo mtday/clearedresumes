@@ -7,9 +7,9 @@ public enum PriceType {
     /** The price for purchasing an individual resume. */
     INDIVIDUAL_RESUME,
 
-    /** The price for the premium package. */
+    /** The monthly price for the premium plan. */
     PREMIUM_PACKAGE,
 
-    /** The price for the enterprise package. */
+    /** The monthly price for the enterprise plan. */
     ENTERPRISE_PACKAGE,
 }

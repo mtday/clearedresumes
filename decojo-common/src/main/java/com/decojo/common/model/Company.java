@@ -22,6 +22,8 @@ public class Company implements Serializable, Comparable<Company> {
     private final String name;
     @Nonnull
     private final String website;
+    @Nonnull
+    private final PlanType planType;
     private final int slots;
     private final boolean active;
 
@@ -29,7 +31,7 @@ public class Company implements Serializable, Comparable<Company> {
      * Default constructor required for Jackson deserialization.
      */
     Company() {
-        this("", "", "", 0, false);
+        this("", "", "", PlanType.BASIC, 0, false);
     }
 
     /**
@@ -38,15 +40,17 @@ public class Company implements Serializable, Comparable<Company> {
      * @param id the unique id of this company
      * @param name the name for this company
      * @param website the website address for this company
+     * @param planType the type of plan the company has signed up for
      * @param slots the number of open resume slots available
      * @param active whether this company is active
      */
     public Company(
-            @Nonnull final String id, @Nonnull final String name, @Nonnull final String website, final int slots,
-            final boolean active) {
+            @Nonnull final String id, @Nonnull final String name, @Nonnull final String website,
+            @Nonnull final PlanType planType, final int slots, final boolean active) {
         this.id = id;
         this.name = name;
         this.website = website;
+        this.planType = planType;
         this.slots = slots;
         this.active = active;
     }
@@ -82,6 +86,16 @@ public class Company implements Serializable, Comparable<Company> {
     }
 
     /**
+     * Retrieve the type of plan this company has signed up for.
+     *
+     * @return the type of plan this company has signed up for
+     */
+    @Nonnull
+    public PlanType getPlanType() {
+        return this.planType;
+    }
+
+    /**
      * Retrieve the number of open resume slots available in this company.
      *
      * @return the number of open resume slots available in this company
@@ -108,6 +122,7 @@ public class Company implements Serializable, Comparable<Company> {
         final CompareToBuilder cmp = new CompareToBuilder();
         cmp.append(getName(), other.getName());
         cmp.append(getWebsite(), other.getWebsite());
+        cmp.append(getPlanType(), other.getPlanType());
         cmp.append(getSlots(), other.getSlots());
         cmp.append(isActive(), other.isActive());
         cmp.append(getId(), other.getId());
@@ -125,6 +140,7 @@ public class Company implements Serializable, Comparable<Company> {
         hash.append(getId());
         hash.append(getName());
         hash.append(getWebsite());
+        hash.append(getPlanType().name());
         hash.append(getSlots());
         hash.append(isActive());
         return hash.toHashCode();
@@ -137,6 +153,7 @@ public class Company implements Serializable, Comparable<Company> {
         str.append("id", getId());
         str.append("name", getName());
         str.append("website", getWebsite());
+        str.append("planType", getPlanType());
         str.append("slots", getSlots());
         str.append("active", isActive());
         return str.build();

@@ -9,6 +9,7 @@ import static org.junit.Assert.assertTrue;
 
 import com.decojo.app.TestApplication;
 import com.decojo.common.model.Company;
+import com.decojo.common.model.PlanType;
 import com.decojo.common.model.User;
 import com.decojo.common.model.UserCollection;
 import com.decojo.db.CompanyDao;
@@ -110,7 +111,7 @@ public class UserAdminControllerIT {
         assertEquals(2, afterUpdate.getUsers().size());
         assertTrue(afterUpdate.getUsers().contains(updated));
 
-        final Company company = new Company("cid", "name", "website", 10, true);
+        final Company company = new Company("cid", "name", "website", PlanType.BASIC, 10, true);
         this.companyDao.add(company);
 
         final ResponseEntity<String> addCompanyResponse = this.testRestTemplate.withBasicAuth("test", "test")

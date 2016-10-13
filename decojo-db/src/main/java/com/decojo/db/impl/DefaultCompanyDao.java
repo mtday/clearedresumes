@@ -2,6 +2,7 @@ package com.decojo.db.impl;
 
 import com.decojo.common.model.Company;
 import com.decojo.common.model.CompanyCollection;
+import com.decojo.common.model.PlanType;
 import com.decojo.db.CompanyDao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -60,14 +61,18 @@ public class DefaultCompanyDao implements CompanyDao {
 
     @Override
     public void add(@Nonnull final Company company) {
-        this.jdbcTemplate.update("INSERT INTO companies (id, name, website, slots, active) VALUES (?, ?, ?, ?, ?)",
-                company.getId(), company.getName(), company.getWebsite(), company.getSlots(), company.isActive());
+        this.jdbcTemplate.update(
+                "INSERT INTO companies (id, name, website, plan_type, slots, active) VALUES (?, ?, ?, ?, ?, ?)",
+                company.getId(), company.getName(), company.getWebsite(), company.getPlanType().name(),
+                company.getSlots(), company.isActive());
     }
 
     @Override
     public void update(@Nonnull final Company company) {
-        this.jdbcTemplate.update("UPDATE companies SET name = ?, website = ?, slots = ?, active = ? WHERE id = ?",
-                company.getName(), company.getWebsite(), company.getSlots(), company.isActive(), company.getId());
+        this.jdbcTemplate.update(
+                "UPDATE companies SET name = ?, website = ?, plan_type = ?, slots = ?, active = ? WHERE id = ?",
+                company.getName(), company.getWebsite(), company.getPlanType().name(), company.getSlots(),
+                company.isActive(), company.getId());
     }
 
     @Override
@@ -82,9 +87,10 @@ public class DefaultCompanyDao implements CompanyDao {
             final String id = resultSet.getString("id");
             final String name = resultSet.getString("name");
             final String website = resultSet.getString("website");
+            final PlanType planType = PlanType.valueOf(resultSet.getString("plan_type"));
             final int slots = resultSet.getInt("slots");
             final boolean active = resultSet.getBoolean("active");
-            return new Company(id, name, website, slots, active);
+            return new Company(id, name, website, planType, slots, active);
         }
     }
 }

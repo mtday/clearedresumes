@@ -9,6 +9,7 @@ import static org.junit.Assert.assertTrue;
 import com.decojo.common.model.Authority;
 import com.decojo.common.model.Company;
 import com.decojo.common.model.CompanyUser;
+import com.decojo.common.model.PlanType;
 import com.decojo.common.model.User;
 import com.decojo.common.model.UserCollection;
 import com.decojo.db.CompanyDao;
@@ -127,7 +128,7 @@ public class DefaultUserDaoIT {
         assertNotNull(forCompanyDne);
         assertEquals(0, forCompanyDne.getUsers().size());
 
-        final Company company = new Company("cid", "name", "website", 10, true);
+        final Company company = new Company("cid", "name", "website", PlanType.BASIC, 10, true);
         this.companyDao.add(company);
         final CompanyUser companyUser = new CompanyUser(user.getId(), company.getId());
         this.companyUserDao.add(companyUser);

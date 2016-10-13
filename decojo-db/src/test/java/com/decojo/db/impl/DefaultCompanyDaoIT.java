@@ -8,6 +8,7 @@ import static org.junit.Assert.assertTrue;
 import com.decojo.common.model.Company;
 import com.decojo.common.model.CompanyCollection;
 import com.decojo.common.model.CompanyUser;
+import com.decojo.common.model.PlanType;
 import com.decojo.common.model.User;
 import com.decojo.db.CompanyDao;
 import com.decojo.db.CompanyUserDao;
@@ -46,7 +47,8 @@ public class DefaultCompanyDaoIT {
         final Company beforeAdd = this.companyDao.get("id");
         assertNull(beforeAdd);
 
-        final Company company = new Company("id", "Company Name", "https://company-website.com/", 10, true);
+        final Company company =
+                new Company("id", "Company Name", "https://company-website.com/", PlanType.BASIC, 10, true);
         this.companyDao.add(company);
 
         final CompanyCollection afterAddColl = this.companyDao.getAll();
@@ -58,7 +60,9 @@ public class DefaultCompanyDaoIT {
         assertNotNull(afterAdd);
         assertEquals(company, afterAdd);
 
-        final Company updated = new Company(company.getId(), "New Company Name", "https://updated-website.com/", 15, true);
+        final Company updated =
+                new Company(company.getId(), "New Company Name", "https://updated-website.com/", PlanType.BASIC, 15,
+                        true);
         this.companyDao.update(updated);
 
         final CompanyCollection afterUpdateColl = this.companyDao.getAll();

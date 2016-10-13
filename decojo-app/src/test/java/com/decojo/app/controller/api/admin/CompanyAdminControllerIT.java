@@ -9,6 +9,7 @@ import static org.junit.Assert.assertTrue;
 import com.decojo.app.TestApplication;
 import com.decojo.common.model.Company;
 import com.decojo.common.model.CompanyCollection;
+import com.decojo.common.model.PlanType;
 import com.decojo.common.model.User;
 import com.decojo.db.CompanyDao;
 import com.decojo.db.UserDao;
@@ -47,7 +48,8 @@ public class CompanyAdminControllerIT {
         final CompanyCollection beforeAdd = this.companyDao.getAll();
         assertEquals(0, beforeAdd.getCompanies().size());
 
-        final Company toAdd = new Company("ignored", "Company Name", "https://company-website.com", 10, true);
+        final Company toAdd =
+                new Company("ignored", "Company Name", "https://company-website.com", PlanType.BASIC, 10, true);
 
         final ResponseEntity<Company> addResponse = this.testRestTemplate.withBasicAuth("test", "test")
                 .postForEntity("/api/admin/company", toAdd, Company.class);
@@ -62,7 +64,8 @@ public class CompanyAdminControllerIT {
         assertEquals(1, afterAdd.getCompanies().size());
         assertTrue(afterAdd.getCompanies().contains(added));
 
-        final Company toUpdate = new Company("ignored", "New Company Name", "https://updated-website.com", 15, true);
+        final Company toUpdate =
+                new Company("ignored", "New Company Name", "https://updated-website.com", PlanType.BASIC, 15, true);
         final ResponseEntity<Company> updateResponse = this.testRestTemplate.withBasicAuth("test", "test")
                 .exchange("/api/admin/company/{id}", HttpMethod.PUT, new HttpEntity<>(toUpdate), Company.class,
                         added.getId());

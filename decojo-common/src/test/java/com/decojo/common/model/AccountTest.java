@@ -28,7 +28,7 @@ public class AccountTest {
     public void testParameterConstructor() {
         final User user = new User("uid", "login", "email", "password", true);
         final Collection<Authority> authorities = Arrays.asList(Authority.USER, Authority.EMPLOYER);
-        final Company company = new Company("cid", "Company Name", "website", 10, true);
+        final Company company = new Company("cid", "Company Name", "website", PlanType.BASIC, 10, true);
         final Collection<Company> companies = Collections.singleton(company);
         final Resume resume =
                 new Resume("rid", user.getId(), ResumeStatus.IN_PROGRESS, LocalDateTime.now(), null, "lcat", 10,
@@ -48,7 +48,7 @@ public class AccountTest {
         final User user1 = new User("uid1", "login", "email", "password", true);
         final User user2 = new User("uid2", "login", "email", "password", true);
         final Collection<Authority> authorities = Arrays.asList(Authority.USER, Authority.EMPLOYER);
-        final Company company = new Company("cid", "Company Name", "website", 10, true);
+        final Company company = new Company("cid", "Company Name", "website", PlanType.BASIC, 10, true);
         final Collection<Company> companies = Collections.singleton(company);
         final Resume resume1 =
                 new Resume("rid1", user1.getId(), ResumeStatus.IN_PROGRESS, LocalDateTime.now(), null, "lcat", 10,
@@ -71,7 +71,7 @@ public class AccountTest {
         final User user1 = new User("uid1", "login", "email", "password", true);
         final User user2 = new User("uid2", "login", "email", "password", true);
         final Collection<Authority> authorities = Arrays.asList(Authority.USER, Authority.EMPLOYER);
-        final Company company = new Company("cid", "Company Name", "website", 10, true);
+        final Company company = new Company("cid", "Company Name", "website", PlanType.BASIC, 10, true);
         final Collection<Company> companies = Collections.singleton(company);
         final Resume resume1 =
                 new Resume("rid1", user1.getId(), ResumeStatus.IN_PROGRESS, LocalDateTime.now(), null, "lcat", 10,
@@ -93,7 +93,7 @@ public class AccountTest {
     public void testHashCode() {
         final User user = new User("uid", "login", "email", "password", true);
         final Collection<Authority> authorities = Arrays.asList(Authority.USER, Authority.EMPLOYER);
-        final Company company = new Company("cid", "Company Name", "website", 10, true);
+        final Company company = new Company("cid", "Company Name", "website", PlanType.BASIC, 10, true);
         final Collection<Company> companies = Collections.singleton(company);
         final LocalDateTime created = LocalDateTime.of(2016, 1, 1, 2, 3, 4);
         final Resume resume =
@@ -106,7 +106,7 @@ public class AccountTest {
     public void testToString() {
         final User user = new User("uid", "login", "email", "password", true);
         final Collection<Authority> authorities = Arrays.asList(Authority.USER, Authority.EMPLOYER);
-        final Company company = new Company("cid", "Company Name", "website", 10, true);
+        final Company company = new Company("cid", "Company Name", "website", PlanType.BASIC, 10, true);
         final Collection<Company> companies = Collections.singleton(company);
         final LocalDateTime created = LocalDateTime.of(2016, 1, 1, 2, 3, 4);
         final Resume resume =
@@ -114,7 +114,7 @@ public class AccountTest {
         final Account account = new Account(user, authorities, companies, resume);
         assertEquals("Account[user=User[id=uid,login=login,email=email,password=password,enabled=true],"
                 + "authorities=[EMPLOYER, USER],companies=[Company[id=cid,name=Company Name,website=website,"
-                + "slots=10,active=true]],resume=Resume[id=rid,userId=uid,status=IN_PROGRESS,"
+                + "planType=BASIC,slots=10,active=true]],resume=Resume[id=rid,userId=uid,status=IN_PROGRESS,"
                 + "created=2016-01-01T02:03:04,expiration=<null>,laborCategory=lcat,experience=10,"
                 + "objective=objective]]", account.toString());
     }

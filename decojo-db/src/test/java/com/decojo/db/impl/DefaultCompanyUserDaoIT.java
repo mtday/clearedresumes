@@ -8,6 +8,7 @@ import static org.junit.Assert.fail;
 import com.decojo.common.model.Company;
 import com.decojo.common.model.CompanyCollection;
 import com.decojo.common.model.CompanyUser;
+import com.decojo.common.model.PlanType;
 import com.decojo.common.model.User;
 import com.decojo.common.model.UserCollection;
 import com.decojo.db.CompanyDao;
@@ -45,7 +46,8 @@ public class DefaultCompanyUserDaoIT {
             fail("Failed to find test user");
         }
 
-        final Company company = new Company("id", "Company Name", "https://company-website.com/", 10, true);
+        final Company company =
+                new Company("id", "Company Name", "https://company-website.com/", PlanType.BASIC, 10, true);
         this.companyDao.add(company);
 
         final CompanyCollection beforeAddByUserColl = this.companyDao.getForUser(user.getId());

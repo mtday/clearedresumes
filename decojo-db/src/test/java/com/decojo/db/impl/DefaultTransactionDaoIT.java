@@ -1,12 +1,13 @@
 package com.decojo.db.impl;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import com.decojo.common.model.Company;
+import com.decojo.common.model.PlanType;
 import com.decojo.common.model.Transaction;
 import com.decojo.common.model.TransactionCollection;
 import com.decojo.common.model.User;
@@ -47,7 +48,7 @@ public class DefaultTransactionDaoIT {
             fail("Failed to find test user");
         }
 
-        final Company company = new Company("cid", "name", "website", 10, true);
+        final Company company = new Company("cid", "name", "website", PlanType.BASIC, 10, true);
         this.companyDao.add(company);
 
         final TransactionCollection beforeAddColl = this.transactionDao.getAll();

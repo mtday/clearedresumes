@@ -9,6 +9,7 @@ import static org.junit.Assert.fail;
 import com.decojo.common.model.Company;
 import com.decojo.common.model.CompanyResume;
 import com.decojo.common.model.CompanyResumeCollection;
+import com.decojo.common.model.PlanType;
 import com.decojo.common.model.Resume;
 import com.decojo.common.model.ResumeStatus;
 import com.decojo.common.model.User;
@@ -52,7 +53,7 @@ public class DefaultCompanyResumeDaoIT {
             fail("Failed to find test user");
         }
 
-        final Company company = new Company("cid", "name", "website", 10, true);
+        final Company company = new Company("cid", "name", "website", PlanType.BASIC, 10, true);
         this.companyDao.add(company);
 
         final Resume resume =
