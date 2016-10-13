@@ -1,9 +1,12 @@
 package com.decojo.app.controller.web;
 
+import com.decojo.common.model.PriceCollection;
+import com.decojo.db.PriceDao;
 import java.util.Map;
 import javax.annotation.Nonnull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -14,6 +17,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class EmployersController extends BaseController {
     private static final Logger LOG = LoggerFactory.getLogger(EmployersController.class);
 
+    @Nonnull
+    private final PriceDao priceDao;
+
+    /**
+     * Create an instance of this controller.
+     *
+     * @param priceDao the {@link PriceDao} used to retrieve pricing data from the database
+     */
+    @Autowired
+    public EmployersController(@Nonnull final PriceDao priceDao) {
+        this.priceDao = priceDao;
+    }
+
     /**
      * Display the employers page.
      *
@@ -23,6 +39,9 @@ public class EmployersController extends BaseController {
     @GetMapping("/employers")
     @Nonnull
     public String employers(@Nonnull final Map<String, Object> model) {
+        final PriceCollection prices = this.priceDao.getAll();
+        prices.getPrices().forEach(price -> model.put(price.getType().name(), price.getPrice().toString()));
+
         setCurrentAccount(model);
         return "employers";
     }

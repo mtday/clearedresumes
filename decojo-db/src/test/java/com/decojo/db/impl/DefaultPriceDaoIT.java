@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import com.decojo.common.model.Price;
+import com.decojo.common.model.PriceCollection;
 import com.decojo.common.model.PriceType;
 import com.decojo.db.PriceDao;
 import com.decojo.db.TestApplication;
@@ -29,6 +30,10 @@ public class DefaultPriceDaoIT {
      */
     @Test
     public void test() {
+        final PriceCollection prices = this.priceDao.getAll();
+        assertNotNull(prices);
+        assertEquals(3, prices.getPrices().size());
+
         final Price price = this.priceDao.get(PriceType.ENTERPRISE_PACKAGE);
         assertNotNull(price);
         assertEquals(PriceType.ENTERPRISE_PACKAGE, price.getType());

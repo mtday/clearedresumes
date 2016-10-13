@@ -1,6 +1,7 @@
 package com.decojo.db;
 
 import com.decojo.common.model.Price;
+import com.decojo.common.model.PriceCollection;
 import com.decojo.common.model.PriceType;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -9,6 +10,14 @@ import javax.annotation.Nullable;
  * Defines the interface required for pricing database management.
  */
 public interface PriceDao {
+    /**
+     * Retrieve all the pricing data from the database.
+     *
+     * @return all the prices
+     */
+    @Nonnull
+    PriceCollection getAll();
+
     /**
      * Retrieve the price for the specified type from the database.
      *

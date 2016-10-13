@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="fragments/head :: head (title='Sign Up')"></head>
+<body>
+
+<nav th:replace="fragments/navbar :: navbar (currentPage=signup)"></nav>
+<div class="container">
+
+    <!-- Sign-Up Panel -->
+    <div class="signup-panel-container">
+        <div class="panel panel-default signup-panel">
+            <div class="panel-heading">
+                <h3 class="panel-title">Sign Up</h3>
+            </div>
+            <div class="panel-body">
+                <p th:if="${signupError}" class="alert alert-danger" th:text="${signupError}">Error</p>
+
+                <form class="form-signup" name="signupform" th:action="@{/signup-company}" method="POST">
+                    <div class="signup-text">
+                        <h3>Account Information:</h3>
+                    </div>
+
+                    <label for="signup-username" class="sr-only">User Name</label>
+                    <input type="text" name="username" id="signup-username" class="form-control" placeholder="User Name"
+                           required="required" autofocus="autofocus" th:value="${username}"/>
+
+                    <label for="signup-email" class="sr-only">E-Mail Address</label>
+                    <input type="email" name="email" id="signup-email" class="form-control" placeholder="E-Mail Address"
+                           required="required" autofocus="autofocus" th:value="${email}"/>
+
+                    <label for="signup-password" class="sr-only">Password</label>
+                    <input type="password" name="password" id="signup-password" class="form-control"
+                           placeholder="Password"/>
+
+                    <label for="signup-confirm" class="sr-only">Confirm Password</label>
+                    <input type="password" name="confirm" id="signup-confirm" class="form-control"
+                           placeholder="Confirm Password"/>
+
+                    <div class="signup-text">
+                        <h3>Company Information:</h3>
+                    </div>
+
+                    <label for="signup-name" class="sr-only">Company Name</label>
+                    <input type="text" name="name" id="signup-name" class="form-control" placeholder="Company Name"
+                           required="required" autofocus="autofocus" th:value="${name}"/>
+
+                    <label for="signup-website" class="sr-only">Company Web Site</label>
+                    <input type="text" name="website" id="signup-website" class="form-control"
+                           placeholder="Company Web Site (http://mycompany.com)" required="required"
+                           autofocus="autofocus" th:value="${website}"/>
+
+                    <label for="signup-plan" class="sr-only">Plan</label>
+                    <select class="form-control" id="signup-plan" name="plan">
+                        <option value="BASIC" selected="selected" th:if="${plan} == 'basic'">Basic Plan</option>
+                        <option value="BASIC" th:if="${plan} != 'basic'">Basic Plan</option>
+
+                        <option value="PREMIUM" selected="selected" th:if="${plan} == 'premium'">
+                            Premium Plan</option>
+                        <option value="PREMIUM" th:if="${plan} != 'premium'">Premium Plan</option>
+
+                        <option value="ENTERPRISE" selected="selected" th:if="${plan} == 'enterprise'">
+                            Enterprise Plan</option>
+                        <option value="ENTERPRISE" th:if="${plan} != 'enterprise'">Enterprise Plan</option>
+                    </select>
+
+                    <div class="btn-group pull-right">
+                        <button class="btn btn-default btn-primary" type="submit">Create Account</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<footer th:replace="fragments/footer :: footer"></footer>
+<div th:replace="fragments/scripts :: scripts"></div>
+</body>
+</html>

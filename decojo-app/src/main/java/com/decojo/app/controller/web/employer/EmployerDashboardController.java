@@ -24,7 +24,6 @@ public class EmployerDashboardController extends BaseController {
     @GetMapping("/employer/dashboard")
     @Nonnull
     public String dashboard(@Nonnull final Map<String, Object> model) {
-        setCurrentAccount(model);
-        return "employer/dashboard";
+        return "redirect:/employer/dashboard/resumes-all";
     }
 }

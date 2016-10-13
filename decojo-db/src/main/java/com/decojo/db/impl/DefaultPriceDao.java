@@ -1,6 +1,7 @@
 package com.decojo.db.impl;
 
 import com.decojo.common.model.Price;
+import com.decojo.common.model.PriceCollection;
 import com.decojo.common.model.PriceType;
 import com.decojo.db.PriceDao;
 import java.math.BigDecimal;
@@ -36,6 +37,12 @@ public class DefaultPriceDao implements PriceDao {
     @Autowired
     public DefaultPriceDao(@Nonnull final JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+    }
+
+    @Nonnull
+    @Override
+    public PriceCollection getAll() {
+        return new PriceCollection(this.jdbcTemplate.query("SELECT * FROM prices", this.rowMapper));
     }
 
     @Nullable
