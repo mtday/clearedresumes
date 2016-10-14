@@ -57,7 +57,7 @@ public class DefaultCertificationDaoIT {
         assertNotNull(beforeAddByResumeColl);
         assertEquals(0, beforeAddByResumeColl.getCertifications().size());
 
-        final Certification certification = new Certification("id", resume.getId(), "certificate");
+        final Certification certification = new Certification("id", resume.getId(), "certificate", 2000);
         this.certificationDao.add(certification);
 
         final Certification getById = this.certificationDao.get(certification.getId());
@@ -69,7 +69,7 @@ public class DefaultCertificationDaoIT {
         assertEquals(1, getByResumeColl.getCertifications().size());
         assertTrue(getByResumeColl.getCertifications().contains(certification));
 
-        final Certification updated = new Certification(certification.getId(), resume.getId(), "new certificate");
+        final Certification updated = new Certification(certification.getId(), resume.getId(), "new certificate", 2020);
         this.certificationDao.update(updated);
 
         final Certification afterUpdate = this.certificationDao.get(certification.getId());

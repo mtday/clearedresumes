@@ -23,9 +23,11 @@ public class EducationCollectionTest {
     @Test
     public void testParameterConstructor() {
         final Education education1 =
-                new Education("id-1", "rid-1", "University of Maryland", "Computer Science", "B.S. Computer Science");
+                new Education("id-1", "rid-1", "University of Maryland", "Computer Science", "B.S. Computer Science",
+                        2000);
         final Education education2 =
-                new Education("id-2", "rid-1", "University of Maryland", "Engineering", "B.S. Electrical Engineering");
+                new Education("id-2", "rid-1", "University of Maryland", "Engineering", "B.S. Electrical Engineering",
+                        2020);
         final EducationCollection educationColl = new EducationCollection(Arrays.asList(education1, education2));
         assertNotNull(educationColl.getEducations());
         assertEquals(2, educationColl.getEducations().size());
@@ -36,9 +38,11 @@ public class EducationCollectionTest {
     @Test
     public void testCompareTo() {
         final Education education1 =
-                new Education("id-1", "rid-1", "University of Maryland", "Computer Science", "B.S. Computer Science");
+                new Education("id-1", "rid-1", "University of Maryland", "Computer Science", "B.S. Computer Science",
+                        2000);
         final Education education2 =
-                new Education("id-2", "rid-1", "University of Maryland", "Engineering", "B.S. Electrical Engineering");
+                new Education("id-2", "rid-1", "University of Maryland", "Engineering", "B.S. Electrical Engineering",
+                        2020);
 
         final EducationCollection a = new EducationCollection(Collections.emptyList());
         final EducationCollection b = new EducationCollection(Collections.singleton(education1));
@@ -59,9 +63,11 @@ public class EducationCollectionTest {
     @Test
     public void testEquals() {
         final Education education1 =
-                new Education("id-1", "rid-1", "University of Maryland", "Computer Science", "B.S. Computer Science");
+                new Education("id-1", "rid-1", "University of Maryland", "Computer Science", "B.S. Computer Science",
+                        2000);
         final Education education2 =
-                new Education("id-2", "rid-1", "University of Maryland", "Engineering", "B.S. Electrical Engineering");
+                new Education("id-2", "rid-1", "University of Maryland", "Engineering", "B.S. Electrical Engineering",
+                        2020);
 
         final EducationCollection a = new EducationCollection(Collections.emptyList());
         final EducationCollection b = new EducationCollection(Collections.singleton(education1));
@@ -82,24 +88,29 @@ public class EducationCollectionTest {
     @Test
     public void testHashCode() {
         final Education education1 =
-                new Education("id-1", "rid-1", "University of Maryland", "Computer Science", "B.S. Computer Science");
+                new Education("id-1", "rid-1", "University of Maryland", "Computer Science", "B.S. Computer Science",
+                        2000);
         final Education education2 =
-                new Education("id-2", "rid-1", "University of Maryland", "Engineering", "B.S. Electrical Engineering");
+                new Education("id-2", "rid-1", "University of Maryland", "Engineering", "B.S. Electrical Engineering",
+                        2020);
         final EducationCollection educationColl = new EducationCollection(Arrays.asList(education1, education2));
-        assertEquals(366803384, educationColl.hashCode());
+        assertEquals(686804696, educationColl.hashCode());
     }
 
     @Test
     public void testToString() {
         final Education education1 =
-                new Education("id-1", "rid-1", "University of Maryland", "Computer Science", "B.S. Computer Science");
+                new Education("id-1", "rid-1", "University of Maryland", "Computer Science", "B.S. Computer Science",
+                        2000);
         final Education education2 =
-                new Education("id-2", "rid-1", "University of Maryland", "Engineering", "B.S. Electrical Engineering");
+                new Education("id-2", "rid-1", "University of Maryland", "Engineering", "B.S. Electrical Engineering",
+                        2020);
         final EducationCollection educationColl = new EducationCollection(Arrays.asList(education1, education2));
         assertEquals(
                 "EducationCollection[educations=[Education[id=id-1,resumeId=rid-1,institution=University of Maryland,"
-                        + "field=Computer Science,degree=B.S. Computer Science], Education[id=id-2,resumeId=rid-1,"
-                        + "institution=University of Maryland,field=Engineering,degree=B.S. Electrical Engineering]]]",
+                        + "field=Computer Science,degree=B.S. Computer Science,year=2000], Education[id=id-2,"
+                        + "resumeId=rid-1,institution=University of Maryland,field=Engineering,degree=B.S. Electrical"
+                        + " Engineering,year=2020]]]",
                 educationColl.toString());
     }
 }

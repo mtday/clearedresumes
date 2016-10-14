@@ -53,18 +53,18 @@ public class DefaultEducationDao implements EducationDao {
 
     @Override
     public void add(@Nonnull final Education education) {
-        this.jdbcTemplate.update(
-                "INSERT INTO educations (id, resume_id, institution, field, degree) VALUES (?, ?, ?, ?, ?)",
-                education.getId(), education.getResumeId(), education.getInstitution(), education.getField(),
-                education.getDegree());
+        this.jdbcTemplate
+                .update("INSERT INTO educations (id, resume_id, institution, field, degree, year) VALUES (?, ?, ?, ?,"
+                                + " ?, ?)", education.getId(), education.getResumeId(), education.getInstitution(),
+                        education.getField(), education.getDegree(), education.getYear());
     }
 
     @Override
     public void update(@Nonnull final Education education) {
-        this.jdbcTemplate.update(
-                "UPDATE educations SET resume_id = ?, institution = ?, field = ?, degree = ? WHERE id = ?",
-                education.getResumeId(), education.getInstitution(), education.getField(), education.getDegree(),
-                education.getId());
+        this.jdbcTemplate
+                .update("UPDATE educations SET resume_id = ?, institution = ?, field = ?, degree = ?, year = ? WHERE "
+                                + "id = ?", education.getResumeId(), education.getInstitution(), education.getField(),
+                        education.getDegree(), education.getYear(), education.getId());
     }
 
     @Override
@@ -81,7 +81,8 @@ public class DefaultEducationDao implements EducationDao {
             final String institution = resultSet.getString("institution");
             final String field = resultSet.getString("field");
             final String degree = resultSet.getString("degree");
-            return new Education(id, resumeId, institution, field, degree);
+            final int year = resultSet.getInt("year");
+            return new Education(id, resumeId, institution, field, degree, year);
         }
     }
 }

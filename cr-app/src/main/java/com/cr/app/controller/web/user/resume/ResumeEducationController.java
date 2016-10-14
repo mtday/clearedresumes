@@ -82,6 +82,7 @@ public class ResumeEducationController extends BaseResumeController {
      * @param institution the education institution
      * @param field the education field of study
      * @param degree the degree obtained
+     * @param year the year in which the degree was obtained
      * @param model the web model
      * @return the name of the template to display
      */
@@ -92,6 +93,7 @@ public class ResumeEducationController extends BaseResumeController {
             @Nonnull @RequestParam(value = "institution", defaultValue = "") final String institution,
             @Nonnull @RequestParam(value = "field", defaultValue = "") final String field,
             @Nonnull @RequestParam(value = "degree", defaultValue = "") final String degree,
+            @RequestParam(value = "year", defaultValue = "0") final int year,
             @Nonnull final Map<String, Object> model) {
         if (StringUtils.isBlank(institution)) {
             model.put("educationMessage", "Please enter a valid institution.");
@@ -108,6 +110,11 @@ public class ResumeEducationController extends BaseResumeController {
             populateModel(model);
             return "user/resume/education";
         }
+        if (year == 0) {
+            model.put("educationMessage", "Please enter a valid year when the education completed.");
+            populateModel(model);
+            return "user/resume/education";
+        }
 
         final ResumeContainer resumeContainer = createResumeContainer();
 
@@ -115,12 +122,12 @@ public class ResumeEducationController extends BaseResumeController {
             // No id so add a new education.
             final Education education =
                     new Education(UUID.randomUUID().toString(), resumeContainer.getResume().getId(), institution, field,
-                            degree);
+                            degree, year);
             this.educationDao.add(education);
         } else {
             // An id was specified so do an update.
             final Education education =
-                    new Education(id, resumeContainer.getResume().getId(), institution, field, degree);
+                    new Education(id, resumeContainer.getResume().getId(), institution, field, degree, year);
             this.educationDao.update(education);
         }
         updateResumeContainer(resumeContainer.getResume().getId());

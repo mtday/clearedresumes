@@ -382,13 +382,16 @@ body {
   min-height: 40px;
 }
 .resume-education-panel .education-institution-cell {
-  width: 40%;
+  width: 35%;
 }
 .resume-education-panel .education-field-cell {
-  width: 40%;
+  width: 35%;
 }
 .resume-education-panel .education-degree-cell {
   width: 20%;
+}
+.resume-education-panel .education-year-cell {
+  width: 10%;
 }
 .resume-education-panel .action-cell {
   min-width: 120px;

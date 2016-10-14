@@ -22,12 +22,13 @@ public class Certification implements Serializable, Comparable<Certification> {
     private final String resumeId;
     @Nonnull
     private final String certificate;
+    private final int year;
 
     /**
      * Default constructor required for Jackson deserialization.
      */
     Certification() {
-        this("", "", "");
+        this("", "", "", 0);
     }
 
     /**
@@ -36,12 +37,15 @@ public class Certification implements Serializable, Comparable<Certification> {
      * @param id the unique id of this education
      * @param resumeId the unique id of the resume in which this education is specified
      * @param certificate the certificate earned by the user
+     * @param year the year in which the certificate was obtained
      */
     public Certification(
-            @Nonnull final String id, @Nonnull final String resumeId, @Nonnull final String certificate) {
+            @Nonnull final String id, @Nonnull final String resumeId, @Nonnull final String certificate,
+            final int year) {
         this.id = id;
         this.resumeId = resumeId;
         this.certificate = certificate;
+        this.year = year;
     }
 
     /**
@@ -74,6 +78,15 @@ public class Certification implements Serializable, Comparable<Certification> {
         return this.certificate;
     }
 
+    /**
+     * Retrieve the year in which the certificate was obtained.
+     *
+     * @return the year in which the certificate was obtained
+     */
+    public int getYear() {
+        return this.year;
+    }
+
     @Override
     public int compareTo(@Nullable final Certification other) {
         if (other == null) {
@@ -83,6 +96,7 @@ public class Certification implements Serializable, Comparable<Certification> {
         final CompareToBuilder cmp = new CompareToBuilder();
         cmp.append(getResumeId(), other.getResumeId());
         cmp.append(getCertificate(), other.getCertificate());
+        cmp.append(getYear(), other.getYear());
         cmp.append(getId(), other.getId());
         return cmp.toComparison();
     }
@@ -98,6 +112,7 @@ public class Certification implements Serializable, Comparable<Certification> {
         hash.append(getId());
         hash.append(getResumeId());
         hash.append(getCertificate());
+        hash.append(getYear());
         return hash.toHashCode();
     }
 
@@ -108,6 +123,7 @@ public class Certification implements Serializable, Comparable<Certification> {
         str.append("id", getId());
         str.append("resumeId", getResumeId());
         str.append("certificate", getCertificate());
+        str.append("year", getYear());
         return str.build();
     }
 }

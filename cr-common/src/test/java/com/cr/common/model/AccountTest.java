@@ -44,8 +44,8 @@ public class AccountTest {
         final WorkSummary workSummary =
                 new WorkSummary("id", "rid", "Title", "Employer", begin, null, "Responsibilities", "Accomplishments");
         final Clearance clearance = new Clearance("id", "rid", "Type", "Organization", "Polygraph");
-        final Education education = new Education("id", "rid", "Institution", "Field", "Degree");
-        final Certification certification = new Certification("id", "rid", "Certificate");
+        final Education education = new Education("id", "rid", "Institution", "Field", "Degree", 2000);
+        final Certification certification = new Certification("id", "rid", "Certificate", 2000);
         final KeyWord keyWord = new KeyWord("rid", "Word");
         final ResumeContainer resumeContainer1 =
                 new ResumeContainer(resume1, overview, Collections.singleton(review), Collections.singleton(lcat),
@@ -107,8 +107,8 @@ public class AccountTest {
         final WorkSummary workSummary =
                 new WorkSummary("id", "rid", "Title", "Employer", begin, null, "Responsibilities", "Accomplishments");
         final Clearance clearance = new Clearance("id", "rid", "Type", "Organization", "Polygraph");
-        final Education education = new Education("id", "rid", "Institution", "Field", "Degree");
-        final Certification certification = new Certification("id", "rid", "Certificate");
+        final Education education = new Education("id", "rid", "Institution", "Field", "Degree", 2000);
+        final Certification certification = new Certification("id", "rid", "Certificate", 2000);
         final KeyWord keyWord = new KeyWord("rid", "Word");
         final ResumeContainer resumeContainer =
                 new ResumeContainer(resume, overview, Collections.singleton(review), Collections.singleton(lcat),
@@ -126,22 +126,21 @@ public class AccountTest {
 
     @Test
     public void testToString() {
-        assertEquals(
-                "Account[user=User[id=uid,login=login,email=email,password=password,enabled=true],"
-                        + "authorities=[EMPLOYER, USER],companies=[Company[id=cid,name=Company Name,website=website,"
-                        + "planType=BASIC,slots=10,active=true]],"
-                        + "resumeContainer=ResumeContainer[resume=Resume[id=rid,userId=uid,status=IN_PROGRESS,"
-                        + "created=2016-01-01T02:03:04,expiration=<null>],overview=ResumeOverview[resumeId=rid,"
-                        + "fullName=Full Name,objective=Objective],reviews=[ResumeReview[resumeId=rid,companyId=cid,"
-                        + "status=SAVED]],laborCategories=[ResumeLaborCategory[id=id,resumeId=rid,laborCategory=Labor"
-                        + " Category,experience=10]],contactInfos=[ContactInfo[id=id,resumeId=rid,"
-                        + "value=Value]],workLocations=[WorkLocation[id=id,resumeId=rid,state=State,region=Region]],"
-                        + "workSummaries=[WorkSummary[id=id,resumeId=rid,jobTitle=Title,employer=Employer,"
-                        + "beginDate=2016-01-01,endDate=<null>,responsibilities=Responsibilities,"
-                        + "accomplishments=Accomplishments]],clearances=[Clearance[id=id,resumeId=rid,type=Type,"
-                        + "organization=Organization,polygraph=Polygraph]],educations=[Education[id=id,resumeId=rid,"
-                        + "institution=Institution,field=Field,degree=Degree]],certifications=[Certification[id=id,"
-                        + "resumeId=rid,certificate=Certificate]],keyWords=[KeyWord[resumeId=rid,word=Word]]]]",
-                getAccount().toString());
+        assertEquals("Account[user=User[id=uid,login=login,email=email,password=password,enabled=true],"
+                + "authorities=[EMPLOYER, USER],companies=[Company[id=cid,name=Company Name,website=website,"
+                + "planType=BASIC,slots=10,active=true]],"
+                + "resumeContainer=ResumeContainer[resume=Resume[id=rid,userId=uid,status=IN_PROGRESS,"
+                + "created=2016-01-01T02:03:04,expiration=<null>],overview=ResumeOverview[resumeId=rid,"
+                + "fullName=Full Name,objective=Objective],reviews=[ResumeReview[resumeId=rid,companyId=cid,"
+                + "status=SAVED]],laborCategories=[ResumeLaborCategory[id=id,resumeId=rid,laborCategory=Labor"
+                + " Category,experience=10]],contactInfos=[ContactInfo[id=id,resumeId=rid,"
+                + "value=Value]],workLocations=[WorkLocation[id=id,resumeId=rid,state=State,region=Region]],"
+                + "workSummaries=[WorkSummary[id=id,resumeId=rid,jobTitle=Title,employer=Employer,"
+                + "beginDate=2016-01-01,endDate=<null>,responsibilities=Responsibilities,"
+                + "accomplishments=Accomplishments]],clearances=[Clearance[id=id,resumeId=rid,type=Type,"
+                + "organization=Organization,polygraph=Polygraph]],educations=[Education[id=id,resumeId=rid,"
+                + "institution=Institution,field=Field,degree=Degree,year=2000]],"
+                + "certifications=[Certification[id=id,resumeId=rid,certificate=Certificate,year=2000]],"
+                + "keyWords=[KeyWord[resumeId=rid,word=Word]]]]", getAccount().toString());
     }
 }

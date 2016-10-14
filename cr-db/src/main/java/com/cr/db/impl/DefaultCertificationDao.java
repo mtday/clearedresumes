@@ -53,14 +53,18 @@ public class DefaultCertificationDao implements CertificationDao {
 
     @Override
     public void add(@Nonnull final Certification certification) {
-        this.jdbcTemplate.update("INSERT INTO certifications (id, resume_id, certificate) VALUES (?, ?, ?)",
-                certification.getId(), certification.getResumeId(), certification.getCertificate());
+        this.jdbcTemplate.update(
+                "INSERT INTO certifications (id, resume_id, certificate, year) VALUES (?, ?, ?, ?)",
+                certification.getId(), certification.getResumeId(), certification.getCertificate(),
+                certification.getYear());
     }
 
     @Override
     public void update(@Nonnull final Certification certification) {
-        this.jdbcTemplate.update("UPDATE certifications SET resume_id = ?, certificate = ? WHERE id = ?",
-                certification.getResumeId(), certification.getCertificate(), certification.getId());
+        this.jdbcTemplate.update(
+                "UPDATE certifications SET resume_id = ?, certificate = ?, year = ? WHERE id = ?",
+                certification.getResumeId(), certification.getCertificate(), certification.getYear(),
+                certification.getId());
     }
 
     @Override
@@ -75,7 +79,8 @@ public class DefaultCertificationDao implements CertificationDao {
             final String id = resultSet.getString("id");
             final String resumeId = resultSet.getString("resume_id");
             final String certificate = resultSet.getString("certificate");
-            return new Certification(id, resumeId, certificate);
+            final int year = resultSet.getInt("year");
+            return new Certification(id, resumeId, certificate, year);
         }
     }
 }

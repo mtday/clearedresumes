@@ -23,8 +23,9 @@ public class CertificationCollectionTest {
     @Test
     public void testParameterConstructor() {
         final Certification certification1 =
-                new Certification("id-1", "rid-1", "Cisco Certified Internetworking Engineer");
-        final Certification certification2 = new Certification("id-2", "rid-1", "Microsoft Certified Professional");
+                new Certification("id-1", "rid-1", "Cisco Certified Internetworking Engineer", 2000);
+        final Certification certification2 =
+                new Certification("id-2", "rid-1", "Microsoft Certified Professional", 2020);
         final CertificationCollection certificationColl =
                 new CertificationCollection(Arrays.asList(certification1, certification2));
         assertNotNull(certificationColl.getCertifications());
@@ -36,8 +37,9 @@ public class CertificationCollectionTest {
     @Test
     public void testCompareTo() {
         final Certification certification1 =
-                new Certification("id-1", "rid-1", "Cisco Certified Internetworking Engineer");
-        final Certification certification2 = new Certification("id-2", "rid-1", "Microsoft Certified Professional");
+                new Certification("id-1", "rid-1", "Cisco Certified Internetworking Engineer", 2000);
+        final Certification certification2 =
+                new Certification("id-2", "rid-1", "Microsoft Certified Professional", 2020);
 
         final CertificationCollection a = new CertificationCollection(Collections.emptyList());
         final CertificationCollection b = new CertificationCollection(Collections.singleton(certification1));
@@ -58,8 +60,9 @@ public class CertificationCollectionTest {
     @Test
     public void testEquals() {
         final Certification certification1 =
-                new Certification("id-1", "rid-1", "Cisco Certified Internetworking Engineer");
-        final Certification certification2 = new Certification("id-2", "rid-1", "Microsoft Certified Professional");
+                new Certification("id-1", "rid-1", "Cisco Certified Internetworking Engineer", 2000);
+        final Certification certification2 =
+                new Certification("id-2", "rid-1", "Microsoft Certified Professional", 2020);
 
         final CertificationCollection a = new CertificationCollection(Collections.emptyList());
         final CertificationCollection b = new CertificationCollection(Collections.singleton(certification1));
@@ -80,22 +83,24 @@ public class CertificationCollectionTest {
     @Test
     public void testHashCode() {
         final Certification certification1 =
-                new Certification("id-1", "rid-1", "Cisco Certified Internetworking Engineer");
-        final Certification certification2 = new Certification("id-2", "rid-1", "Microsoft Certified Professional");
+                new Certification("id-1", "rid-1", "Cisco Certified Internetworking Engineer", 2000);
+        final Certification certification2 =
+                new Certification("id-2", "rid-1", "Microsoft Certified Professional", 2020);
         final CertificationCollection certificationColl =
                 new CertificationCollection(Arrays.asList(certification1, certification2));
-        assertEquals(2103810193, certificationColl.hashCode());
+        assertEquals(531547189, certificationColl.hashCode());
     }
 
     @Test
     public void testToString() {
         final Certification certification1 =
-                new Certification("id-1", "rid-1", "Cisco Certified Internetworking Engineer");
-        final Certification certification2 = new Certification("id-2", "rid-1", "Microsoft Certified Professional");
+                new Certification("id-1", "rid-1", "Cisco Certified Internetworking Engineer", 2000);
+        final Certification certification2 =
+                new Certification("id-2", "rid-1", "Microsoft Certified Professional", 2020);
         final CertificationCollection certificationColl =
                 new CertificationCollection(Arrays.asList(certification1, certification2));
         assertEquals("CertificationCollection[certifications=[Certification[id=id-1,resumeId=rid-1,certificate=Cisco "
-                + "Certified Internetworking Engineer], Certification[id=id-2,resumeId=rid-1,"
-                + "certificate=Microsoft Certified Professional]]]", certificationColl.toString());
+                + "Certified Internetworking Engineer,year=2000], Certification[id=id-2,resumeId=rid-1,"
+                + "certificate=Microsoft Certified Professional,year=2020]]]", certificationColl.toString());
     }
 }

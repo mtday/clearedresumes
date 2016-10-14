@@ -57,7 +57,7 @@ public class DefaultEducationDaoIT {
         assertNotNull(beforeAddByResumeColl);
         assertEquals(0, beforeAddByResumeColl.getEducations().size());
 
-        final Education education = new Education("id", resume.getId(), "institution", "field", "degree");
+        final Education education = new Education("id", resume.getId(), "institution", "field", "degree", 2000);
         this.educationDao.add(education);
 
         final Education getById = this.educationDao.get(education.getId());
@@ -70,7 +70,7 @@ public class DefaultEducationDaoIT {
         assertTrue(getByResumeColl.getEducations().contains(education));
 
         final Education updated =
-                new Education(education.getId(), resume.getId(), "new institution", "new field", "new degree");
+                new Education(education.getId(), resume.getId(), "new institution", "new field", "new degree", 2020);
         this.educationDao.update(updated);
 
         final Education afterUpdate = this.educationDao.get(education.getId());

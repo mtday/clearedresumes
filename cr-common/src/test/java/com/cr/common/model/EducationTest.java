@@ -17,32 +17,36 @@ public class EducationTest {
         assertEquals("", education.getInstitution());
         assertEquals("", education.getField());
         assertEquals("", education.getDegree());
+        assertEquals(0, education.getYear());
     }
 
     @Test
     public void testParameterConstructor() {
-        final Education education = new Education("id", "rid", "institution", "field", "degree");
+        final Education education = new Education("id", "rid", "institution", "field", "degree", 2000);
         assertEquals("id", education.getId());
         assertEquals("rid", education.getResumeId());
         assertEquals("institution", education.getInstitution());
         assertEquals("field", education.getField());
         assertEquals("degree", education.getDegree());
+        assertEquals(2000, education.getYear());
     }
 
     @Test
     public void testCompareTo() {
         final Education a = new Education("id-1", "rid-1", "University of Maryland", "Computer Science",
-                "B.S. Computer Engineering");
+                "B.S. Computer Engineering", 2000);
         final Education b =
-                new Education("id-1", "rid-1", "University of Maryland", "Computer Science", "B.S. Computer Science");
+                new Education("id-1", "rid-1", "University of Maryland", "Computer Science", "B.S. Computer Science",
+                        2000);
         final Education c =
-                new Education("id-1", "rid-1", "University of Maryland", "Engineering", "B.S. Electrical Engineering");
+                new Education("id-1", "rid-1", "University of Maryland", "Engineering", "B.S. Electrical Engineering",
+                        2000);
         final Education d = new Education("id-1", "rid-1", "West Virginia University", "Computer Science",
-                "B.S. Computer Engineering");
+                "B.S. Computer Engineering", 2000);
         final Education e = new Education("id-1", "rid-2", "University of Maryland", "Computer Science",
-                "B.S. Computer Engineering");
+                "B.S. Computer Engineering", 2000);
         final Education f = new Education("id-2", "rid-1", "University of Maryland", "Computer Science",
-                "B.S. Computer Engineering");
+                "B.S. Computer Engineering", 2000);
 
         assertEquals(1, a.compareTo(null));
         assertEquals(0, a.compareTo(a));
@@ -86,17 +90,19 @@ public class EducationTest {
     @Test
     public void testEquals() {
         final Education a = new Education("id-1", "rid-1", "University of Maryland", "Computer Science",
-                "B.S. Computer Engineering");
+                "B.S. Computer Engineering", 2000);
         final Education b =
-                new Education("id-1", "rid-1", "University of Maryland", "Computer Science", "B.S. Computer Science");
+                new Education("id-1", "rid-1", "University of Maryland", "Computer Science", "B.S. Computer Science",
+                        2000);
         final Education c =
-                new Education("id-1", "rid-1", "University of Maryland", "Engineering", "B.S. Electrical Engineering");
+                new Education("id-1", "rid-1", "University of Maryland", "Engineering", "B.S. Electrical Engineering",
+                        2000);
         final Education d = new Education("id-1", "rid-1", "West Virginia University", "Computer Science",
-                "B.S. Computer Engineering");
+                "B.S. Computer Engineering", 2000);
         final Education e = new Education("id-1", "rid-2", "University of Maryland", "Computer Science",
-                "B.S. Computer Engineering");
+                "B.S. Computer Engineering", 2000);
         final Education f = new Education("id-2", "rid-1", "University of Maryland", "Computer Science",
-                "B.S. Computer Engineering");
+                "B.S. Computer Engineering", 2000);
 
         assertNotEquals(a, null);
         assertEquals(a, a);
@@ -139,8 +145,8 @@ public class EducationTest {
 
     @Test
     public void testHashCode() {
-        assertEquals(-1355130479,
-                new Education("id", "rid", "University of Maryland", "Computer Science", "B.S. Computer Science")
+        assertEquals(1399781829,
+                new Education("id", "rid", "University of Maryland", "Computer Science", "B.S. Computer Science", 2000)
                         .hashCode());
     }
 
@@ -148,8 +154,8 @@ public class EducationTest {
     public void testToString() {
         assertEquals(
                 "Education[id=id,resumeId=rid,institution=University of Maryland,field=Computer Science,degree=B.S. "
-                        + "Computer Science]",
-                new Education("id", "rid", "University of Maryland", "Computer Science", "B.S. Computer Science")
+                        + "Computer Science,year=2000]",
+                new Education("id", "rid", "University of Maryland", "Computer Science", "B.S. Computer Science", 2000)
                         .toString());
     }
 }

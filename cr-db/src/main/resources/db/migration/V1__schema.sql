@@ -181,6 +181,7 @@ CREATE TABLE educations (
     institution       VARCHAR(100)   NOT NULL,
     field             VARCHAR(100)   NOT NULL,
     degree            VARCHAR(100)   NOT NULL,
+    year              INTEGER        NOT NULL,
 
     CONSTRAINT educations_pk PRIMARY KEY (id),
     CONSTRAINT educations_fk_resume_id FOREIGN KEY (resume_id) REFERENCES resumes (id) ON DELETE CASCADE
@@ -191,6 +192,7 @@ CREATE TABLE certifications (
     id                VARCHAR(36)    NOT NULL,
     resume_id         VARCHAR(36)    NOT NULL,
     certificate       VARCHAR(100)   NOT NULL,
+    year              INTEGER        NOT NULL,
 
     CONSTRAINT certifications_pk PRIMARY KEY (id),
     CONSTRAINT certifications_fk_resume_id FOREIGN KEY (resume_id) REFERENCES resumes (id) ON DELETE CASCADE

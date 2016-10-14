@@ -26,12 +26,13 @@ public class Education implements Serializable, Comparable<Education> {
     private final String field;
     @Nonnull
     private final String degree;
+    private final int year;
 
     /**
      * Default constructor required for Jackson deserialization.
      */
     Education() {
-        this("", "", "", "", "");
+        this("", "", "", "", "", 0);
     }
 
     /**
@@ -42,15 +43,17 @@ public class Education implements Serializable, Comparable<Education> {
      * @param institution the institution where the education took place
      * @param field the field of study in which the education was obtained
      * @param degree the degree that was obtained
+     * @param year the year in which the degree education was obtained
      */
     public Education(
             @Nonnull final String id, @Nonnull final String resumeId, @Nonnull final String institution,
-            @Nonnull final String field, @Nonnull final String degree) {
+            @Nonnull final String field, @Nonnull final String degree, final int year) {
         this.id = id;
         this.resumeId = resumeId;
         this.institution = institution;
         this.field = field;
         this.degree = degree;
+        this.year = year;
     }
 
     /**
@@ -103,6 +106,15 @@ public class Education implements Serializable, Comparable<Education> {
         return this.degree;
     }
 
+    /**
+     * Retrieve the year in which the degree was obtained.
+     *
+     * @return the year in which the degree was obtained
+     */
+    public int getYear() {
+        return this.year;
+    }
+
     @Override
     public int compareTo(@Nullable final Education other) {
         if (other == null) {
@@ -114,6 +126,7 @@ public class Education implements Serializable, Comparable<Education> {
         cmp.append(getInstitution(), other.getInstitution());
         cmp.append(getField(), other.getField());
         cmp.append(getDegree(), other.getDegree());
+        cmp.append(getYear(), other.getYear());
         cmp.append(getId(), other.getId());
         return cmp.toComparison();
     }
@@ -131,6 +144,7 @@ public class Education implements Serializable, Comparable<Education> {
         hash.append(getInstitution());
         hash.append(getField());
         hash.append(getDegree());
+        hash.append(getYear());
         return hash.toHashCode();
     }
 
@@ -143,6 +157,7 @@ public class Education implements Serializable, Comparable<Education> {
         str.append("institution", getInstitution());
         str.append("field", getField());
         str.append("degree", getDegree());
+        str.append("year", getYear());
         return str.build();
     }
 }
