@@ -375,3 +375,31 @@ body {
   margin-bottom: 10px;
 }
 
+.resume-education-panel {
+  margin-top: 34px;
+}
+.resume-education-panel .panel-heading {
+  min-height: 40px;
+}
+.resume-education-panel .education-institution-cell {
+  width: 40%;
+}
+.resume-education-panel .education-field-cell {
+  width: 40%;
+}
+.resume-education-panel .education-degree-cell {
+  width: 20%;
+}
+.resume-education-panel .action-cell {
+  min-width: 120px;
+}
+.resume-education-panel .empty-cell {
+  padding: 30px;
+}
+.resume-education-panel .form-resume-education .form-control:focus {
+  z-index: 2;
+}
+.resume-education-panel .form-resume-education input {
+  margin-bottom: 10px;
+}
+
