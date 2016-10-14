@@ -297,3 +297,22 @@ body {
   margin-bottom: 10px;
 }
 
+.resume-contact-panel {
+  margin-top: 34px;
+}
+.resume-contact-panel .panel-heading {
+  min-height: 40px;
+}
+.resume-contact-panel .contact-cell {
+  width: 100%;
+}
+.resume-contact-panel .action-cell {
+  min-width: 120px;
+}
+.resume-contact-panel .form-resume-contact .form-control:focus {
+  z-index: 2;
+}
+.resume-contact-panel .form-resume-contact input {
+  margin-bottom: 10px;
+}
+

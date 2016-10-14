@@ -37,15 +37,7 @@ public class ResumeOverviewController extends BaseResumeController {
         super(resumeContainerDao, resumeDao, resumeOverviewDao);
     }
 
-    /**
-     * Display the user resume overview page.
-     *
-     * @param model the web model
-     * @return the name of the template to display
-     */
-    @GetMapping("/user/resume/overview")
-    @Nonnull
-    public String overview(@Nonnull final Map<String, Object> model) {
+    private void populateModel(@Nonnull final Map<String, Object> model) {
         final ResumeContainer resumeContainer = createResumeContainer();
 
         final boolean aboutYouComplete = !StringUtils.isBlank(resumeContainer.getOverview().getFullName());
@@ -57,10 +49,20 @@ public class ResumeOverviewController extends BaseResumeController {
         model.put("objectiveStatusColor", objectiveComplete ? "success" : "info");
         model.put("objectiveStatus", objectiveComplete ? "Complete" : "Incomplete");
 
-        LOG.info("Adding overview to model: {}", resumeContainer.getOverview());
         model.put("overview", resumeContainer.getOverview());
-
         setCurrentAccount(model);
+    }
+
+    /**
+     * Display the user resume overview page.
+     *
+     * @param model the web model
+     * @return the name of the template to display
+     */
+    @GetMapping("/user/resume/overview")
+    @Nonnull
+    public String overview(@Nonnull final Map<String, Object> model) {
+        populateModel(model);
         return "user/resume/overview";
     }
 
@@ -74,10 +76,12 @@ public class ResumeOverviewController extends BaseResumeController {
     @PostMapping("/user/resume/overview/about-you")
     @Nonnull
     public String aboutYou(
-            @Nonnull @RequestParam("fullName") final String fullName, @Nonnull final Map<String, Object> model) {
+            @Nonnull @RequestParam(value = "fullName", defaultValue = "") final String fullName,
+            @Nonnull final Map<String, Object> model) {
         if (StringUtils.isBlank(fullName)) {
+            populateModel(model);
             model.put("aboutYouMessage", "Please specify a valid name.");
-            return "redirect:/user/resume/overview";
+            return "user/resume/overview";
         }
 
         final ResumeContainer resumeContainer = createResumeContainer();
@@ -88,7 +92,7 @@ public class ResumeOverviewController extends BaseResumeController {
         getResumeOverviewDao().update(updated);
         updateResumeContainer(updated.getResumeId());
 
-        setCurrentAccount(model);
+        populateModel(model);
         return "redirect:/user/resume/overview";
     }
 
@@ -102,26 +106,22 @@ public class ResumeOverviewController extends BaseResumeController {
     @PostMapping("/user/resume/overview/objective")
     @Nonnull
     public String objective(
-            @Nonnull @RequestParam("objective") final String objective, @Nonnull final Map<String, Object> model) {
-        LOG.info("Saving objective: {}", objective);
+            @Nonnull @RequestParam(value = "objective", defaultValue = "") final String objective,
+            @Nonnull final Map<String, Object> model) {
         if (StringUtils.isBlank(objective)) {
+            populateModel(model);
             model.put("objectiveMessage", "Please populate the objective field.");
-            return "redirect:/user/resume/overview";
+            return "user/resume/overview";
         }
 
         final ResumeContainer resumeContainer = createResumeContainer();
-        LOG.info("Current: {}", resumeContainer);
 
         // Update the overview with the new about-you information.
         final ResumeOverview existing = resumeContainer.getOverview();
-        LOG.info("Existing Overview: {}", existing);
         final ResumeOverview updated = new ResumeOverview(existing.getResumeId(), existing.getFullName(), objective);
-        LOG.info("Updated Overview: {}", updated);
         getResumeOverviewDao().update(updated);
         updateResumeContainer(updated.getResumeId());
-        LOG.info("Saved");
 
-        setCurrentAccount(model);
         return "redirect:/user/resume/overview";
     }
 }

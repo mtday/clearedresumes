@@ -52,15 +52,15 @@ public class DefaultContactInfoDao implements ContactInfoDao {
     }
 
     @Override
-    public void add(@Nonnull final ContactInfo workLocation) {
-        this.jdbcTemplate.update("INSERT INTO contact_infos (id, resume_id, type, value) VALUES (?, ?, ?, ?)",
-                workLocation.getId(), workLocation.getResumeId(), workLocation.getType(), workLocation.getValue());
+    public void add(@Nonnull final ContactInfo contactInfo) {
+        this.jdbcTemplate.update("INSERT INTO contact_infos (id, resume_id, value) VALUES (?, ?, ?)",
+                contactInfo.getId(), contactInfo.getResumeId(), contactInfo.getValue());
     }
 
     @Override
-    public void update(@Nonnull final ContactInfo workLocation) {
-        this.jdbcTemplate.update("UPDATE contact_infos SET resume_id = ?, type = ?, value = ? WHERE id = ?",
-                workLocation.getResumeId(), workLocation.getType(), workLocation.getValue(), workLocation.getId());
+    public void update(@Nonnull final ContactInfo contactInfo) {
+        this.jdbcTemplate.update("UPDATE contact_infos SET resume_id = ?, value = ? WHERE id = ?",
+                contactInfo.getResumeId(), contactInfo.getValue(), contactInfo.getId());
     }
 
     @Override
@@ -74,9 +74,8 @@ public class DefaultContactInfoDao implements ContactInfoDao {
         public ContactInfo mapRow(@Nonnull final ResultSet resultSet, final int rowNum) throws SQLException {
             final String id = resultSet.getString("id");
             final String resumeId = resultSet.getString("resume_id");
-            final String type = resultSet.getString("type");
             final String value = resultSet.getString("value");
-            return new ContactInfo(id, resumeId, type, value);
+            return new ContactInfo(id, resumeId, value);
         }
     }
 }

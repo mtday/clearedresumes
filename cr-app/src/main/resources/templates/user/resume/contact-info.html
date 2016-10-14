@@ -8,11 +8,123 @@
 
     <div th:replace="fragments/user-resume-nav :: resume-nav (currentPage='contact-info')"></div>
 
-    TODO - Resume Contact Info
+    <div class="container-fluid">
+        <h2>Resume Contact Information</h2>
+    </div>
+
+    <div class="row">
+        <div class="col-md-7">
+            <!-- Contact Info panel -->
+            <div class="panel panel-default resume-contact-panel">
+                <div class="panel-heading">
+                    <div class="pull-left">
+                        <span class="panel-title">Getting in Touch</span>
+                    </div>
+                    <div class="pull-right">
+                        <span th:class="'label text-right label-' + ${contactInfoStatusColor}"
+                              th:text="${contactInfoStatus}">Status</span>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <p>This contact information will be used by potential employers to reach out to you if they
+                        think you would be a good fit for their company and want to talk with you to take the
+                        next steps in the interviewing process.</p>
+
+                    <table class="table table-bordered resume-contact-table">
+                        <thead>
+                            <tr>
+                                <th class="contact-cell">Contact Information</th>
+                                <th class="text-center action-cell">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="contact-cell" th:text="${email}">info@clearedresumes.com</td>
+                                <td class="text-center action-cell">
+                                    <a th:href="@{/user/profile}" class="label label-default">Edit Profile</a>
+                                </td>
+                            </tr>
+                            <tr th:each="contactInfo : ${contactInfos}">
+                                <td class="contact-cell" th:text="${contactInfo.value}">Value</td>
+                                <td class="text-center action-cell">
+                                    <a th:id="'edit-' + ${contactInfo.id}" href="#" class="label label-info"
+                                       th:onclick="'edit(\'' + ${contactInfo.id} + '\', \'' + ${contactInfo.value} + '\');'">Edit</a>
+                                    <a th:id="${contactInfo.id}" class="label label-danger" data-toggle="popover"
+                                       data-placement="top">Delete</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <!-- Add/Update panel -->
+            <div class="panel panel-default resume-contact-panel">
+                <div class="panel-heading">
+                    <span class="panel-title" id="contact-title">Add Contact Information</span>
+                </div>
+                <div class="panel-body">
+                    <p th:if="${contactInfoMessage}" class="alert alert-info" th:text="${contactInfoMessage}">
+                        Message</p>
+
+                    <form class="form-resume-contact" name="contactInfoForm" th:action="@{/user/resume/contact-info}"
+                          method="POST">
+
+                        <input type="hidden" name="id" id="contact-id"/>
+
+                        <label for="contact-value" class="sr-only">Contact Info (E-Mail, Phone Number, etc.)</label>
+                        <input type="text" name="value" id="contact-value" class="form-control"
+                               placeholder="Contact Info (E-Mail, Phone Number, etc.)" required="required"
+                               autofocus="autofocus"/>
+
+                        <div class="btn-group">
+                            <button id="contact-submit" class="btn btn-default btn-primary" type="submit">Add</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>
 
 <footer th:replace="fragments/footer :: footer"></footer>
 <div th:replace="fragments/scripts :: scripts"></div>
+
+<script>
+    $(document).ready(function() {
+        $('[data-toggle="popover"]').popover({
+            html: true,
+            content: function() {
+                var str = 'Are you sure?<div class="text-center">';
+                str += '<a href="#" class="label label-danger" onclick="remove(\'' + this.id + '\');">Yes</a> ';
+                str += '<a href="#" class="label label-default" onclick="cancel();">No</a></div>';
+                return str;
+            }
+        });
+    });
+
+    function remove(id) {
+        document.location = '/user/resume/contact-info/delete/' + id;
+        $('[data-toggle="popover"]').popover('hide');
+    }
+
+    function cancel() {
+        $('[data-toggle="popover"]').popover('hide');
+    }
+
+    function edit(id, value) {
+        $('#contact-id')[0].value = id;
+        $('#contact-value')[0].value = value;
+        $('#contact-value')[0].focus();
+        $('#contact-submit')[0].innerHTML = 'Save';
+        $('#contact-submit').addClass('btn-success');
+        $('#contact-submit').removeClass('btn-primary');
+        $('#contact-title')[0].innerHTML = 'Edit Contact Information';
+    }
+
+
+</script>
 </body>
 </html>

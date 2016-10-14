@@ -121,11 +121,10 @@ CREATE TABLE resume_lcats (
 CREATE TABLE contact_infos (
     id                VARCHAR(36)    NOT NULL,
     resume_id         VARCHAR(36)    NOT NULL,
-    type              VARCHAR(20)    NOT NULL,
     value             VARCHAR(100)   NOT NULL,
 
     CONSTRAINT contact_info_pk PRIMARY KEY (id),
-    CONSTRAINT contact_info_uniq UNIQUE (resume_id, type, value),
+    CONSTRAINT contact_info_uniq UNIQUE (resume_id, value),
     CONSTRAINT contact_info_fk_resume_id FOREIGN KEY (resume_id) REFERENCES resumes (id) ON DELETE CASCADE
 );
 
@@ -195,15 +194,6 @@ CREATE TABLE certifications (
 
     CONSTRAINT certifications_pk PRIMARY KEY (id),
     CONSTRAINT certifications_fk_resume_id FOREIGN KEY (resume_id) REFERENCES resumes (id) ON DELETE CASCADE
-);
-
-
-CREATE TABLE contact_types (
-    id                VARCHAR(36)    NOT NULL,
-    name              VARCHAR(50)    NOT NULL,
-
-    CONSTRAINT contact_types_pk PRIMARY KEY (id),
-    CONSTRAINT contact_types_uniq UNIQUE (name)
 );
 
 

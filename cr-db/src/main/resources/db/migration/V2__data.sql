@@ -1,8 +1,4 @@
 
-INSERT INTO contact_types (id, name) VALUES
-('e55bcf32-f569-46ae-bca3-686f76c8d94c', 'Phone'),
-('e4ab0265-fdb7-4bd2-a92e-df1bce22dd15', 'E-Mail');
-
 INSERT INTO clearance_types (id, name) VALUES
 ('ee426e2e-e7b8-4528-84f3-e75b210d096c', 'TS/SCI'),
 ('173ac0bf-7195-4eb1-8a0c-329f3178f0b5', 'TS'),

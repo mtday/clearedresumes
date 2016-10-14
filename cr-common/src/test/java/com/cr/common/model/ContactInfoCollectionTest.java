@@ -22,8 +22,8 @@ public class ContactInfoCollectionTest {
 
     @Test
     public void testParameterConstructor() {
-        final ContactInfo contactInfo1 = new ContactInfo("id-1", "rid-1", "E-Mail", "value");
-        final ContactInfo contactInfo2 = new ContactInfo("id-2", "rid-1", "Phone", "value");
+        final ContactInfo contactInfo1 = new ContactInfo("id-1", "rid-1", "value");
+        final ContactInfo contactInfo2 = new ContactInfo("id-2", "rid-1", "value");
         final ContactInfoCollection contactInfoColl =
                 new ContactInfoCollection(Arrays.asList(contactInfo1, contactInfo2));
         assertNotNull(contactInfoColl.getContactInfos());
@@ -34,8 +34,8 @@ public class ContactInfoCollectionTest {
 
     @Test
     public void testCompareTo() {
-        final ContactInfo contactInfo1 = new ContactInfo("id-1", "rid-1", "E-Mail", "value");
-        final ContactInfo contactInfo2 = new ContactInfo("id-2", "rid-1", "Phone", "value");
+        final ContactInfo contactInfo1 = new ContactInfo("id-1", "rid-1", "value");
+        final ContactInfo contactInfo2 = new ContactInfo("id-2", "rid-1", "value");
 
         final ContactInfoCollection a = new ContactInfoCollection(Collections.emptyList());
         final ContactInfoCollection b = new ContactInfoCollection(Collections.singleton(contactInfo1));
@@ -55,8 +55,8 @@ public class ContactInfoCollectionTest {
 
     @Test
     public void testEquals() {
-        final ContactInfo contactInfo1 = new ContactInfo("id-1", "rid-1", "E-Mail", "value");
-        final ContactInfo contactInfo2 = new ContactInfo("id-2", "rid-1", "Phone", "value");
+        final ContactInfo contactInfo1 = new ContactInfo("id-1", "rid-1", "value");
+        final ContactInfo contactInfo2 = new ContactInfo("id-2", "rid-1", "value");
 
         final ContactInfoCollection a = new ContactInfoCollection(Collections.emptyList());
         final ContactInfoCollection b = new ContactInfoCollection(Collections.singleton(contactInfo1));
@@ -76,20 +76,20 @@ public class ContactInfoCollectionTest {
 
     @Test
     public void testHashCode() {
-        final ContactInfo contactInfo1 = new ContactInfo("id-1", "rid-1", "E-Mail", "value");
-        final ContactInfo contactInfo2 = new ContactInfo("id-2", "rid-1", "Phone", "value");
+        final ContactInfo contactInfo1 = new ContactInfo("id-1", "rid-1", "value");
+        final ContactInfo contactInfo2 = new ContactInfo("id-2", "rid-1", "value");
         final ContactInfoCollection contactInfoColl =
                 new ContactInfoCollection(Arrays.asList(contactInfo1, contactInfo2));
-        assertEquals(1641395727, contactInfoColl.hashCode());
+        assertEquals(-92991998, contactInfoColl.hashCode());
     }
 
     @Test
     public void testToString() {
-        final ContactInfo contactInfo1 = new ContactInfo("id-1", "rid-1", "E-Mail", "value");
-        final ContactInfo contactInfo2 = new ContactInfo("id-2", "rid-1", "Phone", "value");
+        final ContactInfo contactInfo1 = new ContactInfo("id-1", "rid-1", "value");
+        final ContactInfo contactInfo2 = new ContactInfo("id-2", "rid-1", "value");
         final ContactInfoCollection contactInfoColl =
                 new ContactInfoCollection(Arrays.asList(contactInfo1, contactInfo2));
-        assertEquals("ContactInfoCollection[contactInfos=[ContactInfo[id=id-1,resumeId=rid-1,type=E-Mail,value=value], "
-                + "ContactInfo[id=id-2,resumeId=rid-1,type=Phone,value=value]]]", contactInfoColl.toString());
+        assertEquals("ContactInfoCollection[contactInfos=[ContactInfo[id=id-1,resumeId=rid-1,value=value], "
+                + "ContactInfo[id=id-2,resumeId=rid-1,value=value]]]", contactInfoColl.toString());
     }
 }

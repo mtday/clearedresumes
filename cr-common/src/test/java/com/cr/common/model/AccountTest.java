@@ -38,7 +38,7 @@ public class AccountTest {
         final ResumeOverview overview = new ResumeOverview("rid", "Full Name", "Objective");
         final ResumeReview review = new ResumeReview("rid", company.getId(), ResumeReviewStatus.SAVED);
         final ResumeLaborCategory lcat = new ResumeLaborCategory("id", "rid", "Labor Category", 10);
-        final ContactInfo contactInfo = new ContactInfo("id", "rid", "Phone", "Value");
+        final ContactInfo contactInfo = new ContactInfo("id", "rid", "Value");
         final WorkLocation workLocation = new WorkLocation("id", "rid", "State", "Region");
         final LocalDate begin = LocalDate.of(2016, 1, 1);
         final WorkSummary workSummary =
@@ -101,7 +101,7 @@ public class AccountTest {
         final ResumeOverview overview = new ResumeOverview("rid", "Full Name", "Objective");
         final ResumeReview review = new ResumeReview("rid", company.getId(), ResumeReviewStatus.SAVED);
         final ResumeLaborCategory lcat = new ResumeLaborCategory("id", "rid", "Labor Category", 10);
-        final ContactInfo contactInfo = new ContactInfo("id", "rid", "Phone", "Value");
+        final ContactInfo contactInfo = new ContactInfo("id", "rid", "Value");
         final WorkLocation workLocation = new WorkLocation("id", "rid", "State", "Region");
         final LocalDate begin = LocalDate.of(2016, 1, 1);
         final WorkSummary workSummary =
@@ -134,7 +134,7 @@ public class AccountTest {
                         + "created=2016-01-01T02:03:04,expiration=<null>],overview=ResumeOverview[resumeId=rid,"
                         + "fullName=Full Name,objective=Objective],reviews=[ResumeReview[resumeId=rid,companyId=cid,"
                         + "status=SAVED]],laborCategories=[ResumeLaborCategory[id=id,resumeId=rid,laborCategory=Labor"
-                        + " Category,experience=10]],contactInfos=[ContactInfo[id=id,resumeId=rid,type=Phone,"
+                        + " Category,experience=10]],contactInfos=[ContactInfo[id=id,resumeId=rid,"
                         + "value=Value]],workLocations=[WorkLocation[id=id,resumeId=rid,state=State,region=Region]],"
                         + "workSummaries=[WorkSummary[id=id,resumeId=rid,jobTitle=Title,employer=Employer,"
                         + "beginDate=2016-01-01,endDate=<null>,responsibilities=Responsibilities,"

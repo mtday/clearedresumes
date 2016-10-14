@@ -45,7 +45,7 @@ public class DefaultUserDetailsTest {
         final ResumeOverview overview = new ResumeOverview(resume.getId(), "Full Name", "Objective");
         final ResumeReview review = new ResumeReview(resume.getId(), company.getId(), ResumeReviewStatus.SAVED);
         final ResumeLaborCategory lcat = new ResumeLaborCategory("id", resume.getId(), "Labor Category", 10);
-        final ContactInfo contactInfo = new ContactInfo("id", resume.getId(), "Phone", "Value");
+        final ContactInfo contactInfo = new ContactInfo("id", resume.getId(), "Value");
         final WorkLocation workLocation = new WorkLocation("id", resume.getId(), "State", "Region");
         final WorkSummary workSummary =
                 new WorkSummary("id", resume.getId(), "Title", "Employer", LocalDate.now(), null, "Responsibilities",
@@ -84,10 +84,10 @@ public class DefaultUserDetailsTest {
                         + "created=2016-01-01T02:03:04,expiration=<null>],overview=ResumeOverview[resumeId=rid,"
                         + "fullName=Full Name,objective=Objective],reviews=[ResumeReview[resumeId=rid,companyId=cid,"
                         + "status=SAVED]],laborCategories=[ResumeLaborCategory[id=id,resumeId=rid,laborCategory=Labor"
-                        + " Category,experience=10]],contactInfos=[ContactInfo[id=id,resumeId=rid,type=Phone,"
-                        + "value=Value]],workLocations=[WorkLocation[id=id,resumeId=rid,state=State,region=Region]],"
+                        + " Category,experience=10]],contactInfos=[ContactInfo[id=id,resumeId=rid,value=Value]],"
+                        + "workLocations=[WorkLocation[id=id,resumeId=rid,state=State,region=Region]],"
                         + "workSummaries=[WorkSummary[id=id,resumeId=rid,jobTitle=Title,employer=Employer,"
-                        + "beginDate=2016-10-13,endDate=<null>,responsibilities=Responsibilities,"
+                        + "beginDate=2016-10-14,endDate=<null>,responsibilities=Responsibilities,"
                         + "accomplishments=Accomplishments]],clearances=[Clearance[id=id,resumeId=rid,type=Type,"
                         + "organization=Organization,polygraph=Polygraph]],educations=[Education[id=id,resumeId=rid,"
                         + "institution=Institution,field=Field,degree=Degree]],certifications=[Certification[id=id,"

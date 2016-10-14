@@ -57,7 +57,7 @@ public class DefaultContactInfoDaoIT {
         assertNotNull(beforeAddByResumeColl);
         assertEquals(0, beforeAddByResumeColl.getContactInfos().size());
 
-        final ContactInfo contactInfo = new ContactInfo("id", resume.getId(), "Phone", "123-456-7890");
+        final ContactInfo contactInfo = new ContactInfo("id", resume.getId(), "123-456-7890");
         this.contactInfoDao.add(contactInfo);
 
         final ContactInfo getById = this.contactInfoDao.get(contactInfo.getId());
@@ -69,7 +69,7 @@ public class DefaultContactInfoDaoIT {
         assertEquals(1, getByResumeColl.getContactInfos().size());
         assertTrue(getByResumeColl.getContactInfos().contains(contactInfo));
 
-        final ContactInfo updated = new ContactInfo(contactInfo.getId(), resume.getId(), "Phone", "123-456-7777");
+        final ContactInfo updated = new ContactInfo(contactInfo.getId(), resume.getId(), "123-456-7777");
         this.contactInfoDao.update(updated);
 
         final ContactInfo afterUpdate = this.contactInfoDao.get(contactInfo.getId());

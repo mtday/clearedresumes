@@ -38,7 +38,7 @@ public class ResumeContainerTest {
         final ResumeOverview overview = new ResumeOverview(resume.getId(), "Full Name", "Objective");
         final ResumeReview review = new ResumeReview(resume.getId(), "cid", ResumeReviewStatus.SAVED);
         final ResumeLaborCategory lcat = new ResumeLaborCategory("id", resume.getId(), "Labor Category", 10);
-        final ContactInfo contactInfo = new ContactInfo("id", resume.getId(), "Phone", "Value");
+        final ContactInfo contactInfo = new ContactInfo("id", resume.getId(), "Value");
         final WorkLocation workLocation = new WorkLocation("id", resume.getId(), "State", "Region");
         final WorkSummary workSummary =
                 new WorkSummary("id", resume.getId(), "Title", "Employer", LocalDate.now(), null, "Responsibilities",
@@ -84,7 +84,7 @@ public class ResumeContainerTest {
         final ResumeOverview overview = new ResumeOverview(resume1.getId(), "Full Name", "Objective");
         final ResumeReview review = new ResumeReview(resume1.getId(), "cid", ResumeReviewStatus.SAVED);
         final ResumeLaborCategory lcat = new ResumeLaborCategory("id", resume1.getId(), "Labor Category", 10);
-        final ContactInfo contactInfo = new ContactInfo("id", resume1.getId(), "Phone", "Value");
+        final ContactInfo contactInfo = new ContactInfo("id", resume1.getId(), "Value");
         final WorkLocation workLocation = new WorkLocation("id", resume1.getId(), "State", "Region");
         final WorkSummary workSummary =
                 new WorkSummary("id", resume1.getId(), "Title", "Employer", LocalDate.now(), null, "Responsibilities",
@@ -142,7 +142,7 @@ public class ResumeContainerTest {
         final ResumeOverview overview = new ResumeOverview(resume.getId(), "Full Name", "Objective");
         final ResumeReview review = new ResumeReview(resume.getId(), "cid", ResumeReviewStatus.SAVED);
         final ResumeLaborCategory lcat = new ResumeLaborCategory("id", resume.getId(), "Labor Category", 10);
-        final ContactInfo contactInfo = new ContactInfo("id", resume.getId(), "Phone", "Value");
+        final ContactInfo contactInfo = new ContactInfo("id", resume.getId(), "Value");
         final WorkLocation workLocation = new WorkLocation("id", resume.getId(), "State", "Region");
         final LocalDate begin = LocalDate.of(2016, 1, 1);
         final WorkSummary workSummary =
@@ -161,7 +161,7 @@ public class ResumeContainerTest {
 
     @Test
     public void testHashCode() {
-        assertEquals(-1844890365, getResumeContainer().hashCode());
+        assertEquals(966556169, getResumeContainer().hashCode());
     }
 
     @Test
@@ -171,7 +171,7 @@ public class ResumeContainerTest {
                         + "expiration=<null>],overview=ResumeOverview[resumeId=rid,fullName=Full Name,"
                         + "objective=Objective],reviews=[ResumeReview[resumeId=rid,companyId=cid,status=SAVED]],"
                         + "laborCategories=[ResumeLaborCategory[id=id,resumeId=rid,laborCategory=Labor Category,"
-                        + "experience=10]],contactInfos=[ContactInfo[id=id,resumeId=rid,type=Phone,value=Value]],"
+                        + "experience=10]],contactInfos=[ContactInfo[id=id,resumeId=rid,value=Value]],"
                         + "workLocations=[WorkLocation[id=id,resumeId=rid,state=State,region=Region]],"
                         + "workSummaries=[WorkSummary[id=id,resumeId=rid,jobTitle=Title,employer=Employer,"
                         + "beginDate=2016-01-01,endDate=<null>,responsibilities=Responsibilities,"
