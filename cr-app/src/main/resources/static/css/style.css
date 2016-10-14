@@ -316,3 +316,31 @@ body {
   margin-bottom: 10px;
 }
 
+.resume-work-location-panel {
+  margin-top: 34px;
+}
+.resume-work-location-panel .panel-heading {
+  min-height: 40px;
+}
+.resume-work-location-panel .work-location-state-cell {
+  width: 50%;
+}
+.resume-work-location-panel .work-location-region-cell {
+  width: 50%;
+}
+.resume-work-location-panel .action-cell {
+  min-width: 120px;
+}
+.resume-work-location-panel .empty-cell {
+  padding: 30px;
+}
+.resume-work-location-panel .form-resume-work-location .form-control:focus {
+  z-index: 2;
+}
+.resume-work-location-panel .form-resume-work-location input {
+  margin-bottom: 10px;
+}
+.resume-work-location-panel .form-resume-work-location select {
+  margin-bottom: 10px;
+}
+
