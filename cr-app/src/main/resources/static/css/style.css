@@ -344,3 +344,34 @@ body {
   margin-bottom: 10px;
 }
 
+.resume-clearance-panel {
+  margin-top: 34px;
+}
+.resume-clearance-panel .panel-heading {
+  min-height: 40px;
+}
+.resume-clearance-panel .clearance-type-cell {
+  width: 30%;
+}
+.resume-clearance-panel .clearance-organization-cell {
+  width: 40%;
+}
+.resume-clearance-panel .clearance-polygraph-cell {
+  width: 30%;
+}
+.resume-clearance-panel .action-cell {
+  min-width: 120px;
+}
+.resume-clearance-panel .empty-cell {
+  padding: 30px;
+}
+.resume-clearance-panel .form-resume-clearance .form-control:focus {
+  z-index: 2;
+}
+.resume-clearance-panel .form-resume-clearance .input-group {
+  margin-bottom: 10px;
+}
+.resume-clearance-panel .form-resume-clearance input.padded {
+  margin-bottom: 10px;
+}
+

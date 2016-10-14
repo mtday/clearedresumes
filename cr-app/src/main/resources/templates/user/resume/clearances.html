@@ -8,11 +8,174 @@
 
     <div th:replace="fragments/user-resume-nav :: resume-nav (currentPage='clearances')"></div>
 
-    TODO - Resume Clearances
+    <div class="container-fluid">
+        <h2>Your Clearances</h2>
+    </div>
+
+    <div class="row">
+        <div class="col-md-7">
+            <!-- Contact Info panel -->
+            <div class="panel panel-default resume-clearance-panel">
+                <div class="panel-heading">
+                    <div class="pull-left">
+                        <span class="panel-title">Clearances You Possess</span>
+                    </div>
+                    <div class="pull-right">
+                        <span th:class="'label text-right label-' + ${clearanceStatusColor}"
+                              th:text="${clearanceStatus}">Status</span>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <p>Describe the clearances you possess. These clearances will help potential employers determine
+                        whether you qualify for the classified positions they have available.</p>
+
+                    <table class="table table-bordered resume-clearance-table">
+                        <thead>
+                            <tr>
+                                <th class="clearance-type-cell">Clearance Type</th>
+                                <th class="clearance-polygraph-cell">Polygraph</th>
+                                <th class="clearance-organization-cell">Granting Organization</th>
+                                <th class="text-center action-cell">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:if="${#lists.isEmpty(clearances)}">
+                                <td class="text-center empty-cell" colspan="4">No clearances have been added yet.
+                                </td>
+                            </tr>
+                            <tr th:each="clearance : ${clearances}">
+                                <td class="clearance-type-cell" th:text="${clearance.type}">Clearance Type</td>
+                                <td class="clearance-polygraph-cell" th:text="${clearance.polygraph}">Polygraph</td>
+                                <td class="clearance-organization-cell" th:text="${clearance.organization}">Granting
+                                    Organization
+                                </td>
+                                <td class="text-center action-cell">
+                                    <a th:id="'edit-' + ${clearance.id}" href="#" class="label label-info"
+                                       th:onclick="'edit(\'' + ${clearance.id} + '\', \'' + ${clearance.type} + '\', \'' + ${clearance.organization} + '\', \'' + ${clearance.polygraph} + '\');'">Edit</a>
+                                    <a th:id="${clearance.id}" class="label label-danger" data-toggle="popover"
+                                       data-placement="top">Delete</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <!-- Add/Update panel -->
+            <div class="panel panel-default resume-clearance-panel">
+                <div class="panel-heading">
+                    <span class="panel-title" id="clearance-title">Add Clearance</span>
+                </div>
+                <div class="panel-body">
+                    <p th:if="${clearanceMessage}" class="alert alert-info" th:text="${clearanceMessage}">
+                        Message</p>
+
+                    <form class="form-resume-clearance" name="clearanceForm" th:action="@{/user/resume/clearances}"
+                          method="POST">
+
+                        <input type="hidden" name="id" id="clearance-id"/>
+
+                        <div class="input-group dropdown">
+                            <label for="clearance-type" class="sr-only">Clearance Type</label>
+                            <input type="text" name="type" id="clearance-type"
+                                   class="form-control clearance-type dropdown-toggle-type" required="required"
+                                   placeholder="Clearance Type" autofocus="autofocus"/>
+                            <ul class="dropdown-menu dropdown-type">
+                                <li th:each="type : ${types}">
+                                    <a href="#" th:attr="data-value=${type.name}" th:text="${type.name}"></a>
+                                </li>
+                            </ul>
+                            <span role="button" class="input-group-addon dropdown-toggle-type" data-toggle="dropdown"
+                                  aria-haspopup="true" aria-expanded="false"><span class="caret"></span></span>
+                        </div>
+
+                        <div class="input-group dropdown">
+                            <label for="clearance-polygraph" class="sr-only">Polygraph</label>
+                            <input type="text" name="polygraph" id="clearance-polygraph"
+                                   class="form-control polygraph dropdown-toggle-polygraph" required="required"
+                                   placeholder="Polygraph" autofocus="autofocus"/>
+                            <ul class="dropdown-menu dropdown-polygraph">
+                                <li th:each="polygraph : ${polygraphs}">
+                                    <a href="#" th:attr="data-value=${polygraph.name}" th:text="${polygraph.name}"></a>
+                                </li>
+                            </ul>
+                            <span role="button" class="input-group-addon dropdown-toggle-polygraph"
+                                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span
+                                    class="caret"></span></span>
+                        </div>
+
+                        <label for="clearance-organization" class="sr-only">Granting Organization or Agency</label>
+                        <input type="text" name="organization" id="clearance-organization" class="form-control padded"
+                               placeholder="Granting Organization or Agency" required="required" autofocus="autofocus"/>
+
+                        <div class="btn-group">
+                            <button id="clearance-submit" class="btn btn-default btn-primary" type="submit">Add
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>
 
 <footer th:replace="fragments/footer :: footer"></footer>
 <div th:replace="fragments/scripts :: scripts"></div>
+
+<script>
+    $(function() {
+        $('.dropdown-type a').click(function() {
+            console.log($(this).attr('data-value'));
+            $(this).closest('.dropdown').find('input.clearance-type')
+                .val($(this).attr('data-value'));
+        });
+        $('.dropdown-polygraph a').click(function() {
+            console.log($(this).attr('data-value'));
+            $(this).closest('.dropdown').find('input.polygraph')
+                .val($(this).attr('data-value'));
+        });
+    });
+
+    $(document).ready(function() {
+        $('[data-toggle="popover"]').popover({
+            html: true,
+            content: function() {
+                var str = 'Are you sure?<div class="text-center">';
+                str += '<a href="#" class="label label-danger" onclick="remove(\'' + this.id + '\');">Yes</a> ';
+                str += '<a href="#" class="label label-default" onclick="cancel();">No</a></div>';
+                return str;
+            }
+        });
+    });
+
+    function remove(id) {
+        document.location = '/user/resume/clearances/delete/' + id;
+        $('[data-toggle="popover"]').popover('hide');
+    }
+
+    function cancel() {
+        $('[data-toggle="popover"]').popover('hide');
+    }
+
+    function edit(id, type, organization, polygraph) {
+        $('#clearance-id')[0].value = id;
+        $('#clearance-type')[0].value = type;
+        $('#clearance-type')[0].focus();
+        $('#clearance-organization')[0].value = organization;
+        $('#clearance-polygraph')[0].value = polygraph;
+        $('#clearance-submit')[0].innerHTML = 'Save';
+        $('#clearance-submit').addClass('btn-success');
+        $('#clearance-submit').removeClass('btn-primary');
+        $('#clearance-title')[0].innerHTML = 'Edit Clearance';
+    }
+
+
+
+
+
+
+</script>
 </body>
 </html>

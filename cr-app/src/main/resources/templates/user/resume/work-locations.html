@@ -9,7 +9,7 @@
     <div th:replace="fragments/user-resume-nav :: resume-nav (currentPage='work-locations')"></div>
 
     <div class="container-fluid">
-        <h2>Resume Work Locations</h2>
+        <h2>Desired Work Locations</h2>
     </div>
 
     <div class="row">
@@ -40,7 +40,8 @@
                         </thead>
                         <tbody>
                             <tr th:if="${#lists.isEmpty(workLocations)}">
-                                <td class="text-center empty-cell" colspan="3">No work locations have been added yet.</td>
+                                <td class="text-center empty-cell" colspan="3">No work locations have been added yet.
+                                </td>
                             </tr>
                             <tr th:each="workLocation : ${workLocations}">
                                 <td class="work-location-state-cell" th:text="${workLocation.state}">State</td>
@@ -127,15 +128,11 @@
         $('#work-location-state')[0].value = state;
         $('#work-location-state')[0].focus();
         $('#work-location-region')[0].value = region;
-        $('#work-location-region')[0].focus();
         $('#work-location-submit')[0].innerHTML = 'Save';
         $('#work-location-submit').addClass('btn-success');
         $('#work-location-submit').removeClass('btn-primary');
         $('#work-location-title')[0].innerHTML = 'Edit Work Location';
     }
-
-
-
 </script>
 </body>
 </html>
