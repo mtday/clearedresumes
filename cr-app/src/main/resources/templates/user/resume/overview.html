@@ -63,7 +63,7 @@
 
                     <p th:if="${objectiveMessage}" class="alert alert-info" th:text="${objectiveMessage}">Message</p>
 
-                    <form class="form-resume-overview-objective" name="objectiveForm"
+                    <form class="form-resume-overview-objective" name="objectiveForm" novalidate="novalidate"
                           th:action="@{/user/resume/overview/objective}" method="POST">
 
                         <label for="overview-objective" class="sr-only">Career Objective</label>
@@ -84,5 +84,16 @@
 
 <footer th:replace="fragments/footer :: footer"></footer>
 <div th:replace="fragments/scripts :: scripts"></div>
+
+<script>
+    new SimpleMDE({
+        element: document.getElementById("overview-objective"),
+        autoDownloadFontAwesome: false,
+        spellChecker: false,
+        autosave: true,
+        status: false,
+        hideIcons: ["link", "image", "fullscreen", "side-by-side"]
+    });
+</script>
 </body>
 </html>

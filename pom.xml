@@ -74,6 +74,11 @@
             </dependency>
             <dependency>
                 <groupId>org.webjars</groupId>
+                <artifactId>font-awesome</artifactId>
+                <version>4.6.3</version>
+            </dependency>
+            <dependency>
+                <groupId>org.webjars</groupId>
                 <artifactId>html5shiv</artifactId>
                 <version>3.7.3</version>
             </dependency>
@@ -86,6 +91,11 @@
                 <groupId>org.webjars</groupId>
                 <artifactId>respond</artifactId>
                 <version>1.4.2</version>
+            </dependency>
+            <dependency>
+                <groupId>org.webjars.npm</groupId>
+                <artifactId>simplemde</artifactId>
+                <version>1.11.2</version>
             </dependency>
 
             <!-- Null checking annotations -->
@@ -168,6 +178,7 @@
                         <ignoredUnusedDeclaredDependency>org.postgresql:postgresql</ignoredUnusedDeclaredDependency>
                         <ignoredUnusedDeclaredDependency>org.springframework.boot:</ignoredUnusedDeclaredDependency>
                         <ignoredUnusedDeclaredDependency>org.webjars:</ignoredUnusedDeclaredDependency>
+                        <ignoredUnusedDeclaredDependency>org.webjars.npm:</ignoredUnusedDeclaredDependency>
                     </ignoredUnusedDeclaredDependencies>
                 </configuration>
                 <executions>

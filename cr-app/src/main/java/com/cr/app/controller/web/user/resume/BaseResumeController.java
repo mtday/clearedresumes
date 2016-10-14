@@ -94,28 +94,43 @@ public abstract class BaseResumeController extends BaseController {
      */
     @Nonnull
     public ResumeContainer createResumeContainer() {
+        LOG.info("Creating resume");
         final ResumeContainer existing = getCurrentResume();
+        LOG.info("Existing: {}", existing);
 
         if (existing == null) {
             final Account account = getCurrentAccount();
+
             if (account != null) {
-                // Create a new resume and resume overview.
-                final Resume resume =
-                        new Resume(UUID.randomUUID().toString(), account.getUser().getId(), ResumeStatus.IN_PROGRESS,
-                                LocalDateTime.now(), null);
-                final ResumeOverview overview = new ResumeOverview(resume.getId());
+                // Check for the resume existing in the database first.
+                final ResumeContainer resumeContainer = getResumeContainerDao().getForUser(account.getUser().getId());
+                LOG.info("From Database: {}", resumeContainer);
+                if (resumeContainer != null) {
+                    setCurrentAccount(new Account(account.getUser(), account.getAuthorities(), account.getCompanies(),
+                            resumeContainer));
+                    LOG.info("Returning from database", resumeContainer);
+                    return resumeContainer;
+                } else {
+                    LOG.info("Creating!");
+                    // Create a new resume and resume overview.
+                    final Resume resume = new Resume(UUID.randomUUID().toString(), account.getUser().getId(),
+                            ResumeStatus.IN_PROGRESS, LocalDateTime.now(), null);
+                    final ResumeOverview overview = new ResumeOverview(resume.getId());
 
-                getResumeDao().add(resume);
-                getResumeOverviewDao().add(overview);
+                    getResumeDao().add(resume);
+                    getResumeOverviewDao().add(overview);
 
-                final ResumeContainer resumeContainer = new ResumeContainer(resume, overview);
-                setCurrentAccount(new Account(account.getUser(), account.getAuthorities(), account.getCompanies(),
-                        resumeContainer));
-                return resumeContainer;
+                    final ResumeContainer newContainer = new ResumeContainer(resume, overview);
+                    LOG.info("Created: {}", newContainer);
+                    setCurrentAccount(new Account(account.getUser(), account.getAuthorities(), account.getCompanies(),
+                            newContainer));
+                    return newContainer;
+                }
             } else {
                 throw new RuntimeException("Account was null for some reason");
             }
         }
+        LOG.info("Returning existing: {}", existing);
         return existing;
     }
 }
