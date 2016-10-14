@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<nav th:fragment="navbar (currentPage)" class="navbar navbar-default navbar-static-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" th:href="@{/}">ClearedResumes</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li th:class="${currentPage == 'home'}? 'active'"><a th:href="@{/}">Home</a></li>
+                <li th:class="${currentPage == 'employers'}? 'active'"><a th:href="@{/employers}">For Employers</a></li>
+            </ul>
+
+            <!-- When logged in, show the user menu -->
+            <ul th:if="${account} != null" class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">
+                        Logged in as: <span th:text="${account.user.login}"></span>
+                        <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li th:if="${account.hasResume()}"><a th:href="@{/user/resume}">My Resume</a></li>
+                        <li th:if="${not account.hasResume()}"><a th:href="@{/user/resume}">Create Resume</a></li>
+                        <li th:if="${account.isEmployer()}"><a th:href="@{/employer/dashboard}">
+                            Employer Dashboard</a></li>
+                        <li th:if="${account.isAdmin()}"><a th:href="@{/admin/dashboard}">
+                            Admin Dashboard</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a th:href="@{/user/profile}">My Profile</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a th:href="@{/logout}">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <!-- When NOT logged in, show the login link -->
+            <ul th:if="${account} == null" class="nav navbar-nav navbar-right">
+                <li th:class="${currentPage == 'login'}? 'active'"><a th:href="@{/login}">Login</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+</body>
+</html>

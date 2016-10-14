@@ -2,16 +2,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.decojo</groupId>
-    <artifactId>decojo</artifactId>
+    <groupId>com.cr</groupId>
+    <artifactId>cr</artifactId>
     <version>0.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
-        <module>decojo-app</module>
-        <module>decojo-build-tools</module>
-        <module>decojo-common</module>
-        <module>decojo-db</module>
+        <module>cr-app</module>
+        <module>cr-build-tools</module>
+        <module>cr-common</module>
+        <module>cr-db</module>
     </modules>
 
     <properties>
@@ -25,22 +25,22 @@
             <!-- Project modules -->
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>decojo-app</artifactId>
+                <artifactId>cr-app</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>decojo-build-tools</artifactId>
+                <artifactId>cr-build-tools</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>decojo-common</artifactId>
+                <artifactId>cr-common</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>decojo-db</artifactId>
+                <artifactId>cr-db</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -285,13 +285,13 @@
                     <!-- Number of tokens before copy/paste detector reports an issue -->
                     <minimumTokens>200</minimumTokens>
                     <rulesets>
-                        <ruleset>/rulesets/decojo-pmd-ruleset.xml</ruleset>
+                        <ruleset>/rulesets/cr-pmd-ruleset.xml</ruleset>
                     </rulesets>
                 </configuration>
                 <dependencies>
                     <dependency>
                         <groupId>${project.groupId}</groupId>
-                        <artifactId>decojo-build-tools</artifactId>
+                        <artifactId>cr-build-tools</artifactId>
                         <version>${project.version}</version>
                     </dependency>
                 </dependencies>
@@ -333,7 +333,7 @@
                 <dependencies>
                     <dependency>
                         <groupId>${project.groupId}</groupId>
-                        <artifactId>decojo-build-tools</artifactId>
+                        <artifactId>cr-build-tools</artifactId>
                         <version>${project.version}</version>
                     </dependency>
                 </dependencies>
