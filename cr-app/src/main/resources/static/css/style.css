@@ -406,3 +406,28 @@ body {
   margin-bottom: 10px;
 }
 
+.resume-certification-panel {
+  margin-top: 34px;
+}
+.resume-certification-panel .panel-heading {
+  min-height: 40px;
+}
+.resume-certification-panel .certification-certificate-cell {
+  width: 90%;
+}
+.resume-certification-panel .certification-year-cell {
+  width: 10%;
+}
+.resume-certification-panel .action-cell {
+  min-width: 120px;
+}
+.resume-certification-panel .empty-cell {
+  padding: 30px;
+}
+.resume-certification-panel .form-resume-certification .form-control:focus {
+  z-index: 2;
+}
+.resume-certification-panel .form-resume-certification input {
+  margin-bottom: 10px;
+}
+
