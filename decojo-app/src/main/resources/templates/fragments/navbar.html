@@ -45,7 +45,6 @@
             <!-- When NOT logged in, show the login link -->
             <ul th:if="${account} == null" class="nav navbar-nav navbar-right">
                 <li th:class="${currentPage == 'login'}? 'active'"><a th:href="@{/login}">Login</a></li>
-                <li th:class="${currentPage == 'signup'}? 'active'"><a th:href="@{/signup}">Signup</a></li>
             </ul>
         </div>
     </div>

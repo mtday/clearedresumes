@@ -1,5 +1,6 @@
 package com.decojo.common.model;
 
+import java.io.Serializable;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -11,7 +12,10 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 /**
  * Defines the location within a state where the user would like to work.
  */
-public class WorkLocation implements Comparable<WorkLocation> {
+public class WorkLocation implements Serializable, Comparable<WorkLocation> {
+    // Needs to be serializable since this class is used inside DefaultUserDetails.
+    private static final long serialVersionUID = 324710798L;
+
     @Nonnull
     private final String id;
     @Nonnull

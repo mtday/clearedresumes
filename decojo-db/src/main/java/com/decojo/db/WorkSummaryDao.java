@@ -24,7 +24,7 @@ public interface WorkSummaryDao {
      * @param resumeId the unique id of the resume that owns the work summaries
      * @return the requested work summaries
      */
-    @Nullable
+    @Nonnull
     WorkSummaryCollection getForResume(@Nonnull String resumeId);
 
     /**

@@ -24,7 +24,7 @@ public interface ClearanceDao {
      * @param resumeId the unique id of the resume that owns the clearance
      * @return the requested clearance
      */
-    @Nullable
+    @Nonnull
     ClearanceCollection getForResume(@Nonnull String resumeId);
 
     /**

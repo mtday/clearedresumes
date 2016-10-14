@@ -3,7 +3,6 @@ package com.decojo.db;
 import com.decojo.common.model.KeyWord;
 import com.decojo.common.model.KeyWordCollection;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * Defines the interface required for key word database management.
@@ -15,7 +14,7 @@ public interface KeyWordDao {
      * @param resumeId the unique id of the resume that owns the key words
      * @return the requested key words
      */
-    @Nullable
+    @Nonnull
     KeyWordCollection getForResume(@Nonnull String resumeId);
 
     /**

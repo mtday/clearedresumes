@@ -1,5 +1,6 @@
-package com.decojo.app.controller.web;
+package com.decojo.app.controller.web.employer;
 
+import com.decojo.app.controller.web.BaseController;
 import java.util.Map;
 import javax.annotation.Nonnull;
 import org.slf4j.Logger;
@@ -8,25 +9,21 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 /**
- * Used to determine which dashboard the user should be taken to after login.
+ * Used to manage the employer dashboard page.
  */
 @Controller
 public class DashboardController extends BaseController {
     private static final Logger LOG = LoggerFactory.getLogger(DashboardController.class);
 
     /**
-     * Determine which dashboard should be displayed.
+     * Display the employer dashboard page.
      *
      * @param model the web model
      * @return the name of the template to display
      */
-    @GetMapping("/dashboard")
+    @GetMapping("/employer/dashboard")
     @Nonnull
     public String dashboard(@Nonnull final Map<String, Object> model) {
-        setCurrentAccount(model);
-        if (isEmployer()) {
-            return "employer/dashboard";
-        }
-        return "user/dashboard";
+        return "redirect:/employer/dashboard/resumes-all";
     }
 }

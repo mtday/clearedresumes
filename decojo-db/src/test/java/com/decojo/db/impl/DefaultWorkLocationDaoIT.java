@@ -47,8 +47,7 @@ public class DefaultWorkLocationDaoIT {
             fail("Failed to find test user");
         }
 
-        final Resume resume =
-                new Resume("rid", user.getId(), ResumeStatus.IN_PROGRESS, LocalDateTime.now(), null, "lcat", 10, "obj");
+        final Resume resume = new Resume("rid", user.getId(), ResumeStatus.IN_PROGRESS, LocalDateTime.now(), null);
         this.resumeDao.add(resume);
 
         final WorkLocation beforeAdd = this.workLocationDao.get("id");
@@ -70,8 +69,7 @@ public class DefaultWorkLocationDaoIT {
         assertEquals(1, getByResumeColl.getWorkLocations().size());
         assertTrue(getByResumeColl.getWorkLocations().contains(workLocation));
 
-        final WorkLocation updated =
-                new WorkLocation(workLocation.getId(), resume.getId(), "Maryland", "Indian Head");
+        final WorkLocation updated = new WorkLocation(workLocation.getId(), resume.getId(), "Maryland", "Indian Head");
         this.workLocationDao.update(updated);
 
         final WorkLocation afterUpdate = this.workLocationDao.get(workLocation.getId());

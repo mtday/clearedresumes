@@ -3,7 +3,7 @@ package com.decojo.app.config;
 import com.decojo.app.security.DefaultUserDetailsService;
 import com.decojo.common.model.Authority;
 import com.decojo.db.CompanyDao;
-import com.decojo.db.ResumeDao;
+import com.decojo.db.ResumeContainerDao;
 import com.decojo.db.UserDao;
 import javax.annotation.Nonnull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private CompanyDao companyDao;
 
     @Autowired
-    private ResumeDao resumeDao;
+    private ResumeContainerDao resumeContainerDao;
 
     @Override
     protected void configure(@Nonnull final HttpSecurity http) throws Exception {
@@ -44,7 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/**", "/api/user/**").hasAuthority(Authority.USER.name())
             .and()
                 .formLogin()
-                .loginPage("/login").successForwardUrl("/user/actions").failureUrl("/login?error").permitAll()
+                .loginPage("/login").successForwardUrl("/user/resume").failureUrl("/login?error").permitAll()
             .and()
                 .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/").permitAll();
         // @formatter:on
@@ -53,7 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     @Nonnull
     public UserDetailsService userDetailsService() {
-        return new DefaultUserDetailsService(userDao, companyDao, resumeDao);
+        return new DefaultUserDetailsService(userDao, companyDao, resumeContainerDao);
     }
 
     /**

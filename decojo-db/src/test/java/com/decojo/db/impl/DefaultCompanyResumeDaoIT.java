@@ -57,8 +57,7 @@ public class DefaultCompanyResumeDaoIT {
         this.companyDao.add(company);
 
         final Resume resume =
-                new Resume("rid", user.getId(), ResumeStatus.PUBLISHED, LocalDateTime.now(), LocalDateTime.now(),
-                        "lcat", 10, "objective");
+                new Resume("rid", user.getId(), ResumeStatus.PUBLISHED, LocalDateTime.now(), LocalDateTime.now());
         this.resumeDao.add(resume);
 
         final CompanyResumeCollection beforeAddColl = this.companyResumeDao.getAll();

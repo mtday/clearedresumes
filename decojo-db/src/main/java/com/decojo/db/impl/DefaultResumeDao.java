@@ -74,20 +74,18 @@ public class DefaultResumeDao implements ResumeDao {
 
     @Override
     public void add(@Nonnull final Resume resume) {
-        this.jdbcTemplate.update("INSERT INTO resumes (id, user_id, status, created, expiration, lcat, experience, "
-                        + "objective) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", resume.getId(), resume.getUserId(),
-                resume.getStatus().name(), resume.getCreated().format(FORMATTER),
-                resume.getExpiration() == null ? null : resume.getExpiration().format(FORMATTER),
-                resume.getLaborCategory(), resume.getExperience(), resume.getObjective());
+        this.jdbcTemplate
+                .update("INSERT INTO resumes (id, user_id, status, created, expiration) VALUES (?, ?, ?, ?, ?)",
+                        resume.getId(), resume.getUserId(), resume.getStatus().name(),
+                        resume.getCreated().format(FORMATTER),
+                        resume.getExpiration() == null ? null : resume.getExpiration().format(FORMATTER));
     }
 
     @Override
     public void update(@Nonnull final Resume resume) {
-        this.jdbcTemplate.update("UPDATE resumes SET user_id = ?, status = ?, created = ?, expiration = ?, lcat = ?, "
-                        + "experience = ?, objective = ? WHERE id = ?", resume.getUserId(), resume.getStatus().name(),
-                resume.getCreated().format(FORMATTER),
-                resume.getExpiration() == null ? null : resume.getExpiration().format(FORMATTER),
-                resume.getLaborCategory(), resume.getExperience(), resume.getObjective(), resume.getId());
+        this.jdbcTemplate.update("UPDATE resumes SET user_id = ?, status = ?, created = ?, expiration = ? WHERE id = ?",
+                resume.getUserId(), resume.getStatus().name(), resume.getCreated().format(FORMATTER),
+                resume.getExpiration() == null ? null : resume.getExpiration().format(FORMATTER), resume.getId());
     }
 
     @Override
@@ -106,10 +104,7 @@ public class DefaultResumeDao implements ResumeDao {
             final String expirationStr = resultSet.getString("expiration");
             final LocalDateTime expiration =
                     (expirationStr == null) ? null : LocalDateTime.parse(expirationStr, FORMATTER);
-            final String laborCategory = resultSet.getString("lcat");
-            final int experience = resultSet.getInt("experience");
-            final String objective = resultSet.getString("objective");
-            return new Resume(id, userId, status, created, expiration, laborCategory, experience, objective);
+            return new Resume(id, userId, status, created, expiration);
         }
     }
 }

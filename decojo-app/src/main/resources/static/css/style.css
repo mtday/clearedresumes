@@ -267,3 +267,33 @@ body {
   padding-bottom: 20px;
 }
 
+.resume-nav-container {
+  padding-bottom: 20px;
+}
+
+.resume-overview-about-you-panel {
+  margin-top: 34px;
+}
+.resume-overview-about-you-panel .panel-heading {
+  min-height: 40px;
+}
+.resume-overview-about-you-panel .form-resume-overview-about-you .form-control:focus {
+  z-index: 2;
+}
+.resume-overview-about-you-panel .form-resume-overview-about-you input {
+  margin-bottom: 10px;
+}
+
+.resume-overview-objective-panel {
+  margin-top: 34px;
+}
+.resume-overview-objective-panel .panel-heading {
+  min-height: 40px;
+}
+.resume-overview-objective-panel .form-resume-overview-objective .form-control:focus {
+  z-index: 2;
+}
+.resume-overview-objective-panel .form-resume-overview-objective textarea {
+  margin-bottom: 10px;
+}
+

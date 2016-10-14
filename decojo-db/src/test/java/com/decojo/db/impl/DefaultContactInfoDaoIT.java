@@ -6,15 +6,15 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import com.decojo.common.model.ContactInfo;
+import com.decojo.common.model.ContactInfoCollection;
 import com.decojo.common.model.Resume;
 import com.decojo.common.model.ResumeStatus;
 import com.decojo.common.model.User;
-import com.decojo.common.model.ContactInfo;
-import com.decojo.common.model.ContactInfoCollection;
+import com.decojo.db.ContactInfoDao;
 import com.decojo.db.ResumeDao;
 import com.decojo.db.TestApplication;
 import com.decojo.db.UserDao;
-import com.decojo.db.ContactInfoDao;
 import java.time.LocalDateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,8 +47,7 @@ public class DefaultContactInfoDaoIT {
             fail("Failed to find test user");
         }
 
-        final Resume resume =
-                new Resume("rid", user.getId(), ResumeStatus.IN_PROGRESS, LocalDateTime.now(), null, "lcat", 10, "obj");
+        final Resume resume = new Resume("rid", user.getId(), ResumeStatus.IN_PROGRESS, LocalDateTime.now(), null);
         this.resumeDao.add(resume);
 
         final ContactInfo beforeAdd = this.contactInfoDao.get("id");

@@ -1,5 +1,6 @@
 package com.decojo.common.model;
 
+import java.io.Serializable;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -11,7 +12,10 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 /**
  * Defines the type of clearance the user possesses.
  */
-public class Clearance implements Comparable<Clearance> {
+public class Clearance implements Serializable, Comparable<Clearance> {
+    // Needs to be serializable since this class is used inside DefaultUserDetails.
+    private static final long serialVersionUID = 3024183421L;
+
     @Nonnull
     private final String id;
     @Nonnull

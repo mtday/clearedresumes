@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="resume-nav (currentPage)" class="resume-nav-container">
+    <ul class="nav nav-pills">
+        <li role="presentation" th:class="${currentPage == 'overview'}? 'active'">
+            <a th:href="@{/user/resume/overview}">Overview</a></li>
+        <li role="presentation" th:class="${currentPage == 'contact-info'}? 'active'">
+            <a th:href="@{/user/resume/contact-info}">Contact Info</a></li>
+        <li role="presentation" th:class="${currentPage == 'work-locations'}? 'active'">
+            <a th:href="@{/user/resume/work-locations}">Work Locations</a></li>
+        <li role="presentation" th:class="${currentPage == 'clearances'}? 'active'">
+            <a th:href="@{/user/resume/clearances}">Clearances</a></li>
+        <li role="presentation" th:class="${currentPage == 'education'}? 'active'">
+            <a th:href="@{/user/resume/education}">Education</a></li>
+        <li role="presentation" th:class="${currentPage == 'certifications'}? 'active'">
+            <a th:href="@{/user/resume/certifications}">Certifications</a></li>
+        <li role="presentation" th:class="${currentPage == 'work-summaries'}? 'active'">
+            <a th:href="@{/user/resume/work-summaries}">Work Summaries</a></li>
+        <li role="presentation" th:class="${currentPage == 'exclusions'}? 'active'">
+            <a th:href="@{/user/resume/exclusions}">Company Exclusions</a></li>
+    </ul>
+</div>
+
+</body>
+</html>

@@ -1,5 +1,6 @@
 package com.decojo.common.model;
 
+import java.io.Serializable;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -11,7 +12,10 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 /**
  * Used to track resume reviews within a company.
  */
-public class ResumeReview implements Comparable<ResumeReview> {
+public class ResumeReview implements Serializable, Comparable<ResumeReview> {
+    // Needs to be serializable since this class is used inside DefaultUserDetails.
+    private static final long serialVersionUID = 7893427898945L;
+
     @Nonnull
     private final String resumeId;
     @Nonnull

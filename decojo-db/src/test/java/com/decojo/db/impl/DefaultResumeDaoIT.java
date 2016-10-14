@@ -47,11 +47,9 @@ public class DefaultResumeDaoIT {
         final Resume beforeAddByUser = this.resumeDao.getForUser(user1.getId());
         assertNull(beforeAddByUser);
 
-        final Resume resume1 =
-                new Resume("id1", user1.getId(), ResumeStatus.IN_PROGRESS, LocalDateTime.now(), null, "lcat", 10,
-                        "obj");
+        final Resume resume1 = new Resume("id1", user1.getId(), ResumeStatus.IN_PROGRESS, LocalDateTime.now(), null);
         final Resume resume2 = new Resume("id2", user2.getId(), ResumeStatus.IN_PROGRESS, LocalDateTime.now(),
-                LocalDateTime.now().plusDays(30), "lcat", 10, "obj");
+                LocalDateTime.now().plusDays(30));
         this.resumeDao.add(resume1);
         this.resumeDao.add(resume2);
 
@@ -84,9 +82,9 @@ public class DefaultResumeDaoIT {
         assertTrue(viewable2.getResumes().contains(resume2));
 
         final Resume updated1 = new Resume(resume1.getId(), user1.getId(), ResumeStatus.PUBLISHED, resume1.getCreated(),
-                LocalDateTime.now().plusDays(30), "new-lcat", 11, "new-obj");
-        final Resume updated2 = new Resume(resume2.getId(), user2.getId(), ResumeStatus.PUBLISHED, resume2.getCreated(),
-                null, "new-lcat", 11, "new-obj");
+                LocalDateTime.now().plusDays(30));
+        final Resume updated2 =
+                new Resume(resume2.getId(), user2.getId(), ResumeStatus.PUBLISHED, resume2.getCreated(), null);
         this.resumeDao.update(updated1);
         this.resumeDao.update(updated2);
 

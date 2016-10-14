@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="fragments/head :: head (title='Resume: Overview')"></head>
+<body>
+
+<nav th:replace="fragments/navbar :: navbar (currentPage='resume')"></nav>
+<div class="container">
+
+    <div th:replace="fragments/user-resume-nav :: resume-nav (currentPage='overview')"></div>
+
+    <div class="container-fluid">
+        <h2>Resume Overview</h2>
+    </div>
+
+    <div class="row">
+        <div class="col-md-5">
+            <!-- About You panel -->
+            <div class="panel panel-default resume-overview-about-you-panel">
+                <div class="panel-heading">
+                    <div class="pull-left">
+                        <span class="panel-title">About You</span>
+                    </div>
+                    <div class="pull-right">
+                <span th:class="'label text-right label-' + ${aboutYouStatusColor}"
+                      th:text="${aboutYouStatus}">Status</span>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <p th:if="${aboutYouMessage}" class="alert alert-info" th:text="${aboutYouMessage}">Message</p>
+
+                    <form class="form-resume-overview-about-you" name="aboutYouForm"
+                          th:action="@{/user/resume/overview/about-you}" method="POST">
+
+                        <label for="overview-fullName" class="sr-only">Full Name</label>
+                        <input type="text" name="fullName" id="overview-fullName" class="form-control"
+                               placeholder="Full Name" required="required" autofocus="autofocus"
+                               th:value="${overview.fullName}"/>
+
+                        <div class="btn-group">
+                            <button class="btn btn-default btn-primary" type="submit">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-7">
+            <!-- Career Objective panel -->
+            <div class="panel panel-default resume-overview-objective-panel">
+                <div class="panel-heading">
+                    <div class="pull-left">
+                        <span class="panel-title">Career Objective</span>
+                    </div>
+                    <div class="pull-right">
+                <span th:class="'label text-right label-' + ${objectiveStatusColor}"
+                      th:text="${objectiveStatus}">Status</span>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <p>Your <i>career objective</i> is a brief narrative that clearly outlines your career direction.
+                        It provides a quick summary of where you have been so far in your career, and more importantly,
+                        where you want to go with your career in your next job. This gives potential employers valuable
+                        information about the type of work in which you may be interested.</p>
+
+                    <p th:if="${objectiveMessage}" class="alert alert-info" th:text="${objectiveMessage}">Message</p>
+
+                    <form class="form-resume-overview-objective" name="objectiveForm"
+                          th:action="@{/user/resume/overview/objective}" method="POST">
+
+                        <label for="overview-objective" class="sr-only">Career Objective</label>
+                        <textarea name="objective" id="overview-objective" rows="12" class="form-control"
+                                  placeholder="Career Objective" required="required" autofocus="autofocus"
+                                  th:text="${overview.objective}"></textarea>
+
+                        <div class="btn-group">
+                            <button class="btn btn-default btn-primary" type="submit">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<footer th:replace="fragments/footer :: footer"></footer>
+<div th:replace="fragments/scripts :: scripts"></div>
+</body>
+</html>

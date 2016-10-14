@@ -24,7 +24,7 @@ public interface EducationDao {
      * @param resumeId the unique id of the resume that owns the educations
      * @return the requested educations
      */
-    @Nullable
+    @Nonnull
     EducationCollection getForResume(@Nonnull String resumeId);
 
     /**

@@ -46,8 +46,7 @@ public class DefaultKeyWordDaoIT {
             fail("Failed to find test user");
         }
 
-        final Resume resume =
-                new Resume("rid", user.getId(), ResumeStatus.IN_PROGRESS, LocalDateTime.now(), null, "lcat", 10, "obj");
+        final Resume resume = new Resume("rid", user.getId(), ResumeStatus.IN_PROGRESS, LocalDateTime.now(), null);
         this.resumeDao.add(resume);
 
         final KeyWordCollection beforeAddColl = this.keyWordDao.getForResume(user.getId());

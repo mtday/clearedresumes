@@ -24,7 +24,7 @@ public interface CertificationDao {
      * @param resumeId the unique id of the resume that owns the certifications
      * @return the requested certifications
      */
-    @Nullable
+    @Nonnull
     CertificationCollection getForResume(@Nonnull String resumeId);
 
     /**

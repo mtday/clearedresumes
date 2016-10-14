@@ -1,5 +1,6 @@
 package com.decojo.common.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
@@ -12,7 +13,10 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 /**
  * Provides a summary of a portion of the work experience for a user.
  */
-public class WorkSummary implements Comparable<WorkSummary> {
+public class WorkSummary implements Serializable, Comparable<WorkSummary> {
+    // Needs to be serializable since this class is used inside DefaultUserDetails.
+    private static final long serialVersionUID = 320148341209L;
+
     @Nonnull
     private final String id;
     @Nonnull

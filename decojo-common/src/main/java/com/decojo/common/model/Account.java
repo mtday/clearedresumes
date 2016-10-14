@@ -27,13 +27,13 @@ public class Account implements Serializable, Comparable<Account> {
     @Nonnull
     private final SortedSet<Company> companies = new TreeSet<>();
     @Nullable
-    private final Resume resume;
+    private final ResumeContainer resumeContainer;
 
     /**
      * Default constructor required for Jackson deserialization.
      */
     Account() {
-        this(new User(), Collections.emptyList(), Collections.emptyList(), new Resume());
+        this(new User(), Collections.emptyList(), Collections.emptyList(), new ResumeContainer());
     }
 
     /**
@@ -42,14 +42,15 @@ public class Account implements Serializable, Comparable<Account> {
      * @param user the user associated with this account
      * @param authorities the authorities that have been granted to this account
      * @param companies the companies in which the user is a member
-     * @param resume the resume owned by the account, if available
+     * @param resumeContainer the resume container containing all of the resume information owned by the account
      */
-    public Account(@Nonnull final User user, @Nonnull final Collection<Authority> authorities,
-            @Nonnull final Collection<Company> companies, @Nullable final Resume resume) {
+    public Account(
+            @Nonnull final User user, @Nonnull final Collection<Authority> authorities,
+            @Nonnull final Collection<Company> companies, @Nullable final ResumeContainer resumeContainer) {
         this.user = user;
         this.authorities.addAll(authorities);
         this.companies.addAll(companies);
-        this.resume = resume;
+        this.resumeContainer = resumeContainer;
     }
 
     /**
@@ -115,7 +116,7 @@ public class Account implements Serializable, Comparable<Account> {
      * @return whether this account has a resume
      */
     public boolean hasResume() {
-        return this.resume != null;
+        return this.resumeContainer != null;
     }
 
     /**
@@ -124,17 +125,17 @@ public class Account implements Serializable, Comparable<Account> {
      * @return whether this account has a published resume
      */
     public boolean hasPublishedResume() {
-        return this.resume != null && this.resume.getStatus() == ResumeStatus.PUBLISHED;
+        return this.resumeContainer != null && this.resumeContainer.getResume().getStatus() == ResumeStatus.PUBLISHED;
     }
 
     /**
-     * Retrieve the resume owned by this account, if available.
+     * Retrieve the resume container owned by this account, if available.
      *
-     * @return the resume owned by this account, if available
+     * @return the resume container owned by this account, if available
      */
     @Nullable
-    public Resume getResume() {
-        return this.resume;
+    public ResumeContainer getResumeContainer() {
+        return this.resumeContainer;
     }
 
     @Override
@@ -167,7 +168,7 @@ public class Account implements Serializable, Comparable<Account> {
         str.append("user", getUser());
         str.append("authorities", getAuthorities());
         str.append("companies", getCompanies());
-        str.append("resume", getResume());
+        str.append("resumeContainer", getResumeContainer());
         return str.build();
     }
 }

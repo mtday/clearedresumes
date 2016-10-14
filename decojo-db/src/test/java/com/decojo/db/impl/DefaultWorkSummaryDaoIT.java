@@ -48,8 +48,7 @@ public class DefaultWorkSummaryDaoIT {
             fail("Failed to find test user");
         }
 
-        final Resume resume =
-                new Resume("rid", user.getId(), ResumeStatus.IN_PROGRESS, LocalDateTime.now(), null, "lcat", 10, "obj");
+        final Resume resume = new Resume("rid", user.getId(), ResumeStatus.IN_PROGRESS, LocalDateTime.now(), null);
         this.resumeDao.add(resume);
 
         final WorkSummary beforeAdd = this.workSummaryDao.get("id");
@@ -63,8 +62,8 @@ public class DefaultWorkSummaryDaoIT {
                 new WorkSummary("id1", resume.getId(), "Title", "Employer", LocalDate.of(2016, 1, 1),
                         LocalDate.of(2016, 12, 1), "Responsibilities", "Accomplishments");
         final WorkSummary workSummary2 =
-                new WorkSummary("id2", resume.getId(), "Title", "Employer", LocalDate.of(2016, 1, 1),
-                        null, "Responsibilities", "Accomplishments");
+                new WorkSummary("id2", resume.getId(), "Title", "Employer", LocalDate.of(2016, 1, 1), null,
+                        "Responsibilities", "Accomplishments");
         this.workSummaryDao.add(workSummary1);
         this.workSummaryDao.add(workSummary2);
 

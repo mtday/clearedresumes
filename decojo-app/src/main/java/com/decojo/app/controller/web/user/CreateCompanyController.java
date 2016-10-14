@@ -96,7 +96,8 @@ public class CreateCompanyController extends BaseController {
             authorities.add(Authority.EMPLOYER);
             final Collection<Company> companies = new LinkedList<>(account.getCompanies());
             companies.add(company);
-            final Account updated = new Account(account.getUser(), authorities, companies, account.getResume());
+            final Account updated =
+                    new Account(account.getUser(), authorities, companies, account.getResumeContainer());
             setCurrentAccount(updated);
         }
 

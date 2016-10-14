@@ -27,17 +27,12 @@ public class Resume implements Serializable, Comparable<Resume> {
     private final LocalDateTime created;
     @Nullable
     private final LocalDateTime expiration;
-    @Nonnull
-    private final String laborCategory;
-    private final int experience;
-    @Nonnull
-    private final String objective;
 
     /**
      * Default constructor required for Jackson deserialization.
      */
     Resume() {
-        this("", "", ResumeStatus.DEACTIVATED, LocalDateTime.now(), null, "", 0, "");
+        this("", "", ResumeStatus.DEACTIVATED, LocalDateTime.now(), null);
     }
 
     /**
@@ -48,22 +43,15 @@ public class Resume implements Serializable, Comparable<Resume> {
      * @param status the current status of the resume
      * @param created the time stamp when this resume was created
      * @param expiration the time stamp when this resume becomes inactive
-     * @param laborCategory the labor category in which the user fits
-     * @param experience the total number of years of experience the user has in the labor category
-     * @param objective an overview of the user's career objective
      */
     public Resume(
             @Nonnull final String id, @Nonnull final String userId, @Nonnull final ResumeStatus status,
-            @Nonnull final LocalDateTime created, @Nullable final LocalDateTime expiration,
-            @Nonnull final String laborCategory, final int experience, @Nonnull final String objective) {
+            @Nonnull final LocalDateTime created, @Nullable final LocalDateTime expiration) {
         this.id = id;
         this.userId = userId;
         this.status = status;
         this.created = created;
         this.expiration = expiration;
-        this.laborCategory = laborCategory;
-        this.experience = experience;
-        this.objective = objective;
     }
 
     /**
@@ -116,35 +104,6 @@ public class Resume implements Serializable, Comparable<Resume> {
         return this.expiration;
     }
 
-    /**
-     * Retrieve the labor category in which the user fits.
-     *
-     * @return the labor category in which the user fits
-     */
-    @Nonnull
-    public String getLaborCategory() {
-        return this.laborCategory;
-    }
-
-    /**
-     * Retrieve the total number of years of experience the user has in the labor category.
-     *
-     * @return the total number of years of experience the user has in the labor category
-     */
-    public int getExperience() {
-        return this.experience;
-    }
-
-    /**
-     * Retrieve an overview of the user's career objective.
-     *
-     * @return an overview of the user's career objective
-     */
-    @Nonnull
-    public String getObjective() {
-        return this.objective;
-    }
-
     @Override
     public int compareTo(@Nullable final Resume other) {
         if (other == null) {
@@ -157,9 +116,6 @@ public class Resume implements Serializable, Comparable<Resume> {
         cmp.append(getStatus(), other.getStatus());
         cmp.append(getCreated(), other.getCreated());
         cmp.append(getExpiration(), other.getExpiration());
-        cmp.append(getLaborCategory(), other.getLaborCategory());
-        cmp.append(getExperience(), other.getExperience());
-        cmp.append(getObjective(), other.getObjective());
         return cmp.toComparison();
     }
 
@@ -176,9 +132,6 @@ public class Resume implements Serializable, Comparable<Resume> {
         hash.append(getStatus().name());
         hash.append(getCreated());
         hash.append(getExpiration());
-        hash.append(getLaborCategory());
-        hash.append(getExperience());
-        hash.append(getObjective());
         return hash.toHashCode();
     }
 
@@ -191,9 +144,6 @@ public class Resume implements Serializable, Comparable<Resume> {
         str.append("status", getStatus());
         str.append("created", getCreated());
         str.append("expiration", getExpiration());
-        str.append("laborCategory", getLaborCategory());
-        str.append("experience", getExperience());
-        str.append("objective", getObjective());
         return str.build();
     }
 }

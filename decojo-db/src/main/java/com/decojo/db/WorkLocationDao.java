@@ -24,7 +24,7 @@ public interface WorkLocationDao {
      * @param resumeId the unique id of the resume that owns the work locations
      * @return the requested work locations
      */
-    @Nullable
+    @Nonnull
     WorkLocationCollection getForResume(@Nonnull String resumeId);
 
     /**

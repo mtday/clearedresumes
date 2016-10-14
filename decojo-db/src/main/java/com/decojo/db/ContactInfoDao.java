@@ -24,7 +24,7 @@ public interface ContactInfoDao {
      * @param resumeId the unique id of the resume that owns the contact info
      * @return the requested contact info
      */
-    @Nullable
+    @Nonnull
     ContactInfoCollection getForResume(@Nonnull String resumeId);
 
     /**

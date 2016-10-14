@@ -64,9 +64,6 @@ CREATE TABLE resumes (
     status            VARCHAR(20)    NOT NULL,
     created           VARCHAR(24)    NOT NULL,
     expiration        VARCHAR(24),
-    lcat              VARCHAR(50)    NOT NULL,
-    experience        INTEGER        NOT NULL,
-    objective         VARCHAR(20000) NOT NULL,
 
     CONSTRAINT resumes_pk PRIMARY KEY (id),
     CONSTRAINT resumes_fk_user_id FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
@@ -96,6 +93,28 @@ CREATE TABLE resume_reviews (
     CONSTRAINT resume_reviews_pk PRIMARY KEY (resume_id, company_id),
     CONSTRAINT resume_reviews_fk_resume_id FOREIGN KEY (resume_id) REFERENCES resumes (id) ON DELETE CASCADE,
     CONSTRAINT resume_reviews_fk_company_id FOREIGN KEY (company_id) REFERENCES companies (id) ON DELETE CASCADE
+);
+
+
+CREATE TABLE resume_overviews (
+    resume_id         VARCHAR(36)    NOT NULL,
+    full_name         VARCHAR(80)    NOT NULL,
+    objective         VARCHAR(20000) NOT NULL,
+
+    CONSTRAINT resume_overviews_pk PRIMARY KEY (resume_id),
+    CONSTRAINT resume_overviews_fk_resume_id FOREIGN KEY (resume_id) REFERENCES resumes (id) ON DELETE CASCADE
+);
+
+
+CREATE TABLE resume_lcats (
+    id                VARCHAR(36)    NOT NULL,
+    resume_id         VARCHAR(36)    NOT NULL,
+    lcat              VARCHAR(80)    NOT NULL,
+    experience        INTEGER        NOT NULL,
+
+    CONSTRAINT resume_lcats_pk PRIMARY KEY (id),
+    CONSTRAINT resume_lcats_uniq UNIQUE (resume_id, lcat),
+    CONSTRAINT resume_lcats_fk_resume_id FOREIGN KEY (resume_id) REFERENCES resumes (id) ON DELETE CASCADE
 );
 
 
@@ -208,7 +227,7 @@ CREATE TABLE polygraph_types (
 
 CREATE TABLE labor_categories (
     id                VARCHAR(36)    NOT NULL,
-    name              VARCHAR(50)    NOT NULL,
+    name              VARCHAR(80)    NOT NULL,
 
     CONSTRAINT labor_categories_pk PRIMARY KEY (id),
     CONSTRAINT labor_categories_uniq UNIQUE (name)

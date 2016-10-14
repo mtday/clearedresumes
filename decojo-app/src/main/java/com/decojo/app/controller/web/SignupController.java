@@ -171,14 +171,13 @@ public class SignupController extends BaseController {
         if (!validateUser(username, email, password, confirm, model)) {
             model.put("username", username);
             model.put("email", email);
-
             return "signup";
         }
 
         createAccount(username, email, password);
 
         setCurrentAccount(model);
-        return "user/actions";
+        return "redirect:/user/resume";
     }
 
     private boolean validateUser(
@@ -264,7 +263,7 @@ public class SignupController extends BaseController {
             final Collection<Company> companies = new LinkedList<>(account.getCompanies());
             companies.add(company);
 
-            setCurrentAccount(new Account(account.getUser(), authorities, companies, account.getResume()));
+            setCurrentAccount(new Account(account.getUser(), authorities, companies, account.getResumeContainer()));
         }
     }
 }

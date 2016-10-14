@@ -47,8 +47,7 @@ public class DefaultClearanceDaoIT {
             fail("Failed to find test user");
         }
 
-        final Resume resume =
-                new Resume("rid", user.getId(), ResumeStatus.IN_PROGRESS, LocalDateTime.now(), null, "lcat", 10, "obj");
+        final Resume resume = new Resume("rid", user.getId(), ResumeStatus.IN_PROGRESS, LocalDateTime.now(), null);
         this.resumeDao.add(resume);
 
         final Clearance beforeAdd = this.clearanceDao.get("id");

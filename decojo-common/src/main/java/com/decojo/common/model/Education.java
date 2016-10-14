@@ -1,5 +1,6 @@
 package com.decojo.common.model;
 
+import java.io.Serializable;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -11,7 +12,10 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 /**
  * Defines some form of education obtained by the user.
  */
-public class Education implements Comparable<Education> {
+public class Education implements Serializable, Comparable<Education> {
+    // Needs to be serializable since this class is used inside DefaultUserDetails.
+    private static final long serialVersionUID = 456890265L;
+
     @Nonnull
     private final String id;
     @Nonnull

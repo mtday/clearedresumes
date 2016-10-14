@@ -3,6 +3,7 @@ package com.decojo.app.controller.web;
 import com.decojo.app.security.DefaultUserDetails;
 import com.decojo.common.model.Account;
 import com.decojo.common.model.Authority;
+import com.decojo.common.model.ResumeContainer;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -18,6 +19,21 @@ import org.springframework.security.core.context.SecurityContextHolder;
  */
 public abstract class BaseController {
     private static final Logger LOG = LoggerFactory.getLogger(BaseController.class);
+
+    /**
+     * Retrieve the resume container associated with the current user account.
+     *
+     * @return the resume container associated with the current user account
+     */
+    @Nullable
+    protected ResumeContainer getCurrentResume() {
+        final Account currentAccount = getCurrentAccount();
+        if (currentAccount != null) {
+            return currentAccount.getResumeContainer();
+        }
+        // When not logged in, return null.
+        return null;
+    }
 
     /**
      * Retrieve the account of the user that is currently logged in.
