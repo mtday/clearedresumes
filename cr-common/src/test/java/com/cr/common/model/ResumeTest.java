@@ -22,10 +22,10 @@ public class ResumeTest {
     public void testParameterConstructor() {
         final LocalDateTime created = LocalDateTime.of(2016, 1, 1, 2, 3, 4);
         final LocalDateTime expires = LocalDateTime.of(2016, 1, 1, 3, 4, 5);
-        final Resume resume = new Resume("id", "uid", ResumeStatus.IN_PROGRESS, created, expires);
+        final Resume resume = new Resume("id", "uid", ResumeStatus.UNPUBLISHED, created, expires);
         assertEquals("id", resume.getId());
         assertEquals("uid", resume.getUserId());
-        assertEquals(ResumeStatus.IN_PROGRESS, resume.getStatus());
+        assertEquals(ResumeStatus.UNPUBLISHED, resume.getStatus());
         assertEquals(created, resume.getCreated());
         assertEquals(expires, resume.getExpiration());
     }
@@ -35,11 +35,11 @@ public class ResumeTest {
         final LocalDateTime created = LocalDateTime.of(2016, 1, 1, 2, 3, 4);
         final LocalDateTime expires = LocalDateTime.of(2016, 1, 1, 3, 4, 5);
 
-        final Resume a = new Resume("id-1", "uid-1", ResumeStatus.IN_PROGRESS, created, null);
-        final Resume b = new Resume("id-1", "uid-1", ResumeStatus.IN_PROGRESS, created, expires);
+        final Resume a = new Resume("id-1", "uid-1", ResumeStatus.UNPUBLISHED, created, null);
+        final Resume b = new Resume("id-1", "uid-1", ResumeStatus.UNPUBLISHED, created, expires);
         final Resume c = new Resume("id-1", "uid-1", ResumeStatus.PUBLISHED, created, expires);
-        final Resume d = new Resume("id-1", "uid-2", ResumeStatus.IN_PROGRESS, created, expires);
-        final Resume e = new Resume("id-2", "uid-1", ResumeStatus.IN_PROGRESS, created, expires);
+        final Resume d = new Resume("id-1", "uid-2", ResumeStatus.UNPUBLISHED, created, expires);
+        final Resume e = new Resume("id-2", "uid-1", ResumeStatus.UNPUBLISHED, created, expires);
 
         assertEquals(1, a.compareTo(null));
         assertEquals(0, a.compareTo(a));
@@ -74,11 +74,11 @@ public class ResumeTest {
         final LocalDateTime created = LocalDateTime.of(2016, 1, 1, 2, 3, 4);
         final LocalDateTime expires = LocalDateTime.of(2016, 1, 1, 3, 4, 5);
 
-        final Resume a = new Resume("id-1", "uid-1", ResumeStatus.IN_PROGRESS, created, null);
-        final Resume b = new Resume("id-1", "uid-1", ResumeStatus.IN_PROGRESS, created, expires);
+        final Resume a = new Resume("id-1", "uid-1", ResumeStatus.UNPUBLISHED, created, null);
+        final Resume b = new Resume("id-1", "uid-1", ResumeStatus.UNPUBLISHED, created, expires);
         final Resume c = new Resume("id-1", "uid-1", ResumeStatus.PUBLISHED, created, expires);
-        final Resume d = new Resume("id-1", "uid-2", ResumeStatus.IN_PROGRESS, created, expires);
-        final Resume e = new Resume("id-2", "uid-1", ResumeStatus.IN_PROGRESS, created, expires);
+        final Resume d = new Resume("id-1", "uid-2", ResumeStatus.UNPUBLISHED, created, expires);
+        final Resume e = new Resume("id-2", "uid-1", ResumeStatus.UNPUBLISHED, created, expires);
 
         assertNotEquals(a, null);
         assertEquals(a, a);

@@ -58,12 +58,13 @@ public class ResumeClearancesController extends BaseResumeController {
 
     private void populateModel(@Nonnull final Map<String, Object> model) {
         final ResumeContainer resume = createResumeContainer();
+        model.put("resume", resume);
         model.put("clearances", resume.getClearances());
 
         model.put("types", this.clearanceTypeDao.getAll().getClearanceTypes());
         model.put("polygraphs", this.polygraphTypeDao.getAll().getPolygraphTypes());
 
-        final boolean complete = !resume.getClearances().isEmpty();
+        final boolean complete = resume.isClearancesComplete();
         model.put("clearanceStatusColor", complete ? "success" : "info");
         model.put("clearanceStatus", complete ? "Complete" : "Incomplete");
 

@@ -38,10 +38,11 @@ public class ResumeIntroductionController extends BaseResumeController {
     }
 
     private void populateModel(@Nonnull final Map<String, Object> model) {
-        final ResumeContainer resumeContainer = createResumeContainer();
+        final ResumeContainer resume = createResumeContainer();
+        model.put("resume", resume);
 
-        final boolean aboutYouComplete = !StringUtils.isBlank(resumeContainer.getIntroduction().getFullName());
-        final boolean objectiveComplete = !StringUtils.isBlank(resumeContainer.getIntroduction().getObjective());
+        final boolean aboutYouComplete = !StringUtils.isBlank(resume.getIntroduction().getFullName());
+        final boolean objectiveComplete = !StringUtils.isBlank(resume.getIntroduction().getObjective());
 
         model.put("aboutYouStatusColor", aboutYouComplete ? "success" : "info");
         model.put("aboutYouStatus", aboutYouComplete ? "Complete" : "Incomplete");
@@ -49,7 +50,7 @@ public class ResumeIntroductionController extends BaseResumeController {
         model.put("objectiveStatusColor", objectiveComplete ? "success" : "info");
         model.put("objectiveStatus", objectiveComplete ? "Complete" : "Incomplete");
 
-        model.put("introduction", resumeContainer.getIntroduction());
+        model.put("introduction", resume.getIntroduction());
         setCurrentAccount(model);
     }
 

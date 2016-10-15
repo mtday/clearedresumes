@@ -47,8 +47,8 @@ public class DefaultResumeDaoIT {
         final Resume beforeAddByUser = this.resumeDao.getForUser(user1.getId());
         assertNull(beforeAddByUser);
 
-        final Resume resume1 = new Resume("id1", user1.getId(), ResumeStatus.IN_PROGRESS, LocalDateTime.now(), null);
-        final Resume resume2 = new Resume("id2", user2.getId(), ResumeStatus.IN_PROGRESS, LocalDateTime.now(),
+        final Resume resume1 = new Resume("id1", user1.getId(), ResumeStatus.UNPUBLISHED, LocalDateTime.now(), null);
+        final Resume resume2 = new Resume("id2", user2.getId(), ResumeStatus.UNPUBLISHED, LocalDateTime.now(),
                 LocalDateTime.now().plusDays(30));
         this.resumeDao.add(resume1);
         this.resumeDao.add(resume2);

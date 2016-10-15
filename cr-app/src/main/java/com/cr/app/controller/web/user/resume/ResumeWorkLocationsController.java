@@ -53,11 +53,12 @@ public class ResumeWorkLocationsController extends BaseResumeController {
 
     private void populateModel(@Nonnull final Map<String, Object> model) {
         final ResumeContainer resume = createResumeContainer();
+        model.put("resume", resume);
         model.put("workLocations", resume.getWorkLocations());
 
         model.put("states", this.stateDao.getAll().getStates());
 
-        final boolean complete = !resume.getWorkLocations().isEmpty();
+        final boolean complete = resume.isWorkLocationsComplete();
         model.put("workLocationStatusColor", complete ? "success" : "info");
         model.put("workLocationStatus", complete ? "Complete" : "Incomplete");
 

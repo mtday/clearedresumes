@@ -463,3 +463,9 @@ body {
   margin-bottom: 10px;
 }
 
+
+/* SimpleMDE minimum height */
+.CodeMirror, .CodeMirror-scroll {
+    min-height: 200px;
+}
+

@@ -34,7 +34,7 @@ public class ResumeContainerTest {
 
     @Test
     public void testParameterConstructor() {
-        final Resume resume = new Resume("rid", "uid", ResumeStatus.IN_PROGRESS, LocalDateTime.now(), null);
+        final Resume resume = new Resume("rid", "uid", ResumeStatus.UNPUBLISHED, LocalDateTime.now(), null);
         final ResumeIntroduction introduction = new ResumeIntroduction(resume.getId(), "Full Name", "Objective");
         final ResumeReview review = new ResumeReview(resume.getId(), "cid", ResumeReviewStatus.SAVED);
         final ResumeLaborCategory lcat = new ResumeLaborCategory("id", resume.getId(), "Labor Category", 10);
@@ -79,8 +79,8 @@ public class ResumeContainerTest {
 
     @Nonnull
     private ResumeContainer[] getTwoResumeContainers() {
-        final Resume resume1 = new Resume("rid1", "uid", ResumeStatus.IN_PROGRESS, LocalDateTime.now(), null);
-        final Resume resume2 = new Resume("rid2", "uid", ResumeStatus.IN_PROGRESS, LocalDateTime.now(), null);
+        final Resume resume1 = new Resume("rid1", "uid", ResumeStatus.UNPUBLISHED, LocalDateTime.now(), null);
+        final Resume resume2 = new Resume("rid2", "uid", ResumeStatus.UNPUBLISHED, LocalDateTime.now(), null);
         final ResumeIntroduction introduction = new ResumeIntroduction(resume1.getId(), "Full Name", "Objective");
         final ResumeReview review = new ResumeReview(resume1.getId(), "cid", ResumeReviewStatus.SAVED);
         final ResumeLaborCategory lcat = new ResumeLaborCategory("id", resume1.getId(), "Labor Category", 10);
@@ -138,7 +138,7 @@ public class ResumeContainerTest {
     @Nonnull
     private ResumeContainer getResumeContainer() {
         final LocalDateTime created = LocalDateTime.of(2016, 1, 1, 2, 3, 4);
-        final Resume resume = new Resume("rid", "uid", ResumeStatus.IN_PROGRESS, created, null);
+        final Resume resume = new Resume("rid", "uid", ResumeStatus.UNPUBLISHED, created, null);
         final ResumeIntroduction introduction = new ResumeIntroduction(resume.getId(), "Full Name", "Objective");
         final ResumeReview review = new ResumeReview(resume.getId(), "cid", ResumeReviewStatus.SAVED);
         final ResumeLaborCategory lcat = new ResumeLaborCategory("id", resume.getId(), "Labor Category", 10);
@@ -161,7 +161,7 @@ public class ResumeContainerTest {
 
     @Test
     public void testHashCode() {
-        assertEquals(-1856730299, getResumeContainer().hashCode());
+        assertEquals(-1320386573, getResumeContainer().hashCode());
     }
 
     @Test

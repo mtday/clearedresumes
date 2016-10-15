@@ -47,7 +47,7 @@ public class DefaultResumeLaborCategoryDaoIT {
             fail("Failed to find test user");
         }
 
-        final Resume resume = new Resume("rid", user.getId(), ResumeStatus.IN_PROGRESS, LocalDateTime.now(), null);
+        final Resume resume = new Resume("rid", user.getId(), ResumeStatus.UNPUBLISHED, LocalDateTime.now(), null);
         this.resumeDao.add(resume);
 
         final ResumeLaborCategory beforeAdd = this.resumeLcatDao.get("id");

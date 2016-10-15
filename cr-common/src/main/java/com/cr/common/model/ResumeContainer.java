@@ -9,6 +9,7 @@ import java.util.TreeSet;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -207,6 +208,154 @@ public class ResumeContainer implements Serializable, Comparable<ResumeContainer
     @Nonnull
     public SortedSet<KeyWord> getKeyWords() {
         return this.keyWords;
+    }
+
+    /**
+     * Retrieve whether this resume can be published.
+     *
+     * @return whether this resume can be published
+     */
+    public boolean canPublish() {
+        return isComplete() && (isUnpublished() || isExpired());
+    }
+
+    /**
+     * Retrieve whether this resume is in an Unpublished state.
+     *
+     * @return whether this resume is in an Unpublished state
+     */
+    public boolean isUnpublished() {
+        return getResume().getStatus() == ResumeStatus.UNPUBLISHED;
+    }
+
+    /**
+     * Retrieve whether this resume is in an Published state.
+     *
+     * @return whether this resume is in an Published state
+     */
+    public boolean isPublished() {
+        return getResume().getStatus() == ResumeStatus.PUBLISHED;
+    }
+
+    /**
+     * Retrieve whether this resume is in an Expired state.
+     *
+     * @return whether this resume is in an Expired state
+     */
+    public boolean isExpired() {
+        return getResume().getStatus() == ResumeStatus.EXPIRED;
+    }
+
+    /**
+     * Retrieve whether this resume is in a Deactivated state.
+     *
+     * @return whether this resume is in a Deactivated state
+     */
+    public boolean isDeactivated() {
+        return getResume().getStatus() == ResumeStatus.DEACTIVATED;
+    }
+
+    /**
+     * Retrieve whether the whole resume has been completed.
+     *
+     * @return whether the whole resume has been completed
+     */
+    public boolean isComplete() {
+        return isIntroductionComplete() && isLaborCategoriesComplete() && isContactInfoComplete()
+                && isWorkLocationsComplete() && isWorkSummariesComplete() && isClearancesComplete()
+                && isEducationComplete() && isCertificationsComplete() && isKeyWordsComplete()
+                && isVisibilityComplete();
+    }
+
+    /**
+     * Retrieve whether the resume introduction has been completed.
+     *
+     * @return whether the resume introduction has been completed
+     */
+    public boolean isIntroductionComplete() {
+        final ResumeIntroduction introduction = getIntroduction();
+        return !StringUtils.isBlank(introduction.getFullName()) && !StringUtils.isBlank(introduction.getObjective());
+    }
+
+    /**
+     * Retrieve whether the resume labor categories have been completed.
+     *
+     * @return whether the resume labor categories have been completed
+     */
+    public boolean isLaborCategoriesComplete() {
+        return !getLaborCategories().isEmpty();
+    }
+
+    /**
+     * Retrieve whether the resume contact information has been completed.
+     *
+     * @return whether the resume contact information has been completed
+     */
+    public boolean isContactInfoComplete() {
+        return true; // since the user's email is always available
+    }
+
+    /**
+     * Retrieve whether the resume work locations have been completed.
+     *
+     * @return whether the resume work locations have been completed
+     */
+    public boolean isWorkLocationsComplete() {
+        return !getWorkLocations().isEmpty();
+    }
+
+    /**
+     * Retrieve whether the resume work summaries have been completed.
+     *
+     * @return whether the resume work summaries have been completed
+     */
+    public boolean isWorkSummariesComplete() {
+        return !getWorkSummaries().isEmpty();
+    }
+
+    /**
+     * Retrieve whether the resume clearances have been completed.
+     *
+     * @return whether the resume clearances have been completed
+     */
+    public boolean isClearancesComplete() {
+        return !getClearances().isEmpty();
+    }
+
+    /**
+     * Retrieve whether the resume education has been completed.
+     *
+     * @return whether the resume education has been completed
+     */
+    public boolean isEducationComplete() {
+        return !getEducations().isEmpty();
+    }
+
+    /**
+     * Retrieve whether the resume certifications have been completed.
+     *
+     * @return whether the resume certifications have been completed
+     */
+    public boolean isCertificationsComplete() {
+        return true; // certifications are not required
+    }
+
+    /**
+     * Retrieve whether the resume key words have been completed.
+     *
+     * @return whether the resume key words have been completed
+     */
+    public boolean isKeyWordsComplete() {
+        return true; // key words are not required
+    }
+
+    /**
+     * Retrieve whether the resume visibility has been completed.
+     *
+     * @return whether the resume visibility has been completed
+     */
+    public boolean isVisibilityComplete() {
+        return true; // exclusions are not required
     }
 
     @Override

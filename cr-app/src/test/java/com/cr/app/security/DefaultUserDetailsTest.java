@@ -42,7 +42,7 @@ public class DefaultUserDetailsTest {
         final Company company = new Company("cid", "Company Name", "website", PlanType.BASIC, 10, true);
         final Collection<Company> companies = Collections.singleton(company);
         final LocalDateTime created = LocalDateTime.of(2016, 1, 1, 2, 3, 4);
-        final Resume resume = new Resume("rid", user.getId(), ResumeStatus.IN_PROGRESS, created, null);
+        final Resume resume = new Resume("rid", user.getId(), ResumeStatus.UNPUBLISHED, created, null);
         final ResumeIntroduction overview = new ResumeIntroduction(resume.getId(), "Full Name", "Objective");
         final ResumeReview review = new ResumeReview(resume.getId(), company.getId(), ResumeReviewStatus.SAVED);
         final ResumeLaborCategory lcat = new ResumeLaborCategory("id", resume.getId(), "Labor Category", 10);

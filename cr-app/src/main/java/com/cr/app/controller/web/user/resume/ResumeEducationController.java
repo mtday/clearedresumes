@@ -47,9 +47,10 @@ public class ResumeEducationController extends BaseResumeController {
 
     private void populateModel(@Nonnull final Map<String, Object> model) {
         final ResumeContainer resume = createResumeContainer();
+        model.put("resume", resume);
         model.put("educations", resume.getEducations());
 
-        final boolean complete = !resume.getEducations().isEmpty();
+        final boolean complete = resume.isEducationComplete();
         model.put("educationStatusColor", complete ? "success" : "info");
         model.put("educationStatus", complete ? "Complete" : "Incomplete");
 

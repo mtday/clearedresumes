@@ -47,11 +47,12 @@ public class ResumeCertificationsController extends BaseResumeController {
 
     private void populateModel(@Nonnull final Map<String, Object> model) {
         final ResumeContainer resume = createResumeContainer();
+        model.put("resume", resume);
         model.put("certifications", resume.getCertifications());
 
-        // Always considered to be complete.
-        model.put("certificationStatusColor", "success");
-        model.put("certificationStatus", "Complete");
+        final boolean complete = resume.isCertificationsComplete();
+        model.put("certificationStatusColor", complete ? "success" : "info");
+        model.put("certificationStatus", complete ? "Complete" : "Incomplete");
 
         setCurrentAccount(model);
     }

@@ -5,25 +5,62 @@
 <div th:fragment="resume-nav (currentPage)" class="resume-nav-container">
     <ul class="nav nav-pills nav-stacked">
         <li role="presentation" th:class="${currentPage == 'overview'}? 'active'">
-            <a th:href="@{/user/resume/overview}">Overview</a></li>
+            <a th:href="@{/user/resume/overview}">Overview</a>
+        </li>
         <li role="presentation" th:class="${currentPage == 'introduction'}? 'active'">
-            <a th:href="@{/user/resume/introduction}">Introduction</a></li>
+            <a th:href="@{/user/resume/introduction}">
+                Introduction
+                <span th:if="${resume.isIntroductionComplete()}" class="badge pull-right">&check;</span>
+            </a>
+        </li>
         <li role="presentation" th:class="${currentPage == 'contact-info'}? 'active'">
-            <a th:href="@{/user/resume/contact-info}">Contact Info</a></li>
+            <a th:href="@{/user/resume/contact-info}">
+                Contact Info
+                <span th:if="${resume.isContactInfoComplete()}" class="badge pull-right">&check;</span>
+            </a>
+        </li>
         <li role="presentation" th:class="${currentPage == 'career-fields'}? 'active'">
-            <a th:href="@{/user/resume/career-fields}">Career Fields</a></li>
+            <a th:href="@{/user/resume/career-fields}">
+                Career Fields
+                <span th:if="${resume.isLaborCategoriesComplete()}" class="badge pull-right">&check;</span>
+            </a>
+        </li>
         <li role="presentation" th:class="${currentPage == 'work-locations'}? 'active'">
-            <a th:href="@{/user/resume/work-locations}">Work Locations</a></li>
+            <a th:href="@{/user/resume/work-locations}">
+                Work Locations
+                <span th:if="${resume.isWorkLocationsComplete()}" class="badge pull-right">&check;</span>
+            </a>
+        </li>
         <li role="presentation" th:class="${currentPage == 'clearances'}? 'active'">
-            <a th:href="@{/user/resume/clearances}">Clearances</a></li>
+            <a th:href="@{/user/resume/clearances}">
+                Clearances
+                <span th:if="${resume.isClearancesComplete()}" class="badge pull-right">&check;</span>
+            </a>
+        </li>
         <li role="presentation" th:class="${currentPage == 'education'}? 'active'">
-            <a th:href="@{/user/resume/education}">Education</a></li>
+            <a th:href="@{/user/resume/education}">
+                Education
+                <span th:if="${resume.isEducationComplete()}" class="badge pull-right">&check;</span>
+            </a>
+        </li>
         <li role="presentation" th:class="${currentPage == 'certifications'}? 'active'">
-            <a th:href="@{/user/resume/certifications}">Certifications</a></li>
+            <a th:href="@{/user/resume/certifications}">
+                Certifications
+                <span th:if="${resume.isCertificationsComplete()}" class="badge pull-right">&check;</span>
+            </a>
+        </li>
         <li role="presentation" th:class="${currentPage == 'work-summaries'}? 'active'">
-            <a th:href="@{/user/resume/work-summaries}">Work Summaries</a></li>
-        <li role="presentation" th:class="${currentPage == 'exclusions'}? 'active'">
-            <a th:href="@{/user/resume/exclusions}">Company Exclusions</a></li>
+            <a th:href="@{/user/resume/work-summaries}">
+                Work Summaries
+                <span th:if="${resume.isWorkSummariesComplete()}" class="badge pull-right">&check;</span>
+            </a>
+        </li>
+        <li role="presentation" th:class="${currentPage == 'visibility'}? 'active'">
+            <a th:href="@{/user/resume/visibility}">
+                Visibility
+                <span th:if="${resume.isVisibilityComplete()}" class="badge pull-right">&check;</span>
+            </a>
+        </li>
     </ul>
 </div>
 

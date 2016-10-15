@@ -16,6 +16,26 @@
             <h2>Resume Overview</h2>
 
             <div class="row">
+                <div class="col-md-3">
+                    <h4>Your Current Task:</h4>
+
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <p th:if="${not resume.isComplete()}">
+                                Complete each section of your resume. Use the resume navigation menu on the left to
+                                determine which sections still need to be completed (those without check-marks). Make
+                                sure you fill out each section completely.</p>
+                            <p th:if="${resume.canPublish()}">
+                                Publish your resume - it looks like all of the sections have been completed so it is
+                                time to get your resume out there in front of potential employers for review.</p>
+                            <p th:if="${resume.isPublished()}">
+                                Monitor statistics about companies reviewing your resume to the right. Companies that
+                                may be interested in hiring you will purchase your contact information and reach out to
+                                you to discuss the next steps in their interviewing process.</p>
+                        </li>
+                    </ul>
+                </div>
+
                 <div class="col-md-4">
                     <h4>Resume Status:</h4>
 
@@ -25,7 +45,8 @@
                                 Completion Status:
                             </div>
                             <div class="pull-right">
-                                <span class="label label-info">Incomplete</span>
+                                <span th:if="${resume.isComplete()}" class="label label-success">Complete</span>
+                                <span th:if="${not resume.isComplete()}" class="label label-info">Incomplete</span>
                             </div>
                         </li>
                         <li class="list-group-item">&nbsp;
@@ -33,11 +54,11 @@
                                 Publish Status:
                             </div>
                             <div class="pull-right">
-                                <span class="label label-info">Unpublished</span>
+                                <span class="label label-info" th:text="${resume.resume.status.getDisplayName()}">Published</span>
                             </div>
                         </li>
-                        <li class="list-group-item text-center">
-                            <button class="btn btn-default btn-success" type="submit">Publish Now!</button>
+                        <li class="list-group-item text-center" th:if="${resume.canPublish()}">
+                            <a href="#" class="btn btn-default btn-success">Publish Now!</a>
                         </li>
                     </ul>
                 </div>
@@ -59,9 +80,6 @@
                             Companies that have <strong>Purchased</strong> my contact info:
                         </li>
                     </ul>
-                </div>
-
-                <div class="col-md-3">
                 </div>
             </div>
         </div>

@@ -105,7 +105,7 @@ public abstract class BaseResumeController extends BaseController {
                 } else {
                     // Create a new resume and resume introduction.
                     final Resume resume = new Resume(UUID.randomUUID().toString(), account.getUser().getId(),
-                            ResumeStatus.IN_PROGRESS, LocalDateTime.now(), null);
+                            ResumeStatus.UNPUBLISHED, LocalDateTime.now(), null);
                     final ResumeIntroduction introduction = new ResumeIntroduction(resume.getId());
 
                     getResumeDao().add(resume);

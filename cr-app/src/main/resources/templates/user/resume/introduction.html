@@ -61,12 +61,10 @@
                         </div>
                         <div class="panel-body">
                             <p>Your <i>career objective</i> is a brief narrative that clearly outlines your career
-                                direction.
-                                It provides a quick summary of where you have been so far in your career, and more
-                                importantly,
-                                where you want to go with your career in your next job. This gives potential employers
-                                valuable
-                                information about the type of work in which you may be interested.</p>
+                                direction. It provides a quick summary of where you have been so far in your career,
+                                and more importantly, where you want to go with your career in your next job. This
+                                gives potential employers valuable information about the type of work in which you may
+                                be interested.</p>
 
                             <p th:if="${objectiveMessage}" class="alert alert-info" th:text="${objectiveMessage}">
                                 Message</p>
@@ -76,7 +74,7 @@
                                   method="POST">
 
                                 <label for="introduction-objective" class="sr-only">Career Objective</label>
-                                <textarea name="objective" id="introduction-objective" rows="12" class="form-control"
+                                <textarea name="objective" id="introduction-objective" rows="8" class="form-control"
                                           placeholder="Career Objective" required="required" autofocus="autofocus"
                                           th:text="${introduction.objective}"></textarea>
 

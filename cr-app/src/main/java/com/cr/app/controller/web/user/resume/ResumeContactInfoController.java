@@ -53,11 +53,12 @@ public class ResumeContactInfoController extends BaseResumeController {
         }
 
         final ResumeContainer resume = createResumeContainer();
+        model.put("resume", resume);
         model.put("contactInfos", resume.getContactInfos());
 
-        // Since the user account has an email, contact info is always considered to be complete.
-        model.put("contactInfoStatusColor", "success");
-        model.put("contactInfoStatus", "Complete");
+        final boolean complete = resume.isContactInfoComplete();
+        model.put("contactInfoStatusColor", complete ? "success" : "info");
+        model.put("contactInfoStatus", complete ? "Complete" : "Incomplete");
 
         setCurrentAccount(model);
     }

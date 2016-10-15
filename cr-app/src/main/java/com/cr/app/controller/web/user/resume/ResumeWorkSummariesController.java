@@ -1,5 +1,6 @@
 package com.cr.app.controller.web.user.resume;
 
+import com.cr.common.model.ResumeContainer;
 import com.cr.db.ResumeContainerDao;
 import com.cr.db.ResumeDao;
 import com.cr.db.ResumeIntroductionDao;
@@ -41,6 +42,9 @@ public class ResumeWorkSummariesController extends BaseResumeController {
     @GetMapping("/user/resume/work-summaries")
     @Nonnull
     public String workSummaries(@Nonnull final Map<String, Object> model) {
+        final ResumeContainer resume = createResumeContainer();
+        model.put("resume", resume);
+
         setCurrentAccount(model);
         return "user/resume/work-summaries";
     }
