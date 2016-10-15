@@ -1,6 +1,5 @@
 package com.cr.app.controller.web.user.resume;
 
-import com.cr.common.model.Account;
 import com.cr.common.model.Certification;
 import com.cr.common.model.ResumeContainer;
 import com.cr.db.CertificationDao;
@@ -47,11 +46,6 @@ public class ResumeCertificationsController extends BaseResumeController {
     }
 
     private void populateModel(@Nonnull final Map<String, Object> model) {
-        final Account account = getCurrentAccount();
-        if (account != null) {
-            model.put("email", account.getUser().getEmail());
-        }
-
         final ResumeContainer resume = createResumeContainer();
         model.put("certifications", resume.getCertifications());
 
@@ -96,7 +90,7 @@ public class ResumeCertificationsController extends BaseResumeController {
             populateModel(model);
             return "user/resume/certifications";
         }
-        if (year == 0) {
+        if (year <= 0) {
             model.put("certificationMessage", "Please enter a valid year when the certification completed.");
             populateModel(model);
             return "user/resume/certifications";

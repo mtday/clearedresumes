@@ -293,8 +293,8 @@ body {
 .resume-overview-objective-panel .form-resume-overview-objective .form-control:focus {
   z-index: 2;
 }
-.resume-overview-objective-panel .form-resume-overview-objective textarea {
-  margin-bottom: 10px;
+.resume-overview-objective-panel .form-resume-overview-objective .btn-group {
+  margin-top: 10px;
 }
 
 .resume-contact-panel {
@@ -428,6 +428,34 @@ body {
   z-index: 2;
 }
 .resume-certification-panel .form-resume-certification input {
+  margin-bottom: 10px;
+}
+
+.resume-career-field-panel {
+  margin-top: 34px;
+}
+.resume-career-field-panel .panel-heading {
+  min-height: 40px;
+}
+.resume-career-field-panel .career-field-lcat-cell {
+  width: 90%;
+}
+.resume-career-field-panel .career-field-experience-cell {
+  width: 10%;
+}
+.resume-career-field-panel .action-cell {
+  min-width: 120px;
+}
+.resume-career-field-panel .empty-cell {
+  padding: 30px;
+}
+.resume-career-field-panel .form-resume-career-field .form-control:focus {
+  z-index: 2;
+}
+.resume-career-field-panel .form-resume-career-field .input-group {
+  margin-bottom: 10px;
+}
+.resume-career-field-panel .form-resume-career-field input.padded {
   margin-bottom: 10px;
 }
 

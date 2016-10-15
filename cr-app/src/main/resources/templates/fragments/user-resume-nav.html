@@ -8,6 +8,8 @@
             <a th:href="@{/user/resume/overview}">Overview</a></li>
         <li role="presentation" th:class="${currentPage == 'contact-info'}? 'active'">
             <a th:href="@{/user/resume/contact-info}">Contact Info</a></li>
+        <li role="presentation" th:class="${currentPage == 'career-fields'}? 'active'">
+            <a th:href="@{/user/resume/career-fields}">Career Fields</a></li>
         <li role="presentation" th:class="${currentPage == 'work-locations'}? 'active'">
             <a th:href="@{/user/resume/work-locations}">Work Locations</a></li>
         <li role="presentation" th:class="${currentPage == 'clearances'}? 'active'">

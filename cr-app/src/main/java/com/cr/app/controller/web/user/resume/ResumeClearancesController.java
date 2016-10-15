@@ -1,6 +1,5 @@
 package com.cr.app.controller.web.user.resume;
 
-import com.cr.common.model.Account;
 import com.cr.common.model.Clearance;
 import com.cr.common.model.ResumeContainer;
 import com.cr.db.ClearanceDao;
@@ -58,11 +57,6 @@ public class ResumeClearancesController extends BaseResumeController {
     }
 
     private void populateModel(@Nonnull final Map<String, Object> model) {
-        final Account account = getCurrentAccount();
-        if (account != null) {
-            model.put("email", account.getUser().getEmail());
-        }
-
         final ResumeContainer resume = createResumeContainer();
         model.put("clearances", resume.getClearances());
 
