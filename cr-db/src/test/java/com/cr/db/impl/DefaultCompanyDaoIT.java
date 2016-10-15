@@ -43,7 +43,7 @@ public class DefaultCompanyDaoIT {
     public void test() {
         final CompanyCollection beforeAddColl = this.companyDao.getAll();
         assertNotNull(beforeAddColl);
-        assertEquals(0, beforeAddColl.getCompanies().size());
+        final int beforeCount = beforeAddColl.getCompanies().size(); // may be non-zero from test data
 
         final Company company =
                 new Company(UUID.randomUUID().toString(), "Company Name", "https://company-website.com/",
@@ -55,7 +55,7 @@ public class DefaultCompanyDaoIT {
 
         final CompanyCollection afterAddColl = this.companyDao.getAll();
         assertNotNull(afterAddColl);
-        assertEquals(1, afterAddColl.getCompanies().size());
+        assertEquals(beforeCount + 1, afterAddColl.getCompanies().size());
         assertTrue(afterAddColl.getCompanies().contains(company));
 
         final Company afterAdd = this.companyDao.get(company.getId());
@@ -69,7 +69,7 @@ public class DefaultCompanyDaoIT {
 
         final CompanyCollection afterUpdateColl = this.companyDao.getAll();
         assertNotNull(afterUpdateColl);
-        assertEquals(1, afterUpdateColl.getCompanies().size());
+        assertEquals(beforeCount + 1, afterUpdateColl.getCompanies().size());
         assertTrue(afterUpdateColl.getCompanies().contains(updated));
 
         final Company afterUpdate = this.companyDao.get(updated.getId());
@@ -85,13 +85,15 @@ public class DefaultCompanyDaoIT {
         final CompanyUser companyUser = new CompanyUser(user.getId(), company.getId());
         this.companyUserDao.add(companyUser);
 
-        final CompanyCollection forUser = this.companyDao.getForUser(user.getId());
-        assertNotNull(forUser);
-        assertEquals(1, forUser.getCompanies().size());
-        assertTrue(forUser.getCompanies().contains(updated));
-
-        this.companyUserDao.delete(companyUser);
-        this.userDao.delete(user.getId());
+        try {
+            final CompanyCollection forUser = this.companyDao.getForUser(user.getId());
+            assertNotNull(forUser);
+            assertEquals(1, forUser.getCompanies().size());
+            assertTrue(forUser.getCompanies().contains(updated));
+        } finally {
+            this.companyUserDao.delete(companyUser);
+            this.userDao.delete(user.getId());
+        }
 
         final CompanyCollection remUser = this.companyDao.getForUser(user.getId());
         assertNotNull(remUser);
@@ -101,7 +103,7 @@ public class DefaultCompanyDaoIT {
 
         final CompanyCollection afterDeleteColl = this.companyDao.getAll();
         assertNotNull(afterDeleteColl);
-        assertEquals(0, afterDeleteColl.getCompanies().size());
+        assertEquals(beforeCount, afterDeleteColl.getCompanies().size());
 
         final Company afterDelete = this.companyDao.get(company.getId());
         assertNull(afterDelete);

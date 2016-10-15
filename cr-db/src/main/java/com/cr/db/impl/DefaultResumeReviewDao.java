@@ -77,6 +77,14 @@ public class DefaultResumeReviewDao implements ResumeReviewDao {
         this.jdbcTemplate.update("DELETE FROM resume_reviews WHERE id = ?", id);
     }
 
+    @Override
+    public void delete(
+            @Nonnull final String resumeId, @Nonnull final String companyId, @Nonnull final ResumeReviewStatus status) {
+        this.jdbcTemplate
+                .update("DELETE FROM resume_reviews WHERE resume_id = ? AND company_id = ? AND status = ?", resumeId,
+                        companyId, status.name());
+    }
+
     private static final class ResumeReviewRowMapper implements RowMapper<ResumeReview> {
         @Override
         @Nonnull

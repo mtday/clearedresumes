@@ -494,6 +494,19 @@ body {
   margin-bottom: 10px;
 }
 
+.resume-visibility-panel {
+  margin-top: 34px;
+}
+.resume-visibility-panel .panel-heading {
+  min-height: 40px;
+}
+.resume-visibility-panel .visibility-company-cell {
+  width: 90%;
+}
+.resume-visibility-panel .empty-cell {
+  padding: 30px;
+}
+
 
 /* SimpleMDE minimum height */
 .CodeMirror, .CodeMirror-scroll {

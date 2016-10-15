@@ -14,6 +14,84 @@
         <div class="col-md-10 resume-content-container">
             <!-- Content -->
             <h2>Resume Visibility</h2>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <!-- Certifications panel -->
+                    <div class="panel panel-default resume-visibility-panel">
+                        <div class="panel-heading">
+                            <div class="pull-left">
+                                <span class="panel-title">Companies Excluded</span>
+                            </div>
+                            <div class="pull-right">
+                                <span th:class="'label text-right label-' + ${visibilityStatusColor}"
+                                      th:text="${visibilityStatus}">Status</span>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <p>It may be that you do not want your resume to be visible to certain employers. The most
+                                common situation would be to exclude your current employer from being able to see your
+                                resume so they do not find out you are leaving until you are ready to tell them. This
+                                section allows you to specify those companies you do not want to allow access to your
+                                resume.</p>
+
+                            <table class="table table-bordered resume-visibility-table">
+                                <thead>
+                                    <tr>
+                                        <th class="visibility-company-cell">Company</th>
+                                        <th class="text-center action-cell">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:if="${#lists.isEmpty(visibilities)}">
+                                        <td class="text-center empty-cell" colspan="3">
+                                            No companies have been excluded yet.
+                                        </td>
+                                    </tr>
+                                    <tr th:each="company : ${visibilities}">
+                                        <td class="visibility-company-cell" th:text="${company.name}">Company</td>
+                                        <td class="text-center action-cell">
+                                            <a th:id="${company.id}" class="label label-danger" data-toggle="popover"
+                                               data-placement="top">Delete</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <!-- Company List panel -->
+                    <div class="panel panel-default resume-visibility-panel">
+                        <div class="panel-heading">
+                            <span class="panel-title" id="visibility-title">Exclude Companies</span>
+                        </div>
+                        <div class="panel-body">
+                            <p th:if="${visibilityMessage}" class="alert alert-info" th:text="${visibilityMessage}">
+                                Message</p>
+
+                            <table id="companies" class="table table-striped table-bordered" cellspacing="0"
+                                   width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>Company Name</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="company : ${companies}">
+                                        <td class="company-name-cell">
+                                            &nbsp;
+                                            <span class="pull-left" th:text="${company.name}">Company Name</span>
+                                            <a class="pull-right label label-info"
+                                               th:href="@{/user/resume/visibility/add/{id}(id=${company.id})}">Add</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -21,5 +99,30 @@
 
 <footer th:replace="fragments/footer :: footer"></footer>
 <div th:replace="fragments/scripts :: scripts"></div>
+
+<script>
+    $(document).ready(function() {
+        $('#companies').DataTable();
+
+        $('[data-toggle="popover"]').popover({
+            html: true,
+            content: function() {
+                var str = 'Are you sure?<div class="text-center">';
+                str += '<a href="#" class="label label-danger" onclick="remove(\'' + this.id + '\');">Yes</a> ';
+                str += '<a href="#" class="label label-default" onclick="cancel();">No</a></div>';
+                return str;
+            }
+        });
+    });
+
+    function remove(id) {
+        document.location = '/user/resume/visibility/delete/' + id;
+        $('[data-toggle="popover"]').popover('hide');
+    }
+
+    function cancel() {
+        $('[data-toggle="popover"]').popover('hide');
+    }
+</script>
 </body>
 </html>

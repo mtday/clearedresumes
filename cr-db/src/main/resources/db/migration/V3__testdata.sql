@@ -2,6 +2,14 @@
 INSERT INTO users (id, login, email, password, enabled) VALUES
 ('1', 'test', 'test@clearedresumes.com', '$2a$10$BVkDFSdtJbj0oURvZWDMBur.NVvoafMuycwiE2RbIoIn9pv4.lh32', TRUE);
 
+INSERT INTO companies (id, name, website, plan_type, slots, active) VALUES
+('1', 'Basic Company No Slots', 'http://clearedresumes.com/', 'BASIC', 0, true),
+('2', 'Basic Company Slots', 'http://clearedresumes.com/', 'BASIC', 10, true),
+('3', 'Premium Company No Slots', 'http://clearedresumes.com/', 'PREMIUM', 0, true),
+('4', 'Premium Company Slots', 'http://clearedresumes.com/', 'PREMIUM', 10, true),
+('5', 'Enterprise Company No Slots', 'http://clearedresumes.com/', 'ENTERPRISE', 0, true),
+('6', 'Enterprise Company Slots', 'http://clearedresumes.com/', 'ENTERPRISE', 10, true);
+
 INSERT INTO authorities (user_id, authority) VALUES
 ('1', 'ADMIN'),
 ('1', 'USER');

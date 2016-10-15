@@ -2,6 +2,7 @@ package com.cr.db;
 
 import com.cr.common.model.ResumeReview;
 import com.cr.common.model.ResumeReviewCollection;
+import com.cr.common.model.ResumeReviewStatus;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -49,4 +50,13 @@ public interface ResumeReviewDao {
      * @param id the unique id of the resume review to remove
      */
     void delete(@Nonnull String id);
+
+    /**
+     * Remove the specified types of resume reviews from the database.
+     *
+     * @param resumeId the unique id of the resume of the reviews to remove
+     * @param companyId the unique id of the company of the reviews to remove
+     * @param status the status of the reviews to remove
+     */
+    void delete(@Nonnull String resumeId, @Nonnull String companyId, @Nonnull ResumeReviewStatus status);
 }
