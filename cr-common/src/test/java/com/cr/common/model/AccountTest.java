@@ -41,8 +41,7 @@ public class AccountTest {
         final ContactInfo contactInfo = new ContactInfo("id", "rid", "Value");
         final WorkLocation workLocation = new WorkLocation("id", "rid", "State", "Region");
         final LocalDate begin = LocalDate.of(2016, 1, 1);
-        final WorkSummary workSummary =
-                new WorkSummary("id", "rid", "Title", "Employer", begin, null, "Responsibilities", "Accomplishments");
+        final WorkSummary workSummary = new WorkSummary("id", "rid", "Title", "Employer", begin, null, "Summary");
         final Clearance clearance = new Clearance("id", "rid", "Type", "Organization", "Polygraph");
         final Education education = new Education("id", "rid", "Institution", "Field", "Degree", 2000);
         final Certification certification = new Certification("id", "rid", "Certificate", 2000);
@@ -104,8 +103,7 @@ public class AccountTest {
         final ContactInfo contactInfo = new ContactInfo("id", "rid", "Value");
         final WorkLocation workLocation = new WorkLocation("id", "rid", "State", "Region");
         final LocalDate begin = LocalDate.of(2016, 1, 1);
-        final WorkSummary workSummary =
-                new WorkSummary("id", "rid", "Title", "Employer", begin, null, "Responsibilities", "Accomplishments");
+        final WorkSummary workSummary = new WorkSummary("id", "rid", "Title", "Employer", begin, null, "Summary");
         final Clearance clearance = new Clearance("id", "rid", "Type", "Organization", "Polygraph");
         final Education education = new Education("id", "rid", "Institution", "Field", "Degree", 2000);
         final Certification certification = new Certification("id", "rid", "Certificate", 2000);

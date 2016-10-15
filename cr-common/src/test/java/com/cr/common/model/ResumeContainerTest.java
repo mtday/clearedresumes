@@ -41,8 +41,7 @@ public class ResumeContainerTest {
         final ContactInfo contactInfo = new ContactInfo("id", resume.getId(), "Value");
         final WorkLocation workLocation = new WorkLocation("id", resume.getId(), "State", "Region");
         final WorkSummary workSummary =
-                new WorkSummary("id", resume.getId(), "Title", "Employer", LocalDate.now(), null, "Responsibilities",
-                        "Accomplishments");
+                new WorkSummary("id", resume.getId(), "Title", "Employer", LocalDate.now(), null, "Summary");
         final Clearance clearance = new Clearance("id", resume.getId(), "Type", "Organization", "Polygraph");
         final Education education = new Education("id", resume.getId(), "Institution", "Field", "Degree", 2000);
         final Certification certification = new Certification("id", resume.getId(), "Certificate", 2000);
@@ -87,8 +86,7 @@ public class ResumeContainerTest {
         final ContactInfo contactInfo = new ContactInfo("id", resume1.getId(), "Value");
         final WorkLocation workLocation = new WorkLocation("id", resume1.getId(), "State", "Region");
         final WorkSummary workSummary =
-                new WorkSummary("id", resume1.getId(), "Title", "Employer", LocalDate.now(), null, "Responsibilities",
-                        "Accomplishments");
+                new WorkSummary("id", resume1.getId(), "Title", "Employer", LocalDate.now(), null, "Summary");
         final Clearance clearance = new Clearance("id", resume1.getId(), "Type", "Organization", "Polygraph");
         final Education education = new Education("id", resume1.getId(), "Institution", "Field", "Degree", 2000);
         final Certification certification = new Certification("id", resume1.getId(), "Certificate", 2000);
@@ -146,8 +144,7 @@ public class ResumeContainerTest {
         final WorkLocation workLocation = new WorkLocation("id", resume.getId(), "State", "Region");
         final LocalDate begin = LocalDate.of(2016, 1, 1);
         final WorkSummary workSummary =
-                new WorkSummary("id", resume.getId(), "Title", "Employer", begin, null, "Responsibilities",
-                        "Accomplishments");
+                new WorkSummary("id", resume.getId(), "Title", "Employer", begin, null, "Summary");
         final Clearance clearance = new Clearance("id", resume.getId(), "Type", "Organization", "Polygraph");
         final Education education = new Education("id", resume.getId(), "Institution", "Field", "Degree", 2000);
         final Certification certification = new Certification("id", resume.getId(), "Certificate", 2000);
@@ -161,7 +158,7 @@ public class ResumeContainerTest {
 
     @Test
     public void testHashCode() {
-        assertEquals(-1320386573, getResumeContainer().hashCode());
+        assertEquals(2040925383, getResumeContainer().hashCode());
     }
 
     @Test

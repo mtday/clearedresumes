@@ -60,10 +60,9 @@ public class DefaultWorkSummaryDaoIT {
 
         final WorkSummary workSummary1 =
                 new WorkSummary("id1", resume.getId(), "Title", "Employer", LocalDate.of(2016, 1, 1),
-                        LocalDate.of(2016, 12, 1), "Responsibilities", "Accomplishments");
+                        LocalDate.of(2016, 12, 1), "Summary");
         final WorkSummary workSummary2 =
-                new WorkSummary("id2", resume.getId(), "Title", "Employer", LocalDate.of(2016, 1, 1), null,
-                        "Responsibilities", "Accomplishments");
+                new WorkSummary("id2", resume.getId(), "Title", "Employer", LocalDate.of(2016, 1, 1), null, "Summary");
         this.workSummaryDao.add(workSummary1);
         this.workSummaryDao.add(workSummary2);
 
@@ -82,9 +81,9 @@ public class DefaultWorkSummaryDaoIT {
         assertTrue(getByResumeColl.getWorkSummaries().contains(workSummary2));
 
         final WorkSummary updated1 = new WorkSummary(workSummary1.getId(), resume.getId(), "New Title", "New Employer",
-                LocalDate.of(2016, 2, 1), LocalDate.of(2016, 11, 1), "New Responsibilities", "New Accomplishments");
+                LocalDate.of(2016, 2, 1), LocalDate.of(2016, 11, 1), "New Summary");
         final WorkSummary updated2 = new WorkSummary(workSummary2.getId(), resume.getId(), "New Title", "New Employer",
-                LocalDate.of(2016, 2, 1), null, "New Responsibilities", "New Accomplishments");
+                LocalDate.of(2016, 2, 1), null, "New Summary");
         this.workSummaryDao.update(updated1);
         this.workSummaryDao.update(updated2);
 

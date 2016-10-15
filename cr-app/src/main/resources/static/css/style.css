@@ -348,6 +348,37 @@ body {
   margin-bottom: 10px;
 }
 
+.resume-work-summary-panel {
+  margin-top: 34px;
+}
+.resume-work-summary-panel .panel-heading {
+  min-height: 40px;
+}
+.resume-work-summary-panel .work-summary-title-cell {
+  width: 70%;
+}
+.resume-work-summary-panel .work-summary-dates-cell {
+  width: 20%;
+}
+.resume-work-summary-panel .action-cell {
+  min-width: 120px;
+}
+.resume-work-summary-panel .empty-cell {
+  padding: 30px;
+}
+.resume-work-summary-panel .form-resume-work-summary .form-control:focus {
+  z-index: 2;
+}
+.resume-work-summary-panel .form-resume-work-summary .work-summary-date-row {
+  margin-bottom: 10px;
+}
+.resume-work-summary-panel .form-resume-work-summary .padded {
+  margin-bottom: 10px;
+}
+.resume-work-summary-panel .form-resume-work-summary .btn-group {
+  margin-top: 10px;
+}
+
 .resume-clearance-panel {
   margin-top: 34px;
 }

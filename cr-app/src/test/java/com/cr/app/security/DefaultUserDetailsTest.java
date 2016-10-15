@@ -15,8 +15,8 @@ import com.cr.common.model.KeyWord;
 import com.cr.common.model.PlanType;
 import com.cr.common.model.Resume;
 import com.cr.common.model.ResumeContainer;
-import com.cr.common.model.ResumeLaborCategory;
 import com.cr.common.model.ResumeIntroduction;
+import com.cr.common.model.ResumeLaborCategory;
 import com.cr.common.model.ResumeReview;
 import com.cr.common.model.ResumeReviewStatus;
 import com.cr.common.model.ResumeStatus;
@@ -49,8 +49,7 @@ public class DefaultUserDetailsTest {
         final ContactInfo contactInfo = new ContactInfo("id", resume.getId(), "Value");
         final WorkLocation workLocation = new WorkLocation("id", resume.getId(), "State", "Region");
         final WorkSummary workSummary =
-                new WorkSummary("id", resume.getId(), "Title", "Employer", LocalDate.now(), null, "Responsibilities",
-                        "Accomplishments");
+                new WorkSummary("id", resume.getId(), "Title", "Employer", LocalDate.now(), null, "Summary");
         final Clearance clearance = new Clearance("id", resume.getId(), "Type", "Organization", "Polygraph");
         final Education education = new Education("id", resume.getId(), "Institution", "Field", "Degree", 2000);
         final Certification certification = new Certification("id", resume.getId(), "Certificate", 2000);

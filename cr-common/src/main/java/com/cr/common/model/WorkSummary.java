@@ -1,7 +1,10 @@
 package com.cr.common.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -30,15 +33,13 @@ public class WorkSummary implements Serializable, Comparable<WorkSummary> {
     @Nullable
     private final LocalDate endDate;
     @Nonnull
-    private final String responsibilities;
-    @Nonnull
-    private final String accomplishments;
+    private final String summary;
 
     /**
      * Default constructor required for Jackson deserialization.
      */
     WorkSummary() {
-        this("", "", "", "", LocalDate.now(), LocalDate.now(), "", "");
+        this("", "", "", "", LocalDate.now(), LocalDate.now(), "");
     }
 
     /**
@@ -50,21 +51,19 @@ public class WorkSummary implements Serializable, Comparable<WorkSummary> {
      * @param employer the employer of the user during this work summary
      * @param beginDate the beginning of the time period for this work summary
      * @param endDate the ending of the time period for this work summary
-     * @param responsibilities the responsibilities the user had during this work summary
-     * @param accomplishments the accomplishments the user had during this work summary
+     * @param summary a summary describing the work performed.
      */
     public WorkSummary(
             @Nonnull final String id, @Nonnull final String resumeId, @Nonnull final String jobTitle,
             @Nonnull final String employer, @Nonnull final LocalDate beginDate, @Nullable final LocalDate endDate,
-            @Nonnull final String responsibilities, @Nonnull final String accomplishments) {
+            @Nonnull final String summary) {
         this.id = id;
         this.resumeId = resumeId;
         this.jobTitle = jobTitle;
         this.employer = employer;
         this.beginDate = beginDate;
         this.endDate = endDate;
-        this.responsibilities = responsibilities;
-        this.accomplishments = accomplishments;
+        this.summary = summary;
     }
 
     /**
@@ -118,6 +117,18 @@ public class WorkSummary implements Serializable, Comparable<WorkSummary> {
     }
 
     /**
+     * Retrieve the beginning of the time period for this work summary.
+     *
+     * @param format the format to use when creating the date
+     * @return the beginning of the time period for this work summary
+     */
+    @JsonIgnore
+    @Nullable
+    public String getBeginDate(@Nonnull final String format) {
+        return this.beginDate.format(DateTimeFormatter.ofPattern(format, Locale.ENGLISH));
+    }
+
+    /**
      * Retrieve the ending of the time period for this work summary.
      *
      * @return the ending of the time period for this work summary
@@ -128,23 +139,25 @@ public class WorkSummary implements Serializable, Comparable<WorkSummary> {
     }
 
     /**
-     * Retrieve the responsibilities the user had during this work summary.
+     * Retrieve the ending of the time period for this work summary.
      *
-     * @return the responsibilities the user had during this work summary
+     * @param format the format to use when creating the date
+     * @return the ending of the time period for this work summary
      */
-    @Nonnull
-    public String getResponsibilities() {
-        return this.responsibilities;
+    @JsonIgnore
+    @Nullable
+    public String getEndDate(@Nonnull final String format) {
+        return this.endDate == null ? null : this.endDate.format(DateTimeFormatter.ofPattern(format, Locale.ENGLISH));
     }
 
     /**
-     * Retrieve the accomplishments the user had during this work summary.
+     * Retrieve the summary describing the work performed at this job.
      *
-     * @return the accomplishments the user had during this work summary
+     * @return the summary describing the work performed at this job
      */
     @Nonnull
-    public String getAccomplishments() {
-        return this.accomplishments;
+    public String getSummary() {
+        return this.summary;
     }
 
     @Override
@@ -159,8 +172,7 @@ public class WorkSummary implements Serializable, Comparable<WorkSummary> {
         cmp.append(other.getEndDate(), getEndDate());
         cmp.append(getJobTitle(), other.getJobTitle());
         cmp.append(getEmployer(), other.getEmployer());
-        cmp.append(getResponsibilities(), other.getResponsibilities());
-        cmp.append(getAccomplishments(), other.getAccomplishments());
+        cmp.append(getSummary(), other.getSummary());
         cmp.append(getId(), other.getId());
         return cmp.toComparison();
     }
@@ -179,8 +191,7 @@ public class WorkSummary implements Serializable, Comparable<WorkSummary> {
         hash.append(getEmployer());
         hash.append(getBeginDate());
         hash.append(getEndDate());
-        hash.append(getResponsibilities());
-        hash.append(getAccomplishments());
+        hash.append(getSummary());
         return hash.toHashCode();
     }
 
@@ -194,8 +205,7 @@ public class WorkSummary implements Serializable, Comparable<WorkSummary> {
         str.append("employer", getEmployer());
         str.append("beginDate", getBeginDate());
         str.append("endDate", getEndDate());
-        str.append("responsibilities", getResponsibilities());
-        str.append("accomplishments", getAccomplishments());
+        str.append("summary", getSummary());
         return str.build();
     }
 }

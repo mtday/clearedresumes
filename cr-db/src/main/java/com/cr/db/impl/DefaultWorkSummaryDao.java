@@ -59,23 +59,23 @@ public class DefaultWorkSummaryDao implements WorkSummaryDao {
     public void add(@Nonnull final WorkSummary workSummary) {
         this.jdbcTemplate
                 .update("INSERT INTO work_summaries (id, resume_id, job_title, employer, begin_date, end_date, "
-                                + "responsibilities, accomplishments) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", workSummary
-                        .getId(),
-                        workSummary.getResumeId(), workSummary.getJobTitle(), workSummary.getEmployer(),
+                                + "summary) VALUES (?, ?, ?, ?, ?, ?, ?)", workSummary.getId(), workSummary
+                                .getResumeId(),
+                        workSummary.getJobTitle(), workSummary.getEmployer(),
                         workSummary.getBeginDate().format(FORMATTER),
                         workSummary.getEndDate() == null ? null : workSummary.getEndDate().format(FORMATTER),
-                        workSummary.getResponsibilities(), workSummary.getAccomplishments());
+                        workSummary.getSummary());
     }
 
     @Override
     public void update(@Nonnull final WorkSummary workSummary) {
         this.jdbcTemplate
                 .update("UPDATE work_summaries SET resume_id = ?, job_title = ?, employer = ?, begin_date = ?, "
-                                + "end_date = ?, responsibilities = ?, accomplishments = ? WHERE id = ?",
-                        workSummary.getResumeId(), workSummary.getJobTitle(), workSummary.getEmployer(),
+                                + "end_date = ?, summary = ? WHERE id = ?", workSummary.getResumeId(),
+                        workSummary.getJobTitle(), workSummary.getEmployer(),
                         workSummary.getBeginDate().format(FORMATTER),
                         workSummary.getEndDate() == null ? null : workSummary.getEndDate().format(FORMATTER),
-                        workSummary.getResponsibilities(), workSummary.getAccomplishments(), workSummary.getId());
+                        workSummary.getSummary(), workSummary.getId());
     }
 
     @Override
@@ -94,10 +94,8 @@ public class DefaultWorkSummaryDao implements WorkSummaryDao {
             final LocalDate beginDate = LocalDate.parse(resultSet.getString("begin_date"), FORMATTER);
             final String endDateStr = resultSet.getString("end_date");
             final LocalDate endDate = (endDateStr == null) ? null : LocalDate.parse(endDateStr, FORMATTER);
-            final String responsibilities = resultSet.getString("responsibilities");
-            final String accomplishments = resultSet.getString("accomplishments");
-            return new WorkSummary(
-                    id, resumeId, jobTitle, employer, beginDate, endDate, responsibilities, accomplishments);
+            final String summary = resultSet.getString("summary");
+            return new WorkSummary(id, resumeId, jobTitle, employer, beginDate, endDate, summary);
         }
     }
 }

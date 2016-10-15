@@ -25,10 +25,8 @@ public class WorkSummaryCollectionTest {
     public void testParameterConstructor() {
         final LocalDate begin = LocalDate.of(2016, 1, 1);
         final LocalDate end = LocalDate.of(2016, 12, 31);
-        final WorkSummary workSummary1 =
-                new WorkSummary("id-1", "rid-1", "title-1", "emp-1", begin, end, "resp-1", "acc-1");
-        final WorkSummary workSummary2 =
-                new WorkSummary("id-2", "rid-1", "title-1", "emp-1", begin, end, "resp-1", "acc-1");
+        final WorkSummary workSummary1 = new WorkSummary("id-1", "rid-1", "title-1", "emp-1", begin, end, "sum-1");
+        final WorkSummary workSummary2 = new WorkSummary("id-2", "rid-1", "title-1", "emp-1", begin, end, "sum-1");
         final WorkSummaryCollection workSummaryColl =
                 new WorkSummaryCollection(Arrays.asList(workSummary1, workSummary2));
         assertNotNull(workSummaryColl.getWorkSummaries());
@@ -41,10 +39,8 @@ public class WorkSummaryCollectionTest {
     public void testCompareTo() {
         final LocalDate begin = LocalDate.of(2016, 1, 1);
         final LocalDate end = LocalDate.of(2016, 12, 31);
-        final WorkSummary workSummary1 =
-                new WorkSummary("id-1", "rid-1", "title-1", "emp-1", begin, end, "resp-1", "acc-1");
-        final WorkSummary workSummary2 =
-                new WorkSummary("id-2", "rid-1", "title-1", "emp-1", begin, end, "resp-1", "acc-1");
+        final WorkSummary workSummary1 = new WorkSummary("id-1", "rid-1", "title-1", "emp-1", begin, end, "sum-1");
+        final WorkSummary workSummary2 = new WorkSummary("id-2", "rid-1", "title-1", "emp-1", begin, end, "sum-1");
 
         final WorkSummaryCollection a = new WorkSummaryCollection(Collections.emptyList());
         final WorkSummaryCollection b = new WorkSummaryCollection(Collections.singleton(workSummary1));
@@ -66,10 +62,8 @@ public class WorkSummaryCollectionTest {
     public void testEquals() {
         final LocalDate begin = LocalDate.of(2016, 1, 1);
         final LocalDate end = LocalDate.of(2016, 12, 31);
-        final WorkSummary workSummary1 =
-                new WorkSummary("id-1", "rid-1", "title-1", "emp-1", begin, end, "resp-1", "acc-1");
-        final WorkSummary workSummary2 =
-                new WorkSummary("id-2", "rid-1", "title-1", "emp-1", begin, end, "resp-1", "acc-1");
+        final WorkSummary workSummary1 = new WorkSummary("id-1", "rid-1", "title-1", "emp-1", begin, end, "sum-1");
+        final WorkSummary workSummary2 = new WorkSummary("id-2", "rid-1", "title-1", "emp-1", begin, end, "sum-1");
 
         final WorkSummaryCollection a = new WorkSummaryCollection(Collections.emptyList());
         final WorkSummaryCollection b = new WorkSummaryCollection(Collections.singleton(workSummary1));
@@ -91,29 +85,24 @@ public class WorkSummaryCollectionTest {
     public void testHashCode() {
         final LocalDate begin = LocalDate.of(2016, 1, 1);
         final LocalDate end = LocalDate.of(2016, 12, 31);
-        final WorkSummary workSummary1 =
-                new WorkSummary("id-1", "rid-1", "title-1", "emp-1", begin, end, "resp-1", "acc-1");
-        final WorkSummary workSummary2 =
-                new WorkSummary("id-2", "rid-1", "title-1", "emp-1", begin, end, "resp-1", "acc-1");
+        final WorkSummary workSummary1 = new WorkSummary("id-1", "rid-1", "title-1", "emp-1", begin, end, "sum-1");
+        final WorkSummary workSummary2 = new WorkSummary("id-2", "rid-1", "title-1", "emp-1", begin, end, "sum-1");
         final WorkSummaryCollection workSummaryColl =
                 new WorkSummaryCollection(Arrays.asList(workSummary1, workSummary2));
-        assertEquals(1772690054, workSummaryColl.hashCode());
+        assertEquals(1550963430, workSummaryColl.hashCode());
     }
 
     @Test
     public void testToString() {
         final LocalDate begin = LocalDate.of(2016, 1, 1);
         final LocalDate end = LocalDate.of(2016, 12, 31);
-        final WorkSummary workSummary1 =
-                new WorkSummary("id-1", "rid-1", "title-1", "emp-1", begin, end, "resp-1", "acc-1");
-        final WorkSummary workSummary2 =
-                new WorkSummary("id-2", "rid-1", "title-1", "emp-1", begin, end, "resp-1", "acc-1");
+        final WorkSummary workSummary1 = new WorkSummary("id-1", "rid-1", "title-1", "emp-1", begin, end, "sum-1");
+        final WorkSummary workSummary2 = new WorkSummary("id-2", "rid-1", "title-1", "emp-1", begin, end, "sum-1");
         final WorkSummaryCollection workSummaryColl =
                 new WorkSummaryCollection(Arrays.asList(workSummary1, workSummary2));
         assertEquals("WorkSummaryCollection[workSummaries=[WorkSummary[id=id-1,resumeId=rid-1,jobTitle=title-1,"
-                + "employer=emp-1,beginDate=2016-01-01,endDate=2016-12-31,responsibilities=resp-1,"
-                + "accomplishments=acc-1], WorkSummary[id=id-2,resumeId=rid-1,jobTitle=title-1,"
-                + "employer=emp-1,beginDate=2016-01-01,endDate=2016-12-31,responsibilities=resp-1,"
-                + "accomplishments=acc-1]]]", workSummaryColl.toString());
+                + "employer=emp-1,beginDate=2016-01-01,endDate=2016-12-31,summary=sum-1], "
+                + "WorkSummary[id=id-2,resumeId=rid-1,jobTitle=title-1,employer=emp-1,beginDate=2016-01-01,"
+                + "endDate=2016-12-31,summary=sum-1]]]", workSummaryColl.toString());
     }
 }

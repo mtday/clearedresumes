@@ -164,11 +164,10 @@ CREATE TABLE work_summaries (
     id                VARCHAR(36)    NOT NULL,
     resume_id         VARCHAR(36)    NOT NULL,
     job_title         VARCHAR(200)   NOT NULL,
-    employer          VARCHAR(200)   NOT NULL,
+    employer          VARCHAR(200),
     begin_date        DATE           NOT NULL,
     end_date          DATE,
-    responsibilities  VARCHAR(20000) NOT NULL,
-    accomplishments   VARCHAR(20000) NOT NULL,
+    summary           VARCHAR(20000) NOT NULL,
 
     CONSTRAINT work_summaries_pk PRIMARY KEY (id),
     CONSTRAINT work_summaries_fk_resume_id FOREIGN KEY (resume_id) REFERENCES resumes (id) ON DELETE CASCADE

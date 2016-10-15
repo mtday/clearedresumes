@@ -13,7 +13,128 @@
         </div>
         <div class="col-md-10 resume-content-container">
             <!-- Content -->
-            <h2>Resume Work Summaries</h2>
+            <h2>Work Summaries</h2>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <!-- Work Summary panel -->
+                    <div class="panel panel-default resume-work-summary-panel">
+                        <div class="panel-heading">
+                            <div class="pull-left">
+                                <span class="panel-title">Your Job History</span>
+                            </div>
+                            <div class="pull-right">
+                        <span th:class="'label text-right label-' + ${workSummaryStatusColor}"
+                              th:text="${workSummaryStatus}">Status</span>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <p>Provide a summary for each of your previous jobs and positions you have had. These
+                                summaries tell potential employers about the progression of your career, the
+                                accomplishments you have had, and the type of work you have performed in the past. All
+                                of this information will help potential employers determine if you are a good fit for
+                                their open positions.</p>
+
+                            <div class="list-group resume-work-summary-list-group">
+                                <li th:if="${#lists.isEmpty(workSummaries)}" class="list-group-item text-center empty-cell">
+                                    No work summaries have been added yet.
+                                </li>
+                                <li th:each="workSummary : ${workSummaries}" class="list-group-item">
+                                    <h4 class="list-group-item-heading" th:text="${workSummary.jobTitle}">
+                                        Job Title
+                                    </h4>
+                                    <p class="list-group-item-text">
+                                        <div th:if="${workSummary.employer}"
+                                              th:text="${workSummary.employer}">Employer</div>
+
+                                        <div>&nbsp;
+                                            <span class="pull-left">
+                                                <span th:text="${workSummary.getBeginDate('MMM, yyyy')}">Begin</span> -
+                                                <span th:if="${workSummary.endDate != null}"
+                                                      th:text="${workSummary.getEndDate('MMM, yyyy')}">End</span>
+                                                <span th:if="${workSummary.endDate == null}">Present</span>
+                                            </span>
+                                            <span class="pull-right">
+                                                <a th:id="'edit-' + ${workSummary.id}" href="#" class="label label-info"
+                                                   th:onclick="'edit(\'' + ${workSummary.id} + '\', \'' + ${workSummary.jobTitle} + '\', \'' + ${workSummary.employer} + '\', \'' + ${workSummary.getBeginDate('MMM dd, yyyy')} + '\', \'' + ${workSummary.getEndDate('MMM dd, yyyy')} + '\', \'' + ${workSummary.summary} + '\');'">Edit</a>
+                                                <a th:id="${workSummary.id}" class="label label-danger"
+                                                   data-toggle="popover" data-placement="top">Delete</a>
+                                            </span>
+                                        </div>
+                                    </p>
+                                </li>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <!-- Add/Update panel -->
+                    <div class="panel panel-default resume-work-summary-panel">
+                        <div class="panel-heading">
+                            <span class="panel-title" id="work-summary-title">Add Work Summary</span>
+                        </div>
+                        <div class="panel-body">
+                            <p th:if="${workSummaryMessage}" class="alert alert-info" th:text="${workSummaryMessage}">
+                                Message</p>
+
+                            <form class="form-resume-work-summary" name="workSummaryForm"
+                                  th:action="@{/user/resume/work-summaries}" method="POST" novalidate="novalidate">
+
+                                <input type="hidden" name="id" id="work-summary-id"/>
+
+                                <label for="work-summary-job-title" class="sr-only">Job Title / Role (e.g., Lead
+                                    Software Engineer)</label>
+                                <input type="text" name="jobTitle" id="work-summary-job-title"
+                                       class="form-control padded"
+                                       placeholder="Job Title / Role (e.g., Lead Software Engineer)" required="required"
+                                       autofocus="autofocus"/>
+
+                                <label for="work-summary-employer" class="sr-only">Employer (optional)</label>
+                                <input type="text" name="employer" id="work-summary-employer"
+                                       class="form-control padded" placeholder="Employer (optional)" required="required"
+                                       autofocus="autofocus"/>
+
+                                <p>Specify the beginning and ending dates for this work. If you are still working in
+                                    this position, leave the <i>End Date</i> empty.</p>
+                                <div class="row work-summary-date-row">
+                                    <div class="col-md-6">
+                                        <div class="input-group date" id="begin">
+                                            <label for="work-summary-begin" class="sr-only">Begin Date</label>
+                                            <input type="text" name="beginDate" id="work-summary-begin" class="form-control"
+                                                   required="required" autofocus="autofocus"/>
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="input-group date" id="end">
+                                            <label for="work-summary-end" class="sr-only">End Date</label>
+                                            <input type="text" name="endDate" id="work-summary-end" class="form-control"
+                                                   autofocus="autofocus"/>
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <p>Provide a summary of your daily tasks and responsibilities, successes, awards,
+                                    etc.</p>
+                                <label for="work-summary" class="sr-only">Summary</label>
+                                <textarea name="summary" id="work-summary" rows="8" class="form-control"
+                                          placeholder="Summary" required="required" autofocus="autofocus"></textarea>
+
+                                <div class="btn-group">
+                                    <button id="work-summary-submit" class="btn btn-default btn-primary" type="submit">
+                                        Add
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -21,5 +142,67 @@
 
 <footer th:replace="fragments/footer :: footer"></footer>
 <div th:replace="fragments/scripts :: scripts"></div>
+
+<script>
+    $(document).ready(function() {
+        $('[data-toggle="popover"]').popover({
+            html: true,
+            content: function() {
+                var str = 'Are you sure?<div class="text-center">';
+                str += '<a href="#" class="label label-danger" onclick="remove(\'' + this.id + '\');">Yes</a> ';
+                str += '<a href="#" class="label label-default" onclick="cancel();">No</a></div>';
+                return str;
+            }
+        });
+    });
+
+    $(function () {
+        $('#begin').datetimepicker({
+            format: 'MMM DD, YYYY'
+        });
+        $('#end').datetimepicker({
+            format: 'MMM DD, YYYY',
+            useCurrent: false
+        });
+        $("#begin").on("dp.change", function (e) {
+            $('#end').data("DateTimePicker").minDate(e.date);
+        });
+        $("#end").on("dp.change", function (e) {
+            $('#begin').data("DateTimePicker").maxDate(e.date);
+        });
+    });
+
+    function remove(id) {
+        document.summary = '/user/resume/work-summaries/delete/' + id;
+        $('[data-toggle="popover"]').popover('hide');
+    }
+
+    function cancel() {
+        $('[data-toggle="popover"]').popover('hide');
+    }
+
+    function edit(id, jobTitle, employer, begin, end, summary) {
+        $('#work-summary-id')[0].value = id;
+        $('#work-summary-job-title')[0].value = jobTitle;
+        $('#work-summary-job-title')[0].focus();
+        $('#work-summary-employer')[0].value = employer;
+        $('#work-summary-begin')[0].value = begin;
+        $('#work-summary-end')[0].value = end;
+        $('#work-summary')[0].value = summary;
+        $('#work-summary-submit')[0].innerHTML = 'Save';
+        $('#work-summary-submit').addClass('btn-success');
+        $('#work-summary-submit').removeClass('btn-primary');
+        $('#work-summary-title')[0].innerHTML = 'Edit Work Summary';
+    }
+
+    new SimpleMDE({
+        element: document.getElementById("work-summary"),
+        autoDownloadFontAwesome: false,
+        spellChecker: false,
+        autosave: true,
+        status: false,
+        hideIcons: ["link", "image", "fullscreen", "side-by-side"]
+    });
+</script>
 </body>
 </html>
