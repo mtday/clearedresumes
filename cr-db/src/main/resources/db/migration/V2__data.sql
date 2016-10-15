@@ -97,3 +97,5 @@ INSERT INTO prices (type, price) VALUES
 ('PREMIUM_PACKAGE', 50.00),
 ('ENTERPRISE_PACKAGE', 500.00);
 
+INSERT INTO configurations (key, value) VALUES
+('resume.publish.expiration', '14');

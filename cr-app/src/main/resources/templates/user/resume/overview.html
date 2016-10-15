@@ -15,6 +15,8 @@
             <!-- Content -->
             <h2>Resume Overview</h2>
 
+            <p th:if="${overviewMessage}" th:text="${overviewMessage}" class="alert alert-info">Error Message</p>
+
             <div class="row">
                 <div class="col-md-3">
                     <h4>Your Current Task:</h4>
@@ -29,9 +31,8 @@
                                 Publish your resume - it looks like all of the sections have been completed so it is
                                 time to get your resume out there in front of potential employers for review.</p>
                             <p th:if="${resume.isPublished()}">
-                                Monitor statistics about companies reviewing your resume to the right. Companies that
-                                may be interested in hiring you will purchase your contact information and reach out to
-                                you to discuss the next steps in their interviewing process.</p>
+                                Monitor statistics about companies reviewing your resume to the right. If you accept an
+                                offer for employment from a company, unpublish your resume.</p>
                         </li>
                     </ul>
                 </div>
@@ -54,11 +55,31 @@
                                 Publish Status:
                             </div>
                             <div class="pull-right">
-                                <span class="label label-info" th:text="${resume.resume.status.getDisplayName()}">Published</span>
+                                <span th:if="${resume.isPublished()}" class="label label-success"
+                                      th:text="${resume.resume.status.getDisplayName()}">Published</span>
+                                <span th:if="${resume.isUnpublished()}" class="label label-info"
+                                      th:text="${resume.resume.status.getDisplayName()}">Unpublished</span>
+                                <span th:if="${resume.isExpired()}" class="label label-warning"
+                                      th:text="${resume.resume.status.getDisplayName()}">Expired</span>
+                                <span th:if="${resume.isDeactivated()}" class="label label-danger"
+                                      th:text="${resume.resume.status.getDisplayName()}">Deactivated</span>
                             </div>
                         </li>
                         <li class="list-group-item text-center" th:if="${resume.canPublish()}">
-                            <a href="#" class="btn btn-default btn-success">Publish Now!</a>
+                            <a th:href="@{/user/resume/overview/publish}" class="btn btn-default btn-success">
+                                Publish Now!</a>
+                        </li>
+                        <li class="list-group-item text-center" th:if="${resume.isPublished()}">&nbsp;
+                            <div class="pull-left">
+                                Expiration:
+                            </div>
+                            <div class="pull-right" th:text="${resume.resume.getExpiration('MMM dd  HH:mm:ss')}">
+                                Expiration
+                            </div>
+                        </li>
+                        <li class="list-group-item text-center" th:if="${resume.canUnpublish()}">
+                            <a th:href="@{/user/resume/overview/unpublish}" class="btn btn-default btn-info">
+                                Unpublish</a>
                         </li>
                     </ul>
                 </div>

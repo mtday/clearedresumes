@@ -230,3 +230,11 @@ CREATE TABLE prices (
     CONSTRAINT pricing_pk PRIMARY KEY (type)
 );
 
+
+CREATE TABLE configurations (
+    key               VARCHAR(100)   NOT NULL,
+    value             VARCHAR(100)   NOT NULL,
+
+    CONSTRAINT configurations_pk PRIMARY KEY (key)
+);
+

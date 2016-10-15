@@ -220,6 +220,15 @@ public class ResumeContainer implements Serializable, Comparable<ResumeContainer
     }
 
     /**
+     * Retrieve whether this resume can be un-published.
+     *
+     * @return whether this resume can be un-published
+     */
+    public boolean canUnpublish() {
+        return isPublished();
+    }
+
+    /**
      * Retrieve whether this resume is in an Unpublished state.
      *
      * @return whether this resume is in an Unpublished state

@@ -1,7 +1,10 @@
 package com.cr.common.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -102,6 +105,19 @@ public class Resume implements Serializable, Comparable<Resume> {
     @Nullable
     public LocalDateTime getExpiration() {
         return this.expiration;
+    }
+
+    /**
+     * Retrieve the time stamp when this resume becomes inactive.
+     *
+     * @param format the format to use when creating the expiration time string
+     * @return the time stamp when this resume becomes inactive
+     */
+    @JsonIgnore
+    @Nullable
+    public String getExpiration(@Nonnull final String format) {
+        return this.expiration == null ? null :
+                this.expiration.format(DateTimeFormatter.ofPattern(format, Locale.ENGLISH));
     }
 
     @Override
