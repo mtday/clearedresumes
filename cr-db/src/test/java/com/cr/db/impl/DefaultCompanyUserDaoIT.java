@@ -15,6 +15,7 @@ import com.cr.db.CompanyDao;
 import com.cr.db.CompanyUserDao;
 import com.cr.db.TestApplication;
 import com.cr.db.UserDao;
+import java.util.UUID;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,40 +48,43 @@ public class DefaultCompanyUserDaoIT {
         }
 
         final Company company =
-                new Company("id", "Company Name", "https://company-website.com/", PlanType.BASIC, 10, true);
+                new Company(UUID.randomUUID().toString(), "Company Name", "https://company-website.com/",
+                        PlanType.BASIC, 10, true);
         this.companyDao.add(company);
 
-        final CompanyCollection beforeAddByUserColl = this.companyDao.getForUser(user.getId());
-        assertNotNull(beforeAddByUserColl);
-        assertEquals(0, beforeAddByUserColl.getCompanies().size());
+        try {
+            final CompanyCollection beforeAddByUserColl = this.companyDao.getForUser(user.getId());
+            assertNotNull(beforeAddByUserColl);
+            final int beforeSize = beforeAddByUserColl.getCompanies().size(); // may be non-zero from test data
 
-        final UserCollection beforeAddByCompanyColl = this.userDao.getForCompany(company.getId());
-        assertNotNull(beforeAddByCompanyColl);
-        assertEquals(0, beforeAddByCompanyColl.getUsers().size());
+            final UserCollection beforeAddByCompanyColl = this.userDao.getForCompany(company.getId());
+            assertNotNull(beforeAddByCompanyColl);
+            assertEquals(0, beforeAddByCompanyColl.getUsers().size());
 
-        final CompanyUser companyUser = new CompanyUser(user.getId(), company.getId());
-        this.companyUserDao.add(companyUser);
+            final CompanyUser companyUser = new CompanyUser(user.getId(), company.getId());
+            this.companyUserDao.add(companyUser);
 
-        final CompanyCollection afterAddByUserColl = this.companyDao.getForUser(user.getId());
-        assertNotNull(afterAddByUserColl);
-        assertEquals(1, afterAddByUserColl.getCompanies().size());
-        assertTrue(afterAddByUserColl.getCompanies().contains(company));
+            final CompanyCollection afterAddByUserColl = this.companyDao.getForUser(user.getId());
+            assertNotNull(afterAddByUserColl);
+            assertEquals(beforeSize + 1, afterAddByUserColl.getCompanies().size());
+            assertTrue(afterAddByUserColl.getCompanies().contains(company));
 
-        final UserCollection afterAddByCompanyColl = this.userDao.getForCompany(company.getId());
-        assertNotNull(afterAddByCompanyColl);
-        assertEquals(1, afterAddByCompanyColl.getUsers().size());
-        assertTrue(afterAddByCompanyColl.getUsers().contains(user));
+            final UserCollection afterAddByCompanyColl = this.userDao.getForCompany(company.getId());
+            assertNotNull(afterAddByCompanyColl);
+            assertEquals(1, afterAddByCompanyColl.getUsers().size());
+            assertTrue(afterAddByCompanyColl.getUsers().contains(user));
 
-        this.companyUserDao.delete(companyUser);
+            this.companyUserDao.delete(companyUser);
 
-        final CompanyCollection afterDeleteByUserColl = this.companyDao.getForUser(user.getId());
-        assertNotNull(afterDeleteByUserColl);
-        assertEquals(0, afterDeleteByUserColl.getCompanies().size());
+            final CompanyCollection afterDeleteByUserColl = this.companyDao.getForUser(user.getId());
+            assertNotNull(afterDeleteByUserColl);
+            assertEquals(beforeSize, afterDeleteByUserColl.getCompanies().size());
 
-        final UserCollection afterDeleteByCompanyColl = this.userDao.getForCompany(company.getId());
-        assertNotNull(afterDeleteByCompanyColl);
-        assertEquals(0, afterDeleteByCompanyColl.getUsers().size());
-
-        this.companyDao.delete(company.getId());
+            final UserCollection afterDeleteByCompanyColl = this.userDao.getForCompany(company.getId());
+            assertNotNull(afterDeleteByCompanyColl);
+            assertEquals(0, afterDeleteByCompanyColl.getUsers().size());
+        } finally {
+            this.companyDao.delete(company.getId());
+        }
     }
 }

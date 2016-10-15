@@ -4,6 +4,9 @@ package com.cr.common.model;
  * Defines the available states a resume can be in within this system.
  */
 public enum ResumeReviewStatus {
+    /** The company has viewed this resume. */
+    VIEWED,
+
     /** The company is saving this resume for later review. */
     SAVED,
 

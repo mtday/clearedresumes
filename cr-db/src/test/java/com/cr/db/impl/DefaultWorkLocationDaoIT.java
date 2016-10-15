@@ -16,6 +16,7 @@ import com.cr.db.TestApplication;
 import com.cr.db.UserDao;
 import com.cr.db.WorkLocationDao;
 import java.time.LocalDateTime;
+import java.util.UUID;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,49 +48,55 @@ public class DefaultWorkLocationDaoIT {
             fail("Failed to find test user");
         }
 
-        final Resume resume = new Resume("rid", user.getId(), ResumeStatus.UNPUBLISHED, LocalDateTime.now(), null);
+        final Resume resume =
+                new Resume(UUID.randomUUID().toString(), user.getId(), ResumeStatus.UNPUBLISHED, LocalDateTime.now(),
+                        null);
         this.resumeDao.add(resume);
 
-        final WorkLocation beforeAdd = this.workLocationDao.get("id");
-        assertNull(beforeAdd);
+        try {
+            final WorkLocation workLocation =
+                    new WorkLocation(UUID.randomUUID().toString(), resume.getId(), "Maryland", "Fort Meade");
+            final WorkLocation beforeAdd = this.workLocationDao.get(workLocation.getId());
+            assertNull(beforeAdd);
 
-        final WorkLocationCollection beforeAddByResumeColl = this.workLocationDao.getForResume(user.getId());
-        assertNotNull(beforeAddByResumeColl);
-        assertEquals(0, beforeAddByResumeColl.getWorkLocations().size());
+            final WorkLocationCollection beforeAddByResumeColl = this.workLocationDao.getForResume(resume.getId());
+            assertNotNull(beforeAddByResumeColl);
+            assertEquals(0, beforeAddByResumeColl.getWorkLocations().size());
 
-        final WorkLocation workLocation = new WorkLocation("id", resume.getId(), "Maryland", "Fort Meade");
-        this.workLocationDao.add(workLocation);
+            this.workLocationDao.add(workLocation);
 
-        final WorkLocation getById = this.workLocationDao.get(workLocation.getId());
-        assertNotNull(getById);
-        assertEquals(workLocation, getById);
+            final WorkLocation getById = this.workLocationDao.get(workLocation.getId());
+            assertNotNull(getById);
+            assertEquals(workLocation, getById);
 
-        final WorkLocationCollection getByResumeColl = this.workLocationDao.getForResume(resume.getId());
-        assertNotNull(getByResumeColl);
-        assertEquals(1, getByResumeColl.getWorkLocations().size());
-        assertTrue(getByResumeColl.getWorkLocations().contains(workLocation));
+            final WorkLocationCollection getByResumeColl = this.workLocationDao.getForResume(resume.getId());
+            assertNotNull(getByResumeColl);
+            assertEquals(1, getByResumeColl.getWorkLocations().size());
+            assertTrue(getByResumeColl.getWorkLocations().contains(workLocation));
 
-        final WorkLocation updated = new WorkLocation(workLocation.getId(), resume.getId(), "Maryland", "Indian Head");
-        this.workLocationDao.update(updated);
+            final WorkLocation updated =
+                    new WorkLocation(workLocation.getId(), resume.getId(), "Maryland", "Indian Head");
+            this.workLocationDao.update(updated);
 
-        final WorkLocation afterUpdate = this.workLocationDao.get(workLocation.getId());
-        assertNotNull(afterUpdate);
-        assertEquals(updated, afterUpdate);
+            final WorkLocation afterUpdate = this.workLocationDao.get(workLocation.getId());
+            assertNotNull(afterUpdate);
+            assertEquals(updated, afterUpdate);
 
-        final WorkLocationCollection afterUpdateByResumeColl = this.workLocationDao.getForResume(resume.getId());
-        assertNotNull(afterUpdateByResumeColl);
-        assertEquals(1, afterUpdateByResumeColl.getWorkLocations().size());
-        assertTrue(afterUpdateByResumeColl.getWorkLocations().contains(updated));
+            final WorkLocationCollection afterUpdateByResumeColl = this.workLocationDao.getForResume(resume.getId());
+            assertNotNull(afterUpdateByResumeColl);
+            assertEquals(1, afterUpdateByResumeColl.getWorkLocations().size());
+            assertTrue(afterUpdateByResumeColl.getWorkLocations().contains(updated));
 
-        this.workLocationDao.delete(workLocation.getId());
+            this.workLocationDao.delete(workLocation.getId());
 
-        final WorkLocation afterDelete = this.workLocationDao.get(workLocation.getId());
-        assertNull(afterDelete);
+            final WorkLocation afterDelete = this.workLocationDao.get(workLocation.getId());
+            assertNull(afterDelete);
 
-        final WorkLocationCollection afterDeleteByResume = this.workLocationDao.getForResume(user.getId());
-        assertNotNull(afterDeleteByResume);
-        assertEquals(0, afterDeleteByResume.getWorkLocations().size());
-
-        this.resumeDao.delete(resume.getId());
+            final WorkLocationCollection afterDeleteByResume = this.workLocationDao.getForResume(resume.getId());
+            assertNotNull(afterDeleteByResume);
+            assertEquals(0, afterDeleteByResume.getWorkLocations().size());
+        } finally {
+            this.resumeDao.delete(resume.getId());
+        }
     }
 }

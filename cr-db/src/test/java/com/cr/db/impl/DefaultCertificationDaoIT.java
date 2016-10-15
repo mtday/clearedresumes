@@ -16,6 +16,7 @@ import com.cr.db.ResumeDao;
 import com.cr.db.TestApplication;
 import com.cr.db.UserDao;
 import java.time.LocalDateTime;
+import java.util.UUID;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,49 +48,55 @@ public class DefaultCertificationDaoIT {
             fail("Failed to find test user");
         }
 
-        final Resume resume = new Resume("rid", user.getId(), ResumeStatus.UNPUBLISHED, LocalDateTime.now(), null);
+        final Resume resume =
+                new Resume(UUID.randomUUID().toString(), user.getId(), ResumeStatus.UNPUBLISHED, LocalDateTime.now(),
+                        null);
         this.resumeDao.add(resume);
 
-        final Certification beforeAdd = this.certificationDao.get("id");
-        assertNull(beforeAdd);
+        try {
+            final Certification certification =
+                    new Certification(UUID.randomUUID().toString(), resume.getId(), "certificate", 2000);
+            final Certification beforeAdd = this.certificationDao.get(certification.getId());
+            assertNull(beforeAdd);
 
-        final CertificationCollection beforeAddByResumeColl = this.certificationDao.getForResume(user.getId());
-        assertNotNull(beforeAddByResumeColl);
-        assertEquals(0, beforeAddByResumeColl.getCertifications().size());
+            final CertificationCollection beforeAddByResumeColl = this.certificationDao.getForResume(resume.getId());
+            assertNotNull(beforeAddByResumeColl);
+            final int beforeSize = beforeAddByResumeColl.getCertifications().size(); // may be non-zero from test data
 
-        final Certification certification = new Certification("id", resume.getId(), "certificate", 2000);
-        this.certificationDao.add(certification);
+            this.certificationDao.add(certification);
 
-        final Certification getById = this.certificationDao.get(certification.getId());
-        assertNotNull(getById);
-        assertEquals(certification, getById);
+            final Certification getById = this.certificationDao.get(certification.getId());
+            assertNotNull(getById);
+            assertEquals(certification, getById);
 
-        final CertificationCollection getByResumeColl = this.certificationDao.getForResume(resume.getId());
-        assertNotNull(getByResumeColl);
-        assertEquals(1, getByResumeColl.getCertifications().size());
-        assertTrue(getByResumeColl.getCertifications().contains(certification));
+            final CertificationCollection getByResumeColl = this.certificationDao.getForResume(resume.getId());
+            assertNotNull(getByResumeColl);
+            assertEquals(beforeSize + 1, getByResumeColl.getCertifications().size());
+            assertTrue(getByResumeColl.getCertifications().contains(certification));
 
-        final Certification updated = new Certification(certification.getId(), resume.getId(), "new certificate", 2020);
-        this.certificationDao.update(updated);
+            final Certification updated =
+                    new Certification(certification.getId(), resume.getId(), "new certificate", 2020);
+            this.certificationDao.update(updated);
 
-        final Certification afterUpdate = this.certificationDao.get(certification.getId());
-        assertNotNull(afterUpdate);
-        assertEquals(updated, afterUpdate);
+            final Certification afterUpdate = this.certificationDao.get(certification.getId());
+            assertNotNull(afterUpdate);
+            assertEquals(updated, afterUpdate);
 
-        final CertificationCollection afterUpdateByResumeColl = this.certificationDao.getForResume(resume.getId());
-        assertNotNull(afterUpdateByResumeColl);
-        assertEquals(1, afterUpdateByResumeColl.getCertifications().size());
-        assertTrue(afterUpdateByResumeColl.getCertifications().contains(updated));
+            final CertificationCollection afterUpdateByResumeColl = this.certificationDao.getForResume(resume.getId());
+            assertNotNull(afterUpdateByResumeColl);
+            assertEquals(beforeSize + 1, afterUpdateByResumeColl.getCertifications().size());
+            assertTrue(afterUpdateByResumeColl.getCertifications().contains(updated));
 
-        this.certificationDao.delete(certification.getId());
+            this.certificationDao.delete(certification.getId());
 
-        final Certification afterDelete = this.certificationDao.get(certification.getId());
-        assertNull(afterDelete);
+            final Certification afterDelete = this.certificationDao.get(certification.getId());
+            assertNull(afterDelete);
 
-        final CertificationCollection afterDeleteByResume = this.certificationDao.getForResume(user.getId());
-        assertNotNull(afterDeleteByResume);
-        assertEquals(0, afterDeleteByResume.getCertifications().size());
-
-        this.resumeDao.delete(resume.getId());
+            final CertificationCollection afterDeleteByResume = this.certificationDao.getForResume(resume.getId());
+            assertNotNull(afterDeleteByResume);
+            assertEquals(beforeSize, afterDeleteByResume.getCertifications().size());
+        } finally {
+            this.resumeDao.delete(resume.getId());
+        }
     }
 }

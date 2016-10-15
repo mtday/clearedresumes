@@ -3,11 +3,21 @@ package com.cr.db;
 import com.cr.common.model.ResumeReview;
 import com.cr.common.model.ResumeReviewCollection;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * Defines the interface required for resume review database management.
  */
 public interface ResumeReviewDao {
+    /**
+     * Retrieve the specified resume review based on unique id.
+     *
+     * @param id the unique id of the review to retrieve
+     * @return the requested resume review, if available
+     */
+    @Nullable
+    ResumeReview get(@Nonnull String id);
+
     /**
      * Retrieve all of the resume reviews for the specified company.
      *
@@ -36,8 +46,7 @@ public interface ResumeReviewDao {
     /**
      * Remove the specified resume review from the database.
      *
-     * @param resumeId the unique id of the resume review to remove
-     * @param companyId the unique id of the company that did the review
+     * @param id the unique id of the resume review to remove
      */
-    void delete(@Nonnull String resumeId, @Nonnull String companyId);
+    void delete(@Nonnull String id);
 }

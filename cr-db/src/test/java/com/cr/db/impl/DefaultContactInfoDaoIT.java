@@ -16,6 +16,7 @@ import com.cr.db.ResumeDao;
 import com.cr.db.TestApplication;
 import com.cr.db.UserDao;
 import java.time.LocalDateTime;
+import java.util.UUID;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,49 +48,54 @@ public class DefaultContactInfoDaoIT {
             fail("Failed to find test user");
         }
 
-        final Resume resume = new Resume("rid", user.getId(), ResumeStatus.UNPUBLISHED, LocalDateTime.now(), null);
+        final Resume resume =
+                new Resume(UUID.randomUUID().toString(), user.getId(), ResumeStatus.UNPUBLISHED, LocalDateTime.now(),
+                        null);
         this.resumeDao.add(resume);
 
-        final ContactInfo beforeAdd = this.contactInfoDao.get("id");
-        assertNull(beforeAdd);
+        try {
+            final ContactInfo contactInfo =
+                    new ContactInfo(UUID.randomUUID().toString(), resume.getId(), "123-456-7890");
+            final ContactInfo beforeAdd = this.contactInfoDao.get(contactInfo.getId());
+            assertNull(beforeAdd);
 
-        final ContactInfoCollection beforeAddByResumeColl = this.contactInfoDao.getForResume(user.getId());
-        assertNotNull(beforeAddByResumeColl);
-        assertEquals(0, beforeAddByResumeColl.getContactInfos().size());
+            final ContactInfoCollection beforeAddByResumeColl = this.contactInfoDao.getForResume(resume.getId());
+            assertNotNull(beforeAddByResumeColl);
+            assertEquals(0, beforeAddByResumeColl.getContactInfos().size());
 
-        final ContactInfo contactInfo = new ContactInfo("id", resume.getId(), "123-456-7890");
-        this.contactInfoDao.add(contactInfo);
+            this.contactInfoDao.add(contactInfo);
 
-        final ContactInfo getById = this.contactInfoDao.get(contactInfo.getId());
-        assertNotNull(getById);
-        assertEquals(contactInfo, getById);
+            final ContactInfo getById = this.contactInfoDao.get(contactInfo.getId());
+            assertNotNull(getById);
+            assertEquals(contactInfo, getById);
 
-        final ContactInfoCollection getByResumeColl = this.contactInfoDao.getForResume(resume.getId());
-        assertNotNull(getByResumeColl);
-        assertEquals(1, getByResumeColl.getContactInfos().size());
-        assertTrue(getByResumeColl.getContactInfos().contains(contactInfo));
+            final ContactInfoCollection getByResumeColl = this.contactInfoDao.getForResume(resume.getId());
+            assertNotNull(getByResumeColl);
+            assertEquals(1, getByResumeColl.getContactInfos().size());
+            assertTrue(getByResumeColl.getContactInfos().contains(contactInfo));
 
-        final ContactInfo updated = new ContactInfo(contactInfo.getId(), resume.getId(), "123-456-7777");
-        this.contactInfoDao.update(updated);
+            final ContactInfo updated = new ContactInfo(contactInfo.getId(), resume.getId(), "123-456-7777");
+            this.contactInfoDao.update(updated);
 
-        final ContactInfo afterUpdate = this.contactInfoDao.get(contactInfo.getId());
-        assertNotNull(afterUpdate);
-        assertEquals(updated, afterUpdate);
+            final ContactInfo afterUpdate = this.contactInfoDao.get(contactInfo.getId());
+            assertNotNull(afterUpdate);
+            assertEquals(updated, afterUpdate);
 
-        final ContactInfoCollection afterUpdateByResumeColl = this.contactInfoDao.getForResume(resume.getId());
-        assertNotNull(afterUpdateByResumeColl);
-        assertEquals(1, afterUpdateByResumeColl.getContactInfos().size());
-        assertTrue(afterUpdateByResumeColl.getContactInfos().contains(updated));
+            final ContactInfoCollection afterUpdateByResumeColl = this.contactInfoDao.getForResume(resume.getId());
+            assertNotNull(afterUpdateByResumeColl);
+            assertEquals(1, afterUpdateByResumeColl.getContactInfos().size());
+            assertTrue(afterUpdateByResumeColl.getContactInfos().contains(updated));
 
-        this.contactInfoDao.delete(contactInfo.getId());
+            this.contactInfoDao.delete(contactInfo.getId());
 
-        final ContactInfo afterDelete = this.contactInfoDao.get(contactInfo.getId());
-        assertNull(afterDelete);
+            final ContactInfo afterDelete = this.contactInfoDao.get(contactInfo.getId());
+            assertNull(afterDelete);
 
-        final ContactInfoCollection afterDeleteByResume = this.contactInfoDao.getForResume(user.getId());
-        assertNotNull(afterDeleteByResume);
-        assertEquals(0, afterDeleteByResume.getContactInfos().size());
-
-        this.resumeDao.delete(resume.getId());
+            final ContactInfoCollection afterDeleteByResume = this.contactInfoDao.getForResume(resume.getId());
+            assertNotNull(afterDeleteByResume);
+            assertEquals(0, afterDeleteByResume.getContactInfos().size());
+        } finally {
+            this.resumeDao.delete(resume.getId());
+        }
     }
 }

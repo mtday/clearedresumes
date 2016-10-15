@@ -1,6 +1,7 @@
 package com.cr.common.model;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -17,31 +18,55 @@ public class ResumeReview implements Serializable, Comparable<ResumeReview> {
     private static final long serialVersionUID = 7893427898945L;
 
     @Nonnull
+    private final String id;
+    @Nonnull
     private final String resumeId;
     @Nonnull
     private final String companyId;
     @Nonnull
     private final ResumeReviewStatus status;
+    @Nonnull
+    private final String reviewerId;
+    @Nonnull
+    private final LocalDateTime reviewTime;
 
     /**
      * Default constructor required for Jackson deserialization.
      */
     ResumeReview() {
-        this("", "", ResumeReviewStatus.EXCLUDED);
+        this("", "", "", ResumeReviewStatus.EXCLUDED, "", LocalDateTime.now());
     }
 
     /**
      * Parameter constructor.
      *
-     * @param resumeId the unique id of the resume
-     * @param companyId the unique id of the company that should not have access to the resume
+     * @param id the unique id of this review
+     * @param resumeId the unique id of the resume that was reviewed
+     * @param companyId the unique id of the company that performed the review
      * @param status the status of the company review of the resume
+     * @param reviewerId the unique id of the user that performed the review
+     * @param reviewTime the time stamp when the review took place
      */
     public ResumeReview(
-            @Nonnull final String resumeId, @Nonnull final String companyId, @Nonnull final ResumeReviewStatus status) {
+            @Nonnull final String id, @Nonnull final String resumeId, @Nonnull final String companyId,
+            @Nonnull final ResumeReviewStatus status, @Nonnull final String reviewerId,
+            @Nonnull final LocalDateTime reviewTime) {
+        this.id = id;
         this.resumeId = resumeId;
         this.companyId = companyId;
         this.status = status;
+        this.reviewerId = reviewerId;
+        this.reviewTime = reviewTime;
+    }
+
+    /**
+     * Retrieve the unique id of this review.
+     *
+     * @return the unique id of this review
+     */
+    @Nonnull
+    public String getId() {
+        return this.id;
     }
 
     /**
@@ -55,9 +80,9 @@ public class ResumeReview implements Serializable, Comparable<ResumeReview> {
     }
 
     /**
-     * Retrieve the unique id of the company that should not have access to the resume.
+     * Retrieve the unique id of the company that performed the review.
      *
-     * @return the unique id of the company that should not have access to the resume
+     * @return the unique id of the company that performed the review
      */
     @Nonnull
     public String getCompanyId() {
@@ -74,6 +99,26 @@ public class ResumeReview implements Serializable, Comparable<ResumeReview> {
         return this.status;
     }
 
+    /**
+     * Retrieve the unique id of the user that performed the review.
+     *
+     * @return the unique id of the user that performed the review
+     */
+    @Nonnull
+    public String getReviewerId() {
+        return this.reviewerId;
+    }
+
+    /**
+     * Retrieve the time stamp when the review took place.
+     *
+     * @return the time stamp when the review took place
+     */
+    @Nonnull
+    public LocalDateTime getReviewTime() {
+        return this.reviewTime;
+    }
+
     @Override
     public int compareTo(@Nullable final ResumeReview other) {
         if (other == null) {
@@ -81,9 +126,12 @@ public class ResumeReview implements Serializable, Comparable<ResumeReview> {
         }
 
         final CompareToBuilder cmp = new CompareToBuilder();
+        cmp.append(getId(), other.getId());
         cmp.append(getResumeId(), other.getResumeId());
         cmp.append(getCompanyId(), other.getCompanyId());
         cmp.append(getStatus(), other.getStatus());
+        cmp.append(getReviewerId(), other.getReviewerId());
+        cmp.append(getReviewTime(), other.getReviewTime());
         return cmp.toComparison();
     }
 
@@ -95,9 +143,12 @@ public class ResumeReview implements Serializable, Comparable<ResumeReview> {
     @Override
     public int hashCode() {
         final HashCodeBuilder hash = new HashCodeBuilder();
+        hash.append(getId());
         hash.append(getResumeId());
         hash.append(getCompanyId());
         hash.append(getStatus().name());
+        hash.append(getReviewerId());
+        hash.append(getReviewTime());
         return hash.toHashCode();
     }
 
@@ -105,9 +156,12 @@ public class ResumeReview implements Serializable, Comparable<ResumeReview> {
     @Nonnull
     public String toString() {
         final ToStringBuilder str = new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE);
+        str.append("id", getId());
         str.append("resumeId", getResumeId());
         str.append("companyId", getCompanyId());
         str.append("status", getStatus());
+        str.append("reviewerId", getReviewerId());
+        str.append("reviewTime", getReviewTime());
         return str.build();
     }
 }

@@ -16,6 +16,7 @@ import com.cr.db.ResumeLaborCategoryDao;
 import com.cr.db.TestApplication;
 import com.cr.db.UserDao;
 import java.time.LocalDateTime;
+import java.util.UUID;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,50 +48,56 @@ public class DefaultResumeLaborCategoryDaoIT {
             fail("Failed to find test user");
         }
 
-        final Resume resume = new Resume("rid", user.getId(), ResumeStatus.UNPUBLISHED, LocalDateTime.now(), null);
+        final Resume resume =
+                new Resume(UUID.randomUUID().toString(), user.getId(), ResumeStatus.UNPUBLISHED, LocalDateTime.now(),
+                        null);
         this.resumeDao.add(resume);
 
-        final ResumeLaborCategory beforeAdd = this.resumeLcatDao.get("id");
-        assertNull(beforeAdd);
+        try {
+            final ResumeLaborCategory resumeLcat =
+                    new ResumeLaborCategory(UUID.randomUUID().toString(), resume.getId(), "Labor Category", 10);
+            final ResumeLaborCategory beforeAdd = this.resumeLcatDao.get(resumeLcat.getId());
+            assertNull(beforeAdd);
 
-        final ResumeLaborCategoryCollection beforeAddByResumeColl = this.resumeLcatDao.getForResume(user.getId());
-        assertNotNull(beforeAddByResumeColl);
-        assertEquals(0, beforeAddByResumeColl.getResumeLaborCategories().size());
+            final ResumeLaborCategoryCollection beforeAddByResumeColl = this.resumeLcatDao.getForResume(resume.getId());
+            assertNotNull(beforeAddByResumeColl);
+            assertEquals(0, beforeAddByResumeColl.getResumeLaborCategories().size());
 
-        final ResumeLaborCategory resumeLcat = new ResumeLaborCategory("id", resume.getId(), "Labor Category", 10);
-        this.resumeLcatDao.add(resumeLcat);
+            this.resumeLcatDao.add(resumeLcat);
 
-        final ResumeLaborCategory getById = this.resumeLcatDao.get(resumeLcat.getId());
-        assertNotNull(getById);
-        assertEquals(resumeLcat, getById);
+            final ResumeLaborCategory getById = this.resumeLcatDao.get(resumeLcat.getId());
+            assertNotNull(getById);
+            assertEquals(resumeLcat, getById);
 
-        final ResumeLaborCategoryCollection getByResumeColl = this.resumeLcatDao.getForResume(resume.getId());
-        assertNotNull(getByResumeColl);
-        assertEquals(1, getByResumeColl.getResumeLaborCategories().size());
-        assertTrue(getByResumeColl.getResumeLaborCategories().contains(resumeLcat));
+            final ResumeLaborCategoryCollection getByResumeColl = this.resumeLcatDao.getForResume(resume.getId());
+            assertNotNull(getByResumeColl);
+            assertEquals(1, getByResumeColl.getResumeLaborCategories().size());
+            assertTrue(getByResumeColl.getResumeLaborCategories().contains(resumeLcat));
 
-        final ResumeLaborCategory updated =
-                new ResumeLaborCategory(resumeLcat.getId(), resume.getId(), "Labor Category", 11);
-        this.resumeLcatDao.update(updated);
+            final ResumeLaborCategory updated =
+                    new ResumeLaborCategory(resumeLcat.getId(), resume.getId(), "Labor Category", 11);
+            this.resumeLcatDao.update(updated);
 
-        final ResumeLaborCategory afterUpdate = this.resumeLcatDao.get(resumeLcat.getId());
-        assertNotNull(afterUpdate);
-        assertEquals(updated, afterUpdate);
+            final ResumeLaborCategory afterUpdate = this.resumeLcatDao.get(resumeLcat.getId());
+            assertNotNull(afterUpdate);
+            assertEquals(updated, afterUpdate);
 
-        final ResumeLaborCategoryCollection afterUpdateByResumeColl = this.resumeLcatDao.getForResume(resume.getId());
-        assertNotNull(afterUpdateByResumeColl);
-        assertEquals(1, afterUpdateByResumeColl.getResumeLaborCategories().size());
-        assertTrue(afterUpdateByResumeColl.getResumeLaborCategories().contains(updated));
+            final ResumeLaborCategoryCollection afterUpdateByResumeColl =
+                    this.resumeLcatDao.getForResume(resume.getId());
+            assertNotNull(afterUpdateByResumeColl);
+            assertEquals(1, afterUpdateByResumeColl.getResumeLaborCategories().size());
+            assertTrue(afterUpdateByResumeColl.getResumeLaborCategories().contains(updated));
 
-        this.resumeLcatDao.delete(resumeLcat.getId());
+            this.resumeLcatDao.delete(resumeLcat.getId());
 
-        final ResumeLaborCategory afterDelete = this.resumeLcatDao.get(resumeLcat.getId());
-        assertNull(afterDelete);
+            final ResumeLaborCategory afterDelete = this.resumeLcatDao.get(resumeLcat.getId());
+            assertNull(afterDelete);
 
-        final ResumeLaborCategoryCollection afterDeleteByResume = this.resumeLcatDao.getForResume(user.getId());
-        assertNotNull(afterDeleteByResume);
-        assertEquals(0, afterDeleteByResume.getResumeLaborCategories().size());
-
-        this.resumeDao.delete(resume.getId());
+            final ResumeLaborCategoryCollection afterDeleteByResume = this.resumeLcatDao.getForResume(resume.getId());
+            assertNotNull(afterDeleteByResume);
+            assertEquals(0, afterDeleteByResume.getResumeLaborCategories().size());
+        } finally {
+            this.resumeDao.delete(resume.getId());
+        }
     }
 }

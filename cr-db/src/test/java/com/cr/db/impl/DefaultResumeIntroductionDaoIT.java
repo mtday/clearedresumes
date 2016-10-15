@@ -14,6 +14,7 @@ import com.cr.db.ResumeIntroductionDao;
 import com.cr.db.TestApplication;
 import com.cr.db.UserDao;
 import java.time.LocalDateTime;
+import java.util.UUID;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,31 +46,36 @@ public class DefaultResumeIntroductionDaoIT {
             fail("Failed to find test user");
         }
 
-        final Resume resume = new Resume("rid", user.getId(), ResumeStatus.UNPUBLISHED, LocalDateTime.now(), null);
+        final Resume resume =
+                new Resume(UUID.randomUUID().toString(), user.getId(), ResumeStatus.UNPUBLISHED, LocalDateTime.now(),
+                        null);
         this.resumeDao.add(resume);
 
-        final ResumeIntroduction beforeAdd = this.resumeIntroductionDao.get(resume.getId());
-        assertNull(beforeAdd);
+        try {
+            final ResumeIntroduction beforeAdd = this.resumeIntroductionDao.get(resume.getId());
+            assertNull(beforeAdd);
 
-        final ResumeIntroduction resumeIntroduction = new ResumeIntroduction(resume.getId(), "Full Name", "Objective");
-        this.resumeIntroductionDao.add(resumeIntroduction);
+            final ResumeIntroduction resumeIntroduction =
+                    new ResumeIntroduction(resume.getId(), "Full Name", "Objective");
+            this.resumeIntroductionDao.add(resumeIntroduction);
 
-        final ResumeIntroduction getById = this.resumeIntroductionDao.get(resume.getId());
-        assertNotNull(getById);
-        assertEquals(resumeIntroduction, getById);
+            final ResumeIntroduction getById = this.resumeIntroductionDao.get(resume.getId());
+            assertNotNull(getById);
+            assertEquals(resumeIntroduction, getById);
 
-        final ResumeIntroduction updated = new ResumeIntroduction(resume.getId(), "New Name", "Another Objective");
-        this.resumeIntroductionDao.update(updated);
+            final ResumeIntroduction updated = new ResumeIntroduction(resume.getId(), "New Name", "Another Objective");
+            this.resumeIntroductionDao.update(updated);
 
-        final ResumeIntroduction afterUpdate = this.resumeIntroductionDao.get(resume.getId());
-        assertNotNull(afterUpdate);
-        assertEquals(updated, afterUpdate);
+            final ResumeIntroduction afterUpdate = this.resumeIntroductionDao.get(resume.getId());
+            assertNotNull(afterUpdate);
+            assertEquals(updated, afterUpdate);
 
-        this.resumeIntroductionDao.delete(resume.getId());
+            this.resumeIntroductionDao.delete(resume.getId());
 
-        final ResumeIntroduction afterDelete = this.resumeIntroductionDao.get(resume.getId());
-        assertNull(afterDelete);
-
-        this.resumeDao.delete(resume.getId());
+            final ResumeIntroduction afterDelete = this.resumeIntroductionDao.get(resume.getId());
+            assertNull(afterDelete);
+        } finally {
+            this.resumeDao.delete(resume.getId());
+        }
     }
 }

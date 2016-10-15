@@ -33,19 +33,22 @@ public class AccountTest {
         final Company company = new Company("cid", "Company Name", "website", PlanType.BASIC, 10, true);
         final Collection<Company> companies = Collections.singleton(company);
         final LocalDateTime created = LocalDateTime.of(2016, 1, 1, 2, 3, 4);
-        final Resume resume1 = new Resume("rid", user1.getId(), ResumeStatus.UNPUBLISHED, created, null);
-        final Resume resume2 = new Resume("rid", user1.getId(), ResumeStatus.UNPUBLISHED, created, null);
+        final Resume resume1 = new Resume("rid-1", user1.getId(), ResumeStatus.UNPUBLISHED, created, null);
+        final Resume resume2 = new Resume("rid-2", user1.getId(), ResumeStatus.UNPUBLISHED, created, null);
         final ResumeIntroduction introduction = new ResumeIntroduction("rid", "Full Name", "Objective");
-        final ResumeReview review = new ResumeReview("rid", company.getId(), ResumeReviewStatus.SAVED);
-        final ResumeLaborCategory lcat = new ResumeLaborCategory("id", "rid", "Labor Category", 10);
-        final ContactInfo contactInfo = new ContactInfo("id", "rid", "Value");
-        final WorkLocation workLocation = new WorkLocation("id", "rid", "State", "Region");
+        final ResumeReview review =
+                new ResumeReview("id", resume1.getId(), company.getId(), ResumeReviewStatus.SAVED, user1.getId(),
+                        created);
+        final ResumeLaborCategory lcat = new ResumeLaborCategory("id", resume1.getId(), "Labor Category", 10);
+        final ContactInfo contactInfo = new ContactInfo("id", resume1.getId(), "Value");
+        final WorkLocation workLocation = new WorkLocation("id", resume1.getId(), "State", "Region");
         final LocalDate begin = LocalDate.of(2016, 1, 1);
-        final WorkSummary workSummary = new WorkSummary("id", "rid", "Title", "Employer", begin, null, "Summary");
-        final Clearance clearance = new Clearance("id", "rid", "Type", "Organization", "Polygraph");
-        final Education education = new Education("id", "rid", "Institution", "Field", "Degree", 2000);
-        final Certification certification = new Certification("id", "rid", "Certificate", 2000);
-        final KeyWord keyWord = new KeyWord("rid", "Word");
+        final WorkSummary workSummary =
+                new WorkSummary("id", resume1.getId(), "Title", "Employer", begin, null, "Summary");
+        final Clearance clearance = new Clearance("id", resume1.getId(), "Type", "Organization", "Polygraph");
+        final Education education = new Education("id", resume1.getId(), "Institution", "Field", "Degree", 2000);
+        final Certification certification = new Certification("id", resume1.getId(), "Certificate", 2000);
+        final KeyWord keyWord = new KeyWord(resume1.getId(), "Word");
         final ResumeContainer resumeContainer1 =
                 new ResumeContainer(resume1, introduction, Collections.singleton(review), Collections.singleton(lcat),
                         Collections.singleton(contactInfo), Collections.singleton(workLocation),
@@ -97,17 +100,20 @@ public class AccountTest {
         final Collection<Company> companies = Collections.singleton(company);
         final LocalDateTime created = LocalDateTime.of(2016, 1, 1, 2, 3, 4);
         final Resume resume = new Resume("rid", user.getId(), ResumeStatus.UNPUBLISHED, created, null);
-        final ResumeIntroduction introduction = new ResumeIntroduction("rid", "Full Name", "Objective");
-        final ResumeReview review = new ResumeReview("rid", company.getId(), ResumeReviewStatus.SAVED);
-        final ResumeLaborCategory lcat = new ResumeLaborCategory("id", "rid", "Labor Category", 10);
-        final ContactInfo contactInfo = new ContactInfo("id", "rid", "Value");
-        final WorkLocation workLocation = new WorkLocation("id", "rid", "State", "Region");
+        final ResumeIntroduction introduction = new ResumeIntroduction(resume.getId(), "Full Name", "Objective");
+        final ResumeReview review =
+                new ResumeReview("id", resume.getId(), company.getId(), ResumeReviewStatus.SAVED, user.getId(),
+                        created);
+        final ResumeLaborCategory lcat = new ResumeLaborCategory("id", resume.getId(), "Labor Category", 10);
+        final ContactInfo contactInfo = new ContactInfo("id", resume.getId(), "Value");
+        final WorkLocation workLocation = new WorkLocation("id", resume.getId(), "State", "Region");
         final LocalDate begin = LocalDate.of(2016, 1, 1);
-        final WorkSummary workSummary = new WorkSummary("id", "rid", "Title", "Employer", begin, null, "Summary");
-        final Clearance clearance = new Clearance("id", "rid", "Type", "Organization", "Polygraph");
-        final Education education = new Education("id", "rid", "Institution", "Field", "Degree", 2000);
-        final Certification certification = new Certification("id", "rid", "Certificate", 2000);
-        final KeyWord keyWord = new KeyWord("rid", "Word");
+        final WorkSummary workSummary =
+                new WorkSummary("id", resume.getId(), "Title", "Employer", begin, null, "Summary");
+        final Clearance clearance = new Clearance("id", resume.getId(), "Type", "Organization", "Polygraph");
+        final Education education = new Education("id", resume.getId(), "Institution", "Field", "Degree", 2000);
+        final Certification certification = new Certification("id", resume.getId(), "Certificate", 2000);
+        final KeyWord keyWord = new KeyWord(resume.getId(), "Word");
         final ResumeContainer resumeContainer =
                 new ResumeContainer(resume, introduction, Collections.singleton(review), Collections.singleton(lcat),
                         Collections.singleton(contactInfo), Collections.singleton(workLocation),

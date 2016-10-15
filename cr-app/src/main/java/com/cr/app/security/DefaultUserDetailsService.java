@@ -51,7 +51,6 @@ public class DefaultUserDetailsService implements UserDetailsService {
     @Override
     @Nonnull
     public UserDetails loadUserByUsername(@Nonnull final String loginOrEmail) throws UsernameNotFoundException {
-        LOG.debug("Looking up user: {}", loginOrEmail);
         final User user = this.userDao.getByLoginOrEmail(loginOrEmail);
         if (user == null) {
             throw new UsernameNotFoundException("Failed to find user with name: " + loginOrEmail);

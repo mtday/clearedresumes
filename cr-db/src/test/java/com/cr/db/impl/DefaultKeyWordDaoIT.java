@@ -15,6 +15,7 @@ import com.cr.db.ResumeDao;
 import com.cr.db.TestApplication;
 import com.cr.db.UserDao;
 import java.time.LocalDateTime;
+import java.util.UUID;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,27 +47,31 @@ public class DefaultKeyWordDaoIT {
             fail("Failed to find test user");
         }
 
-        final Resume resume = new Resume("rid", user.getId(), ResumeStatus.UNPUBLISHED, LocalDateTime.now(), null);
+        final Resume resume =
+                new Resume(UUID.randomUUID().toString(), user.getId(), ResumeStatus.UNPUBLISHED, LocalDateTime.now(),
+                        null);
         this.resumeDao.add(resume);
 
-        final KeyWordCollection beforeAddColl = this.keyWordDao.getForResume(user.getId());
-        assertNotNull(beforeAddColl);
-        assertEquals(0, beforeAddColl.getKeyWords().size());
+        try {
+            final KeyWordCollection beforeAddColl = this.keyWordDao.getForResume(resume.getId());
+            assertNotNull(beforeAddColl);
+            assertEquals(0, beforeAddColl.getKeyWords().size());
 
-        final KeyWord keyWord = new KeyWord(resume.getId(), "java");
-        this.keyWordDao.add(keyWord);
+            final KeyWord keyWord = new KeyWord(resume.getId(), "java");
+            this.keyWordDao.add(keyWord);
 
-        final KeyWordCollection getColl = this.keyWordDao.getForResume(resume.getId());
-        assertNotNull(getColl);
-        assertEquals(1, getColl.getKeyWords().size());
-        assertTrue(getColl.getKeyWords().contains(keyWord));
+            final KeyWordCollection getColl = this.keyWordDao.getForResume(resume.getId());
+            assertNotNull(getColl);
+            assertEquals(1, getColl.getKeyWords().size());
+            assertTrue(getColl.getKeyWords().contains(keyWord));
 
-        this.keyWordDao.delete(keyWord);
+            this.keyWordDao.delete(keyWord);
 
-        final KeyWordCollection afterDelete = this.keyWordDao.getForResume(user.getId());
-        assertNotNull(afterDelete);
-        assertEquals(0, afterDelete.getKeyWords().size());
-
-        this.resumeDao.delete(resume.getId());
+            final KeyWordCollection afterDelete = this.keyWordDao.getForResume(resume.getId());
+            assertNotNull(afterDelete);
+            assertEquals(0, afterDelete.getKeyWords().size());
+        } finally {
+            this.resumeDao.delete(resume.getId());
+        }
     }
 }

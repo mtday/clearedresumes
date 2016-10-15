@@ -1,6 +1,6 @@
 package com.cr.db.impl;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -21,6 +21,7 @@ import com.cr.db.ResumeReviewDao;
 import com.cr.db.TestApplication;
 import com.cr.db.UserDao;
 import java.time.LocalDateTime;
+import java.util.UUID;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,47 +59,56 @@ public class DefaultResumeReviewDaoIT {
             fail("Failed to find test user");
         }
 
-        final Resume resume = new Resume("id", user.getId(), ResumeStatus.UNPUBLISHED, LocalDateTime.now(), null);
+        final Resume resume =
+                new Resume(UUID.randomUUID().toString(), user.getId(), ResumeStatus.UNPUBLISHED, LocalDateTime.now(),
+                        null);
         this.resumeDao.add(resume);
 
         final Company company =
-                new Company("id", "Company Name", "https://company-website.com/", PlanType.BASIC, 10, true);
+                new Company(UUID.randomUUID().toString(), "Company Name", "https://company-website.com/",
+                        PlanType.BASIC, 10, true);
         this.companyDao.add(company);
+
         final CompanyUser companyUser = new CompanyUser(user.getId(), company.getId());
         this.companyUserDao.add(companyUser);
 
-        final ResumeCollection viewable = this.resumeDao.getViewable(user.getId());
-        assertNotNull(viewable);
-        assertEquals(1, viewable.getResumes().size());
-        assertTrue(viewable.getResumes().contains(resume));
+        try {
+            final ResumeCollection viewable = this.resumeDao.getViewable(user.getId());
+            assertNotNull(viewable);
+            assertFalse(viewable.getResumes().isEmpty());
+            assertTrue(viewable.getResumes().contains(resume));
 
-        final ResumeReview excludeReview =
-                new ResumeReview(resume.getId(), company.getId(), ResumeReviewStatus.EXCLUDED);
-        this.resumeReviewDao.add(excludeReview);
+            final ResumeReview excludeReview =
+                    new ResumeReview(UUID.randomUUID().toString(), resume.getId(), company.getId(),
+                            ResumeReviewStatus.EXCLUDED, user.getId(), LocalDateTime.now());
+            this.resumeReviewDao.add(excludeReview);
 
-        final ResumeCollection notViewable = this.resumeDao.getViewable(user.getId());
-        assertNotNull(notViewable);
-        assertEquals(0, notViewable.getResumes().size());
+            final ResumeCollection notViewable = this.resumeDao.getViewable(user.getId());
+            assertNotNull(notViewable);
+            assertFalse(notViewable.getResumes().contains(resume));
 
-        this.resumeReviewDao.delete(excludeReview.getResumeId(), excludeReview.getCompanyId());
+            this.resumeReviewDao.delete(excludeReview.getId());
 
-        final ResumeReview savedReview = new ResumeReview(resume.getId(), company.getId(), ResumeReviewStatus.SAVED);
-        this.resumeReviewDao.add(savedReview);
+            final ResumeReview savedReview =
+                    new ResumeReview(UUID.randomUUID().toString(), resume.getId(), company.getId(),
+                            ResumeReviewStatus.SAVED, user.getId(), LocalDateTime.now());
+            this.resumeReviewDao.add(savedReview);
 
-        final ResumeCollection savedViewable = this.resumeDao.getViewable(user.getId());
-        assertNotNull(savedViewable);
-        assertEquals(1, savedViewable.getResumes().size());
-        assertTrue(savedViewable.getResumes().contains(resume));
+            final ResumeCollection savedViewable = this.resumeDao.getViewable(user.getId());
+            assertNotNull(savedViewable);
+            assertFalse(savedViewable.getResumes().isEmpty());
+            assertTrue(savedViewable.getResumes().contains(resume));
 
-        this.resumeReviewDao.delete(savedReview.getResumeId(), savedReview.getCompanyId());
+            this.resumeReviewDao.delete(savedReview.getId());
 
-        final ResumeCollection viewableAgain = this.resumeDao.getViewable(user.getId());
-        assertNotNull(viewableAgain);
-        assertEquals(1, viewableAgain.getResumes().size());
-        assertTrue(viewableAgain.getResumes().contains(resume));
-
-        this.companyUserDao.delete(companyUser);
-        this.resumeDao.delete(resume.getId());
-        this.companyDao.delete(company.getId());
+            final ResumeCollection viewableAgain = this.resumeDao.getViewable(user.getId());
+            assertNotNull(viewableAgain);
+            assertFalse(viewableAgain.getResumes().isEmpty());
+            assertTrue(viewableAgain.getResumes().contains(resume));
+        } finally {
+            this.companyUserDao.delete(companyUser);
+            this.resumeDao.delete(resume.getId());
+            this.companyDao.delete(company.getId());
+        }
     }
 }

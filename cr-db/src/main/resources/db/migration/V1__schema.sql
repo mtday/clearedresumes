@@ -70,36 +70,25 @@ CREATE TABLE resumes (
 );
 
 
-CREATE TABLE company_resumes (
-    id                VARCHAR(36)    NOT NULL,
-    company_id        VARCHAR(36)    NOT NULL,
-    resume_id         VARCHAR(36)    NOT NULL,
-    purchaser_id      VARCHAR(36)    NOT NULL,
-    purchased         VARCHAR(24)    NOT NULL,
-
-    CONSTRAINT company_resumes_pk PRIMARY KEY (id),
-    CONSTRAINT company_resumes_uniq UNIQUE (company_id, resume_id),
-    CONSTRAINT company_resumes_fk_company_id FOREIGN KEY (company_id) REFERENCES companies (id) ON DELETE CASCADE,
-    CONSTRAINT company_resumes_fk_resume_id FOREIGN KEY (resume_id) REFERENCES resumes (id) ON DELETE CASCADE,
-    CONSTRAINT company_resumes_fk_purchaser_id FOREIGN KEY (purchaser_id) REFERENCES users (id) ON DELETE CASCADE
-);
-
-
 CREATE TABLE resume_reviews (
+    id                VARCHAR(36)    NOT NULL,
     resume_id         VARCHAR(36)    NOT NULL,
     company_id        VARCHAR(36)    NOT NULL,
     status            VARCHAR(20)    NOT NULL,
+    reviewer_id       VARCHAR(36)    NOT NULL,
+    review_time       VARCHAR(24)    NOT NULL,
 
-    CONSTRAINT resume_reviews_pk PRIMARY KEY (resume_id, company_id),
+    CONSTRAINT resume_reviews_pk PRIMARY KEY (id),
     CONSTRAINT resume_reviews_fk_resume_id FOREIGN KEY (resume_id) REFERENCES resumes (id) ON DELETE CASCADE,
-    CONSTRAINT resume_reviews_fk_company_id FOREIGN KEY (company_id) REFERENCES companies (id) ON DELETE CASCADE
+    CONSTRAINT resume_reviews_fk_company_id FOREIGN KEY (company_id) REFERENCES companies (id) ON DELETE CASCADE,
+    CONSTRAINT resume_reviews_fk_reviewer_id FOREIGN KEY (reviewer_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
 
 CREATE TABLE resume_introductions (
     resume_id         VARCHAR(36)    NOT NULL,
     full_name         VARCHAR(80)    NOT NULL,
-    objective         VARCHAR(20000) NOT NULL,
+    objective         VARCHAR(40000) NOT NULL,
 
     CONSTRAINT resume_introductions_pk PRIMARY KEY (resume_id),
     CONSTRAINT resume_introductions_fk_resume_id FOREIGN KEY (resume_id) REFERENCES resumes (id) ON DELETE CASCADE
@@ -167,7 +156,7 @@ CREATE TABLE work_summaries (
     employer          VARCHAR(200),
     begin_date        DATE           NOT NULL,
     end_date          DATE,
-    summary           VARCHAR(20000) NOT NULL,
+    summary           VARCHAR(40000) NOT NULL,
 
     CONSTRAINT work_summaries_pk PRIMARY KEY (id),
     CONSTRAINT work_summaries_fk_resume_id FOREIGN KEY (resume_id) REFERENCES resumes (id) ON DELETE CASCADE

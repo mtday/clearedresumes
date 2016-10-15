@@ -18,6 +18,7 @@ import com.cr.db.TestApplication;
 import com.cr.db.UserDao;
 import java.util.Locale;
 import java.util.SortedSet;
+import java.util.UUID;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,19 +47,19 @@ public class DefaultUserDaoIT {
     public void test() {
         final UserCollection beforeAddColl = this.userDao.getAll();
         assertNotNull(beforeAddColl);
-        assertEquals(1, beforeAddColl.getUsers().size()); // at 1 since we have a test user
+        final int beforeSize = beforeAddColl.getUsers().size(); // may be non-zero from test data
 
         assertFalse(this.userDao.loginExists("login"));
         assertFalse(this.userDao.emailExists("email"));
 
-        final User beforeAddGet = this.userDao.get("id");
+        final User user = new User(UUID.randomUUID().toString(), "login", "email", "password", true);
+        final User beforeAddGet = this.userDao.get(user.getId());
         assertNull(beforeAddGet);
-        final User beforeAddGetLogin = this.userDao.getByLogin("login");
+        final User beforeAddGetLogin = this.userDao.getByLogin(user.getLogin());
         assertNull(beforeAddGetLogin);
-        final User beforeAddGetEmail = this.userDao.getByEmail("email");
+        final User beforeAddGetEmail = this.userDao.getByEmail(user.getEmail());
         assertNull(beforeAddGetEmail);
 
-        final User user = new User("id", "login", "email", "password", true);
         this.userDao.add(user);
 
         assertTrue(this.userDao.loginExists(user.getLogin()));
@@ -67,7 +68,7 @@ public class DefaultUserDaoIT {
 
         final UserCollection afterAddColl = this.userDao.getAll();
         assertNotNull(afterAddColl);
-        assertEquals(2, afterAddColl.getUsers().size());
+        assertEquals(beforeSize + 1, afterAddColl.getUsers().size());
         assertTrue(afterAddColl.getUsers().contains(user));
 
         final User afterAddGet = this.userDao.get(user.getId());
@@ -90,7 +91,7 @@ public class DefaultUserDaoIT {
 
         final UserCollection afterUpdateColl = this.userDao.getAll();
         assertNotNull(afterUpdateColl);
-        assertEquals(2, afterUpdateColl.getUsers().size());
+        assertEquals(beforeSize + 1, afterUpdateColl.getUsers().size());
         assertTrue(afterUpdateColl.getUsers().contains(updated));
 
         final User afterUpdateGet = this.userDao.get(updated.getId());
@@ -128,18 +129,20 @@ public class DefaultUserDaoIT {
         assertNotNull(forCompanyDne);
         assertEquals(0, forCompanyDne.getUsers().size());
 
-        final Company company = new Company("cid", "name", "website", PlanType.BASIC, 10, true);
+        final Company company = new Company(UUID.randomUUID().toString(), "name", "website", PlanType.BASIC, 10, true);
         this.companyDao.add(company);
         final CompanyUser companyUser = new CompanyUser(user.getId(), company.getId());
         this.companyUserDao.add(companyUser);
 
-        final UserCollection forCompany = this.userDao.getForCompany(company.getId());
-        assertNotNull(forCompany);
-        assertEquals(1, forCompany.getUsers().size());
-        assertTrue(forCompany.getUsers().contains(updated));
-
-        this.companyUserDao.delete(companyUser);
-        this.companyDao.delete(company.getId());
+        try {
+            final UserCollection forCompany = this.userDao.getForCompany(company.getId());
+            assertNotNull(forCompany);
+            assertEquals(1, forCompany.getUsers().size());
+            assertTrue(forCompany.getUsers().contains(updated));
+        } finally {
+            this.companyUserDao.delete(companyUser);
+            this.companyDao.delete(company.getId());
+        }
 
         final UserCollection remCompany = this.userDao.getForCompany(company.getId());
         assertNotNull(remCompany);
@@ -153,7 +156,7 @@ public class DefaultUserDaoIT {
 
         final UserCollection afterDeleteColl = this.userDao.getAll();
         assertNotNull(afterDeleteColl);
-        assertEquals(1, afterDeleteColl.getUsers().size());
+        assertEquals(beforeSize, afterDeleteColl.getUsers().size());
 
         final User afterDeleteGet = this.userDao.get(updated.getId());
         assertNull(afterDeleteGet);

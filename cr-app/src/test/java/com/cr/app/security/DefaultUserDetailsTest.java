@@ -44,7 +44,9 @@ public class DefaultUserDetailsTest {
         final LocalDateTime created = LocalDateTime.of(2016, 1, 1, 2, 3, 4);
         final Resume resume = new Resume("rid", user.getId(), ResumeStatus.UNPUBLISHED, created, null);
         final ResumeIntroduction overview = new ResumeIntroduction(resume.getId(), "Full Name", "Objective");
-        final ResumeReview review = new ResumeReview(resume.getId(), company.getId(), ResumeReviewStatus.SAVED);
+        final ResumeReview review =
+                new ResumeReview("id", resume.getId(), company.getId(), ResumeReviewStatus.SAVED, user.getId(),
+                        created);
         final ResumeLaborCategory lcat = new ResumeLaborCategory("id", resume.getId(), "Labor Category", 10);
         final ContactInfo contactInfo = new ContactInfo("id", resume.getId(), "Value");
         final WorkLocation workLocation = new WorkLocation("id", resume.getId(), "State", "Region");

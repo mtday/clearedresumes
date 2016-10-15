@@ -16,6 +16,7 @@ import com.cr.db.ResumeDao;
 import com.cr.db.TestApplication;
 import com.cr.db.UserDao;
 import java.time.LocalDateTime;
+import java.util.UUID;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,49 +48,55 @@ public class DefaultClearanceDaoIT {
             fail("Failed to find test user");
         }
 
-        final Resume resume = new Resume("rid", user.getId(), ResumeStatus.UNPUBLISHED, LocalDateTime.now(), null);
+        final Resume resume =
+                new Resume(UUID.randomUUID().toString(), user.getId(), ResumeStatus.UNPUBLISHED, LocalDateTime.now(),
+                        null);
         this.resumeDao.add(resume);
 
-        final Clearance beforeAdd = this.clearanceDao.get("id");
-        assertNull(beforeAdd);
+        try {
+            final Clearance clearance =
+                    new Clearance(UUID.randomUUID().toString(), resume.getId(), "TS/SCI", "NSA", "Full-Scope");
+            final Clearance beforeAdd = this.clearanceDao.get(clearance.getId());
+            assertNull(beforeAdd);
 
-        final ClearanceCollection beforeAddByResumeColl = this.clearanceDao.getForResume(user.getId());
-        assertNotNull(beforeAddByResumeColl);
-        assertEquals(0, beforeAddByResumeColl.getClearances().size());
+            final ClearanceCollection beforeAddByResumeColl = this.clearanceDao.getForResume(resume.getId());
+            assertNotNull(beforeAddByResumeColl);
+            final int beforeSize = beforeAddByResumeColl.getClearances().size(); // may be non-zero from test data
 
-        final Clearance clearance = new Clearance("id", resume.getId(), "TS/SCI", "NSA", "Full-Scope");
-        this.clearanceDao.add(clearance);
+            this.clearanceDao.add(clearance);
 
-        final Clearance getById = this.clearanceDao.get(clearance.getId());
-        assertNotNull(getById);
-        assertEquals(clearance, getById);
+            final Clearance getById = this.clearanceDao.get(clearance.getId());
+            assertNotNull(getById);
+            assertEquals(clearance, getById);
 
-        final ClearanceCollection getByResumeColl = this.clearanceDao.getForResume(resume.getId());
-        assertNotNull(getByResumeColl);
-        assertEquals(1, getByResumeColl.getClearances().size());
-        assertTrue(getByResumeColl.getClearances().contains(clearance));
+            final ClearanceCollection getByResumeColl = this.clearanceDao.getForResume(resume.getId());
+            assertNotNull(getByResumeColl);
+            assertEquals(beforeSize + 1, getByResumeColl.getClearances().size());
+            assertTrue(getByResumeColl.getClearances().contains(clearance));
 
-        final Clearance updated = new Clearance(clearance.getId(), resume.getId(), "TS", "DNI", "Counter-Intelligence");
-        this.clearanceDao.update(updated);
+            final Clearance updated =
+                    new Clearance(clearance.getId(), resume.getId(), "TS", "DNI", "Counter-Intelligence");
+            this.clearanceDao.update(updated);
 
-        final Clearance afterUpdate = this.clearanceDao.get(clearance.getId());
-        assertNotNull(afterUpdate);
-        assertEquals(updated, afterUpdate);
+            final Clearance afterUpdate = this.clearanceDao.get(clearance.getId());
+            assertNotNull(afterUpdate);
+            assertEquals(updated, afterUpdate);
 
-        final ClearanceCollection afterUpdateByResumeColl = this.clearanceDao.getForResume(resume.getId());
-        assertNotNull(afterUpdateByResumeColl);
-        assertEquals(1, afterUpdateByResumeColl.getClearances().size());
-        assertTrue(afterUpdateByResumeColl.getClearances().contains(updated));
+            final ClearanceCollection afterUpdateByResumeColl = this.clearanceDao.getForResume(resume.getId());
+            assertNotNull(afterUpdateByResumeColl);
+            assertEquals(beforeSize + 1, afterUpdateByResumeColl.getClearances().size());
+            assertTrue(afterUpdateByResumeColl.getClearances().contains(updated));
 
-        this.clearanceDao.delete(clearance.getId());
+            this.clearanceDao.delete(clearance.getId());
 
-        final Clearance afterDelete = this.clearanceDao.get(clearance.getId());
-        assertNull(afterDelete);
+            final Clearance afterDelete = this.clearanceDao.get(clearance.getId());
+            assertNull(afterDelete);
 
-        final ClearanceCollection afterDeleteByResume = this.clearanceDao.getForResume(user.getId());
-        assertNotNull(afterDeleteByResume);
-        assertEquals(0, afterDeleteByResume.getClearances().size());
-
-        this.resumeDao.delete(resume.getId());
+            final ClearanceCollection afterDeleteByResume = this.clearanceDao.getForResume(resume.getId());
+            assertNotNull(afterDeleteByResume);
+            assertEquals(beforeSize, afterDeleteByResume.getClearances().size());
+        } finally {
+            this.resumeDao.delete(resume.getId());
+        }
     }
 }

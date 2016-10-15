@@ -9,6 +9,7 @@ import com.cr.common.model.LaborCategory;
 import com.cr.common.model.LaborCategoryCollection;
 import com.cr.db.LaborCategoryDao;
 import com.cr.db.TestApplication;
+import java.util.UUID;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,17 +32,17 @@ public class DefaultLaborCategoryDaoIT {
     public void test() {
         final LaborCategoryCollection beforeAddColl = this.laborCategoryDao.getAll();
         assertNotNull(beforeAddColl);
-        assertEquals(25, beforeAddColl.getLaborCategories().size()); // because of the flyway-loaded data
+        final int beforeSize = beforeAddColl.getLaborCategories().size(); // may be non-zero from test data
 
-        final LaborCategory beforeAdd = this.laborCategoryDao.get("id");
+        final LaborCategory lcat = new LaborCategory(UUID.randomUUID().toString(), "Labor Category");
+        final LaborCategory beforeAdd = this.laborCategoryDao.get(lcat.getId());
         assertNull(beforeAdd);
 
-        final LaborCategory lcat = new LaborCategory("id", "Labor Category");
         this.laborCategoryDao.add(lcat);
 
         final LaborCategoryCollection afterAddColl = this.laborCategoryDao.getAll();
         assertNotNull(afterAddColl);
-        assertEquals(26, afterAddColl.getLaborCategories().size());
+        assertEquals(beforeSize + 1, afterAddColl.getLaborCategories().size());
         assertTrue(afterAddColl.getLaborCategories().contains(lcat));
 
         final LaborCategory afterAdd = this.laborCategoryDao.get(lcat.getId());
@@ -53,7 +54,7 @@ public class DefaultLaborCategoryDaoIT {
 
         final LaborCategoryCollection afterUpdateColl = this.laborCategoryDao.getAll();
         assertNotNull(afterUpdateColl);
-        assertEquals(26, afterUpdateColl.getLaborCategories().size());
+        assertEquals(beforeSize + 1, afterUpdateColl.getLaborCategories().size());
         assertTrue(afterUpdateColl.getLaborCategories().contains(updated));
 
         final LaborCategory afterUpdate = this.laborCategoryDao.get(updated.getId());
@@ -64,7 +65,7 @@ public class DefaultLaborCategoryDaoIT {
 
         final LaborCategoryCollection afterDeleteColl = this.laborCategoryDao.getAll();
         assertNotNull(afterDeleteColl);
-        assertEquals(25, afterDeleteColl.getLaborCategories().size());
+        assertEquals(beforeSize, afterDeleteColl.getLaborCategories().size());
 
         final LaborCategory afterDelete = this.laborCategoryDao.get(lcat.getId());
         assertNull(afterDelete);

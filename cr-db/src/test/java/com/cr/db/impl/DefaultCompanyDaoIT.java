@@ -14,6 +14,7 @@ import com.cr.db.CompanyDao;
 import com.cr.db.CompanyUserDao;
 import com.cr.db.TestApplication;
 import com.cr.db.UserDao;
+import java.util.UUID;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,11 +45,12 @@ public class DefaultCompanyDaoIT {
         assertNotNull(beforeAddColl);
         assertEquals(0, beforeAddColl.getCompanies().size());
 
-        final Company beforeAdd = this.companyDao.get("id");
+        final Company company =
+                new Company(UUID.randomUUID().toString(), "Company Name", "https://company-website.com/",
+                        PlanType.BASIC, 10, true);
+        final Company beforeAdd = this.companyDao.get(company.getId());
         assertNull(beforeAdd);
 
-        final Company company =
-                new Company("id", "Company Name", "https://company-website.com/", PlanType.BASIC, 10, true);
         this.companyDao.add(company);
 
         final CompanyCollection afterAddColl = this.companyDao.getAll();
