@@ -6,91 +6,99 @@
 <nav th:replace="fragments/navbar :: navbar (currentPage='resume')"></nav>
 <div class="container">
 
-    <div th:replace="fragments/user-resume-nav :: resume-nav (currentPage='work-locations')"></div>
+    <div class="row resume-row">
+        <div class="col-md-2 well well-sm">
+            <!-- Navigation -->
+            <div th:replace="fragments/user-resume-nav :: resume-nav (currentPage='work-locations')"></div>
+        </div>
+        <div class="col-md-10 resume-content-container">
+            <!-- Content -->
+            <h2>Desired Work Locations</h2>
 
-    <div class="container-fluid">
-        <h2>Desired Work Locations</h2>
-    </div>
-
-    <div class="row">
-        <div class="col-md-7">
-            <!-- Work Location panel -->
-            <div class="panel panel-default resume-work-location-panel">
-                <div class="panel-heading">
-                    <div class="pull-left">
-                        <span class="panel-title">Preferred Job Locality</span>
-                    </div>
-                    <div class="pull-right">
+            <div class="row">
+                <div class="col-md-7">
+                    <!-- Work Location panel -->
+                    <div class="panel panel-default resume-work-location-panel">
+                        <div class="panel-heading">
+                            <div class="pull-left">
+                                <span class="panel-title">Preferred Job Locality</span>
+                            </div>
+                            <div class="pull-right">
                         <span th:class="'label text-right label-' + ${workLocationStatusColor}"
                               th:text="${workLocationStatus}">Status</span>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <p>Provide the locations in which you are interested in working. These locations help
+                                potential employers understand where you want to work, and can identify open positions
+                                available within those locations.</p>
+
+                            <table class="table table-bordered resume-work-location-table">
+                                <thead>
+                                    <tr>
+                                        <th class="work-location-state-cell">State</th>
+                                        <th class="work-location-region-cell">Region</th>
+                                        <th class="text-center action-cell">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:if="${#lists.isEmpty(workLocations)}">
+                                        <td class="text-center empty-cell" colspan="3">No work locations have been added
+                                            yet.
+                                        </td>
+                                    </tr>
+                                    <tr th:each="workLocation : ${workLocations}">
+                                        <td class="work-location-state-cell" th:text="${workLocation.state}">State</td>
+                                        <td class="work-location-region-cell" th:text="${workLocation.region}">Region
+                                        </td>
+                                        <td class="text-center action-cell">
+                                            <a th:id="'edit-' + ${workLocation.id}" href="#" class="label label-info"
+                                               th:onclick="'edit(\'' + ${workLocation.id} + '\', \'' + ${workLocation.state} + '\', \'' + ${workLocation.region} + '\');'">Edit</a>
+                                            <a th:id="${workLocation.id}" class="label label-danger"
+                                               data-toggle="popover" data-placement="top">Delete</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-                <div class="panel-body">
-                    <p>Provide the locations in which you are interested in working. These locations help potential
-                        employers understand where you want to work, and can identify open positions available within
-                        those locations.</p>
-
-                    <table class="table table-bordered resume-work-location-table">
-                        <thead>
-                            <tr>
-                                <th class="work-location-state-cell">State</th>
-                                <th class="work-location-region-cell">Region</th>
-                                <th class="text-center action-cell">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr th:if="${#lists.isEmpty(workLocations)}">
-                                <td class="text-center empty-cell" colspan="3">No work locations have been added yet.
-                                </td>
-                            </tr>
-                            <tr th:each="workLocation : ${workLocations}">
-                                <td class="work-location-state-cell" th:text="${workLocation.state}">State</td>
-                                <td class="work-location-region-cell" th:text="${workLocation.region}">Region</td>
-                                <td class="text-center action-cell">
-                                    <a th:id="'edit-' + ${workLocation.id}" href="#" class="label label-info"
-                                       th:onclick="'edit(\'' + ${workLocation.id} + '\', \'' + ${workLocation.state} + '\', \'' + ${workLocation.region} + '\');'">Edit</a>
-                                    <a th:id="${workLocation.id}" class="label label-danger" data-toggle="popover"
-                                       data-placement="top">Delete</a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-5">
-            <!-- Add/Update panel -->
-            <div class="panel panel-default resume-work-location-panel">
-                <div class="panel-heading">
-                    <span class="panel-title" id="work-location-title">Add Work Location</span>
-                </div>
-                <div class="panel-body">
-                    <p th:if="${workLocationMessage}" class="alert alert-info" th:text="${workLocationMessage}">
-                        Message</p>
-
-                    <form class="form-resume-work-location" name="workLocationForm"
-                          th:action="@{/user/resume/work-locations}" method="POST">
-
-                        <input type="hidden" name="id" id="work-location-id"/>
-
-                        <label for="work-location-state" class="sr-only">State</label>
-                        <select name="state" id="work-location-state" class="form-control" placeholder="State"
-                                required="required" autofocus="autofocus">
-                            <option th:each="state : ${states}" th:value="${state.name}"
-                                    th:text="${state.name}"></option>
-                        </select>
-
-                        <label for="work-location-region" class="sr-only">Region (e.g., city, town, government
-                            agency)</label>
-                        <input type="text" name="region" id="work-location-region" class="form-control"
-                               placeholder="Region (e.g., city, town, government agency)" required="required"
-                               autofocus="autofocus"/>
-
-                        <div class="btn-group">
-                            <button id="work-location-submit" class="btn btn-default btn-primary" type="submit">Add
-                            </button>
+                <div class="col-md-5">
+                    <!-- Add/Update panel -->
+                    <div class="panel panel-default resume-work-location-panel">
+                        <div class="panel-heading">
+                            <span class="panel-title" id="work-location-title">Add Work Location</span>
                         </div>
-                    </form>
+                        <div class="panel-body">
+                            <p th:if="${workLocationMessage}" class="alert alert-info" th:text="${workLocationMessage}">
+                                Message</p>
+
+                            <form class="form-resume-work-location" name="workLocationForm"
+                                  th:action="@{/user/resume/work-locations}" method="POST">
+
+                                <input type="hidden" name="id" id="work-location-id"/>
+
+                                <label for="work-location-state" class="sr-only">State</label>
+                                <select name="state" id="work-location-state" class="form-control" placeholder="State"
+                                        required="required" autofocus="autofocus">
+                                    <option th:each="state : ${states}" th:value="${state.name}"
+                                            th:text="${state.name}"></option>
+                                </select>
+
+                                <label for="work-location-region" class="sr-only">Region (e.g., city, town, government
+                                    agency)</label>
+                                <input type="text" name="region" id="work-location-region" class="form-control"
+                                       placeholder="Region (e.g., city, town, government agency)" required="required"
+                                       autofocus="autofocus"/>
+
+                                <div class="btn-group">
+                                    <button id="work-location-submit" class="btn btn-default btn-primary" type="submit">
+                                        Add
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

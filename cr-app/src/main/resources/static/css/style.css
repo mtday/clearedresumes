@@ -270,30 +270,34 @@ body {
 .resume-nav-container {
   padding-bottom: 20px;
 }
+.resume-content-container h2 {
+  padding-top: 0px;
+  margin-top: 0px;
+}
 
-.resume-overview-about-you-panel {
+.resume-introduction-about-you-panel {
   margin-top: 34px;
 }
-.resume-overview-about-you-panel .panel-heading {
+.resume-introduction-about-you-panel .panel-heading {
   min-height: 40px;
 }
-.resume-overview-about-you-panel .form-resume-overview-about-you .form-control:focus {
+.resume-introduction-about-you-panel .form-resume-introduction-about-you .form-control:focus {
   z-index: 2;
 }
-.resume-overview-about-you-panel .form-resume-overview-about-you input {
+.resume-introduction-about-you-panel .form-resume-introduction-about-you input {
   margin-bottom: 10px;
 }
 
-.resume-overview-objective-panel {
+.resume-introduction-objective-panel {
   margin-top: 34px;
 }
-.resume-overview-objective-panel .panel-heading {
+.resume-introduction-objective-panel .panel-heading {
   min-height: 40px;
 }
-.resume-overview-objective-panel .form-resume-overview-objective .form-control:focus {
+.resume-introduction-objective-panel .form-resume-introduction-objective .form-control:focus {
   z-index: 2;
 }
-.resume-overview-objective-panel .form-resume-overview-objective .btn-group {
+.resume-introduction-objective-panel .form-resume-introduction-objective .btn-group {
   margin-top: 10px;
 }
 

@@ -6,7 +6,7 @@ import com.cr.common.model.ResumeContainer;
 import com.cr.db.ContactInfoDao;
 import com.cr.db.ResumeContainerDao;
 import com.cr.db.ResumeDao;
-import com.cr.db.ResumeOverviewDao;
+import com.cr.db.ResumeIntroductionDao;
 import java.util.Map;
 import java.util.UUID;
 import javax.annotation.Nonnull;
@@ -41,7 +41,7 @@ public class ResumeContactInfoController extends BaseResumeController {
     @Autowired
     public ResumeContactInfoController(
             @Nonnull final ResumeContainerDao resumeContainerDao, @Nonnull final ResumeDao resumeDao,
-            @Nonnull final ResumeOverviewDao resumeOverviewDao, @Nonnull final ContactInfoDao contactInfoDao) {
+            @Nonnull final ResumeIntroductionDao resumeOverviewDao, @Nonnull final ContactInfoDao contactInfoDao) {
         super(resumeContainerDao, resumeDao, resumeOverviewDao);
         this.contactInfoDao = contactInfoDao;
     }

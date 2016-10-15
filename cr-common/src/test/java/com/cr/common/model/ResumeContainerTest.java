@@ -19,7 +19,7 @@ public class ResumeContainerTest {
     public void testDefaultConstructor() {
         final ResumeContainer resumeContainer = new ResumeContainer();
         assertNotNull(resumeContainer.getResume());
-        assertNotNull(resumeContainer.getOverview());
+        assertNotNull(resumeContainer.getIntroduction());
         assertEquals(0, resumeContainer.getReviews().size());
         assertEquals(0, resumeContainer.getLaborCategories().size());
         assertEquals(0, resumeContainer.getContactInfos().size());
@@ -35,7 +35,7 @@ public class ResumeContainerTest {
     @Test
     public void testParameterConstructor() {
         final Resume resume = new Resume("rid", "uid", ResumeStatus.IN_PROGRESS, LocalDateTime.now(), null);
-        final ResumeOverview overview = new ResumeOverview(resume.getId(), "Full Name", "Objective");
+        final ResumeIntroduction introduction = new ResumeIntroduction(resume.getId(), "Full Name", "Objective");
         final ResumeReview review = new ResumeReview(resume.getId(), "cid", ResumeReviewStatus.SAVED);
         final ResumeLaborCategory lcat = new ResumeLaborCategory("id", resume.getId(), "Labor Category", 10);
         final ContactInfo contactInfo = new ContactInfo("id", resume.getId(), "Value");
@@ -49,14 +49,14 @@ public class ResumeContainerTest {
         final KeyWord keyWord = new KeyWord(resume.getId(), "Word");
 
         final ResumeContainer resumeContainer =
-                new ResumeContainer(resume, overview, Collections.singleton(review), Collections.singleton(lcat),
+                new ResumeContainer(resume, introduction, Collections.singleton(review), Collections.singleton(lcat),
                         Collections.singleton(contactInfo), Collections.singleton(workLocation),
                         Collections.singleton(workSummary), Collections.singleton(clearance),
                         Collections.singleton(education), Collections.singleton(certification),
                         Collections.singleton(keyWord));
 
         assertEquals(resume, resumeContainer.getResume());
-        assertEquals(overview, resumeContainer.getOverview());
+        assertEquals(introduction, resumeContainer.getIntroduction());
         assertEquals(1, resumeContainer.getReviews().size());
         assertTrue(resumeContainer.getReviews().contains(review));
         assertEquals(1, resumeContainer.getLaborCategories().size());
@@ -81,7 +81,7 @@ public class ResumeContainerTest {
     private ResumeContainer[] getTwoResumeContainers() {
         final Resume resume1 = new Resume("rid1", "uid", ResumeStatus.IN_PROGRESS, LocalDateTime.now(), null);
         final Resume resume2 = new Resume("rid2", "uid", ResumeStatus.IN_PROGRESS, LocalDateTime.now(), null);
-        final ResumeOverview overview = new ResumeOverview(resume1.getId(), "Full Name", "Objective");
+        final ResumeIntroduction introduction = new ResumeIntroduction(resume1.getId(), "Full Name", "Objective");
         final ResumeReview review = new ResumeReview(resume1.getId(), "cid", ResumeReviewStatus.SAVED);
         final ResumeLaborCategory lcat = new ResumeLaborCategory("id", resume1.getId(), "Labor Category", 10);
         final ContactInfo contactInfo = new ContactInfo("id", resume1.getId(), "Value");
@@ -95,13 +95,13 @@ public class ResumeContainerTest {
         final KeyWord keyWord = new KeyWord(resume1.getId(), "Word");
 
         final ResumeContainer a =
-                new ResumeContainer(resume1, overview, Collections.singleton(review), Collections.singleton(lcat),
+                new ResumeContainer(resume1, introduction, Collections.singleton(review), Collections.singleton(lcat),
                         Collections.singleton(contactInfo), Collections.singleton(workLocation),
                         Collections.singleton(workSummary), Collections.singleton(clearance),
                         Collections.singleton(education), Collections.singleton(certification),
                         Collections.singleton(keyWord));
         final ResumeContainer b =
-                new ResumeContainer(resume2, overview, Collections.singleton(review), Collections.singleton(lcat),
+                new ResumeContainer(resume2, introduction, Collections.singleton(review), Collections.singleton(lcat),
                         Collections.singleton(contactInfo), Collections.singleton(workLocation),
                         Collections.singleton(workSummary), Collections.singleton(clearance),
                         Collections.singleton(education), Collections.singleton(certification),
@@ -139,7 +139,7 @@ public class ResumeContainerTest {
     private ResumeContainer getResumeContainer() {
         final LocalDateTime created = LocalDateTime.of(2016, 1, 1, 2, 3, 4);
         final Resume resume = new Resume("rid", "uid", ResumeStatus.IN_PROGRESS, created, null);
-        final ResumeOverview overview = new ResumeOverview(resume.getId(), "Full Name", "Objective");
+        final ResumeIntroduction introduction = new ResumeIntroduction(resume.getId(), "Full Name", "Objective");
         final ResumeReview review = new ResumeReview(resume.getId(), "cid", ResumeReviewStatus.SAVED);
         final ResumeLaborCategory lcat = new ResumeLaborCategory("id", resume.getId(), "Labor Category", 10);
         final ContactInfo contactInfo = new ContactInfo("id", resume.getId(), "Value");
@@ -153,7 +153,7 @@ public class ResumeContainerTest {
         final Certification certification = new Certification("id", resume.getId(), "Certificate", 2000);
         final KeyWord keyWord = new KeyWord(resume.getId(), "Word");
 
-        return new ResumeContainer(resume, overview, Collections.singleton(review), Collections.singleton(lcat),
+        return new ResumeContainer(resume, introduction, Collections.singleton(review), Collections.singleton(lcat),
                 Collections.singleton(contactInfo), Collections.singleton(workLocation),
                 Collections.singleton(workSummary), Collections.singleton(clearance), Collections.singleton(education),
                 Collections.singleton(certification), Collections.singleton(keyWord));

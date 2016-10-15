@@ -35,7 +35,7 @@ public class AccountTest {
         final LocalDateTime created = LocalDateTime.of(2016, 1, 1, 2, 3, 4);
         final Resume resume1 = new Resume("rid", user1.getId(), ResumeStatus.IN_PROGRESS, created, null);
         final Resume resume2 = new Resume("rid", user1.getId(), ResumeStatus.IN_PROGRESS, created, null);
-        final ResumeOverview overview = new ResumeOverview("rid", "Full Name", "Objective");
+        final ResumeIntroduction introduction = new ResumeIntroduction("rid", "Full Name", "Objective");
         final ResumeReview review = new ResumeReview("rid", company.getId(), ResumeReviewStatus.SAVED);
         final ResumeLaborCategory lcat = new ResumeLaborCategory("id", "rid", "Labor Category", 10);
         final ContactInfo contactInfo = new ContactInfo("id", "rid", "Value");
@@ -48,13 +48,13 @@ public class AccountTest {
         final Certification certification = new Certification("id", "rid", "Certificate", 2000);
         final KeyWord keyWord = new KeyWord("rid", "Word");
         final ResumeContainer resumeContainer1 =
-                new ResumeContainer(resume1, overview, Collections.singleton(review), Collections.singleton(lcat),
+                new ResumeContainer(resume1, introduction, Collections.singleton(review), Collections.singleton(lcat),
                         Collections.singleton(contactInfo), Collections.singleton(workLocation),
                         Collections.singleton(workSummary), Collections.singleton(clearance),
                         Collections.singleton(education), Collections.singleton(certification),
                         Collections.singleton(keyWord));
         final ResumeContainer resumeContainer2 =
-                new ResumeContainer(resume2, overview, Collections.singleton(review), Collections.singleton(lcat),
+                new ResumeContainer(resume2, introduction, Collections.singleton(review), Collections.singleton(lcat),
                         Collections.singleton(contactInfo), Collections.singleton(workLocation),
                         Collections.singleton(workSummary), Collections.singleton(clearance),
                         Collections.singleton(education), Collections.singleton(certification),
@@ -98,7 +98,7 @@ public class AccountTest {
         final Collection<Company> companies = Collections.singleton(company);
         final LocalDateTime created = LocalDateTime.of(2016, 1, 1, 2, 3, 4);
         final Resume resume = new Resume("rid", user.getId(), ResumeStatus.IN_PROGRESS, created, null);
-        final ResumeOverview overview = new ResumeOverview("rid", "Full Name", "Objective");
+        final ResumeIntroduction introduction = new ResumeIntroduction("rid", "Full Name", "Objective");
         final ResumeReview review = new ResumeReview("rid", company.getId(), ResumeReviewStatus.SAVED);
         final ResumeLaborCategory lcat = new ResumeLaborCategory("id", "rid", "Labor Category", 10);
         final ContactInfo contactInfo = new ContactInfo("id", "rid", "Value");
@@ -111,7 +111,7 @@ public class AccountTest {
         final Certification certification = new Certification("id", "rid", "Certificate", 2000);
         final KeyWord keyWord = new KeyWord("rid", "Word");
         final ResumeContainer resumeContainer =
-                new ResumeContainer(resume, overview, Collections.singleton(review), Collections.singleton(lcat),
+                new ResumeContainer(resume, introduction, Collections.singleton(review), Collections.singleton(lcat),
                         Collections.singleton(contactInfo), Collections.singleton(workLocation),
                         Collections.singleton(workSummary), Collections.singleton(clearance),
                         Collections.singleton(education), Collections.singleton(certification),
@@ -130,7 +130,7 @@ public class AccountTest {
                 + "authorities=[EMPLOYER, USER],companies=[Company[id=cid,name=Company Name,website=website,"
                 + "planType=BASIC,slots=10,active=true]],"
                 + "resumeContainer=ResumeContainer[resume=Resume[id=rid,userId=uid,status=IN_PROGRESS,"
-                + "created=2016-01-01T02:03:04,expiration=<null>],overview=ResumeOverview[resumeId=rid,"
+                + "created=2016-01-01T02:03:04,expiration=<null>],introduction=ResumeIntroduction[resumeId=rid,"
                 + "fullName=Full Name,objective=Objective],reviews=[ResumeReview[resumeId=rid,companyId=cid,"
                 + "status=SAVED]],laborCategories=[ResumeLaborCategory[id=id,resumeId=rid,laborCategory=Labor"
                 + " Category,experience=10]],contactInfos=[ContactInfo[id=id,resumeId=rid,"

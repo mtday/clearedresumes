@@ -6,89 +6,101 @@
 <nav th:replace="fragments/navbar :: navbar (currentPage='resume')"></nav>
 <div class="container">
 
-    <div th:replace="fragments/user-resume-nav :: resume-nav (currentPage='certifications')"></div>
+    <div class="row resume-row">
+        <div class="col-md-2 well well-sm">
+            <!-- Navigation -->
+            <div th:replace="fragments/user-resume-nav :: resume-nav (currentPage='certifications')"></div>
+        </div>
+        <div class="col-md-10 resume-content-container">
+            <!-- Content -->
+            <h2>Certifications</h2>
 
-    <div class="container-fluid">
-        <h2>Certifications</h2>
-    </div>
-
-    <div class="row">
-        <div class="col-md-7">
-            <!-- Certifications panel -->
-            <div class="panel panel-default resume-certification-panel">
-                <div class="panel-heading">
-                    <div class="pull-left">
-                        <span class="panel-title">Your Certifications</span>
-                    </div>
-                    <div class="pull-right">
+            <div class="row">
+                <div class="col-md-8">
+                    <!-- Certifications panel -->
+                    <div class="panel panel-default resume-certification-panel">
+                        <div class="panel-heading">
+                            <div class="pull-left">
+                                <span class="panel-title">Your Certifications</span>
+                            </div>
+                            <div class="pull-right">
                         <span th:class="'label text-right label-' + ${certificationStatusColor}"
                               th:text="${certificationStatus}">Status</span>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <p>Provide information about the certifications you have obtained. Some open positions
+                                require a relevant certification, and you can help potential employers find those
+                                positions for which you may qualify.</p>
+
+                            <table class="table table-bordered resume-certification-table">
+                                <thead>
+                                    <tr>
+                                        <th class="certification-certificate-cell">Certificate</th>
+                                        <th class="text-center certification-year-cell">Year</th>
+                                        <th class="text-center action-cell">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:if="${#lists.isEmpty(certifications)}">
+                                        <td class="text-center empty-cell" colspan="3">
+                                            No certifications have been added yet.
+                                        </td>
+                                    </tr>
+                                    <tr th:each="certification : ${certifications}">
+                                        <td class="certification-certificate-cell"
+                                            th:text="${certification.certificate}">
+                                            Certificate
+                                        </td>
+                                        <td class="text-center certification-year-cell" th:text="${certification.year}">
+                                            Year
+                                        </td>
+                                        <td class="text-center action-cell">
+                                            <a th:id="'edit-' + ${certification.id}" href="#" class="label label-info"
+                                               th:onclick="'edit(\'' + ${certification.id} + '\', \'' + ${certification.certificate} + '\', \'' + ${certification.year} + '\');'">Edit</a>
+                                            <a th:id="${certification.id}" class="label label-danger"
+                                               data-toggle="popover" data-placement="top">Delete</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-                <div class="panel-body">
-                    <p>Provide information about the certifications you have obtained. Some open positions require a
-                        relevant certification, and you can help potential employers find those positions for which you
-                        may qualify.</p>
-
-                    <table class="table table-bordered resume-certification-table">
-                        <thead>
-                            <tr>
-                                <th class="certification-certificate-cell">Certificate</th>
-                                <th class="text-center certification-year-cell">Year</th>
-                                <th class="text-center action-cell">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr th:if="${#lists.isEmpty(certifications)}">
-                                <td class="text-center empty-cell" colspan="3">No certifications have been added yet.
-                                </td>
-                            </tr>
-                            <tr th:each="certification : ${certifications}">
-                                <td class="certification-certificate-cell" th:text="${certification.certificate}">
-                                    Certificate
-                                </td>
-                                <td class="text-center certification-year-cell" th:text="${certification.year}">Year
-                                </td>
-                                <td class="text-center action-cell">
-                                    <a th:id="'edit-' + ${certification.id}" href="#" class="label label-info"
-                                       th:onclick="'edit(\'' + ${certification.id} + '\', \'' + ${certification.certificate} + '\', \'' + ${certification.year} + '\');'">Edit</a>
-                                    <a th:id="${certification.id}" class="label label-danger" data-toggle="popover"
-                                       data-placement="top">Delete</a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-5">
-            <!-- Add/Update panel -->
-            <div class="panel panel-default resume-certification-panel">
-                <div class="panel-heading">
-                    <span class="panel-title" id="certification-title">Add Certifications</span>
-                </div>
-                <div class="panel-body">
-                    <p th:if="${certificationMessage}" class="alert alert-info" th:text="${certificationMessage}">
-                        Message</p>
-
-                    <form class="form-resume-certification" name="certificationForm"
-                          th:action="@{/user/resume/certifications}" method="POST">
-
-                        <input type="hidden" name="id" id="certification-id"/>
-
-                        <label for="certification-certificate" class="sr-only">Name of Certification Received</label>
-                        <input type="text" name="certificate" id="certification-certificate" class="form-control"
-                               placeholder="Name of Certification Received" required="required" autofocus="autofocus"/>
-
-                        <label for="certification-year" class="sr-only">Year Received</label>
-                        <input type="number" name="year" id="certification-year" class="form-control"
-                               placeholder="Year Received" required="required" autofocus="autofocus"/>
-
-                        <div class="btn-group">
-                            <button id="certification-submit" class="btn btn-default btn-primary" type="submit">Add
-                            </button>
+                <div class="col-md-4">
+                    <!-- Add/Update panel -->
+                    <div class="panel panel-default resume-certification-panel">
+                        <div class="panel-heading">
+                            <span class="panel-title" id="certification-title">Add Certifications</span>
                         </div>
-                    </form>
+                        <div class="panel-body">
+                            <p th:if="${certificationMessage}" class="alert alert-info"
+                               th:text="${certificationMessage}">
+                                Message</p>
+
+                            <form class="form-resume-certification" name="certificationForm"
+                                  th:action="@{/user/resume/certifications}" method="POST">
+
+                                <input type="hidden" name="id" id="certification-id"/>
+
+                                <label for="certification-certificate" class="sr-only">Name of Certification
+                                    Received</label>
+                                <input type="text" name="certificate" id="certification-certificate"
+                                       class="form-control" placeholder="Name of Certification Received"
+                                       required="required" autofocus="autofocus"/>
+
+                                <label for="certification-year" class="sr-only">Year Received</label>
+                                <input type="number" name="year" id="certification-year" class="form-control"
+                                       placeholder="Year Received" required="required" autofocus="autofocus"/>
+
+                                <div class="btn-group">
+                                    <button id="certification-submit" class="btn btn-default btn-primary" type="submit">
+                                        Add
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -131,10 +143,6 @@
         $('#certification-submit').removeClass('btn-primary');
         $('#certification-title')[0].innerHTML = 'Edit Certifications';
     }
-
-
-
-
 </script>
 </body>
 </html>

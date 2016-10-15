@@ -4,7 +4,7 @@ import com.cr.common.model.ResumeContainer;
 import com.cr.common.model.WorkLocation;
 import com.cr.db.ResumeContainerDao;
 import com.cr.db.ResumeDao;
-import com.cr.db.ResumeOverviewDao;
+import com.cr.db.ResumeIntroductionDao;
 import com.cr.db.StateDao;
 import com.cr.db.WorkLocationDao;
 import java.util.Map;
@@ -44,7 +44,7 @@ public class ResumeWorkLocationsController extends BaseResumeController {
     @Autowired
     public ResumeWorkLocationsController(
             @Nonnull final ResumeContainerDao resumeContainerDao, @Nonnull final ResumeDao resumeDao,
-            @Nonnull final ResumeOverviewDao resumeOverviewDao, @Nonnull final WorkLocationDao workLocationDao,
+            @Nonnull final ResumeIntroductionDao resumeOverviewDao, @Nonnull final WorkLocationDao workLocationDao,
             @Nonnull final StateDao stateDao) {
         super(resumeContainerDao, resumeDao, resumeOverviewDao);
         this.workLocationDao = workLocationDao;

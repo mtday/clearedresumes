@@ -96,13 +96,13 @@ CREATE TABLE resume_reviews (
 );
 
 
-CREATE TABLE resume_overviews (
+CREATE TABLE resume_introductions (
     resume_id         VARCHAR(36)    NOT NULL,
     full_name         VARCHAR(80)    NOT NULL,
     objective         VARCHAR(20000) NOT NULL,
 
-    CONSTRAINT resume_overviews_pk PRIMARY KEY (resume_id),
-    CONSTRAINT resume_overviews_fk_resume_id FOREIGN KEY (resume_id) REFERENCES resumes (id) ON DELETE CASCADE
+    CONSTRAINT resume_introductions_pk PRIMARY KEY (resume_id),
+    CONSTRAINT resume_introductions_fk_resume_id FOREIGN KEY (resume_id) REFERENCES resumes (id) ON DELETE CASCADE
 );
 
 

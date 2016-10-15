@@ -6,9 +6,16 @@
 <nav th:replace="fragments/navbar :: navbar (currentPage='resume')"></nav>
 <div class="container">
 
-    <div th:replace="fragments/user-resume-nav :: resume-nav (currentPage='work-summaries')"></div>
-
-    TODO - Resume Work Summaries
+    <div class="row resume-row">
+        <div class="col-md-2 well well-sm">
+            <!-- Navigation -->
+            <div th:replace="fragments/user-resume-nav :: resume-nav (currentPage='work-summaries')"></div>
+        </div>
+        <div class="col-md-10 resume-content-container">
+            <!-- Content -->
+            <h2>Resume Work Summaries</h2>
+        </div>
+    </div>
 
 </div>
 

@@ -2,7 +2,7 @@ package com.cr.app.controller.web.user.resume;
 
 import com.cr.db.ResumeContainerDao;
 import com.cr.db.ResumeDao;
-import com.cr.db.ResumeOverviewDao;
+import com.cr.db.ResumeIntroductionDao;
 import java.util.Map;
 import javax.annotation.Nonnull;
 import org.slf4j.Logger;
@@ -28,7 +28,7 @@ public class ResumeWorkSummariesController extends BaseResumeController {
     @Autowired
     public ResumeWorkSummariesController(
             @Nonnull final ResumeContainerDao resumeContainerDao, @Nonnull final ResumeDao resumeDao,
-            @Nonnull final ResumeOverviewDao resumeOverviewDao) {
+            @Nonnull final ResumeIntroductionDao resumeOverviewDao) {
         super(resumeContainerDao, resumeDao, resumeOverviewDao);
     }
 

@@ -16,7 +16,7 @@ import com.cr.common.model.PlanType;
 import com.cr.common.model.Resume;
 import com.cr.common.model.ResumeContainer;
 import com.cr.common.model.ResumeLaborCategory;
-import com.cr.common.model.ResumeOverview;
+import com.cr.common.model.ResumeIntroduction;
 import com.cr.common.model.ResumeReview;
 import com.cr.common.model.ResumeReviewStatus;
 import com.cr.common.model.ResumeStatus;
@@ -43,7 +43,7 @@ public class DefaultUserDetailsTest {
         final Collection<Company> companies = Collections.singleton(company);
         final LocalDateTime created = LocalDateTime.of(2016, 1, 1, 2, 3, 4);
         final Resume resume = new Resume("rid", user.getId(), ResumeStatus.IN_PROGRESS, created, null);
-        final ResumeOverview overview = new ResumeOverview(resume.getId(), "Full Name", "Objective");
+        final ResumeIntroduction overview = new ResumeIntroduction(resume.getId(), "Full Name", "Objective");
         final ResumeReview review = new ResumeReview(resume.getId(), company.getId(), ResumeReviewStatus.SAVED);
         final ResumeLaborCategory lcat = new ResumeLaborCategory("id", resume.getId(), "Labor Category", 10);
         final ContactInfo contactInfo = new ContactInfo("id", resume.getId(), "Value");

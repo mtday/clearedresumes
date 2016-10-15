@@ -4,11 +4,11 @@ import com.cr.app.controller.web.BaseController;
 import com.cr.common.model.Account;
 import com.cr.common.model.Resume;
 import com.cr.common.model.ResumeContainer;
-import com.cr.common.model.ResumeOverview;
+import com.cr.common.model.ResumeIntroduction;
 import com.cr.common.model.ResumeStatus;
 import com.cr.db.ResumeContainerDao;
 import com.cr.db.ResumeDao;
-import com.cr.db.ResumeOverviewDao;
+import com.cr.db.ResumeIntroductionDao;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import javax.annotation.Nonnull;
@@ -22,21 +22,21 @@ public abstract class BaseResumeController extends BaseController {
     @Nonnull
     private final ResumeDao resumeDao;
     @Nonnull
-    private final ResumeOverviewDao resumeOverviewDao;
+    private final ResumeIntroductionDao resumeIntroductionDao;
 
     /**
      * Create an instance of this controller.
      *
      * @param resumeContainerDao the DAO used to manage resume containers in the database
      * @param resumeDao the DAO used to manage resumes in the database
-     * @param resumeOverviewDao the DAO used to manage resume overviews in the database
+     * @param resumeIntroductionDao the DAO used to manage resume introductions in the database
      */
     public BaseResumeController(
             @Nonnull final ResumeContainerDao resumeContainerDao, @Nonnull final ResumeDao resumeDao,
-            @Nonnull final ResumeOverviewDao resumeOverviewDao) {
+            @Nonnull final ResumeIntroductionDao resumeIntroductionDao) {
         this.resumeContainerDao = resumeContainerDao;
         this.resumeDao = resumeDao;
-        this.resumeOverviewDao = resumeOverviewDao;
+        this.resumeIntroductionDao = resumeIntroductionDao;
     }
 
     /**
@@ -60,13 +60,13 @@ public abstract class BaseResumeController extends BaseController {
     }
 
     /**
-     * Retrieve the resume overview DAO.
+     * Retrieve the resume introduction DAO.
      *
-     * @return the resume overview DAO
+     * @return the resume introduction DAO
      */
     @Nonnull
-    protected ResumeOverviewDao getResumeOverviewDao() {
-        return this.resumeOverviewDao;
+    protected ResumeIntroductionDao getResumeIntroductionDao() {
+        return this.resumeIntroductionDao;
     }
 
     /**
@@ -103,15 +103,15 @@ public abstract class BaseResumeController extends BaseController {
                             resumeContainer));
                     return resumeContainer;
                 } else {
-                    // Create a new resume and resume overview.
+                    // Create a new resume and resume introduction.
                     final Resume resume = new Resume(UUID.randomUUID().toString(), account.getUser().getId(),
                             ResumeStatus.IN_PROGRESS, LocalDateTime.now(), null);
-                    final ResumeOverview overview = new ResumeOverview(resume.getId());
+                    final ResumeIntroduction introduction = new ResumeIntroduction(resume.getId());
 
                     getResumeDao().add(resume);
-                    getResumeOverviewDao().add(overview);
+                    getResumeIntroductionDao().add(introduction);
 
-                    final ResumeContainer newContainer = new ResumeContainer(resume, overview);
+                    final ResumeContainer newContainer = new ResumeContainer(resume, introduction);
                     setCurrentAccount(new Account(account.getUser(), account.getAuthorities(), account.getCompanies(),
                             newContainer));
                     return newContainer;

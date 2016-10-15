@@ -5,7 +5,7 @@ import com.cr.common.model.ResumeContainer;
 import com.cr.db.CertificationDao;
 import com.cr.db.ResumeContainerDao;
 import com.cr.db.ResumeDao;
-import com.cr.db.ResumeOverviewDao;
+import com.cr.db.ResumeIntroductionDao;
 import java.util.Map;
 import java.util.UUID;
 import javax.annotation.Nonnull;
@@ -40,7 +40,7 @@ public class ResumeCertificationsController extends BaseResumeController {
     @Autowired
     public ResumeCertificationsController(
             @Nonnull final ResumeContainerDao resumeContainerDao, @Nonnull final ResumeDao resumeDao,
-            @Nonnull final ResumeOverviewDao resumeOverviewDao, @Nonnull final CertificationDao certificationDao) {
+            @Nonnull final ResumeIntroductionDao resumeOverviewDao, @Nonnull final CertificationDao certificationDao) {
         super(resumeContainerDao, resumeDao, resumeOverviewDao);
         this.certificationDao = certificationDao;
     }

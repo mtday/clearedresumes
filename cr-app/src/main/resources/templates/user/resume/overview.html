@@ -6,75 +6,62 @@
 <nav th:replace="fragments/navbar :: navbar (currentPage='resume')"></nav>
 <div class="container">
 
-    <div th:replace="fragments/user-resume-nav :: resume-nav (currentPage='overview')"></div>
-
-    <div class="container-fluid">
-        <h2>Resume Overview</h2>
-    </div>
-
-    <div class="row">
-        <div class="col-md-5">
-            <!-- About You panel -->
-            <div class="panel panel-default resume-overview-about-you-panel">
-                <div class="panel-heading">
-                    <div class="pull-left">
-                        <span class="panel-title">About You</span>
-                    </div>
-                    <div class="pull-right">
-                <span th:class="'label text-right label-' + ${aboutYouStatusColor}"
-                      th:text="${aboutYouStatus}">Status</span>
-                    </div>
-                </div>
-                <div class="panel-body">
-                    <p th:if="${aboutYouMessage}" class="alert alert-info" th:text="${aboutYouMessage}">Message</p>
-
-                    <form class="form-resume-overview-about-you" name="aboutYouForm"
-                          th:action="@{/user/resume/overview/about-you}" method="POST">
-
-                        <label for="overview-fullName" class="sr-only">Full Name</label>
-                        <input type="text" name="fullName" id="overview-fullName" class="form-control"
-                               placeholder="Full Name" required="required" autofocus="autofocus"
-                               th:value="${overview.fullName}"/>
-
-                        <div class="btn-group">
-                            <button class="btn btn-default btn-primary" type="submit">Save</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+    <div class="row resume-row">
+        <div class="col-md-2 well well-sm">
+            <!-- Navigation -->
+            <div th:replace="fragments/user-resume-nav :: resume-nav (currentPage='overview')"></div>
         </div>
-        <div class="col-md-7">
-            <!-- Career Objective panel -->
-            <div class="panel panel-default resume-overview-objective-panel">
-                <div class="panel-heading">
-                    <div class="pull-left">
-                        <span class="panel-title">Career Objective</span>
-                    </div>
-                    <div class="pull-right">
-                <span th:class="'label text-right label-' + ${objectiveStatusColor}"
-                      th:text="${objectiveStatus}">Status</span>
-                    </div>
+        <div class="col-md-10 resume-content-container">
+            <!-- Content -->
+            <h2>Resume Overview</h2>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <h4>Resume Status:</h4>
+
+                    <ul class="list-group">
+                        <li class="list-group-item">&nbsp;
+                            <div class="pull-left">
+                                Completion Status:
+                            </div>
+                            <div class="pull-right">
+                                <span class="label label-info">Incomplete</span>
+                            </div>
+                        </li>
+                        <li class="list-group-item">&nbsp;
+                            <div class="pull-left">
+                                Publish Status:
+                            </div>
+                            <div class="pull-right">
+                                <span class="label label-info">Unpublished</span>
+                            </div>
+                        </li>
+                        <li class="list-group-item text-center">
+                            <button class="btn btn-default btn-success" type="submit">Publish Now!</button>
+                        </li>
+                    </ul>
                 </div>
-                <div class="panel-body">
-                    <p>Your <i>career objective</i> is a brief narrative that clearly outlines your career direction.
-                        It provides a quick summary of where you have been so far in your career, and more importantly,
-                        where you want to go with your career in your next job. This gives potential employers valuable
-                        information about the type of work in which you may be interested.</p>
 
-                    <p th:if="${objectiveMessage}" class="alert alert-info" th:text="${objectiveMessage}">Message</p>
+                <div class="col-md-5">
+                    <h4>Company Review Statistics:</h4>
 
-                    <form class="form-resume-overview-objective" name="objectiveForm" novalidate="novalidate"
-                          th:action="@{/user/resume/overview/objective}" method="POST">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <span class="badge">14</span>
+                            Companies that have <strong>Viewed</strong> my resume:
+                        </li>
+                        <li class="list-group-item">
+                            <span class="badge">4</span>
+                            Companies that have <strong>Liked</strong> my resume:
+                        </li>
+                        <li class="list-group-item">
+                            <span class="badge">2</span>
+                            Companies that have <strong>Purchased</strong> my contact info:
+                        </li>
+                    </ul>
+                </div>
 
-                        <label for="overview-objective" class="sr-only">Career Objective</label>
-                        <textarea name="objective" id="overview-objective" rows="12" class="form-control"
-                                  placeholder="Career Objective" required="required" autofocus="autofocus"
-                                  th:text="${overview.objective}"></textarea>
-
-                        <div class="btn-group">
-                            <button class="btn btn-default btn-primary" type="submit">Save</button>
-                        </div>
-                    </form>
+                <div class="col-md-3">
                 </div>
             </div>
         </div>
@@ -84,18 +71,5 @@
 
 <footer th:replace="fragments/footer :: footer"></footer>
 <div th:replace="fragments/scripts :: scripts"></div>
-
-<script>
-    new SimpleMDE({
-        element: document.getElementById("overview-objective"),
-        autoDownloadFontAwesome: false,
-        spellChecker: false,
-        autosave: true,
-        status: false,
-        hideIcons: ["link", "image", "fullscreen", "side-by-side"]
-    });
-
-
-</script>
 </body>
 </html>

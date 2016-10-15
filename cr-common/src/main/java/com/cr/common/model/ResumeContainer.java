@@ -15,7 +15,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * Holds all of the information associated with a resumeOverview.
+ * Holds all of the information associated with a resumeIntroduction.
  */
 public class ResumeContainer implements Serializable, Comparable<ResumeContainer> {
     // Needs to be serializable since this class is used inside DefaultUserDetails.
@@ -24,7 +24,7 @@ public class ResumeContainer implements Serializable, Comparable<ResumeContainer
     @Nonnull
     private final Resume resume;
     @Nonnull
-    private final ResumeOverview resumeOverview;
+    private final ResumeIntroduction resumeIntroduction;
     @Nonnull
     private final SortedSet<ResumeReview> reviews = new TreeSet<>();
     @Nonnull
@@ -48,17 +48,17 @@ public class ResumeContainer implements Serializable, Comparable<ResumeContainer
      * Default constructor required for Jackson deserialization.
      */
     ResumeContainer() {
-        this(new Resume(), new ResumeOverview());
+        this(new Resume(), new ResumeIntroduction());
     }
 
     /**
      * Create a mostly empty container.
      *
      * @param resume the resume associated with this container
-     * @param overview the resume overview associated with this container
+     * @param introduction the resume introduction associated with this container
      */
-    public ResumeContainer(@Nonnull final Resume resume, @Nonnull final ResumeOverview overview) {
-        this(resume, overview, Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),
+    public ResumeContainer(@Nonnull final Resume resume, @Nonnull final ResumeIntroduction introduction) {
+        this(resume, introduction, Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),
                 Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),
                 Collections.emptyList(), Collections.emptyList());
     }
@@ -67,7 +67,7 @@ public class ResumeContainer implements Serializable, Comparable<ResumeContainer
      * Create a populated instance of this container.
      *
      * @param resume the resume associated with this container
-     * @param resumeOverview the overview information for the resume
+     * @param resumeIntroduction the introduction information for the resume
      * @param reviews the collection of resume reviews from companies
      * @param laborCategories the collection of labor categories associated with the resume
      * @param contactInfos the collection of contact information associated with the resume
@@ -79,7 +79,7 @@ public class ResumeContainer implements Serializable, Comparable<ResumeContainer
      * @param keyWords any additional key words describing this resume
      */
     public ResumeContainer(
-            @Nonnull final Resume resume, @Nonnull final ResumeOverview resumeOverview,
+            @Nonnull final Resume resume, @Nonnull final ResumeIntroduction resumeIntroduction,
             @Nonnull final Collection<ResumeReview> reviews,
             @Nonnull final Collection<ResumeLaborCategory> laborCategories,
             @Nonnull final Collection<ContactInfo> contactInfos, @Nonnull final Collection<WorkLocation> workLocations,
@@ -87,7 +87,7 @@ public class ResumeContainer implements Serializable, Comparable<ResumeContainer
             @Nonnull final Collection<Education> educations, @Nonnull final Collection<Certification> certifications,
             @Nonnull final Collection<KeyWord> keyWords) {
         this.resume = resume;
-        this.resumeOverview = resumeOverview;
+        this.resumeIntroduction = resumeIntroduction;
         this.reviews.addAll(reviews);
         this.laborCategories.addAll(laborCategories);
         this.contactInfos.addAll(contactInfos);
@@ -110,13 +110,13 @@ public class ResumeContainer implements Serializable, Comparable<ResumeContainer
     }
 
     /**
-     * Retrieve the overview information of the resume.
+     * Retrieve the introduction information of the resume.
      *
-     * @return the overview information of the resume
+     * @return the introduction information of the resume
      */
     @Nonnull
-    public ResumeOverview getOverview() {
-        return this.resumeOverview;
+    public ResumeIntroduction getIntroduction() {
+        return this.resumeIntroduction;
     }
 
     /**
@@ -217,7 +217,7 @@ public class ResumeContainer implements Serializable, Comparable<ResumeContainer
 
         final CompareToBuilder cmp = new CompareToBuilder();
         cmp.append(getResume(), other.getResume());
-        cmp.append(getOverview(), other.getOverview());
+        cmp.append(getIntroduction(), other.getIntroduction());
         cmp.append(getReviews(), other.getReviews(), new CollectionComparator<>());
         cmp.append(getLaborCategories(), other.getLaborCategories(), new CollectionComparator<>());
         cmp.append(getContactInfos(), other.getContactInfos(), new CollectionComparator<>());
@@ -239,7 +239,7 @@ public class ResumeContainer implements Serializable, Comparable<ResumeContainer
     public int hashCode() {
         final HashCodeBuilder hash = new HashCodeBuilder();
         hash.append(getResume());
-        hash.append(getOverview());
+        hash.append(getIntroduction());
         hash.append(getReviews());
         hash.append(getLaborCategories());
         hash.append(getContactInfos());
@@ -257,7 +257,7 @@ public class ResumeContainer implements Serializable, Comparable<ResumeContainer
     public String toString() {
         final ToStringBuilder str = new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE);
         str.append("resume", getResume());
-        str.append("overview", getOverview());
+        str.append("introduction", getIntroduction());
         str.append("reviews", getReviews());
         str.append("laborCategories", getLaborCategories());
         str.append("contactInfos", getContactInfos());

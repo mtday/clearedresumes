@@ -3,9 +3,11 @@
 <body>
 
 <div th:fragment="resume-nav (currentPage)" class="resume-nav-container">
-    <ul class="nav nav-pills">
+    <ul class="nav nav-pills nav-stacked">
         <li role="presentation" th:class="${currentPage == 'overview'}? 'active'">
             <a th:href="@{/user/resume/overview}">Overview</a></li>
+        <li role="presentation" th:class="${currentPage == 'introduction'}? 'active'">
+            <a th:href="@{/user/resume/introduction}">Introduction</a></li>
         <li role="presentation" th:class="${currentPage == 'contact-info'}? 'active'">
             <a th:href="@{/user/resume/contact-info}">Contact Info</a></li>
         <li role="presentation" th:class="${currentPage == 'career-fields'}? 'active'">

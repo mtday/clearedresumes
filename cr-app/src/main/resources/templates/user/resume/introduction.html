@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="fragments/head :: head (title='Resume: Introduction')"></head>
+<body>
+
+<nav th:replace="fragments/navbar :: navbar (currentPage='resume')"></nav>
+<div class="container">
+
+    <div class="row resume-row">
+        <div class="col-md-2 well well-sm">
+            <!-- Navigation -->
+            <div th:replace="fragments/user-resume-nav :: resume-nav (currentPage='introduction')"></div>
+        </div>
+        <div class="col-md-10 resume-content-container">
+            <!-- Content -->
+            <h2>Resume Introduction</h2>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <!-- About You panel -->
+                    <div class="panel panel-default resume-introduction-about-you-panel">
+                        <div class="panel-heading">
+                            <div class="pull-left">
+                                <span class="panel-title">About You</span>
+                            </div>
+                            <div class="pull-right">
+                                <span th:class="'label text-right label-' + ${aboutYouStatusColor}"
+                                      th:text="${aboutYouStatus}">Status</span>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <p th:if="${aboutYouMessage}" class="alert alert-info" th:text="${aboutYouMessage}">
+                                Message </p>
+
+                            <form class="form-resume-introduction-about-you" name="aboutYouForm"
+                                  th:action="@{/user/resume/introduction/about-you}" method="POST">
+
+                                <label for="introduction-fullName" class="sr-only">Full Name</label>
+                                <input type="text" name="fullName" id="introduction-fullName" class="form-control"
+                                       placeholder="Full Name" required="required" autofocus="autofocus"
+                                       th:value="${introduction.fullName}"/>
+
+                                <div class="btn-group">
+                                    <button class="btn btn-default btn-primary" type="submit">Save</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <!-- Career Objective panel -->
+                    <div class="panel panel-default resume-introduction-objective-panel">
+                        <div class="panel-heading">
+                            <div class="pull-left">
+                                <span class="panel-title">Career Objective</span>
+                            </div>
+                            <div class="pull-right">
+                                <span th:class="'label text-right label-' + ${objectiveStatusColor}"
+                                      th:text="${objectiveStatus}">Status</span>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <p>Your <i>career objective</i> is a brief narrative that clearly outlines your career
+                                direction.
+                                It provides a quick summary of where you have been so far in your career, and more
+                                importantly,
+                                where you want to go with your career in your next job. This gives potential employers
+                                valuable
+                                information about the type of work in which you may be interested.</p>
+
+                            <p th:if="${objectiveMessage}" class="alert alert-info" th:text="${objectiveMessage}">
+                                Message</p>
+
+                            <form class="form-resume-introduction-objective" name="objectiveForm"
+                                  novalidate="novalidate" th:action="@{/user/resume/introduction/objective}"
+                                  method="POST">
+
+                                <label for="introduction-objective" class="sr-only">Career Objective</label>
+                                <textarea name="objective" id="introduction-objective" rows="12" class="form-control"
+                                          placeholder="Career Objective" required="required" autofocus="autofocus"
+                                          th:text="${introduction.objective}"></textarea>
+
+                                <div class="btn-group">
+                                    <button class="btn btn-default btn-primary" type="submit">Save</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<footer th:replace="fragments/footer :: footer"></footer>
+<div th:replace="fragments/scripts :: scripts"></div>
+
+<script>
+    new SimpleMDE({
+        element: document.getElementById("introduction-objective"),
+        autoDownloadFontAwesome: false,
+        spellChecker: false,
+        autosave: true,
+        status: false,
+        hideIcons: ["link", "image", "fullscreen", "side-by-side"]
+    });
+</script>
+</body>
+</html>

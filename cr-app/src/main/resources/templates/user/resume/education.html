@@ -6,103 +6,114 @@
 <nav th:replace="fragments/navbar :: navbar (currentPage='resume')"></nav>
 <div class="container">
 
-    <div th:replace="fragments/user-resume-nav :: resume-nav (currentPage='education')"></div>
+    <div class="row resume-row">
+        <div class="col-md-2 well well-sm">
+            <!-- Navigation -->
+            <div th:replace="fragments/user-resume-nav :: resume-nav (currentPage='education')"></div>
+        </div>
+        <div class="col-md-10 resume-content-container">
+            <!-- Content -->
+            <h2>Education</h2>
 
-    <div class="container-fluid">
-        <h2>Education</h2>
-    </div>
-
-    <div class="row">
-        <div class="col-md-7">
-            <!-- Education panel -->
-            <div class="panel panel-default resume-education-panel">
-                <div class="panel-heading">
-                    <div class="pull-left">
-                        <span class="panel-title">Your Education</span>
-                    </div>
-                    <div class="pull-right">
+            <div class="row">
+                <div class="col-md-8">
+                    <!-- Education panel -->
+                    <div class="panel panel-default resume-education-panel">
+                        <div class="panel-heading">
+                            <div class="pull-left">
+                                <span class="panel-title">Your Education</span>
+                            </div>
+                            <div class="pull-right">
                         <span th:class="'label text-right label-' + ${educationStatusColor}"
                               th:text="${educationStatus}">Status</span>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <p>Provide information about the level of education you have obtained. This information
+                                helps potential employers gauge the level of expertise you may have in your career
+                                field, and can help identify those open positions for which you may qualify.</p>
+
+                            <table class="table table-bordered resume-education-table">
+                                <thead>
+                                    <tr>
+                                        <th class="education-institution-cell">Institution</th>
+                                        <th class="education-field-cell">Field of Study</th>
+                                        <th class="education-degree-cell">Degree</th>
+                                        <th class="text-center education-year-cell">Year</th>
+                                        <th class="text-center action-cell">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:if="${#lists.isEmpty(educations)}">
+                                        <td class="text-center empty-cell" colspan="5">No education has been added
+                                            yet.
+                                        </td>
+                                    </tr>
+                                    <tr th:each="education : ${educations}">
+                                        <td class="education-institution-cell" th:text="${education.institution}">
+                                            Institution
+                                        </td>
+                                        <td class="education-field-cell" th:text="${education.field}">Field of Study
+                                        </td>
+                                        <td class="education-degree-cell" th:text="${education.degree}">Degree</td>
+                                        <td class="text-center education-year-cell" th:text="${education.year}">Year
+                                        </td>
+                                        <td class="text-center action-cell">
+                                            <a th:id="'edit-' + ${education.id}" href="#" class="label label-info"
+                                               th:onclick="'edit(\'' + ${education.id} + '\', \'' + ${education.institution} + '\', \'' + ${education.field} + '\', \'' + ${education.degree} + '\', \'' + ${education.year} + '\');'">Edit</a>
+                                            <a th:id="${education.id}" class="label label-danger" data-toggle="popover"
+                                               data-placement="top">Delete</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-                <div class="panel-body">
-                    <p>Provide information about the level of education you have obtained. This information helps
-                        potential employers gauge the level of expertise you may have in your career field, and can
-                        help identify those open positions for which you may qualify.</p>
-
-                    <table class="table table-bordered resume-education-table">
-                        <thead>
-                            <tr>
-                                <th class="education-institution-cell">Institution</th>
-                                <th class="education-field-cell">Field of Study</th>
-                                <th class="education-degree-cell">Degree</th>
-                                <th class="text-center education-year-cell">Year</th>
-                                <th class="text-center action-cell">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr th:if="${#lists.isEmpty(educations)}">
-                                <td class="text-center empty-cell" colspan="5">No education has been added yet.</td>
-                            </tr>
-                            <tr th:each="education : ${educations}">
-                                <td class="education-institution-cell" th:text="${education.institution}">Institution
-                                </td>
-                                <td class="education-field-cell" th:text="${education.field}">Field of Study</td>
-                                <td class="education-degree-cell" th:text="${education.degree}">Degree</td>
-                                <td class="text-center education-year-cell" th:text="${education.year}">Year</td>
-                                <td class="text-center action-cell">
-                                    <a th:id="'edit-' + ${education.id}" href="#" class="label label-info"
-                                       th:onclick="'edit(\'' + ${education.id} + '\', \'' + ${education.institution} + '\', \'' + ${education.field} + '\', \'' + ${education.degree} + '\', \'' + ${education.year} + '\');'">Edit</a>
-                                    <a th:id="${education.id}" class="label label-danger" data-toggle="popover"
-                                       data-placement="top">Delete</a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-5">
-            <!-- Add/Update panel -->
-            <div class="panel panel-default resume-education-panel">
-                <div class="panel-heading">
-                    <span class="panel-title" id="education-title">Add Education</span>
-                </div>
-                <div class="panel-body">
-                    <p th:if="${educationMessage}" class="alert alert-info" th:text="${educationMessage}">
-                        Message</p>
-
-                    <form class="form-resume-education" name="educationForm" th:action="@{/user/resume/education}"
-                          method="POST">
-
-                        <input type="hidden" name="id" id="education-id"/>
-
-                        <label for="education-institution" class="sr-only">Name of School, University, or
-                            College</label>
-                        <input type="text" name="institution" id="education-institution" class="form-control"
-                               placeholder="Name of School, University, or College" required="required"
-                               autofocus="autofocus"/>
-
-                        <label for="education-field" class="sr-only">Field of Study (e.g., Computer Science)</label>
-                        <input type="text" name="field" id="education-field" class="form-control"
-                               placeholder="Field of Study (e.g., Computer Science)" required="required"
-                               autofocus="autofocus"/>
-
-                        <label for="education-degree" class="sr-only">Degree Obtained (e.g., None, B.S., M.S.,
-                            etc.)</label>
-                        <input type="text" name="degree" id="education-degree" class="form-control"
-                               placeholder="Degree Obtained (e.g., None, B.S., M.S., etc.)" required="required"
-                               autofocus="autofocus"/>
-
-                        <label for="education-year" class="sr-only">Year Completed</label>
-                        <input type="number" name="year" id="education-year" class="form-control"
-                               placeholder="Year Completed" required="required" autofocus="autofocus"/>
-
-                        <div class="btn-group">
-                            <button id="education-submit" class="btn btn-default btn-primary" type="submit">Add
-                            </button>
+                <div class="col-md-4">
+                    <!-- Add/Update panel -->
+                    <div class="panel panel-default resume-education-panel">
+                        <div class="panel-heading">
+                            <span class="panel-title" id="education-title">Add Education</span>
                         </div>
-                    </form>
+                        <div class="panel-body">
+                            <p th:if="${educationMessage}" class="alert alert-info" th:text="${educationMessage}">
+                                Message</p>
+
+                            <form class="form-resume-education" name="educationForm"
+                                  th:action="@{/user/resume/education}" method="POST">
+
+                                <input type="hidden" name="id" id="education-id"/>
+
+                                <label for="education-institution" class="sr-only">Name of School, University, or
+                                    College</label>
+                                <input type="text" name="institution" id="education-institution" class="form-control"
+                                       placeholder="Name of School, University, or College" required="required"
+                                       autofocus="autofocus"/>
+
+                                <label for="education-field" class="sr-only">Field of Study (e.g., Computer
+                                    Science)</label>
+                                <input type="text" name="field" id="education-field" class="form-control"
+                                       placeholder="Field of Study (e.g., Computer Science)" required="required"
+                                       autofocus="autofocus"/>
+
+                                <label for="education-degree" class="sr-only">Degree Obtained (e.g., None, B.S., M.S.,
+                                    etc.)</label>
+                                <input type="text" name="degree" id="education-degree" class="form-control"
+                                       placeholder="Degree Obtained (e.g., None, B.S., M.S., etc.)" required="required"
+                                       autofocus="autofocus"/>
+
+                                <label for="education-year" class="sr-only">Year Completed</label>
+                                <input type="number" name="year" id="education-year" class="form-control"
+                                       placeholder="Year Completed" required="required" autofocus="autofocus"/>
+
+                                <div class="btn-group">
+                                    <button id="education-submit" class="btn btn-default btn-primary" type="submit">Add
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

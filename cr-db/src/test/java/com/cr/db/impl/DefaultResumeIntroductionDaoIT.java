@@ -6,11 +6,11 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 import com.cr.common.model.Resume;
-import com.cr.common.model.ResumeOverview;
+import com.cr.common.model.ResumeIntroduction;
 import com.cr.common.model.ResumeStatus;
 import com.cr.common.model.User;
 import com.cr.db.ResumeDao;
-import com.cr.db.ResumeOverviewDao;
+import com.cr.db.ResumeIntroductionDao;
 import com.cr.db.TestApplication;
 import com.cr.db.UserDao;
 import java.time.LocalDateTime;
@@ -21,13 +21,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 /**
- * Perform testing on the {@link DefaultResumeOverviewDao} class.
+ * Perform testing on the {@link DefaultResumeIntroductionDao} class.
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = TestApplication.class, webEnvironment = SpringBootTest.WebEnvironment.MOCK)
-public class DefaultResumeOverviewDaoIT {
+public class DefaultResumeIntroductionDaoIT {
     @Autowired
-    private ResumeOverviewDao resumeOverviewDao;
+    private ResumeIntroductionDao resumeIntroductionDao;
 
     @Autowired
     private ResumeDao resumeDao;
@@ -36,7 +36,7 @@ public class DefaultResumeOverviewDaoIT {
     private UserDao userDao;
 
     /**
-     * Perform testing on the auto-wired {@link DefaultResumeOverviewDao} instance.
+     * Perform testing on the auto-wired {@link DefaultResumeIntroductionDao} instance.
      */
     @Test
     public void test() {
@@ -48,26 +48,26 @@ public class DefaultResumeOverviewDaoIT {
         final Resume resume = new Resume("rid", user.getId(), ResumeStatus.IN_PROGRESS, LocalDateTime.now(), null);
         this.resumeDao.add(resume);
 
-        final ResumeOverview beforeAdd = this.resumeOverviewDao.get(resume.getId());
+        final ResumeIntroduction beforeAdd = this.resumeIntroductionDao.get(resume.getId());
         assertNull(beforeAdd);
 
-        final ResumeOverview resumeOverview = new ResumeOverview(resume.getId(), "Full Name", "Objective");
-        this.resumeOverviewDao.add(resumeOverview);
+        final ResumeIntroduction resumeIntroduction = new ResumeIntroduction(resume.getId(), "Full Name", "Objective");
+        this.resumeIntroductionDao.add(resumeIntroduction);
 
-        final ResumeOverview getById = this.resumeOverviewDao.get(resume.getId());
+        final ResumeIntroduction getById = this.resumeIntroductionDao.get(resume.getId());
         assertNotNull(getById);
-        assertEquals(resumeOverview, getById);
+        assertEquals(resumeIntroduction, getById);
 
-        final ResumeOverview updated = new ResumeOverview(resume.getId(), "New Name", "Another Objective");
-        this.resumeOverviewDao.update(updated);
+        final ResumeIntroduction updated = new ResumeIntroduction(resume.getId(), "New Name", "Another Objective");
+        this.resumeIntroductionDao.update(updated);
 
-        final ResumeOverview afterUpdate = this.resumeOverviewDao.get(resume.getId());
+        final ResumeIntroduction afterUpdate = this.resumeIntroductionDao.get(resume.getId());
         assertNotNull(afterUpdate);
         assertEquals(updated, afterUpdate);
 
-        this.resumeOverviewDao.delete(resume.getId());
+        this.resumeIntroductionDao.delete(resume.getId());
 
-        final ResumeOverview afterDelete = this.resumeOverviewDao.get(resume.getId());
+        final ResumeIntroduction afterDelete = this.resumeIntroductionDao.get(resume.getId());
         assertNull(afterDelete);
 
         this.resumeDao.delete(resume.getId());

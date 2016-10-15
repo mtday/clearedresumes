@@ -7,8 +7,8 @@ import com.cr.common.model.EducationCollection;
 import com.cr.common.model.KeyWordCollection;
 import com.cr.common.model.Resume;
 import com.cr.common.model.ResumeContainer;
+import com.cr.common.model.ResumeIntroduction;
 import com.cr.common.model.ResumeLaborCategoryCollection;
-import com.cr.common.model.ResumeOverview;
 import com.cr.common.model.ResumeReviewCollection;
 import com.cr.common.model.WorkLocationCollection;
 import com.cr.common.model.WorkSummaryCollection;
@@ -19,8 +19,8 @@ import com.cr.db.EducationDao;
 import com.cr.db.KeyWordDao;
 import com.cr.db.ResumeContainerDao;
 import com.cr.db.ResumeDao;
+import com.cr.db.ResumeIntroductionDao;
 import com.cr.db.ResumeLaborCategoryDao;
-import com.cr.db.ResumeOverviewDao;
 import com.cr.db.ResumeReviewDao;
 import com.cr.db.WorkLocationDao;
 import com.cr.db.WorkSummaryDao;
@@ -41,7 +41,7 @@ public class DefaultResumeContainerDao implements ResumeContainerDao {
     @Nonnull
     private final ResumeDao resumeDao;
     @Nonnull
-    private final ResumeOverviewDao resumeOverviewDao;
+    private final ResumeIntroductionDao resumeIntroductionDao;
     @Nonnull
     private final ResumeReviewDao resumeReviewDao;
     @Nonnull
@@ -65,7 +65,7 @@ public class DefaultResumeContainerDao implements ResumeContainerDao {
      * Create an instance of this service.
      *
      * @param resumeDao the {@link ResumeDao} used to retrieve resumes
-     * @param resumeOverviewDao the {@link ResumeOverviewDao} used to retrieve resume overviews
+     * @param resumeIntroductionDao the {@link ResumeIntroductionDao} used to retrieve resume introductions
      * @param resumeReviewDao the {@link ResumeReviewDao} used to retrieve resume reviews
      * @param resumeLaborCategoryDao the {@link ResumeLaborCategoryDao} used to retrieve resume labor categories
      * @param contactInfoDao the {@link ContactInfoDao} used to retrieve resume contact info
@@ -78,14 +78,14 @@ public class DefaultResumeContainerDao implements ResumeContainerDao {
      */
     @Autowired
     public DefaultResumeContainerDao(
-            @Nonnull final ResumeDao resumeDao, @Nonnull final ResumeOverviewDao resumeOverviewDao,
+            @Nonnull final ResumeDao resumeDao, @Nonnull final ResumeIntroductionDao resumeIntroductionDao,
             @Nonnull final ResumeReviewDao resumeReviewDao,
             @Nonnull final ResumeLaborCategoryDao resumeLaborCategoryDao, @Nonnull final ContactInfoDao contactInfoDao,
             @Nonnull final WorkLocationDao workLocationDao, @Nonnull final WorkSummaryDao workSummaryDao,
             @Nonnull final ClearanceDao clearanceDao, @Nonnull final EducationDao educationDao,
             @Nonnull final CertificationDao certificationDao, @Nonnull final KeyWordDao keyWordDao) {
         this.resumeDao = resumeDao;
-        this.resumeOverviewDao = resumeOverviewDao;
+        this.resumeIntroductionDao = resumeIntroductionDao;
         this.resumeReviewDao = resumeReviewDao;
         this.resumeLaborCategoryDao = resumeLaborCategoryDao;
         this.contactInfoDao = contactInfoDao;
@@ -112,8 +112,9 @@ public class DefaultResumeContainerDao implements ResumeContainerDao {
     @Nullable
     private ResumeContainer build(@Nullable final Resume resume) {
         if (resume != null) {
-            final ResumeOverview resumeOverview = Optional.ofNullable(this.resumeOverviewDao.get(resume.getId()))
-                    .orElse(new ResumeOverview(resume.getId(), "", ""));
+            final ResumeIntroduction resumeIntroduction =
+                    Optional.ofNullable(this.resumeIntroductionDao.get(resume.getId()))
+                            .orElse(new ResumeIntroduction(resume.getId(), "", ""));
             final ResumeReviewCollection reviews = this.resumeReviewDao.getForResume(resume.getId());
             final ResumeLaborCategoryCollection lcats = this.resumeLaborCategoryDao.getForResume(resume.getId());
             final ContactInfoCollection contactInfos = this.contactInfoDao.getForResume(resume.getId());
@@ -124,7 +125,7 @@ public class DefaultResumeContainerDao implements ResumeContainerDao {
             final CertificationCollection certifications = this.certificationDao.getForResume(resume.getId());
             final KeyWordCollection keyWords = this.keyWordDao.getForResume(resume.getId());
 
-            return new ResumeContainer(resume, resumeOverview, reviews.getResumeReviews(),
+            return new ResumeContainer(resume, resumeIntroduction, reviews.getResumeReviews(),
                     lcats.getResumeLaborCategories(), contactInfos.getContactInfos(), workLocations.getWorkLocations(),
                     workSummaries.getWorkSummaries(), clearances.getClearances(), educations.getEducations(),
                     certifications.getCertifications(), keyWords.getKeyWords());

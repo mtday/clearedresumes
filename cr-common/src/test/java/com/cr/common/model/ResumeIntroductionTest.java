@@ -6,31 +6,31 @@ import static org.junit.Assert.assertNotEquals;
 import org.junit.Test;
 
 /**
- * Perform testing on the {@link ResumeOverview} class.
+ * Perform testing on the {@link ResumeIntroduction} class.
  */
-public class ResumeOverviewTest {
+public class ResumeIntroductionTest {
     @Test
     public void testDefaultConstructor() {
-        final ResumeOverview resumeOverview = new ResumeOverview();
-        assertEquals("", resumeOverview.getResumeId());
-        assertEquals("", resumeOverview.getFullName());
-        assertEquals("", resumeOverview.getObjective());
+        final ResumeIntroduction resumeIntroduction = new ResumeIntroduction();
+        assertEquals("", resumeIntroduction.getResumeId());
+        assertEquals("", resumeIntroduction.getFullName());
+        assertEquals("", resumeIntroduction.getObjective());
     }
 
     @Test
     public void testParameterConstructor() {
-        final ResumeOverview resumeOverview = new ResumeOverview("rid", "John Doe", "Objective");
-        assertEquals("rid", resumeOverview.getResumeId());
-        assertEquals("John Doe", resumeOverview.getFullName());
-        assertEquals("Objective", resumeOverview.getObjective());
+        final ResumeIntroduction resumeIntroduction = new ResumeIntroduction("rid", "John Doe", "Objective");
+        assertEquals("rid", resumeIntroduction.getResumeId());
+        assertEquals("John Doe", resumeIntroduction.getFullName());
+        assertEquals("Objective", resumeIntroduction.getObjective());
     }
 
     @Test
     public void testCompareTo() {
-        final ResumeOverview a = new ResumeOverview("rid-1", "John Doe", "Objective");
-        final ResumeOverview b = new ResumeOverview("rid-1", "John Doe", "Objective 2");
-        final ResumeOverview c = new ResumeOverview("rid-1", "Jane Doe", "Objective");
-        final ResumeOverview d = new ResumeOverview("rid-2", "John Doe", "Objective");
+        final ResumeIntroduction a = new ResumeIntroduction("rid-1", "John Doe", "Objective");
+        final ResumeIntroduction b = new ResumeIntroduction("rid-1", "John Doe", "Objective 2");
+        final ResumeIntroduction c = new ResumeIntroduction("rid-1", "Jane Doe", "Objective");
+        final ResumeIntroduction d = new ResumeIntroduction("rid-2", "John Doe", "Objective");
 
         assertEquals(1, a.compareTo(null));
         assertEquals(0, a.compareTo(a));
@@ -53,10 +53,10 @@ public class ResumeOverviewTest {
 
     @Test
     public void testEquals() {
-        final ResumeOverview a = new ResumeOverview("rid-1", "John Doe", "Objective");
-        final ResumeOverview b = new ResumeOverview("rid-1", "John Doe", "Objective 2");
-        final ResumeOverview c = new ResumeOverview("rid-1", "Jane Doe", "Objective");
-        final ResumeOverview d = new ResumeOverview("rid-2", "John Doe", "Objective");
+        final ResumeIntroduction a = new ResumeIntroduction("rid-1", "John Doe", "Objective");
+        final ResumeIntroduction b = new ResumeIntroduction("rid-1", "John Doe", "Objective 2");
+        final ResumeIntroduction c = new ResumeIntroduction("rid-1", "Jane Doe", "Objective");
+        final ResumeIntroduction d = new ResumeIntroduction("rid-2", "John Doe", "Objective");
 
         assertNotEquals(a, null);
         assertEquals(a, a);
@@ -79,13 +79,13 @@ public class ResumeOverviewTest {
 
     @Test
     public void testHashCode() {
-        assertEquals(1618605860, new ResumeOverview("rid", "John Doe", "Objective").hashCode());
+        assertEquals(1618605860, new ResumeIntroduction("rid", "John Doe", "Objective").hashCode());
     }
 
     @Test
     public void testToString() {
         assertEquals(
-                "ResumeOverview[resumeId=rid,fullName=John Doe,objective=Objective]",
-                new ResumeOverview("rid", "John Doe", "Objective").toString());
+                "ResumeIntroduction[resumeId=rid,fullName=John Doe,objective=Objective]",
+                new ResumeIntroduction("rid", "John Doe", "Objective").toString());
     }
 }

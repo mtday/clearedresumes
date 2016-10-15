@@ -6,108 +6,123 @@
 <nav th:replace="fragments/navbar :: navbar (currentPage='resume')"></nav>
 <div class="container">
 
-    <div th:replace="fragments/user-resume-nav :: resume-nav (currentPage='career-fields')"></div>
+    <div class="row resume-row">
+        <div class="col-md-2 well well-sm">
+            <!-- Navigation -->
+            <div th:replace="fragments/user-resume-nav :: resume-nav (currentPage='career-fields')"></div>
+        </div>
+        <div class="col-md-10 resume-content-container">
+            <!-- Content -->
+            <h2>Your Career Fields</h2>
 
-    <div class="container-fluid">
-        <h2>Your Career Fields</h2>
-    </div>
-
-    <div class="row">
-        <div class="col-md-7">
-            <!-- Career Field panel -->
-            <div class="panel panel-default resume-career-field-panel">
-                <div class="panel-heading">
-                    <div class="pull-left">
-                        <span class="panel-title">Career Fields</span>
-                    </div>
-                    <div class="pull-right">
+            <div class="row">
+                <div class="col-md-7">
+                    <!-- Career Field panel -->
+                    <div class="panel panel-default resume-career-field-panel">
+                        <div class="panel-heading">
+                            <div class="pull-left">
+                                <span class="panel-title">Career Fields</span>
+                            </div>
+                            <div class="pull-right">
                         <span th:class="'label text-right label-' + ${careerFieldStatusColor}"
                               th:text="${careerFieldStatus}">Status</span>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <p>Describe the career fields (also called labor categories) in which you have experience.
+                                Most
+                                people only have one, but some individuals change fields during their career and end up
+                                with
+                                multiple. Specifying these career fields will help potential employers determine your
+                                level of
+                                experience and suitability for the open positions they have available.</p>
+
+                            <table class="table table-bordered resume-career-field-table">
+                                <thead>
+                                    <tr>
+                                        <th class="career-field-lcat-cell">Career Field</th>
+                                        <th class="career-field-experience-cell">Years</th>
+                                        <th class="text-center action-cell">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:if="${#lists.isEmpty(resumeLaborCategories)}">
+                                        <td class="text-center empty-cell" colspan="3">No career fields have been added
+                                            yet.
+                                        </td>
+                                    </tr>
+                                    <tr th:each="resumeLaborCategory : ${resumeLaborCategories}">
+                                        <td class="career-field-lcat-cell"
+                                            th:text="${resumeLaborCategory.laborCategory}">
+                                            Labor Category
+                                        </td>
+                                        <td class="career-field-experience-cell"
+                                            th:text="${resumeLaborCategory.experience}">
+                                            Experience
+                                        </td>
+                                        <td class="text-center action-cell">
+                                            <a th:id="'edit-' + ${resumeLaborCategory.id}" href="#"
+                                               class="label label-info"
+                                               th:onclick="'edit(\'' + ${resumeLaborCategory.id} + '\', \'' + ${resumeLaborCategory.laborCategory} + '\', \'' + ${resumeLaborCategory.experience} + '\');'">Edit</a>
+                                            <a th:id="${resumeLaborCategory.id}" class="label label-danger"
+                                               data-toggle="popover" data-placement="top">Delete</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-                <div class="panel-body">
-                    <p>Describe the career fields (also called labor categories) in which you have experience. Most
-                        people only have one, but some individuals change fields during their career and end up with
-                        multiple. Specifying these career fields will help potential employers determine your level of
-                        experience and suitability for the open positions they have available.</p>
-
-                    <table class="table table-bordered resume-career-field-table">
-                        <thead>
-                            <tr>
-                                <th class="career-field-lcat-cell">Career Field</th>
-                                <th class="career-field-experience-cell">Years</th>
-                                <th class="text-center action-cell">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr th:if="${#lists.isEmpty(resumeLaborCategories)}">
-                                <td class="text-center empty-cell" colspan="3">No career fields have been added yet.
-                                </td>
-                            </tr>
-                            <tr th:each="resumeLaborCategory : ${resumeLaborCategories}">
-                                <td class="career-field-lcat-cell" th:text="${resumeLaborCategory.laborCategory}">
-                                    Labor Category
-                                </td>
-                                <td class="career-field-experience-cell" th:text="${resumeLaborCategory.experience}">
-                                    Experience
-                                </td>
-                                <td class="text-center action-cell">
-                                    <a th:id="'edit-' + ${resumeLaborCategory.id}" href="#" class="label label-info"
-                                       th:onclick="'edit(\'' + ${resumeLaborCategory.id} + '\', \'' + ${resumeLaborCategory.laborCategory} + '\', \'' + ${resumeLaborCategory.experience} + '\');'">Edit</a>
-                                    <a th:id="${resumeLaborCategory.id}" class="label label-danger"
-                                       data-toggle="popover" data-placement="top">Delete</a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-5">
-            <!-- Add/Update panel -->
-            <div class="panel panel-default resume-career-field-panel">
-                <div class="panel-heading">
-                    <span class="panel-title" id="career-field-title">Add Career Field</span>
-                </div>
-                <div class="panel-body">
-                    <p th:if="${laborCategoryMessage}" class="alert alert-info" th:text="${laborCategoryMessage}">
-                        Message</p>
-
-                    <form class="form-resume-career-field" name="careerFieldForm"
-                          th:action="@{/user/resume/career-fields}" method="POST">
-
-                        <input type="hidden" name="id" id="career-field-id"/>
-
-                        <p><i>Note:</i> For best visibility with employers, choose a career field from the drop-down
-                            list. If the list does not contain anything close to your field, feel free to manually enter
-                            an appropriate value. We know our current list is not comprehensive and will review your
-                            custom entry for future inclusion in our default list.</p>
-
-                        <div class="input-group dropdown">
-                            <label for="career-field-lcat" class="sr-only">Career Field</label>
-                            <input type="text" name="laborCategory" id="career-field-lcat"
-                                   class="form-control career-field-lcat dropdown-toggle-type" required="required"
-                                   placeholder="Career Field" autofocus="autofocus"/>
-                            <ul class="dropdown-menu dropdown-type">
-                                <li th:each="laborCategory : ${laborCategories}">
-                                    <a href="#" th:attr="data-value=${laborCategory.name}"
-                                       th:text="${laborCategory.name}"></a>
-                                </li>
-                            </ul>
-                            <span role="button" class="input-group-addon dropdown-toggle-lcat" data-toggle="dropdown"
-                                  aria-haspopup="true" aria-expanded="false"><span class="caret"></span></span>
+                <div class="col-md-5">
+                    <!-- Add/Update panel -->
+                    <div class="panel panel-default resume-career-field-panel">
+                        <div class="panel-heading">
+                            <span class="panel-title" id="career-field-title">Add Career Field</span>
                         </div>
+                        <div class="panel-body">
+                            <p th:if="${laborCategoryMessage}" class="alert alert-info"
+                               th:text="${laborCategoryMessage}">
+                                Message</p>
 
-                        <label for="career-field-experience" class="sr-only">Years of Experience</label>
-                        <input type="number" name="experience" id="career-field-experience" class="form-control padded"
-                               placeholder="Years of Experience" required="required" autofocus="autofocus"/>
+                            <form class="form-resume-career-field" name="careerFieldForm"
+                                  th:action="@{/user/resume/career-fields}" method="POST">
 
-                        <div class="btn-group">
-                            <button id="career-field-submit" class="btn btn-default btn-primary" type="submit">
-                                Add
-                            </button>
+                                <input type="hidden" name="id" id="career-field-id"/>
+
+                                <p><i>Note:</i> For best visibility with employers, choose a career field from the
+                                    drop-down list. If the list does not contain anything close to your field, then
+                                    manually enter an appropriate value. We know our current list is not comprehensive
+                                    and will review your custom entry for future inclusion in our default list.</p>
+
+                                <div class="input-group dropdown">
+                                    <label for="career-field-lcat" class="sr-only">Career Field</label>
+                                    <input type="text" name="laborCategory" id="career-field-lcat"
+                                           class="form-control career-field-lcat dropdown-toggle-type"
+                                           required="required" placeholder="Career Field" autofocus="autofocus"/>
+                                    <ul class="dropdown-menu dropdown-type">
+                                        <li th:each="laborCategory : ${laborCategories}">
+                                            <a href="#" th:attr="data-value=${laborCategory.name}"
+                                               th:text="${laborCategory.name}"></a>
+                                        </li>
+                                    </ul>
+                                    <span role="button" class="input-group-addon dropdown-toggle-lcat"
+                                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span
+                                            class="caret"></span></span>
+                                </div>
+
+                                <label for="career-field-experience" class="sr-only">Years of Experience</label>
+                                <input type="number" name="experience" id="career-field-experience"
+                                       class="form-control padded" placeholder="Years of Experience" required="required"
+                                       autofocus="autofocus"/>
+
+                                <div class="btn-group">
+                                    <button id="career-field-submit" class="btn btn-default btn-primary" type="submit">
+                                        Add
+                                    </button>
+                                </div>
+                            </form>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -156,8 +171,6 @@
         $('#career-field-submit').removeClass('btn-primary');
         $('#career-field-title')[0].innerHTML = 'Edit Career Field';
     }
-
-
 </script>
 </body>
 </html>

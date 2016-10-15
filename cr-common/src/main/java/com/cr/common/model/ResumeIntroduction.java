@@ -10,9 +10,9 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * Defines some overview information about a resume.
+ * Defines some introduction information about a resume.
  */
-public class ResumeOverview implements Serializable, Comparable<ResumeOverview> {
+public class ResumeIntroduction implements Serializable, Comparable<ResumeIntroduction> {
     // Needs to be serializable since this class is used inside DefaultUserDetails.
     private static final long serialVersionUID = 231479890342L;
 
@@ -26,27 +26,27 @@ public class ResumeOverview implements Serializable, Comparable<ResumeOverview> 
     /**
      * Default constructor required for Jackson deserialization.
      */
-    ResumeOverview() {
+    ResumeIntroduction() {
         this("");
     }
 
     /**
      * Parameter constructor.
      *
-     * @param resumeId the unique id of the resume in which this overview information is specified
+     * @param resumeId the unique id of the resume in which this introduction information is specified
      */
-    public ResumeOverview(@Nonnull final String resumeId) {
+    public ResumeIntroduction(@Nonnull final String resumeId) {
         this(resumeId, "", "");
     }
 
     /**
      * Parameter constructor.
      *
-     * @param resumeId the unique id of the resume in which this overview information is specified
+     * @param resumeId the unique id of the resume in which this introduction information is specified
      * @param fullName the full name of the user that owns the resume
      * @param objective the user's job objective
      */
-    public ResumeOverview(
+    public ResumeIntroduction(
             @Nonnull final String resumeId, @Nonnull final String fullName, @Nonnull final String objective) {
         this.resumeId = resumeId;
         this.fullName = fullName;
@@ -54,9 +54,9 @@ public class ResumeOverview implements Serializable, Comparable<ResumeOverview> 
     }
 
     /**
-     * Retrieve the unique id of the resume in which this overview information is specified.
+     * Retrieve the unique id of the resume in which this introduction information is specified.
      *
-     * @return the unique id of the resume in which this overview information is specified
+     * @return the unique id of the resume in which this introduction information is specified
      */
     @Nonnull
     public String getResumeId() {
@@ -84,7 +84,7 @@ public class ResumeOverview implements Serializable, Comparable<ResumeOverview> 
     }
 
     @Override
-    public int compareTo(@Nullable final ResumeOverview other) {
+    public int compareTo(@Nullable final ResumeIntroduction other) {
         if (other == null) {
             return 1;
         }
@@ -98,7 +98,7 @@ public class ResumeOverview implements Serializable, Comparable<ResumeOverview> 
 
     @Override
     public boolean equals(@CheckForNull final Object other) {
-        return other instanceof ResumeOverview && compareTo((ResumeOverview) other) == 0;
+        return other instanceof ResumeIntroduction && compareTo((ResumeIntroduction) other) == 0;
     }
 
     @Override
