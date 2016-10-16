@@ -25,7 +25,7 @@ public class ResumeReviewCollectionTest {
     public void testParameterConstructor() {
         final LocalDateTime reviewTime = LocalDateTime.of(2016, 1, 1, 2, 3, 4);
         final ResumeReview resumeReview1 =
-                new ResumeReview("id-1", "rid-1", "cid-1", ResumeReviewStatus.SAVED, "uid-1", reviewTime);
+                new ResumeReview("id-1", "rid-1", "cid-1", ResumeReviewStatus.LIKED, "uid-1", reviewTime);
         final ResumeReview resumeReview2 =
                 new ResumeReview("id-2", "rid-1", "cid-2", ResumeReviewStatus.PURCHASED, "uid-1", reviewTime);
         final ResumeReviewCollection resumeReviewColl =
@@ -40,7 +40,7 @@ public class ResumeReviewCollectionTest {
     public void testCompareTo() {
         final LocalDateTime reviewTime = LocalDateTime.of(2016, 1, 1, 2, 3, 4);
         final ResumeReview resumeReview1 =
-                new ResumeReview("id-1", "rid-1", "cid-1", ResumeReviewStatus.SAVED, "uid-1", reviewTime);
+                new ResumeReview("id-1", "rid-1", "cid-1", ResumeReviewStatus.LIKED, "uid-1", reviewTime);
         final ResumeReview resumeReview2 =
                 new ResumeReview("id-2", "rid-1", "cid-2", ResumeReviewStatus.PURCHASED, "uid-1", reviewTime);
 
@@ -64,7 +64,7 @@ public class ResumeReviewCollectionTest {
     public void testEquals() {
         final LocalDateTime reviewTime = LocalDateTime.of(2016, 1, 1, 2, 3, 4);
         final ResumeReview resumeReview1 =
-                new ResumeReview("id-1", "rid-1", "cid-1", ResumeReviewStatus.SAVED, "uid-1", reviewTime);
+                new ResumeReview("id-1", "rid-1", "cid-1", ResumeReviewStatus.LIKED, "uid-1", reviewTime);
         final ResumeReview resumeReview2 =
                 new ResumeReview("id-2", "rid-1", "cid-2", ResumeReviewStatus.PURCHASED, "uid-1", reviewTime);
 
@@ -88,25 +88,25 @@ public class ResumeReviewCollectionTest {
     public void testHashCode() {
         final LocalDateTime reviewTime = LocalDateTime.of(2016, 1, 1, 2, 3, 4);
         final ResumeReview resumeReview1 =
-                new ResumeReview("id-1", "rid-1", "cid-1", ResumeReviewStatus.SAVED, "uid-1", reviewTime);
+                new ResumeReview("id-1", "rid-1", "cid-1", ResumeReviewStatus.LIKED, "uid-1", reviewTime);
         final ResumeReview resumeReview2 =
                 new ResumeReview("id-2", "rid-1", "cid-2", ResumeReviewStatus.PURCHASED, "uid-1", reviewTime);
         final ResumeReviewCollection resumeReviewColl =
                 new ResumeReviewCollection(Arrays.asList(resumeReview1, resumeReview2));
-        assertEquals(1725757651, resumeReviewColl.hashCode());
+        assertEquals(1777389833, resumeReviewColl.hashCode());
     }
 
     @Test
     public void testToString() {
         final LocalDateTime reviewTime = LocalDateTime.of(2016, 1, 1, 2, 3, 4);
         final ResumeReview resumeReview1 =
-                new ResumeReview("id-1", "rid-1", "cid-1", ResumeReviewStatus.SAVED, "uid-1", reviewTime);
+                new ResumeReview("id-1", "rid-1", "cid-1", ResumeReviewStatus.LIKED, "uid-1", reviewTime);
         final ResumeReview resumeReview2 =
                 new ResumeReview("id-2", "rid-1", "cid-2", ResumeReviewStatus.PURCHASED, "uid-1", reviewTime);
         final ResumeReviewCollection resumeReviewColl =
                 new ResumeReviewCollection(Arrays.asList(resumeReview1, resumeReview2));
         assertEquals("ResumeReviewCollection[resumeReviews=[ResumeReview[id=id-1,resumeId=rid-1,companyId=cid-1,"
-                + "status=SAVED,reviewerId=uid-1,reviewTime=2016-01-01T02:03:04], ResumeReview[id=id-2,"
+                + "status=LIKED,reviewerId=uid-1,reviewTime=2016-01-01T02:03:04], ResumeReview[id=id-2,"
                 + "resumeId=rid-1,companyId=cid-2,status=PURCHASED,reviewerId=uid-1,"
                 + "reviewTime=2016-01-01T02:03:04]]]", resumeReviewColl.toString());
     }

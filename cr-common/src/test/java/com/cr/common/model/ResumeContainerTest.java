@@ -37,7 +37,7 @@ public class ResumeContainerTest {
         final Resume resume = new Resume("rid", "uid", ResumeStatus.UNPUBLISHED, LocalDateTime.now(), null);
         final ResumeIntroduction introduction = new ResumeIntroduction(resume.getId(), "Full Name", "Objective");
         final ResumeReview review =
-                new ResumeReview("id", resume.getId(), "cid", ResumeReviewStatus.SAVED, "uid", LocalDateTime.now());
+                new ResumeReview("id", resume.getId(), "cid", ResumeReviewStatus.LIKED, "uid", LocalDateTime.now());
         final ResumeLaborCategory lcat = new ResumeLaborCategory("id", resume.getId(), "Labor Category", 10);
         final ContactInfo contactInfo = new ContactInfo("id", resume.getId(), "Value");
         final WorkLocation workLocation = new WorkLocation("id", resume.getId(), "State", "Region");
@@ -83,7 +83,7 @@ public class ResumeContainerTest {
         final Resume resume2 = new Resume("rid2", "uid", ResumeStatus.UNPUBLISHED, LocalDateTime.now(), null);
         final ResumeIntroduction introduction = new ResumeIntroduction(resume1.getId(), "Full Name", "Objective");
         final ResumeReview review =
-                new ResumeReview("id", resume1.getId(), "cid", ResumeReviewStatus.SAVED, "uid", LocalDateTime.now());
+                new ResumeReview("id", resume1.getId(), "cid", ResumeReviewStatus.LIKED, "uid", LocalDateTime.now());
         final ResumeLaborCategory lcat = new ResumeLaborCategory("id", resume1.getId(), "Labor Category", 10);
         final ContactInfo contactInfo = new ContactInfo("id", resume1.getId(), "Value");
         final WorkLocation workLocation = new WorkLocation("id", resume1.getId(), "State", "Region");
@@ -141,7 +141,7 @@ public class ResumeContainerTest {
         final Resume resume = new Resume("rid", "uid", ResumeStatus.UNPUBLISHED, created, null);
         final ResumeIntroduction introduction = new ResumeIntroduction(resume.getId(), "Full Name", "Objective");
         final ResumeReview review =
-                new ResumeReview("id", resume.getId(), "cid", ResumeReviewStatus.SAVED, "uid", created);
+                new ResumeReview("id", resume.getId(), "cid", ResumeReviewStatus.LIKED, "uid", created);
         final ResumeLaborCategory lcat = new ResumeLaborCategory("id", resume.getId(), "Labor Category", 10);
         final ContactInfo contactInfo = new ContactInfo("id", resume.getId(), "Value");
         final WorkLocation workLocation = new WorkLocation("id", resume.getId(), "State", "Region");
@@ -161,7 +161,7 @@ public class ResumeContainerTest {
 
     @Test
     public void testHashCode() {
-        assertEquals(-480014848, getResumeContainer().hashCode());
+        assertEquals(1239572854, getResumeContainer().hashCode());
     }
 
     @Test

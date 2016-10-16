@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -208,6 +209,46 @@ public class ResumeContainer implements Serializable, Comparable<ResumeContainer
     @Nonnull
     public SortedSet<KeyWord> getKeyWords() {
         return this.keyWords;
+    }
+
+    /**
+     * Retrieve the number of distinct users that have viewed the resume.
+     *
+     * @return the number of distinct users that have viewed the resume
+     */
+    public int getUserViews() {
+        return getReviews().stream().filter(review -> review.getStatus() == ResumeReviewStatus.VIEWED)
+                .map(ResumeReview::getReviewerId).collect(Collectors.toSet()).size();
+    }
+
+    /**
+     * Retrieve the number of distinct companies that have viewed the resume.
+     *
+     * @return the number of distinct companies that have viewed the resume
+     */
+    public int getCompanyViews() {
+        return getReviews().stream().filter(review -> review.getStatus() == ResumeReviewStatus.VIEWED)
+                .map(ResumeReview::getCompanyId).collect(Collectors.toSet()).size();
+    }
+
+    /**
+     * Retrieve the number of distinct companies that have liked the resume.
+     *
+     * @return the number of distinct companies that have liked the resume
+     */
+    public int getCompanyLikes() {
+        return getReviews().stream().filter(review -> review.getStatus() == ResumeReviewStatus.LIKED)
+                .map(ResumeReview::getCompanyId).collect(Collectors.toSet()).size();
+    }
+
+    /**
+     * Retrieve the number of distinct companies that have purchased the resume.
+     *
+     * @return the number of distinct companies that have purchased the resume
+     */
+    public int getCompanyPurchases() {
+        return getReviews().stream().filter(review -> review.getStatus() == ResumeReviewStatus.PURCHASED)
+                .map(ResumeReview::getCompanyId).collect(Collectors.toSet()).size();
     }
 
     /**

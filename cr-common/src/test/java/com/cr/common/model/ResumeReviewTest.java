@@ -25,11 +25,11 @@ public class ResumeReviewTest {
     @Test
     public void testParameterConstructor() {
         final ResumeReview resumeReview =
-                new ResumeReview("id", "rid", "cid", ResumeReviewStatus.SAVED, "uid", LocalDateTime.now());
+                new ResumeReview("id", "rid", "cid", ResumeReviewStatus.LIKED, "uid", LocalDateTime.now());
         assertEquals("id", resumeReview.getId());
         assertEquals("cid", resumeReview.getCompanyId());
         assertEquals("rid", resumeReview.getResumeId());
-        assertEquals(ResumeReviewStatus.SAVED, resumeReview.getStatus());
+        assertEquals(ResumeReviewStatus.LIKED, resumeReview.getStatus());
         assertEquals("uid", resumeReview.getReviewerId());
         assertNotNull(resumeReview.getReviewTime());
     }
@@ -37,11 +37,11 @@ public class ResumeReviewTest {
     @Test
     public void testCompareTo() {
         final LocalDateTime now = LocalDateTime.now();
-        final ResumeReview ra = new ResumeReview("id-1", "rid-1", "cid-1", ResumeReviewStatus.SAVED, "uid-1", now);
+        final ResumeReview ra = new ResumeReview("id-1", "rid-1", "cid-1", ResumeReviewStatus.LIKED, "uid-1", now);
         final ResumeReview rb = new ResumeReview("id-1", "rid-1", "cid-1", ResumeReviewStatus.EXCLUDED, "uid-1", now);
-        final ResumeReview rc = new ResumeReview("id-1", "rid-1", "cid-2", ResumeReviewStatus.SAVED, "uid-1", now);
-        final ResumeReview rd = new ResumeReview("id-1", "rid-2", "cid-1", ResumeReviewStatus.SAVED, "uid-1", now);
-        final ResumeReview re = new ResumeReview("id-2", "rid-1", "cid-1", ResumeReviewStatus.SAVED, "uid-1", now);
+        final ResumeReview rc = new ResumeReview("id-1", "rid-1", "cid-2", ResumeReviewStatus.LIKED, "uid-1", now);
+        final ResumeReview rd = new ResumeReview("id-1", "rid-2", "cid-1", ResumeReviewStatus.LIKED, "uid-1", now);
+        final ResumeReview re = new ResumeReview("id-2", "rid-1", "cid-1", ResumeReviewStatus.LIKED, "uid-1", now);
 
         assertEquals(1, ra.compareTo(null));
         assertEquals(0, ra.compareTo(ra));
@@ -74,11 +74,11 @@ public class ResumeReviewTest {
     @Test
     public void testEquals() {
         final LocalDateTime now = LocalDateTime.now();
-        final ResumeReview a = new ResumeReview("id-1", "rid-1", "cid-1", ResumeReviewStatus.SAVED, "uid-1", now);
+        final ResumeReview a = new ResumeReview("id-1", "rid-1", "cid-1", ResumeReviewStatus.LIKED, "uid-1", now);
         final ResumeReview b = new ResumeReview("id-1", "rid-1", "cid-1", ResumeReviewStatus.EXCLUDED, "uid-1", now);
-        final ResumeReview c = new ResumeReview("id-1", "rid-1", "cid-2", ResumeReviewStatus.SAVED, "uid-1", now);
-        final ResumeReview d = new ResumeReview("id-1", "rid-2", "cid-1", ResumeReviewStatus.SAVED, "uid-1", now);
-        final ResumeReview e = new ResumeReview("id-2", "rid-1", "cid-1", ResumeReviewStatus.SAVED, "uid-1", now);
+        final ResumeReview c = new ResumeReview("id-1", "rid-1", "cid-2", ResumeReviewStatus.LIKED, "uid-1", now);
+        final ResumeReview d = new ResumeReview("id-1", "rid-2", "cid-1", ResumeReviewStatus.LIKED, "uid-1", now);
+        final ResumeReview e = new ResumeReview("id-2", "rid-1", "cid-1", ResumeReviewStatus.LIKED, "uid-1", now);
 
         assertNotEquals(a, null);
         assertEquals(a, a);
@@ -112,16 +112,16 @@ public class ResumeReviewTest {
     public void testHashCode() {
         final LocalDateTime reviewTime = LocalDateTime.of(2016, 1, 1, 2, 3, 4);
         assertEquals(
-                226680168,
-                new ResumeReview("id", "rid", "cid", ResumeReviewStatus.SAVED, "uid", reviewTime).hashCode());
+                278312350,
+                new ResumeReview("id", "rid", "cid", ResumeReviewStatus.LIKED, "uid", reviewTime).hashCode());
     }
 
     @Test
     public void testToString() {
         final LocalDateTime reviewTime = LocalDateTime.of(2016, 1, 1, 2, 3, 4);
         assertEquals(
-                "ResumeReview[id=id,resumeId=rid,companyId=cid,status=SAVED,reviewerId=uid,"
+                "ResumeReview[id=id,resumeId=rid,companyId=cid,status=LIKED,reviewerId=uid,"
                         + "reviewTime=2016-01-01T02:03:04]",
-                new ResumeReview("id", "rid", "cid", ResumeReviewStatus.SAVED, "uid", reviewTime).toString());
+                new ResumeReview("id", "rid", "cid", ResumeReviewStatus.LIKED, "uid", reviewTime).toString());
     }
 }

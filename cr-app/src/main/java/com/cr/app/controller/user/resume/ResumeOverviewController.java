@@ -86,7 +86,7 @@ public class ResumeOverviewController extends BaseResumeController {
 
         final Resume resume = resumeContainer.getResume();
         final Resume updated =
-                new Resume(resume.getId(), resume.getUserId(), ResumeStatus.PUBLISHED, resume.getCreated(), expiration);
+                new Resume(resume.getId(), resume.getUserId(), ResumeStatus.PUBLISHED, LocalDateTime.now(), expiration);
         getResumeDao().update(updated);
         updateResumeContainer(resumeContainer.getResume().getId());
 

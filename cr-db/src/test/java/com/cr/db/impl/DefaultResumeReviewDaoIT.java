@@ -91,7 +91,7 @@ public class DefaultResumeReviewDaoIT {
 
             final ResumeReview savedReview =
                     new ResumeReview(UUID.randomUUID().toString(), resume.getId(), company.getId(),
-                            ResumeReviewStatus.SAVED, user.getId(), LocalDateTime.now());
+                            ResumeReviewStatus.LIKED, user.getId(), LocalDateTime.now());
             this.resumeReviewDao.add(savedReview);
 
             final ResumeCollection savedViewable = this.resumeDao.getViewable(user.getId());

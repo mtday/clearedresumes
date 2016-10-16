@@ -13,6 +13,6 @@ public class ResumeReviewStatusTest {
     public void test() {
         // Only here for 100% code coverage.
         assertTrue(ResumeReviewStatus.values().length > 0);
-        assertEquals(ResumeReviewStatus.SAVED, ResumeReviewStatus.valueOf(ResumeReviewStatus.SAVED.name()));
+        assertEquals(ResumeReviewStatus.LIKED, ResumeReviewStatus.valueOf(ResumeReviewStatus.LIKED.name()));
     }
 }

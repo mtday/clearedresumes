@@ -37,7 +37,7 @@ public class AccountTest {
         final Resume resume2 = new Resume("rid-2", user1.getId(), ResumeStatus.UNPUBLISHED, created, null);
         final ResumeIntroduction introduction = new ResumeIntroduction("rid", "Full Name", "Objective");
         final ResumeReview review =
-                new ResumeReview("id", resume1.getId(), company.getId(), ResumeReviewStatus.SAVED, user1.getId(),
+                new ResumeReview("id", resume1.getId(), company.getId(), ResumeReviewStatus.LIKED, user1.getId(),
                         created);
         final ResumeLaborCategory lcat = new ResumeLaborCategory("id", resume1.getId(), "Labor Category", 10);
         final ContactInfo contactInfo = new ContactInfo("id", resume1.getId(), "Value");
@@ -102,7 +102,7 @@ public class AccountTest {
         final Resume resume = new Resume("rid", user.getId(), ResumeStatus.UNPUBLISHED, created, null);
         final ResumeIntroduction introduction = new ResumeIntroduction(resume.getId(), "Full Name", "Objective");
         final ResumeReview review =
-                new ResumeReview("id", resume.getId(), company.getId(), ResumeReviewStatus.SAVED, user.getId(),
+                new ResumeReview("id", resume.getId(), company.getId(), ResumeReviewStatus.LIKED, user.getId(),
                         created);
         final ResumeLaborCategory lcat = new ResumeLaborCategory("id", resume.getId(), "Labor Category", 10);
         final ContactInfo contactInfo = new ContactInfo("id", resume.getId(), "Value");

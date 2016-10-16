@@ -73,7 +73,7 @@
                             <div class="pull-left">
                                 Expiration:
                             </div>
-                            <div class="pull-right" th:text="${resume.resume.getExpiration('MMM dd  HH:mm:ss')}">
+                            <div class="pull-right" th:text="${resume.resume.getExpiration('MMM dd, HH:mm a')}">
                                 Expiration
                             </div>
                         </li>
@@ -89,15 +89,19 @@
 
                     <ul class="list-group">
                         <li class="list-group-item">
-                            <span class="badge">14</span>
+                            <span class="badge" th:text="${resume.getUserViews()}">Num</span>
+                            User accounts that have <strong>Viewed</strong> my resume:
+                        </li>
+                        <li class="list-group-item">
+                            <span class="badge" th:text="${resume.getCompanyViews()}">Num</span>
                             Companies that have <strong>Viewed</strong> my resume:
                         </li>
                         <li class="list-group-item">
-                            <span class="badge">4</span>
+                            <span class="badge" th:text="${resume.getCompanyLikes()}">Num</span>
                             Companies that have <strong>Liked</strong> my resume:
                         </li>
                         <li class="list-group-item">
-                            <span class="badge">2</span>
+                            <span class="badge" th:text="${resume.getCompanyPurchases()}">Num</span>
                             Companies that have <strong>Purchased</strong> my contact info:
                         </li>
                     </ul>

@@ -7,8 +7,8 @@ public enum ResumeReviewStatus {
     /** The company has viewed this resume. */
     VIEWED,
 
-    /** The company is saving this resume for later review. */
-    SAVED,
+    /** The company has liked this resume. */
+    LIKED,
 
     /** The company is not interested in this resume. */
     NOT_INTERESTED,
