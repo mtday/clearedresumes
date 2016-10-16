@@ -1,10 +1,9 @@
 package com.cr.app.controller.employer.dashboard;
 
-import com.cr.app.controller.BaseController;
-import com.cr.common.model.Account;
 import com.cr.db.ResumeDao;
 import java.util.Map;
 import javax.annotation.Nonnull;
+import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -14,19 +13,17 @@ import org.springframework.web.bind.annotation.GetMapping;
  * Used to manage the employer dashboard all resumes page.
  */
 @Controller
-public class ResumesAllController extends BaseController {
+public class ResumesAllController extends BaseDashboardController {
     private static final Logger LOG = LoggerFactory.getLogger(ResumesAllController.class);
-
-    @Nonnull
-    private final ResumeDao resumeDao;
 
     /**
      * Create an instance of this controller.
      *
+     * @param httpSession the current user's session
      * @param resumeDao the {@link ResumeDao} used to retrieve resumes from the database
      */
-    public ResumesAllController(@Nonnull final ResumeDao resumeDao) {
-        this.resumeDao = resumeDao;
+    public ResumesAllController(@Nonnull final HttpSession httpSession, @Nonnull final ResumeDao resumeDao) {
+        super(httpSession, resumeDao);
     }
 
     /**
@@ -38,14 +35,7 @@ public class ResumesAllController extends BaseController {
     @GetMapping("/employer/dashboard/resumes-all")
     @Nonnull
     public String allResumes(@Nonnull final Map<String, Object> model) {
-        // Make sure the model holds the current company
-        if (!model.containsKey("company")) {
-            final Account account = getCurrentAccount();
-            if (account != null) {
-                model.put("company", account.getCompanies().first());
-            }
-        }
-
+        setCurrentCompany(model);
         setCurrentAccount(model);
         return "employer/dashboard/resumes-all";
     }

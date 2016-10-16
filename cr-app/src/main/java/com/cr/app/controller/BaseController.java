@@ -12,6 +12,7 @@ import javax.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
@@ -42,9 +43,12 @@ public abstract class BaseController {
      */
     @Nullable
     protected Account getCurrentAccount() {
-        final Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal instanceof DefaultUserDetails) {
-            return ((DefaultUserDetails) principal).getAccount();
+        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            final Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if (principal instanceof DefaultUserDetails) {
+                return ((DefaultUserDetails) principal).getAccount();
+            }
         }
         // When not logged in, the principal is actually the String "anonymousUser".
         return null;

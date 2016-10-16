@@ -266,6 +266,10 @@ body {
 .dashboard-nav-container {
   padding-bottom: 20px;
 }
+.dashboard-current-company-chooser {
+  max-width: 200px;
+}
+
 
 .resume-nav-container {
   padding-bottom: 20px;

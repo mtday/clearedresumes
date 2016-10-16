@@ -6,13 +6,47 @@
 <nav th:replace="fragments/navbar :: navbar (currentPage='dashboard')"></nav>
 <div class="container">
 
-    <div th:replace="fragments/employer-dashboard-nav :: dashboard-nav (currentPage='resumes-all')"></div>
-
-    TODO - All Resumes
+    <div class="row dashboard-row">
+        <div class="col-md-2 well well-sm">
+            <!-- Navigation -->
+            <div th:replace="fragments/employer-dashboard-nav :: dashboard-nav (currentPage='resumes-all')"></div>
+        </div>
+        <div class="col-md-10 resume-content-container">&nbsp;
+            <div class="pull-left">
+                <h2>All Resumes</h2>
+            </div>
+            <div class="pull-right">
+                <div th:if="${#lists.size(account.companies)} == 1">
+                    <h4 th:text="${company.name}">Company Name</h4>
+                </div>
+                <div th:if="${#lists.size(account.companies)} > 1" class="dashboard-current-company-chooser">
+                    <div class="input-group dropdown">
+                        <label for="current-company" class="sr-only">Current Company</label>
+                        <input type="text" name="currentCompany" id="current-company" th:value="${company.name}"
+                               class="form-control dropdown-toggle-type" placeholder="Current Company"/>
+                        <ul class="dropdown-menu dropdown-type">
+                            <li th:each="company : ${account.companies}">
+                                <a href="#" th:attr="data-value=${company.id}" th:text="${company.name}"></a>
+                            </li>
+                        </ul>
+                        <span role="button" class="input-group-addon dropdown-toggle-company" data-toggle="dropdown"
+                              aria-haspopup="true" aria-expanded="false"><span class="caret"></span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>
 
 <footer th:replace="fragments/footer :: footer"></footer>
 <div th:replace="fragments/scripts :: scripts"></div>
+<script>
+    $(function() {
+        $('.dropdown-type a').click(function() {
+            document.location = '/employer/dashboard/company/' +  $(this).attr('data-value');
+        });
+    });
+</script>
 </body>
 </html>

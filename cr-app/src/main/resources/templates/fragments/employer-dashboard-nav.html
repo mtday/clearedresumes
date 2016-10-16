@@ -3,23 +3,16 @@
 <body>
 
 <div th:fragment="dashboard-nav (currentPage)" class="dashboard-nav-container">
-    <div class="row">
-        <div class="col-md-8 dashboard-nav-left">
-            <ul class="nav nav-pills">
-                <li role="presentation" th:class="${currentPage == 'resumes-all'}? 'active'">
-                    <a th:href="@{/employer/dashboard/resumes-all}">All Resumes</a></li>
-                <li role="presentation" th:class="${currentPage == 'resumes-saved'}? 'active'">
-                    <a th:href="@{/employer/dashboard/resumes-saved}">Saved Resumes</a></li>
-                <li role="presentation" th:class="${currentPage == 'resumes-purchased'}? 'active'">
-                    <a th:href="@{/employer/dashboard/resumes-purchased}">Purchased Resumes</a></li>
-                <li role="presentation" th:class="${currentPage == 'my-company'}? 'active'">
-                    <a th:href="@{/employer/dashboard/my-company}">My Company</a></li>
-            </ul>
-        </div>
-        <div class="col-md-4 text-right dashboard-nav-right">
-            <strong><h4 th:text="${company.name}">My Company</h4></strong>
-        </div>
-    </div>
+    <ul class="nav nav-pills nav-stacked">
+        <li role="presentation" th:class="${currentPage == 'resumes-all'}? 'active'">
+            <a th:href="@{/employer/dashboard/resumes-all}">All Resumes</a></li>
+        <li role="presentation" th:class="${currentPage == 'resumes-saved'}? 'active'">
+            <a th:href="@{/employer/dashboard/resumes-liked}">Liked Resumes</a></li>
+        <li role="presentation" th:class="${currentPage == 'resumes-purchased'}? 'active'">
+            <a th:href="@{/employer/dashboard/resumes-purchased}">Purchased Resumes</a></li>
+        <li role="presentation" th:class="${currentPage == 'my-company'}? 'active'">
+            <a th:href="@{/employer/dashboard/my-company}">My Company</a></li>
+    </ul>
 </div>
 
 </body>
