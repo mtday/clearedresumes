@@ -60,8 +60,8 @@ public class DefaultResumeReviewDaoIT {
         }
 
         final Resume resume =
-                new Resume(UUID.randomUUID().toString(), user.getId(), ResumeStatus.UNPUBLISHED, LocalDateTime.now(),
-                        null);
+                new Resume(UUID.randomUUID().toString(), user.getId(), ResumeStatus.PUBLISHED, LocalDateTime.now(),
+                        LocalDateTime.now().plusDays(10));
         this.resumeDao.add(resume);
 
         final Company company =

@@ -1,13 +1,21 @@
 package com.cr.db.impl;
 
+import com.cr.common.model.Resume;
 import com.cr.common.model.ResumeReview;
 import com.cr.common.model.ResumeReviewCollection;
 import com.cr.common.model.ResumeReviewStatus;
 import com.cr.db.ResumeReviewDao;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import java.sql.Array;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +28,7 @@ import org.springframework.stereotype.Service;
  * Provides an implementation of the resume exclusion service.
  */
 @Service
+@SuppressFBWarnings("OBL_UNSATISFIED_OBLIGATION_EXCEPTION_EDGE")
 public class DefaultResumeReviewDao implements ResumeReviewDao {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
 
@@ -61,6 +70,29 @@ public class DefaultResumeReviewDao implements ResumeReviewDao {
     public ResumeReviewCollection getForResume(@Nonnull final String resumeId) {
         return new ResumeReviewCollection(
                 this.jdbcTemplate.query("SELECT * FROM resume_reviews WHERE resume_id = ?", this.rowMapper, resumeId));
+    }
+
+    @Nonnull
+    @Override
+    public Map<String, Collection<ResumeReview>> getForResumes(
+            @Nonnull final Map<String, Resume> resumeMap, @Nonnull final String companyId) {
+        final Map<String, Collection<ResumeReview>> reviewMap = new HashMap<>();
+        this.jdbcTemplate.query(connection -> {
+            final Array resumeIds = connection.createArrayOf("VARCHAR", resumeMap.keySet().toArray());
+            final PreparedStatement ps = connection
+                    .prepareStatement("SELECT * FROM resume_reviews WHERE company_id = ? AND resume_id = ANY (?)");
+            ps.setString(1, companyId);
+            ps.setArray(2, resumeIds);
+            return ps;
+        }, this.rowMapper).forEach(review -> {
+            Collection<ResumeReview> collection = reviewMap.get(review.getResumeId());
+            if (collection == null) {
+                collection = new LinkedList<>();
+                reviewMap.put(review.getResumeId(), collection);
+            }
+            collection.add(review);
+        });
+        return reviewMap;
     }
 
     @Override

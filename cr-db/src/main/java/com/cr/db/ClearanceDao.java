@@ -2,6 +2,9 @@ package com.cr.db;
 
 import com.cr.common.model.Clearance;
 import com.cr.common.model.ClearanceCollection;
+import com.cr.common.model.Resume;
+import java.util.Collection;
+import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -26,6 +29,15 @@ public interface ClearanceDao {
      */
     @Nonnull
     ClearanceCollection getForResume(@Nonnull String resumeId);
+
+    /**
+     * Retrieve all the clearances associated with the specified resumes.
+     *
+     * @param resumeMap the resume id mapped to resume indicating which clearances to retrieve
+     * @return the requested clearances mapped by resume id
+     */
+    @Nonnull
+    Map<String, Collection<Clearance>> getForResumes(@Nonnull Map<String, Resume> resumeMap);
 
     /**
      * Add a new clearance into the database.

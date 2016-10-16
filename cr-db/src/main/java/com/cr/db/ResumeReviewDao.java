@@ -1,8 +1,11 @@
 package com.cr.db;
 
+import com.cr.common.model.Resume;
 import com.cr.common.model.ResumeReview;
 import com.cr.common.model.ResumeReviewCollection;
 import com.cr.common.model.ResumeReviewStatus;
+import java.util.Collection;
+import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -36,6 +39,17 @@ public interface ResumeReviewDao {
      */
     @Nonnull
     ResumeReviewCollection getForResume(@Nonnull String resumeId);
+
+    /**
+     * Retrieve all the resume reviews associated with the specified resumes.
+     *
+     * @param resumeMap the resume id mapped to resume indicating which resume reviews to retrieve
+     * @param companyId the unique id of the company for which reviews should be retrieved
+     * @return the requested resume reviews mapped by resume id
+     */
+    @Nonnull
+    Map<String, Collection<ResumeReview>> getForResumes(
+            @Nonnull Map<String, Resume> resumeMap, @Nonnull String companyId);
 
     /**
      * Add a new resume review into the database.

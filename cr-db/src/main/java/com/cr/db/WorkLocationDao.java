@@ -1,7 +1,10 @@
 package com.cr.db;
 
+import com.cr.common.model.Resume;
 import com.cr.common.model.WorkLocation;
 import com.cr.common.model.WorkLocationCollection;
+import java.util.Collection;
+import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -26,6 +29,15 @@ public interface WorkLocationDao {
      */
     @Nonnull
     WorkLocationCollection getForResume(@Nonnull String resumeId);
+
+    /**
+     * Retrieve all the work locations associated with the specified resumes.
+     *
+     * @param resumeMap the resume id mapped to resume indicating which resume work locations to retrieve
+     * @return the requested work locations mapped by resume id
+     */
+    @Nonnull
+    Map<String, Collection<WorkLocation>> getForResumes(@Nonnull Map<String, Resume> resumeMap);
 
     /**
      * Add a new work location into the database.

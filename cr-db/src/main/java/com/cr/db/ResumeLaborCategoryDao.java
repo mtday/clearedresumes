@@ -1,7 +1,10 @@
 package com.cr.db;
 
+import com.cr.common.model.Resume;
 import com.cr.common.model.ResumeLaborCategory;
 import com.cr.common.model.ResumeLaborCategoryCollection;
+import java.util.Collection;
+import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -26,6 +29,15 @@ public interface ResumeLaborCategoryDao {
      */
     @Nonnull
     ResumeLaborCategoryCollection getForResume(@Nonnull String resumeId);
+
+    /**
+     * Retrieve all the resume labor categories associated with the specified resumes.
+     *
+     * @param resumeMap the resume id mapped to resume indicating which resume labor categories to retrieve
+     * @return the requested resume labor categories mapped by resume id
+     */
+    @Nonnull
+    Map<String, Collection<ResumeLaborCategory>> getForResumes(@Nonnull Map<String, Resume> resumeMap);
 
     /**
      * Add a new resume labor category into the database.

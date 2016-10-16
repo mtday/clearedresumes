@@ -44,9 +44,9 @@ public class DefaultResumeDaoIT {
         this.userDao.add(user2);
 
         try {
-            final Resume resume1 = new Resume(UUID.randomUUID().toString(), user1.getId(), ResumeStatus.UNPUBLISHED,
-                    LocalDateTime.now(), null);
-            final Resume resume2 = new Resume(UUID.randomUUID().toString(), user2.getId(), ResumeStatus.UNPUBLISHED,
+            final Resume resume1 = new Resume(UUID.randomUUID().toString(), user1.getId(), ResumeStatus.PUBLISHED,
+                    LocalDateTime.now(), LocalDateTime.now().plusDays(30));
+            final Resume resume2 = new Resume(UUID.randomUUID().toString(), user2.getId(), ResumeStatus.PUBLISHED,
                     LocalDateTime.now(), LocalDateTime.now().plusDays(30));
 
             final Resume beforeAdd = this.resumeDao.get(resume1.getId());

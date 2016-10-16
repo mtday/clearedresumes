@@ -127,10 +127,10 @@ public class Resume implements Serializable, Comparable<Resume> {
         }
 
         final CompareToBuilder cmp = new CompareToBuilder();
+        cmp.append(other.getCreated(), getCreated());
         cmp.append(getId(), other.getId());
         cmp.append(getUserId(), other.getUserId());
         cmp.append(getStatus(), other.getStatus());
-        cmp.append(getCreated(), other.getCreated());
         cmp.append(getExpiration(), other.getExpiration());
         return cmp.toComparison();
     }

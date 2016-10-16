@@ -154,8 +154,8 @@ CREATE TABLE work_summaries (
     resume_id         VARCHAR(36)    NOT NULL,
     job_title         VARCHAR(200)   NOT NULL,
     employer          VARCHAR(200),
-    begin_date        DATE           NOT NULL,
-    end_date          DATE,
+    begin_date        VARCHAR(10)    NOT NULL,
+    end_date          VARCHAR(10),
     summary           VARCHAR(40000) NOT NULL,
 
     CONSTRAINT work_summaries_pk PRIMARY KEY (id),

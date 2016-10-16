@@ -64,11 +64,11 @@ public class DefaultResumeDao implements ResumeDao {
     @Override
     public ResumeCollection getViewable(@Nonnull final String userId) {
         return new ResumeCollection(this.jdbcTemplate
-                .query("SELECT * FROM resumes WHERE id NOT IN (SELECT resume_reviews.resume_id "
-                                + "FROM resume_reviews JOIN company_users ON "
+                .query("SELECT * FROM resumes WHERE status = ? AND expiration >= ? AND id NOT IN "
+                                + "(SELECT resume_reviews.resume_id FROM resume_reviews JOIN company_users ON "
                                 + "(company_users.company_id = resume_reviews.company_id) "
                                 + "WHERE company_users.user_id = ? AND resume_reviews.status = ?)", this.rowMapper,
-                        userId,
+                        ResumeStatus.PUBLISHED.name(), LocalDateTime.now().format(FORMATTER), userId,
                         ResumeReviewStatus.EXCLUDED.name()));
     }
 

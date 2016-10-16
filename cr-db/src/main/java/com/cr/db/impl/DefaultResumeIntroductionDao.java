@@ -1,9 +1,15 @@
 package com.cr.db.impl;
 
+import com.cr.common.model.Resume;
 import com.cr.common.model.ResumeIntroduction;
 import com.cr.db.ResumeIntroductionDao;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import java.sql.Array;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +22,7 @@ import org.springframework.stereotype.Service;
  * Provides an implementation of the resume introduction service.
  */
 @Service
+@SuppressFBWarnings("OBL_UNSATISFIED_OBLIGATION_EXCEPTION_EDGE")
 public class DefaultResumeIntroductionDao implements ResumeIntroductionDao {
     @Nonnull
     private final JdbcTemplate jdbcTemplate;
@@ -42,6 +49,20 @@ public class DefaultResumeIntroductionDao implements ResumeIntroductionDao {
         } catch (final EmptyResultDataAccessException noResults) {
             return null;
         }
+    }
+
+    @Nonnull
+    @Override
+    public Map<String, ResumeIntroduction> getForResumes(@Nonnull final Map<String, Resume> resumeMap) {
+        final Map<String, ResumeIntroduction> introMap = new HashMap<>();
+        this.jdbcTemplate.query(connection -> {
+            final Array resumeIds = connection.createArrayOf("VARCHAR", resumeMap.keySet().toArray());
+            final PreparedStatement ps =
+                    connection.prepareStatement("SELECT * FROM resume_introductions WHERE resume_id = ANY (?)");
+            ps.setArray(1, resumeIds);
+            return ps;
+        }, this.rowMapper).forEach(intro -> introMap.put(intro.getResumeId(), intro));
+        return introMap;
     }
 
     @Override

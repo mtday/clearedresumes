@@ -2,9 +2,17 @@ package com.cr.db.impl;
 
 import com.cr.common.model.Clearance;
 import com.cr.common.model.ClearanceCollection;
+import com.cr.common.model.Resume;
 import com.cr.db.ClearanceDao;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import java.sql.Array;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +25,7 @@ import org.springframework.stereotype.Service;
  * Provides an implementation of the clearance service.
  */
 @Service
+@SuppressFBWarnings("OBL_UNSATISFIED_OBLIGATION_EXCEPTION_EDGE")
 public class DefaultClearanceDao implements ClearanceDao {
     @Nonnull
     private final JdbcTemplate jdbcTemplate;
@@ -51,20 +60,41 @@ public class DefaultClearanceDao implements ClearanceDao {
                 this.jdbcTemplate.query("SELECT * FROM clearances WHERE resume_id = ?", this.rowMapper, resumeId));
     }
 
+    @Nonnull
     @Override
-    public void add(@Nonnull final Clearance workLocation) {
-        this.jdbcTemplate
-                .update("INSERT INTO clearances (id, resume_id, type, organization, polygraph) VALUES (?, ?, ?, ?, ?)",
-                        workLocation.getId(), workLocation.getResumeId(), workLocation.getType(),
-                        workLocation.getOrganization(), workLocation.getPolygraph());
+    public Map<String, Collection<Clearance>> getForResumes(@Nonnull final Map<String, Resume> resumeMap) {
+        final Map<String, Collection<Clearance>> clearanceMap = new HashMap<>();
+        this.jdbcTemplate.query(connection -> {
+            final Array resumeIds = connection.createArrayOf("VARCHAR", resumeMap.keySet().toArray());
+            final PreparedStatement ps =
+                    connection.prepareStatement("SELECT * FROM clearances WHERE resume_id = ANY (?)");
+            ps.setArray(1, resumeIds);
+            return ps;
+        }, this.rowMapper).forEach(clearance -> {
+            Collection<Clearance> collection = clearanceMap.get(clearance.getResumeId());
+            if (collection == null) {
+                collection = new LinkedList<>();
+                clearanceMap.put(clearance.getResumeId(), collection);
+            }
+            collection.add(clearance);
+        });
+        return clearanceMap;
     }
 
     @Override
-    public void update(@Nonnull final Clearance workLocation) {
+    public void add(@Nonnull final Clearance clearance) {
+        this.jdbcTemplate
+                .update("INSERT INTO clearances (id, resume_id, type, organization, polygraph) VALUES (?, ?, ?, ?, ?)",
+                        clearance.getId(), clearance.getResumeId(), clearance.getType(), clearance.getOrganization(),
+                        clearance.getPolygraph());
+    }
+
+    @Override
+    public void update(@Nonnull final Clearance clearance) {
         this.jdbcTemplate
                 .update("UPDATE clearances SET resume_id = ?, type = ?, organization = ?, polygraph = ? WHERE id = ?",
-                        workLocation.getResumeId(), workLocation.getType(), workLocation.getOrganization(),
-                        workLocation.getPolygraph(), workLocation.getId());
+                        clearance.getResumeId(), clearance.getType(), clearance.getOrganization(),
+                        clearance.getPolygraph(), clearance.getId());
     }
 
     @Override

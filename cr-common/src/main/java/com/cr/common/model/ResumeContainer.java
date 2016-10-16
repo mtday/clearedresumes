@@ -17,7 +17,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * Holds all of the information associated with a resumeIntroduction.
+ * Holds all of the information associated with a resume.
  */
 public class ResumeContainer implements Serializable, Comparable<ResumeContainer> {
     // Needs to be serializable since this class is used inside DefaultUserDetails.

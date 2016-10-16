@@ -1,10 +1,18 @@
 package com.cr.db.impl;
 
+import com.cr.common.model.Resume;
 import com.cr.common.model.WorkLocation;
 import com.cr.common.model.WorkLocationCollection;
 import com.cr.db.WorkLocationDao;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import java.sql.Array;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +25,7 @@ import org.springframework.stereotype.Service;
  * Provides an implementation of the work location service.
  */
 @Service
+@SuppressFBWarnings("OBL_UNSATISFIED_OBLIGATION_EXCEPTION_EDGE")
 public class DefaultWorkLocationDao implements WorkLocationDao {
     @Nonnull
     private final JdbcTemplate jdbcTemplate;
@@ -49,6 +58,27 @@ public class DefaultWorkLocationDao implements WorkLocationDao {
     public WorkLocationCollection getForResume(@Nonnull final String resumeId) {
         return new WorkLocationCollection(
                 this.jdbcTemplate.query("SELECT * FROM work_locations WHERE resume_id = ?", this.rowMapper, resumeId));
+    }
+
+    @Nonnull
+    @Override
+    public Map<String, Collection<WorkLocation>> getForResumes(@Nonnull final Map<String, Resume> resumeMap) {
+        final Map<String, Collection<WorkLocation>> workLocationMap = new HashMap<>();
+        this.jdbcTemplate.query(connection -> {
+            final Array resumeIds = connection.createArrayOf("VARCHAR", resumeMap.keySet().toArray());
+            final PreparedStatement ps =
+                    connection.prepareStatement("SELECT * FROM work_locations WHERE resume_id = ANY (?)");
+            ps.setArray(1, resumeIds);
+            return ps;
+        }, this.rowMapper).forEach(workLocation -> {
+            Collection<WorkLocation> collection = workLocationMap.get(workLocation.getResumeId());
+            if (collection == null) {
+                collection = new LinkedList<>();
+                workLocationMap.put(workLocation.getResumeId(), collection);
+            }
+            collection.add(workLocation);
+        });
+        return workLocationMap;
     }
 
     @Override
