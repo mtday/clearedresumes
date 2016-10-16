@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="employer-active-company" class="pull-right">
+    <div th:if="${#lists.size(account.companies)} == 1">
+        <h4 th:text="${company.name}">Company Name</h4>
+    </div>
+    <div th:if="${#lists.size(account.companies)} > 1" class="dashboard-current-company-chooser">
+        <div class="input-group dropdown">
+            <label for="current-company" class="sr-only">Current Company</label>
+            <input type="text" name="currentCompany" id="current-company" th:value="${company.name}"
+                   class="form-control dropdown-toggle-type" placeholder="Current Company"/>
+            <ul class="dropdown-menu dropdown-type">
+                <li th:each="company : ${account.companies}">
+                    <a href="#" th:attr="data-value=${company.id}" th:text="${company.name}"></a>
+                </li>
+            </ul>
+            <span role="button" class="input-group-addon dropdown-toggle-company" data-toggle="dropdown"
+                  aria-haspopup="true" aria-expanded="false"><span class="caret"></span></span>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="employer-active-company-script">
+    <script>
+        $(function() {
+            $('.dropdown-type a').click(function() {
+                document.location = '/employer/dashboard/company/' +  $(this).attr('data-value');
+            });
+        });
+    </script>
+</div>
+
+</body>
+</html>

@@ -1,6 +1,7 @@
 package com.cr.common.model;
 
 import java.io.Serializable;
+import java.util.Locale;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -36,7 +37,7 @@ public class KeyWord implements Serializable, Comparable<KeyWord> {
      */
     public KeyWord(@Nonnull final String resumeId, @Nonnull final String word) {
         this.resumeId = resumeId;
-        this.word = word;
+        this.word = word.toLowerCase(Locale.ENGLISH);
     }
 
     /**

@@ -15,8 +15,11 @@ import com.cr.db.ResumeDao;
 import com.cr.db.TestApplication;
 import com.cr.db.UserDao;
 import java.time.LocalDateTime;
-import java.util.Collections;
+import java.util.Arrays;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,15 +61,17 @@ public class DefaultKeyWordDaoIT {
             assertNotNull(beforeAddColl);
             assertEquals(0, beforeAddColl.getKeyWords().size());
 
-            final KeyWord keyWord = new KeyWord(resume.getId(), "java");
-            this.keyWordDao.add(Collections.singleton(keyWord));
+            final Set<String> words = new TreeSet<>(Arrays.asList("a", "fringilla", "id", "lorem", "quis", "sit"));
+            final Set<KeyWord> keyWords =
+                    words.stream().map(word -> new KeyWord(resume.getId(), word)).collect(Collectors.toSet());
+            this.keyWordDao.add(keyWords);
 
             final KeyWordCollection getColl = this.keyWordDao.getForResume(resume.getId());
             assertNotNull(getColl);
-            assertEquals(1, getColl.getKeyWords().size());
-            assertTrue(getColl.getKeyWords().contains(keyWord));
+            assertEquals(keyWords.size(), getColl.getKeyWords().size());
+            assertTrue(getColl.getKeyWords().containsAll(keyWords));
 
-            this.keyWordDao.delete(keyWord);
+            keyWords.forEach(keyWord -> this.keyWordDao.delete(keyWord));
 
             final KeyWordCollection afterDelete = this.keyWordDao.getForResume(resume.getId());
             assertNotNull(afterDelete);

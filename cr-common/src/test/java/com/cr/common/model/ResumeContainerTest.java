@@ -161,7 +161,7 @@ public class ResumeContainerTest {
 
     @Test
     public void testHashCode() {
-        assertEquals(1239572854, getResumeContainer().hashCode());
+        assertEquals(1240526166, getResumeContainer().hashCode());
     }
 
     @Test
