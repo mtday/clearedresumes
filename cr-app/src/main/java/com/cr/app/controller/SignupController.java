@@ -19,7 +19,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -97,17 +96,13 @@ public class SignupController extends BaseController {
     @GetMapping("/signup/{plan}")
     @Nonnull
     public String signupPlan(
-            @Nullable @PathVariable("plan") final String plan, @Nonnull final Map<String, Object> model) {
+            @Nonnull @PathVariable("plan") final String plan, @Nonnull final Map<String, Object> model) {
         setCurrentAccount(model);
 
-        if (plan != null) {
-            final PriceCollection prices = this.priceDao.getAll();
-            prices.getPrices().forEach(price -> model.put(price.getType().name(), price.getPrice().toString()));
-            model.put("plan", plan);
-            return "signup-company";
-        }
-
-        return "signup";
+        final PriceCollection prices = this.priceDao.getAll();
+        prices.getPrices().forEach(price -> model.put(price.getType().name(), price.getPrice().toString()));
+        model.put("plan", plan);
+        return "signup-company";
     }
 
     /**
@@ -126,25 +121,36 @@ public class SignupController extends BaseController {
     @PostMapping("/signup-company")
     @Nonnull
     public String signupCompany(
-            @Nonnull @RequestParam("username") final String username,
-            @Nonnull @RequestParam("email") final String email,
-            @Nonnull @RequestParam("password") final String password,
-            @Nonnull @RequestParam("confirm") final String confirm, @Nonnull @RequestParam("name") final String name,
-            @Nonnull @RequestParam("website") final String website, @Nonnull @RequestParam("plan") final PlanType plan,
+            @Nonnull @RequestParam(value = "username", defaultValue = "") final String username,
+            @Nonnull @RequestParam(value = "email", defaultValue = "") final String email,
+            @Nonnull @RequestParam(value = "password", defaultValue = "") final String password,
+            @Nonnull @RequestParam(value = "confirm", defaultValue = "") final String confirm,
+            @Nonnull @RequestParam(value = "name", defaultValue = "") final String name,
+            @Nonnull @RequestParam(value = "website", defaultValue = "") final String website,
+            @Nonnull @RequestParam(value = "plan", defaultValue = "BASIC") final PlanType plan,
             @Nonnull final Map<String, Object> model) {
-        if (!validateUser(username, email, password, confirm, model) || !validateCompany(name, website, plan, model)) {
+        final Account account = getCurrentAccount();
+
+        if (account == null && !validateUser(username, email, password, confirm, model)) {
             model.put("username", username);
             model.put("email", email);
             model.put("name", name);
             model.put("website", website);
             model.put("plan", plan.name().toLowerCase(Locale.ENGLISH));
-
+            return "signup-company";
+        }
+        if (!validateCompany(name, website, plan, model)) {
+            model.put("name", name);
+            model.put("website", website);
+            model.put("plan", plan.name().toLowerCase(Locale.ENGLISH));
             return "signup-company";
         }
 
         // TODO - may need to charge the company for their chosen plan.
 
-        createAccount(username, email, password);
+        if (account == null) {
+            createAccount(username, email, password);
+        }
         createCompany(name, website, plan);
 
         setCurrentAccount(model);
@@ -164,10 +170,11 @@ public class SignupController extends BaseController {
     @PostMapping("/signup")
     @Nonnull
     public String signup(
-            @Nonnull @RequestParam("username") final String username,
-            @Nonnull @RequestParam("email") final String email,
-            @Nonnull @RequestParam("password") final String password,
-            @Nonnull @RequestParam("confirm") final String confirm, @Nonnull final Map<String, Object> model) {
+            @Nonnull @RequestParam(value = "username", defaultValue = "") final String username,
+            @Nonnull @RequestParam(value = "email", defaultValue = "") final String email,
+            @Nonnull @RequestParam(value = "password", defaultValue = "") final String password,
+            @Nonnull @RequestParam(value = "confirm", defaultValue = "") final String confirm,
+            @Nonnull final Map<String, Object> model) {
         if (!validateUser(username, email, password, confirm, model)) {
             model.put("username", username);
             model.put("email", email);

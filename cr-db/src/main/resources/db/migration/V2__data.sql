@@ -93,8 +93,8 @@ INSERT INTO states (id, name) VALUES
 ('f41a83f5-eee9-4da7-b45f-c9010df55bb3', 'Washington D.C.');
 
 INSERT INTO prices (type, price) VALUES
-('INDIVIDUAL_RESUME', 15.00),
-('PREMIUM_PACKAGE', 50.00),
+('INDIVIDUAL_RESUME', 20.00),
+('PREMIUM_PACKAGE', 100.00),
 ('ENTERPRISE_PACKAGE', 500.00);
 
 INSERT INTO configurations (key, value) VALUES

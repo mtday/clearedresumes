@@ -20,21 +20,37 @@
                         <h3>Account Information:</h3>
                     </div>
 
-                    <label for="signup-username" class="sr-only">User Name</label>
-                    <input type="text" name="username" id="signup-username" class="form-control" placeholder="User Name"
-                           required="required" autofocus="autofocus" th:value="${username}"/>
+                    <div th:if="${account == null}">
+                        <label for="signup-username" class="sr-only">User Name</label>
+                        <input type="text" name="username" id="signup-username" class="form-control"
+                               placeholder="User Name" required="required" autofocus="autofocus"
+                               th:value="${username}"/>
 
-                    <label for="signup-email" class="sr-only">E-Mail Address</label>
-                    <input type="email" name="email" id="signup-email" class="form-control" placeholder="E-Mail Address"
-                           required="required" autofocus="autofocus" th:value="${email}"/>
+                        <label for="signup-email" class="sr-only">E-Mail Address</label>
+                        <input type="email" name="email" id="signup-email" class="form-control"
+                               placeholder="E-Mail Address" required="required" autofocus="autofocus"
+                               th:value="${email}"/>
 
-                    <label for="signup-password" class="sr-only">Password</label>
-                    <input type="password" name="password" id="signup-password" class="form-control"
-                           placeholder="Password"/>
+                        <label for="signup-password" class="sr-only">Password</label>
+                        <input type="password" name="password" id="signup-password" class="form-control"
+                               placeholder="Password"/>
 
-                    <label for="signup-confirm" class="sr-only">Confirm Password</label>
-                    <input type="password" name="confirm" id="signup-confirm" class="form-control"
-                           placeholder="Confirm Password"/>
+                        <label for="signup-confirm" class="sr-only">Confirm Password</label>
+                        <input type="password" name="confirm" id="signup-confirm" class="form-control"
+                               placeholder="Confirm Password"/>
+                    </div>
+                    <div th:if="${account != null}">
+                        <label for="signup-username-exists" class="sr-only">User Name</label>
+                        <input type="text" name="username" id="signup-username-exists" class="form-control"
+                               placeholder="User Name" required="required" autofocus="autofocus" contenteditable="false"
+                               aria-disabled="true" disabled="disabled" th:value="${account.user.login}"/>
+
+                        <label for="signup-email-exists" class="sr-only">E-Mail Address</label>
+                        <input type="email" name="email" id="signup-email-exists" class="form-control"
+                               placeholder="E-Mail Address" required="required" autofocus="autofocus"
+                               contenteditable="false" aria-disabled="true" disabled="disabled"
+                               th:value="${account.user.email}"/>
+                    </div>
 
                     <div class="signup-text">
                         <h3>Company Information:</h3>
@@ -55,11 +71,13 @@
                         <option value="BASIC" th:if="${plan} != 'basic'">Basic Plan</option>
 
                         <option value="PREMIUM" selected="selected" th:if="${plan} == 'premium'">
-                            Premium Plan</option>
+                            Premium Plan
+                        </option>
                         <option value="PREMIUM" th:if="${plan} != 'premium'">Premium Plan</option>
 
                         <option value="ENTERPRISE" selected="selected" th:if="${plan} == 'enterprise'">
-                            Enterprise Plan</option>
+                            Enterprise Plan
+                        </option>
                         <option value="ENTERPRISE" th:if="${plan} != 'enterprise'">Enterprise Plan</option>
                     </select>
 
