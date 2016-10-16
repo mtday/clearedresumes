@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="fragments/head :: head (title='Resume: Key Words')"></head>
+<body>
+
+<nav th:replace="fragments/navbar :: navbar (currentPage='resume')"></nav>
+<div class="container">
+
+    <div class="row resume-row">
+        <div class="col-md-2 well well-sm">
+            <!-- Navigation -->
+            <div th:replace="fragments/user-resume-nav :: resume-nav (currentPage='key-words')"></div>
+        </div>
+        <div class="col-md-10 resume-content-container">
+            <!-- Content -->
+            <h2>Resume Key Words</h2>
+
+            <div class="row">
+                <div class="col-md-7">
+                    <!-- Key Word panel -->
+                    <div class="panel panel-default resume-key-word-panel">
+                        <div class="panel-heading">
+                            <div class="pull-left">
+                                <span class="panel-title">Key Words</span>
+                            </div>
+                            <div class="pull-right">
+                                <span th:class="'label text-right label-' + ${keyWordStatusColor}"
+                                      th:text="${keyWordStatus}">Status</span>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <p>Provide additional key words describing the tools and technologies in which you are
+                                proficient, as well as any skills you possess. These words will help potential
+                                employers find your resume when performing searches.</p>
+
+                            <div th:if="${#lists.isEmpty(keyWords)}" class="empty-cell">
+                                No key words have been added yet.
+                            </div>
+                            <div th:if="${not #lists.isEmpty(keyWords)}">
+                                <td class="key-word-region-cell">
+                                    <span th:each="keyWord : ${keyWords}" class="label label-default">
+                                          <span th:text="${keyWord.word}">Word</span>
+                                          <a th:id="${keyWord.word}" class="label label-danger"
+                                             data-toggle="popover" data-placement="top">X</a></span>
+                                </td>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <!-- Add/Update panel -->
+                    <div class="panel panel-default resume-key-word-panel">
+                        <div class="panel-heading">
+                            <span class="panel-title" id="key-word-title">Add Key Words</span>
+                        </div>
+                        <div class="panel-body">
+                            <p th:if="${keyWordMessage}" class="alert alert-info" th:text="${keyWordMessage}">
+                                Message</p>
+
+                            <form class="form-resume-key-word" name="keyWordForm" th:action="@{/user/resume/key-words}"
+                                  method="POST">
+
+                                <p>Enter the additional words to include in the key word list for your resume,
+                                    separated by white-space (spaces, tabs, new lines):</p>
+
+                                <label for="key-word-words" class="sr-only">Key Words (e.g., Java, Cloud, Cyber,
+                                    etc.)</label>
+                                <textarea name="words" rows="8" id="key-word-words" class="form-control"
+                                          placeholder="Key Words (e.g., Java, Cloud, Cyber, etc.)" required="required"
+                                          autofocus="autofocus"></textarea>
+
+                                <div class="btn-group">
+                                    <button id="key-word-submit" class="btn btn-default btn-primary" type="submit">
+                                        Add
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<footer th:replace="fragments/footer :: footer"></footer>
+<div th:replace="fragments/scripts :: scripts"></div>
+
+<script>
+    $(document).ready(function() {
+        $('[data-toggle="popover"]').popover({
+            html: true,
+            content: function() {
+                var str = '<font color="#333">Are you sure?</font><div class="text-center">';
+                str += '<a href="#" class="label label-danger" onclick="remove(\'' + this.id + '\');">Yes</a> ';
+                str += '<a href="#" class="label label-default" onclick="cancel();">No</a></div>';
+                return str;
+            }
+        });
+    });
+
+    function remove(word) {
+        document.location = '/user/resume/key-words/delete/' + word;
+        $('[data-toggle="popover"]').popover('hide');
+    }
+
+    function cancel() {
+        $('[data-toggle="popover"]').popover('hide');
+    }
+</script>
+</body>
+</html>

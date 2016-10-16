@@ -2,6 +2,7 @@ package com.cr.db;
 
 import com.cr.common.model.KeyWord;
 import com.cr.common.model.KeyWordCollection;
+import java.util.Collection;
 import javax.annotation.Nonnull;
 
 /**
@@ -18,11 +19,11 @@ public interface KeyWordDao {
     KeyWordCollection getForResume(@Nonnull String resumeId);
 
     /**
-     * Add a new key word into the database.
+     * Add new key words into the database.
      *
-     * @param keyWord the new key word to insert
+     * @param keyWords the new key words to insert
      */
-    void add(@Nonnull KeyWord keyWord);
+    void add(@Nonnull Collection<KeyWord> keyWords);
 
     /**
      * Remove the specified key word from the database.

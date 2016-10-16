@@ -500,6 +500,22 @@ body {
   margin-bottom: 10px;
 }
 
+.resume-key-word-panel {
+  margin-top: 34px;
+}
+.resume-key-word-panel .panel-heading {
+  min-height: 40px;
+}
+.resume-key-word-panel .empty-cell {
+  padding: 30px;
+}
+.resume-key-word-panel .form-resume-key-word .form-control:focus {
+  z-index: 2;
+}
+.resume-key-word-panel .form-resume-key-word .form-control {
+  margin-bottom: 10px;
+}
+
 .resume-visibility-panel {
   margin-top: 34px;
 }

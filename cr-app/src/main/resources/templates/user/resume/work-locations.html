@@ -43,8 +43,8 @@
                                 </thead>
                                 <tbody>
                                     <tr th:if="${#lists.isEmpty(workLocations)}">
-                                        <td class="text-center empty-cell" colspan="3">No work locations have been added
-                                            yet.
+                                        <td class="text-center empty-cell" colspan="3">
+                                            No work locations have been added yet.
                                         </td>
                                     </tr>
                                     <tr th:each="workLocation : ${workLocations}">

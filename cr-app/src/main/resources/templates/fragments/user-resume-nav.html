@@ -55,6 +55,12 @@
                 <span th:if="${resume.isCertificationsComplete()}" class="badge pull-right">&check;</span>
             </a>
         </li>
+        <li role="presentation" th:class="${currentPage == 'key-words'}? 'active'">
+            <a th:href="@{/user/resume/key-words}">
+                Key Words
+                <span th:if="${resume.isKeyWordsComplete()}" class="badge pull-right">&check;</span>
+            </a>
+        </li>
         <li role="presentation" th:class="${currentPage == 'work-summaries'}? 'active'">
             <a th:href="@{/user/resume/work-summaries}">
                 Work Summaries

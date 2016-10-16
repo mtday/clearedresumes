@@ -15,6 +15,7 @@ import com.cr.db.ResumeDao;
 import com.cr.db.TestApplication;
 import com.cr.db.UserDao;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.UUID;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -58,7 +59,7 @@ public class DefaultKeyWordDaoIT {
             assertEquals(0, beforeAddColl.getKeyWords().size());
 
             final KeyWord keyWord = new KeyWord(resume.getId(), "java");
-            this.keyWordDao.add(keyWord);
+            this.keyWordDao.add(Collections.singleton(keyWord));
 
             final KeyWordCollection getColl = this.keyWordDao.getForResume(resume.getId());
             assertNotNull(getColl);

@@ -162,72 +162,79 @@
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-12">
-                        <div>
-                            <h4>&nbsp;</h4>
-                            <div class="pull-left">
-                                <h4>Career Objective:</h4>
-                            </div>
-                            <div class="pull-right">
-                                <a th:href="@{/user/resume/introduction}" class="label label-success">Edit</a>
-                            </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        &nbsp;
+                        <div class="pull-left">
+                            <h4 class="panel-title">Key Words</h4>
+                        </div>
+                        <div class="pull-right">
+                            <a th:href="@{/user/resume/key-words}" class="label label-success">Edit</a>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="row" th:if="${resume.introduction.objective == ''}">
-                            Not Specified
+                    <div class="panel-body">
+                        <div th:if="${#lists.isEmpty(resume.keyWords)}">
+                            None Specified
                         </div>
-                        <div th:if="${resume.introduction.objective}">
+                        <span th:each="keyWord : ${resume.keyWords}" class="label label-default">
+                              <span th:text="${keyWord.word}">Word</span></span>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        &nbsp;
+                        <div class="pull-left">
+                            <h4 class="panel-title">Career Objective</h4>
+                        </div>
+                        <div class="pull-right">
+                            <a th:href="@{/user/resume/introduction}" class="label label-success">Edit</a>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div th:if="${resume.introduction.objective == ''}">
+                            None Specified
+                        </div>
+                        <div th:if="${resume.introduction.objective != ''}">
                             <textarea id="resume-objective" class="form-control" contenteditable="false"
                                       th:text="${resume.introduction.objective}"></textarea>
                         </div>
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-12">
-                        <div>
-                            <h4>&nbsp;</h4>
-                            <div class="pull-left">
-                                <h4>Work Summary:</h4>
-                            </div>
-                            <div class="pull-right">
-                                <a th:href="@{/user/resume/work-summaries}" class="label label-success">Edit</a>
-                            </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        &nbsp;
+                        <div class="pull-left">
+                            <h4 class="panel-title">Work Summary</h4>
+                        </div>
+                        <div class="pull-right">
+                            <a th:href="@{/user/resume/work-summaries}" class="label label-success">Edit</a>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="row" th:if="${#lists.isEmpty(resume.workSummaries)}">
-                            Not Specified
+                    <div class="panel-body">
+                        <div th:if="${#lists.isEmpty(resume.workSummaries)}">
+                            None Specified
                         </div>
-                        <div th:each="workSummary : ${resume.workSummaries}">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    &nbsp;
-                                    <div class="pull-left">
-                                        <h4 class="panel-title" th:text="${workSummary.jobTitle}">Job Title</h4>
-                                    </div>
-                                    <div class="pull-right">
-                                        <span th:if="${workSummary.employer != null}" style="padding-right:30px;">
-                                            <i><span th:text="${workSummary.employer}">Employer</span></i>
-                                        </span>
-                                        <span th:text="${workSummary.getBeginDate('MMM, yyyy')}">Begin</span>
-                                        to
-                                        <span th:if="${workSummary.endDate != null}"
-                                             th:text="${workSummary.getEndDate('MMM, yyyy')}">End</span>
-                                        <span th:if="${workSummary.endDate == null}">Present</span>
-                                    </div>
+                        <div th:each="workSummary : ${resume.workSummaries}" style="padding-bottom: 15px;">
+                            <div>&nbsp;
+                                <div class="pull-left">
+                                    <h4 class="panel-title" th:text="${workSummary.jobTitle}">Job Title</h4>
                                 </div>
-                                <div class="panel-body">
-                                    <textarea th:id="${workSummary.id}" class="form-control" contenteditable="false"
-                                              th:text="${workSummary.summary}"></textarea>
+                                <div class="pull-right">
+                                    <span th:if="${workSummary.employer != null}" style="padding-right:30px;">
+                                        <i><span th:text="${workSummary.employer}">Employer</span></i>
+                                    </span>
+                                    <span th:text="${workSummary.getBeginDate('MMM, yyyy')}">Begin</span>
+                                    to
+                                    <span th:if="${workSummary.endDate != null}"
+                                          th:text="${workSummary.getEndDate('MMM, yyyy')}">End</span>
+                                    <span th:if="${workSummary.endDate == null}">Present</span>
                                 </div>
                             </div>
+
+                            <textarea th:id="${workSummary.id}" class="form-control" contenteditable="false"
+                                      th:text="${workSummary.summary}"></textarea>
                         </div>
                     </div>
                 </div>
