@@ -274,6 +274,12 @@ body {
   padding-top: 0px;
   margin-top: 0px;
 }
+.resume-nav-divider {
+  border-bottom: 3px solid #aaa;
+  margin: 9px 0px;
+  padding: 9px 0px;
+  height: 1px;
+}
 
 .resume-introduction-about-you-panel {
   margin-top: 34px;
@@ -510,6 +516,6 @@ body {
 
 /* SimpleMDE minimum height */
 .CodeMirror, .CodeMirror-scroll {
-    min-height: 200px;
+    min-height: 80px;
 }
 

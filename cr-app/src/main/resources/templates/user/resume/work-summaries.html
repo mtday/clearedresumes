@@ -55,8 +55,8 @@
                                                 <span th:if="${workSummary.endDate == null}">Present</span>
                                             </span>
                                             <span class="pull-right">
-                                                <a th:id="'edit-' + ${workSummary.id}" href="#" class="label label-info"
-                                                   th:onclick="'edit(\'' + ${workSummary.id} + '\', \'' + ${workSummary.jobTitle} + '\', \'' + ${workSummary.employer} + '\', \'' + ${workSummary.getBeginDate('MMM dd, yyyy')} + '\', \'' + ${workSummary.getEndDate('MMM dd, yyyy')} + '\', \'' + ${workSummary.summary} + '\');'">Edit</a>
+                                                <a href="#" class="label label-info"
+                                                   th:onclick="'edit(\'' + ${workSummary.id} + '\');'">Edit</a>
                                                 <a th:id="${workSummary.id}" class="label label-danger"
                                                    data-toggle="popover" data-placement="top">Delete</a>
                                             </span>
@@ -181,21 +181,23 @@
         $('[data-toggle="popover"]').popover('hide');
     }
 
-    function edit(id, jobTitle, employer, begin, end, summary) {
-        $('#work-summary-id')[0].value = id;
-        $('#work-summary-job-title')[0].value = jobTitle;
+    function edit(id) {
+        data = summaries[id];
+
+        $('#work-summary-id')[0].value = data.id;
+        $('#work-summary-job-title')[0].value = data.jobTitle;
         $('#work-summary-job-title')[0].focus();
-        $('#work-summary-employer')[0].value = employer;
-        $('#work-summary-begin')[0].value = begin;
-        $('#work-summary-end')[0].value = end;
-        $('#work-summary')[0].value = summary;
+        $('#work-summary-employer')[0].value = data.employer;
+        $('#work-summary-begin')[0].value = data.begin;
+        $('#work-summary-end')[0].value = data.end;
+        document.simplemde.value(data.summary);
         $('#work-summary-submit')[0].innerHTML = 'Save';
         $('#work-summary-submit').addClass('btn-success');
         $('#work-summary-submit').removeClass('btn-primary');
         $('#work-summary-title')[0].innerHTML = 'Edit Work Summary';
     }
 
-    new SimpleMDE({
+    document.simplemde = new SimpleMDE({
         element: document.getElementById("work-summary"),
         autoDownloadFontAwesome: false,
         spellChecker: false,
@@ -203,6 +205,26 @@
         status: false,
         hideIcons: ["link", "image", "fullscreen", "side-by-side"]
     });
+
+    var summaries = { };
 </script>
+
+<script th:each="workSummary : ${resume.workSummaries}" th:inline="javascript">
+    var id = /*[[${workSummary.id}]]*/ '';
+    var jobTitle = /*[[${workSummary.jobTitle}]]*/ '';
+    var employer = /*[[${workSummary.employer}]]*/ '';
+    var begin = /*[[${workSummary.getBeginDate('MMM dd, yyyy')}]]*/ '';
+    var end = /*[[${workSummary.getEndDate('MMM dd, yyyy')}]]*/ '';
+    var summary = /*[[${workSummary.summary}]]*/ '';
+    summaries[id] = {
+        id: id,
+        jobTitle: jobTitle,
+        employer: employer,
+        begin: begin,
+        end: end,
+        summary: summary
+    };
+</script>
+
 </body>
 </html>

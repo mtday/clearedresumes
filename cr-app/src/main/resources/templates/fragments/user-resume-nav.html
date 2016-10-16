@@ -7,6 +7,12 @@
         <li role="presentation" th:class="${currentPage == 'overview'}? 'active'">
             <a th:href="@{/user/resume/overview}">Overview</a>
         </li>
+        <li role="presentation" th:class="${currentPage == 'preview'}? 'active'">
+            <a th:href="@{/user/resume/preview}">Preview</a>
+        </li>
+
+        <li class="resume-nav-divider"></li>
+
         <li role="presentation" th:class="${currentPage == 'introduction'}? 'active'">
             <a th:href="@{/user/resume/introduction}">
                 Introduction
