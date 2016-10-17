@@ -1,18 +1,36 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="fragments/head :: head (title='Dashboard: Resume Viewer')"></head>
+<!-- Scripts have to be up top for the resume fragment -->
+<div th:replace="fragments/scripts :: scripts"></div>
 <body>
 
 <nav th:replace="fragments/navbar :: navbar (currentPage='dashboard')"></nav>
 <div class="container">
 
-    <div th:replace="fragments/employer-dashboard-nav :: dashboard-nav (currentPage='view')"></div>
+    <div class="row dashboard-row">
+        <div class="col-md-2 well well-sm">
+            <!-- Navigation -->
+            <div th:replace="fragments/employer-dashboard-nav :: dashboard-nav (currentPage='view')"></div>
+        </div>
+        <div class="col-md-10 resume-content-container">
+            <div class="content-header">&nbsp;
+                <span class="pull-left">
+                    <h2>Resume Viewer</h2>
+                </span>
+                <span class="pull-right">
+                    <div th:replace="fragments/employer-active-company :: employer-active-company"></div>
+                </span>
+            </div>
 
-    TODO - Viewing Resume
+            <!-- Include the resume -->
+            <div th:replace="fragments/resume :: resume (editable=false,visible=false)"></div>
+
+        </div>
+    </div>
 
 </div>
 
 <footer th:replace="fragments/footer :: footer"></footer>
-<div th:replace="fragments/scripts :: scripts"></div>
 </body>
 </html>

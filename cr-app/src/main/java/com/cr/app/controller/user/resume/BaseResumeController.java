@@ -111,7 +111,7 @@ public abstract class BaseResumeController extends BaseController {
                     getResumeDao().add(resume);
                     getResumeIntroductionDao().add(introduction);
 
-                    final ResumeContainer newContainer = new ResumeContainer(resume, introduction);
+                    final ResumeContainer newContainer = new ResumeContainer(account.getUser(), resume, introduction);
                     setCurrentAccount(new Account(account.getUser(), account.getAuthorities(), account.getCompanies(),
                             newContainer));
                     return newContainer;

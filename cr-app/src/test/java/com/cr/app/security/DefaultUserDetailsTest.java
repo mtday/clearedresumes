@@ -58,7 +58,7 @@ public class DefaultUserDetailsTest {
         final KeyWord keyWord = new KeyWord(resume.getId(), "Word");
 
         final ResumeContainer resumeContainer =
-                new ResumeContainer(resume, overview, Collections.singleton(review), Collections.singleton(lcat),
+                new ResumeContainer(user, resume, overview, Collections.singleton(review), Collections.singleton(lcat),
                         Collections.singleton(contactInfo), Collections.singleton(workLocation),
                         Collections.singleton(workSummary), Collections.singleton(clearance),
                         Collections.singleton(education), Collections.singleton(certification),

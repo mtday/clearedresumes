@@ -70,7 +70,7 @@
                                     </div>
                                 </td>
                                 <td class="resume-published-cell">
-                                    <div th:text="${summary.resume.getCreated('yyyy-MM-dd')}">
+                                    <div th:text="${summary.resume.getCreated('yyyy-MM-dd HH:mm')}">
                                         Publish Date
                                     </div>
                                 </td>
@@ -98,7 +98,7 @@
     var resumes = undefined;
     $(document).ready(function() {
         resumes = $('#resumes').DataTable({
-            order: [3, 'desc'],
+            order: [4, 'desc'],
             columnDefs: [
                 {
                     targets: [ 0 ],

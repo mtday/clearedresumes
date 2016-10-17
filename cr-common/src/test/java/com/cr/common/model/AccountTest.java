@@ -50,17 +50,17 @@ public class AccountTest {
         final Certification certification = new Certification("id", resume1.getId(), "Certificate", 2000);
         final KeyWord keyWord = new KeyWord(resume1.getId(), "Word");
         final ResumeContainer resumeContainer1 =
-                new ResumeContainer(resume1, introduction, Collections.singleton(review), Collections.singleton(lcat),
-                        Collections.singleton(contactInfo), Collections.singleton(workLocation),
-                        Collections.singleton(workSummary), Collections.singleton(clearance),
-                        Collections.singleton(education), Collections.singleton(certification),
-                        Collections.singleton(keyWord));
+                new ResumeContainer(user1, resume1, introduction, Collections.singleton(review),
+                        Collections.singleton(lcat), Collections.singleton(contactInfo),
+                        Collections.singleton(workLocation), Collections.singleton(workSummary),
+                        Collections.singleton(clearance), Collections.singleton(education),
+                        Collections.singleton(certification), Collections.singleton(keyWord));
         final ResumeContainer resumeContainer2 =
-                new ResumeContainer(resume2, introduction, Collections.singleton(review), Collections.singleton(lcat),
-                        Collections.singleton(contactInfo), Collections.singleton(workLocation),
-                        Collections.singleton(workSummary), Collections.singleton(clearance),
-                        Collections.singleton(education), Collections.singleton(certification),
-                        Collections.singleton(keyWord));
+                new ResumeContainer(user2, resume2, introduction, Collections.singleton(review),
+                        Collections.singleton(lcat), Collections.singleton(contactInfo),
+                        Collections.singleton(workLocation), Collections.singleton(workSummary),
+                        Collections.singleton(clearance), Collections.singleton(education),
+                        Collections.singleton(certification), Collections.singleton(keyWord));
         final Account a = new Account(user1, authorities, companies, resumeContainer1);
         final Account b = new Account(user2, authorities, companies, resumeContainer2);
         return new Account[] {a, b};
@@ -115,11 +115,11 @@ public class AccountTest {
         final Certification certification = new Certification("id", resume.getId(), "Certificate", 2000);
         final KeyWord keyWord = new KeyWord(resume.getId(), "Word");
         final ResumeContainer resumeContainer =
-                new ResumeContainer(resume, introduction, Collections.singleton(review), Collections.singleton(lcat),
-                        Collections.singleton(contactInfo), Collections.singleton(workLocation),
-                        Collections.singleton(workSummary), Collections.singleton(clearance),
-                        Collections.singleton(education), Collections.singleton(certification),
-                        Collections.singleton(keyWord));
+                new ResumeContainer(user, resume, introduction, Collections.singleton(review),
+                        Collections.singleton(lcat), Collections.singleton(contactInfo),
+                        Collections.singleton(workLocation), Collections.singleton(workSummary),
+                        Collections.singleton(clearance), Collections.singleton(education),
+                        Collections.singleton(certification), Collections.singleton(keyWord));
         return new Account(user, authorities, companies, resumeContainer);
     }
 

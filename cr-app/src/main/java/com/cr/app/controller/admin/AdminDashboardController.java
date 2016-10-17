@@ -202,7 +202,7 @@ public class AdminDashboardController extends BaseController {
             this.userDao.add(user);
             this.userDao.addAuthority(user.getId(), Authority.USER);
 
-            final LocalDateTime created = LocalDateTime.now().minusDays(random.nextInt(20));
+            final LocalDateTime created = LocalDateTime.now().minusMinutes(random.nextInt(20 * 24 * 60));
             final LocalDateTime expiration = created.plusDays(14);
             final Resume resume =
                     new Resume(UUID.randomUUID().toString(), user.getId(), ResumeStatus.PUBLISHED, created, expiration);

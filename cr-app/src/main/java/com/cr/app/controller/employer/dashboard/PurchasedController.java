@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -30,6 +31,22 @@ public class PurchasedController extends BaseDashboardController {
     }
 
     /**
+     * Purchase the specified resume.
+     *
+     * @param resumeId the unique id of the resume to purchase
+     * @param model the web model
+     * @return the name of the template to display
+     */
+    @PostMapping("/employer/dashboard/purchase/{resumeId}")
+    @Nonnull
+    public String purchaseOne(
+            @Nonnull @PathVariable("resumeId") final String resumeId, @Nonnull final Map<String, Object> model) {
+        LOG.info("Purchasing: {}", resumeId);
+
+        return "redirect:/employer/dashboard/resumes-purchased";
+    }
+
+    /**
      * Purchase the specified resumes.
      *
      * @param ids the unique resume ids to purchase
@@ -38,7 +55,7 @@ public class PurchasedController extends BaseDashboardController {
      */
     @PostMapping("/employer/dashboard/purchase")
     @Nonnull
-    public String purchase(
+    public String purchaseAll(
             @Nonnull @RequestParam("ids") final String ids, @Nonnull final Map<String, Object> model) {
         LOG.info("Purchasing: {}", ids);
 

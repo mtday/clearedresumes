@@ -34,10 +34,12 @@ public class ResumeContainerTest {
 
     @Test
     public void testParameterConstructor() {
-        final Resume resume = new Resume("rid", "uid", ResumeStatus.UNPUBLISHED, LocalDateTime.now(), null);
+        final User user = new User("uid", "login", "email", "password", true);
+        final Resume resume = new Resume("rid", user.getId(), ResumeStatus.UNPUBLISHED, LocalDateTime.now(), null);
         final ResumeIntroduction introduction = new ResumeIntroduction(resume.getId(), "Full Name", "Objective");
         final ResumeReview review =
-                new ResumeReview("id", resume.getId(), "cid", ResumeReviewStatus.LIKED, "uid", LocalDateTime.now());
+                new ResumeReview("id", resume.getId(), "cid", ResumeReviewStatus.LIKED, user.getId(),
+                        LocalDateTime.now());
         final ResumeLaborCategory lcat = new ResumeLaborCategory("id", resume.getId(), "Labor Category", 10);
         final ContactInfo contactInfo = new ContactInfo("id", resume.getId(), "Value");
         final WorkLocation workLocation = new WorkLocation("id", resume.getId(), "State", "Region");
@@ -49,11 +51,11 @@ public class ResumeContainerTest {
         final KeyWord keyWord = new KeyWord(resume.getId(), "Word");
 
         final ResumeContainer resumeContainer =
-                new ResumeContainer(resume, introduction, Collections.singleton(review), Collections.singleton(lcat),
-                        Collections.singleton(contactInfo), Collections.singleton(workLocation),
-                        Collections.singleton(workSummary), Collections.singleton(clearance),
-                        Collections.singleton(education), Collections.singleton(certification),
-                        Collections.singleton(keyWord));
+                new ResumeContainer(user, resume, introduction, Collections.singleton(review),
+                        Collections.singleton(lcat), Collections.singleton(contactInfo),
+                        Collections.singleton(workLocation), Collections.singleton(workSummary),
+                        Collections.singleton(clearance), Collections.singleton(education),
+                        Collections.singleton(certification), Collections.singleton(keyWord));
 
         assertEquals(resume, resumeContainer.getResume());
         assertEquals(introduction, resumeContainer.getIntroduction());
@@ -79,11 +81,14 @@ public class ResumeContainerTest {
 
     @Nonnull
     private ResumeContainer[] getTwoResumeContainers() {
-        final Resume resume1 = new Resume("rid1", "uid", ResumeStatus.UNPUBLISHED, LocalDateTime.now(), null);
-        final Resume resume2 = new Resume("rid2", "uid", ResumeStatus.UNPUBLISHED, LocalDateTime.now(), null);
+        final User user1 = new User("uid1", "login1", "email1", "password", true);
+        final User user2 = new User("uid2", "login2", "email2", "password", true);
+        final Resume resume1 = new Resume("rid1", user1.getId(), ResumeStatus.UNPUBLISHED, LocalDateTime.now(), null);
+        final Resume resume2 = new Resume("rid2", user2.getId(), ResumeStatus.UNPUBLISHED, LocalDateTime.now(), null);
         final ResumeIntroduction introduction = new ResumeIntroduction(resume1.getId(), "Full Name", "Objective");
         final ResumeReview review =
-                new ResumeReview("id", resume1.getId(), "cid", ResumeReviewStatus.LIKED, "uid", LocalDateTime.now());
+                new ResumeReview("id", resume1.getId(), "cid", ResumeReviewStatus.LIKED, user1.getId(),
+                        LocalDateTime.now());
         final ResumeLaborCategory lcat = new ResumeLaborCategory("id", resume1.getId(), "Labor Category", 10);
         final ContactInfo contactInfo = new ContactInfo("id", resume1.getId(), "Value");
         final WorkLocation workLocation = new WorkLocation("id", resume1.getId(), "State", "Region");
@@ -94,18 +99,14 @@ public class ResumeContainerTest {
         final Certification certification = new Certification("id", resume1.getId(), "Certificate", 2000);
         final KeyWord keyWord = new KeyWord(resume1.getId(), "Word");
 
-        final ResumeContainer a =
-                new ResumeContainer(resume1, introduction, Collections.singleton(review), Collections.singleton(lcat),
-                        Collections.singleton(contactInfo), Collections.singleton(workLocation),
-                        Collections.singleton(workSummary), Collections.singleton(clearance),
-                        Collections.singleton(education), Collections.singleton(certification),
-                        Collections.singleton(keyWord));
-        final ResumeContainer b =
-                new ResumeContainer(resume2, introduction, Collections.singleton(review), Collections.singleton(lcat),
-                        Collections.singleton(contactInfo), Collections.singleton(workLocation),
-                        Collections.singleton(workSummary), Collections.singleton(clearance),
-                        Collections.singleton(education), Collections.singleton(certification),
-                        Collections.singleton(keyWord));
+        final ResumeContainer a = new ResumeContainer(user1, resume1, introduction, Collections.singleton(review),
+                Collections.singleton(lcat), Collections.singleton(contactInfo), Collections.singleton(workLocation),
+                Collections.singleton(workSummary), Collections.singleton(clearance), Collections.singleton(education),
+                Collections.singleton(certification), Collections.singleton(keyWord));
+        final ResumeContainer b = new ResumeContainer(user2, resume2, introduction, Collections.singleton(review),
+                Collections.singleton(lcat), Collections.singleton(contactInfo), Collections.singleton(workLocation),
+                Collections.singleton(workSummary), Collections.singleton(clearance), Collections.singleton(education),
+                Collections.singleton(certification), Collections.singleton(keyWord));
         return new ResumeContainer[] {a, b};
     }
 
@@ -137,11 +138,12 @@ public class ResumeContainerTest {
 
     @Nonnull
     private ResumeContainer getResumeContainer() {
+        final User user = new User("uid", "login", "email", "password", true);
         final LocalDateTime created = LocalDateTime.of(2016, 1, 1, 2, 3, 4);
-        final Resume resume = new Resume("rid", "uid", ResumeStatus.UNPUBLISHED, created, null);
+        final Resume resume = new Resume("rid", user.getId(), ResumeStatus.UNPUBLISHED, created, null);
         final ResumeIntroduction introduction = new ResumeIntroduction(resume.getId(), "Full Name", "Objective");
         final ResumeReview review =
-                new ResumeReview("id", resume.getId(), "cid", ResumeReviewStatus.LIKED, "uid", created);
+                new ResumeReview("id", resume.getId(), "cid", ResumeReviewStatus.LIKED, user.getId(), created);
         final ResumeLaborCategory lcat = new ResumeLaborCategory("id", resume.getId(), "Labor Category", 10);
         final ContactInfo contactInfo = new ContactInfo("id", resume.getId(), "Value");
         final WorkLocation workLocation = new WorkLocation("id", resume.getId(), "State", "Region");
@@ -153,15 +155,15 @@ public class ResumeContainerTest {
         final Certification certification = new Certification("id", resume.getId(), "Certificate", 2000);
         final KeyWord keyWord = new KeyWord(resume.getId(), "Word");
 
-        return new ResumeContainer(resume, introduction, Collections.singleton(review), Collections.singleton(lcat),
-                Collections.singleton(contactInfo), Collections.singleton(workLocation),
+        return new ResumeContainer(user, resume, introduction, Collections.singleton(review),
+                Collections.singleton(lcat), Collections.singleton(contactInfo), Collections.singleton(workLocation),
                 Collections.singleton(workSummary), Collections.singleton(clearance), Collections.singleton(education),
                 Collections.singleton(certification), Collections.singleton(keyWord));
     }
 
     @Test
     public void testHashCode() {
-        assertEquals(1240526166, getResumeContainer().hashCode());
+        assertEquals(1244689232, getResumeContainer().hashCode());
     }
 
     @Test

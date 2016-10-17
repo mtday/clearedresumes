@@ -24,9 +24,11 @@ public class ResumeContainer implements Serializable, Comparable<ResumeContainer
     private static final long serialVersionUID = 71483058734L;
 
     @Nonnull
+    private final User user;
+    @Nonnull
     private final Resume resume;
     @Nonnull
-    private final ResumeIntroduction resumeIntroduction;
+    private final ResumeIntroduction introduction;
     @Nonnull
     private final SortedSet<ResumeReview> reviews = new TreeSet<>();
     @Nonnull
@@ -50,17 +52,19 @@ public class ResumeContainer implements Serializable, Comparable<ResumeContainer
      * Default constructor required for Jackson deserialization.
      */
     ResumeContainer() {
-        this(new Resume(), new ResumeIntroduction());
+        this(new User(), new Resume(), new ResumeIntroduction());
     }
 
     /**
      * Create a mostly empty container.
      *
+     * @param user the user that owns the resume associated with this container
      * @param resume the resume associated with this container
      * @param introduction the resume introduction associated with this container
      */
-    public ResumeContainer(@Nonnull final Resume resume, @Nonnull final ResumeIntroduction introduction) {
-        this(resume, introduction, Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),
+    public ResumeContainer(
+            @Nonnull final User user, @Nonnull final Resume resume, @Nonnull final ResumeIntroduction introduction) {
+        this(user, resume, introduction, Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),
                 Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),
                 Collections.emptyList(), Collections.emptyList());
     }
@@ -68,8 +72,9 @@ public class ResumeContainer implements Serializable, Comparable<ResumeContainer
     /**
      * Create a populated instance of this container.
      *
+     * @param user the user that owns the resume associated with this container
      * @param resume the resume associated with this container
-     * @param resumeIntroduction the introduction information for the resume
+     * @param introduction the introduction information for the resume
      * @param reviews the collection of resume reviews from companies
      * @param laborCategories the collection of labor categories associated with the resume
      * @param contactInfos the collection of contact information associated with the resume
@@ -81,15 +86,16 @@ public class ResumeContainer implements Serializable, Comparable<ResumeContainer
      * @param keyWords any additional key words describing this resume
      */
     public ResumeContainer(
-            @Nonnull final Resume resume, @Nonnull final ResumeIntroduction resumeIntroduction,
+            @Nonnull final User user, @Nonnull final Resume resume, @Nonnull final ResumeIntroduction introduction,
             @Nonnull final Collection<ResumeReview> reviews,
             @Nonnull final Collection<ResumeLaborCategory> laborCategories,
             @Nonnull final Collection<ContactInfo> contactInfos, @Nonnull final Collection<WorkLocation> workLocations,
             @Nonnull final Collection<WorkSummary> workSummaries, @Nonnull final Collection<Clearance> clearances,
             @Nonnull final Collection<Education> educations, @Nonnull final Collection<Certification> certifications,
             @Nonnull final Collection<KeyWord> keyWords) {
+        this.user = user;
         this.resume = resume;
-        this.resumeIntroduction = resumeIntroduction;
+        this.introduction = introduction;
         this.reviews.addAll(reviews);
         this.laborCategories.addAll(laborCategories);
         this.contactInfos.addAll(contactInfos);
@@ -99,6 +105,16 @@ public class ResumeContainer implements Serializable, Comparable<ResumeContainer
         this.educations.addAll(educations);
         this.certifications.addAll(certifications);
         this.keyWords.addAll(keyWords);
+    }
+
+    /**
+     * Retrieve the user that owns the associated resume.
+     *
+     * @return the user that owns the associated resume
+     */
+    @Nonnull
+    public User getUser() {
+        return this.user;
     }
 
     /**
@@ -118,7 +134,7 @@ public class ResumeContainer implements Serializable, Comparable<ResumeContainer
      */
     @Nonnull
     public ResumeIntroduction getIntroduction() {
-        return this.resumeIntroduction;
+        return this.introduction;
     }
 
     /**
@@ -415,6 +431,7 @@ public class ResumeContainer implements Serializable, Comparable<ResumeContainer
         }
 
         final CompareToBuilder cmp = new CompareToBuilder();
+        cmp.append(getUser(), other.getUser());
         cmp.append(getResume(), other.getResume());
         cmp.append(getIntroduction(), other.getIntroduction());
         cmp.append(getReviews(), other.getReviews(), new CollectionComparator<>());
@@ -437,6 +454,7 @@ public class ResumeContainer implements Serializable, Comparable<ResumeContainer
     @Override
     public int hashCode() {
         final HashCodeBuilder hash = new HashCodeBuilder();
+        hash.append(getUser());
         hash.append(getResume());
         hash.append(getIntroduction());
         hash.append(getReviews());
@@ -455,6 +473,7 @@ public class ResumeContainer implements Serializable, Comparable<ResumeContainer
     @Nonnull
     public String toString() {
         final ToStringBuilder str = new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE);
+        str.append("user", getUser());
         str.append("resume", getResume());
         str.append("introduction", getIntroduction());
         str.append("reviews", getReviews());
