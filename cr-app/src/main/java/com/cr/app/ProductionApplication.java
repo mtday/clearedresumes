@@ -6,12 +6,14 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * Used to run this application in production mode.
  */
 @SpringBootApplication
 @ComponentScan(basePackages = "com.cr")
+@EnableScheduling
 @PropertySources({@PropertySource(value = "file:/config/application.properties", ignoreResourceNotFound = true),
         @PropertySource(value = "classpath:application-production.properties", ignoreResourceNotFound = true)})
 public class ProductionApplication {

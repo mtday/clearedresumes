@@ -73,6 +73,14 @@ public class DefaultResumeDao implements ResumeDao {
     }
 
     @Override
+    @Nonnull
+    public ResumeCollection getPublishedExpiredResumes() {
+        return new ResumeCollection(this.jdbcTemplate
+                .query("SELECT * FROM resumes WHERE status = ? AND expiration < ?", this.rowMapper,
+                        ResumeStatus.PUBLISHED.name(), LocalDateTime.now().format(FORMATTER)));
+    }
+
+    @Override
     public void add(@Nonnull final Resume resume) {
         this.jdbcTemplate
                 .update("INSERT INTO resumes (id, user_id, status, created, expiration) VALUES (?, ?, ?, ?, ?)",

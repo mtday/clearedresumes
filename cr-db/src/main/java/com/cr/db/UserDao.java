@@ -3,6 +3,7 @@ package com.cr.db;
 import com.cr.common.model.Authority;
 import com.cr.common.model.User;
 import com.cr.common.model.UserCollection;
+import java.util.Collection;
 import java.util.SortedSet;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -34,6 +35,15 @@ public interface UserDao {
      */
     @Nonnull
     UserCollection getAll();
+
+    /**
+     * Retrieve the specified user accounts from the database based on unique id.
+     *
+     * @param ids the unique ids of the user accounts to retrieve
+     * @return the requested users
+     */
+    @Nonnull
+    UserCollection get(@Nonnull Collection<String> ids);
 
     /**
      * Retrieve the specified user from the database based on unique id.

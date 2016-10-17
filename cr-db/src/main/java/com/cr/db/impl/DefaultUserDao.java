@@ -4,8 +4,12 @@ import com.cr.common.model.Authority;
 import com.cr.common.model.User;
 import com.cr.common.model.UserCollection;
 import com.cr.db.UserDao;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import java.sql.Array;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import javax.annotation.Nonnull;
@@ -20,6 +24,7 @@ import org.springframework.stereotype.Service;
  * Provides an implementation of the user service.
  */
 @Service
+@SuppressFBWarnings("OBL_UNSATISFIED_OBLIGATION_EXCEPTION_EDGE")
 public class DefaultUserDao implements UserDao {
     @Nonnull
     private final JdbcTemplate jdbcTemplate;
@@ -53,6 +58,17 @@ public class DefaultUserDao implements UserDao {
     @Override
     public UserCollection getAll() {
         return new UserCollection(this.jdbcTemplate.query("SELECT * FROM users", this.userMapper));
+    }
+
+    @Nonnull
+    @Override
+    public UserCollection get(@Nonnull final Collection<String> ids) {
+        return new UserCollection(this.jdbcTemplate.query(connection -> {
+            final Array userIds = connection.createArrayOf("VARCHAR", ids.toArray());
+            final PreparedStatement ps = connection.prepareStatement("SELECT * FROM users WHERE id = ANY (?)");
+            ps.setArray(1, userIds);
+            return ps;
+        }, this.userMapper));
     }
 
     @Nullable

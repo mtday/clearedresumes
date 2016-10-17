@@ -37,6 +37,14 @@ public interface ResumeDao {
     ResumeCollection getViewable(@Nonnull String userId);
 
     /**
+     * Retrieve all of the resumes that have expired but are still in a published state.
+     *
+     * @return the resumes that are expired but are still in a published state
+     */
+    @Nonnull
+    ResumeCollection getPublishedExpiredResumes();
+
+    /**
      * Add a new resume into the database.
      *
      * @param resume the new resume to insert
