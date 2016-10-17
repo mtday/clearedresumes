@@ -1,8 +1,8 @@
 package com.cr.db;
 
 import com.cr.common.model.Price;
-import com.cr.common.model.PriceCollection;
 import com.cr.common.model.PriceType;
+import java.util.SortedSet;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -16,7 +16,7 @@ public interface PriceDao {
      * @return all the prices
      */
     @Nonnull
-    PriceCollection getAll();
+    SortedSet<Price> getAll();
 
     /**
      * Retrieve the price for the specified type from the database.

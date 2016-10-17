@@ -1,7 +1,7 @@
 package com.cr.db;
 
 import com.cr.common.model.Certification;
-import com.cr.common.model.CertificationCollection;
+import java.util.SortedSet;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -25,7 +25,7 @@ public interface CertificationDao {
      * @return the requested certifications
      */
     @Nonnull
-    CertificationCollection getForResume(@Nonnull String resumeId);
+    SortedSet<Certification> getForResume(@Nonnull String resumeId);
 
     /**
      * Add a new certification into the database.

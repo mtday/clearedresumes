@@ -1,7 +1,6 @@
 package com.cr.db.impl;
 
 import com.cr.common.model.Resume;
-import com.cr.common.model.ResumeCollection;
 import com.cr.common.model.ResumeReviewStatus;
 import com.cr.common.model.ResumeStatus;
 import com.cr.db.ResumeDao;
@@ -9,6 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,8 +63,8 @@ public class DefaultResumeDao implements ResumeDao {
 
     @Nonnull
     @Override
-    public ResumeCollection getViewable(@Nonnull final String userId) {
-        return new ResumeCollection(this.jdbcTemplate
+    public SortedSet<Resume> getViewable(@Nonnull final String userId) {
+        return new TreeSet<>(this.jdbcTemplate
                 .query("SELECT * FROM resumes WHERE status = ? AND expiration >= ? AND id NOT IN "
                                 + "(SELECT resume_reviews.resume_id FROM resume_reviews JOIN company_users ON "
                                 + "(company_users.company_id = resume_reviews.company_id) "
@@ -74,8 +75,8 @@ public class DefaultResumeDao implements ResumeDao {
 
     @Override
     @Nonnull
-    public ResumeCollection getPublishedExpiredResumes() {
-        return new ResumeCollection(this.jdbcTemplate
+    public SortedSet<Resume> getPublishedExpiredResumes() {
+        return new TreeSet<>(this.jdbcTemplate
                 .query("SELECT * FROM resumes WHERE status = ? AND expiration < ?", this.rowMapper,
                         ResumeStatus.PUBLISHED.name(), LocalDateTime.now().format(FORMATTER)));
     }

@@ -11,7 +11,6 @@ import com.cr.common.model.Company;
 import com.cr.common.model.CompanyUser;
 import com.cr.common.model.PlanType;
 import com.cr.common.model.User;
-import com.cr.common.model.UserCollection;
 import com.cr.db.CompanyDao;
 import com.cr.db.CompanyUserDao;
 import com.cr.db.TestApplication;
@@ -45,9 +44,9 @@ public class DefaultUserDaoIT {
      */
     @Test
     public void test() {
-        final UserCollection beforeAddColl = this.userDao.getAll();
+        final SortedSet<User> beforeAddColl = this.userDao.getAll();
         assertNotNull(beforeAddColl);
-        final int beforeSize = beforeAddColl.getUsers().size(); // may be non-zero from test data
+        final int beforeSize = beforeAddColl.size(); // may be non-zero from test data
 
         assertFalse(this.userDao.loginExists("login"));
         assertFalse(this.userDao.emailExists("email"));
@@ -66,10 +65,10 @@ public class DefaultUserDaoIT {
         assertTrue(this.userDao.emailExists(user.getEmail().toLowerCase(Locale.ENGLISH)));
         assertTrue(this.userDao.emailExists(user.getEmail().toUpperCase(Locale.ENGLISH)));
 
-        final UserCollection afterAddColl = this.userDao.getAll();
+        final SortedSet<User> afterAddColl = this.userDao.getAll();
         assertNotNull(afterAddColl);
-        assertEquals(beforeSize + 1, afterAddColl.getUsers().size());
-        assertTrue(afterAddColl.getUsers().contains(user));
+        assertEquals(beforeSize + 1, afterAddColl.size());
+        assertTrue(afterAddColl.contains(user));
 
         final User afterAddGet = this.userDao.get(user.getId());
         assertNotNull(afterAddGet);
@@ -89,10 +88,10 @@ public class DefaultUserDaoIT {
         final User updated = new User(user.getId(), "new-login", user.getEmail(), user.getPassword(), true);
         this.userDao.update(updated);
 
-        final UserCollection afterUpdateColl = this.userDao.getAll();
+        final SortedSet<User> afterUpdateColl = this.userDao.getAll();
         assertNotNull(afterUpdateColl);
-        assertEquals(beforeSize + 1, afterUpdateColl.getUsers().size());
-        assertTrue(afterUpdateColl.getUsers().contains(updated));
+        assertEquals(beforeSize + 1, afterUpdateColl.size());
+        assertTrue(afterUpdateColl.contains(updated));
 
         final User afterUpdateGet = this.userDao.get(updated.getId());
         assertNotNull(afterUpdateGet);
@@ -125,9 +124,9 @@ public class DefaultUserDaoIT {
         assertNotNull(delAuths);
         assertEquals(0, delAuths.size());
 
-        final UserCollection forCompanyDne = this.userDao.getForCompany("does-not-exist");
+        final SortedSet<User> forCompanyDne = this.userDao.getForCompany("does-not-exist");
         assertNotNull(forCompanyDne);
-        assertEquals(0, forCompanyDne.getUsers().size());
+        assertEquals(0, forCompanyDne.size());
 
         final Company company = new Company(UUID.randomUUID().toString(), "name", "website", PlanType.BASIC, 10, true);
         this.companyDao.add(company);
@@ -135,18 +134,18 @@ public class DefaultUserDaoIT {
         this.companyUserDao.add(companyUser);
 
         try {
-            final UserCollection forCompany = this.userDao.getForCompany(company.getId());
+            final SortedSet<User> forCompany = this.userDao.getForCompany(company.getId());
             assertNotNull(forCompany);
-            assertEquals(1, forCompany.getUsers().size());
-            assertTrue(forCompany.getUsers().contains(updated));
+            assertEquals(1, forCompany.size());
+            assertTrue(forCompany.contains(updated));
         } finally {
             this.companyUserDao.delete(companyUser);
             this.companyDao.delete(company.getId());
         }
 
-        final UserCollection remCompany = this.userDao.getForCompany(company.getId());
+        final SortedSet<User> remCompany = this.userDao.getForCompany(company.getId());
         assertNotNull(remCompany);
-        assertEquals(0, remCompany.getUsers().size());
+        assertEquals(0, remCompany.size());
 
         this.userDao.delete(user.getId());
 
@@ -154,9 +153,9 @@ public class DefaultUserDaoIT {
         assertFalse(this.userDao.emailExists(updated.getEmail().toLowerCase(Locale.ENGLISH)));
         assertFalse(this.userDao.emailExists(updated.getEmail().toUpperCase(Locale.ENGLISH)));
 
-        final UserCollection afterDeleteColl = this.userDao.getAll();
+        final SortedSet<User> afterDeleteColl = this.userDao.getAll();
         assertNotNull(afterDeleteColl);
-        assertEquals(beforeSize, afterDeleteColl.getUsers().size());
+        assertEquals(beforeSize, afterDeleteColl.size());
 
         final User afterDeleteGet = this.userDao.get(updated.getId());
         assertNull(afterDeleteGet);

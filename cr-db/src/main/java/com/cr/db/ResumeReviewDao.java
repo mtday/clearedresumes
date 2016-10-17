@@ -2,10 +2,10 @@ package com.cr.db;
 
 import com.cr.common.model.Resume;
 import com.cr.common.model.ResumeReview;
-import com.cr.common.model.ResumeReviewCollection;
 import com.cr.common.model.ResumeReviewStatus;
 import java.util.Collection;
 import java.util.Map;
+import java.util.SortedSet;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -29,7 +29,7 @@ public interface ResumeReviewDao {
      * @return the requested resume reviews
      */
     @Nonnull
-    ResumeReviewCollection getForCompany(@Nonnull String companyId);
+    SortedSet<ResumeReview> getForCompany(@Nonnull String companyId);
 
     /**
      * Retrieve all of the resume reviews for the specified resume.
@@ -38,7 +38,7 @@ public interface ResumeReviewDao {
      * @return the requested resume reviews
      */
     @Nonnull
-    ResumeReviewCollection getForResume(@Nonnull String resumeId);
+    SortedSet<ResumeReview> getForResume(@Nonnull String resumeId);
 
     /**
      * Retrieve all the resume reviews associated with the specified resumes.

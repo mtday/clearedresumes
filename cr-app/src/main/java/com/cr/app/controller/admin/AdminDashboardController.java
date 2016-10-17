@@ -167,11 +167,10 @@ public class AdminDashboardController extends BaseController {
     public String generateResumes(
             @RequestParam(value = "count", defaultValue = "50") final int count,
             @Nonnull final Map<String, Object> model) {
-        final List<LaborCategory> laborCategories =
-                new ArrayList<>(this.laborCategoryDao.getAll().getLaborCategories());
-        final List<State> states = new ArrayList<>(this.stateDao.getAll().getStates());
-        final List<ClearanceType> clearanceTypes = new ArrayList<>(this.clearanceTypeDao.getAll().getClearanceTypes());
-        final List<PolygraphType> polygraphTypes = new ArrayList<>(this.polygraphTypeDao.getAll().getPolygraphTypes());
+        final List<LaborCategory> laborCategories = new ArrayList<>(this.laborCategoryDao.getAll());
+        final List<State> states = new ArrayList<>(this.stateDao.getAll());
+        final List<ClearanceType> clearanceTypes = new ArrayList<>(this.clearanceTypeDao.getAll());
+        final List<PolygraphType> polygraphTypes = new ArrayList<>(this.polygraphTypeDao.getAll());
         final List<String> words =
                 Arrays.stream(getRandomText().split("[,\\s]+")).map(word -> word.toLowerCase(Locale.ENGLISH))
                         .map(word -> word.replaceAll("\\.", "")).collect(Collectors.toList());

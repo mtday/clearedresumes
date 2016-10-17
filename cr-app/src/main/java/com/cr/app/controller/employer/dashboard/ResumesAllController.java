@@ -48,7 +48,7 @@ public class ResumesAllController extends BaseDashboardController {
         final User user = getCurrentUser();
         final Company company = getCurrentCompany();
         if (company != null && user != null) {
-            model.put("summaries", this.resumeSummaryDao.getAll(user.getId(), company.getId()).getResumeSummaries());
+            model.put("summaries", this.resumeSummaryDao.getAll(user.getId(), company.getId()));
         }
 
         setCurrentCompany(model);

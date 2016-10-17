@@ -1,11 +1,12 @@
 package com.cr.db.impl;
 
 import com.cr.common.model.Company;
-import com.cr.common.model.CompanyCollection;
 import com.cr.common.model.PlanType;
 import com.cr.db.CompanyDao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +38,8 @@ public class DefaultCompanyDao implements CompanyDao {
 
     @Nonnull
     @Override
-    public CompanyCollection getAll() {
-        return new CompanyCollection(this.jdbcTemplate.query("SELECT * FROM companies", this.rowMapper));
+    public SortedSet<Company> getAll() {
+        return new TreeSet<>(this.jdbcTemplate.query("SELECT * FROM companies", this.rowMapper));
     }
 
     @Nullable
@@ -53,8 +54,8 @@ public class DefaultCompanyDao implements CompanyDao {
 
     @Nonnull
     @Override
-    public CompanyCollection getForUser(@Nonnull final String userId) {
-        return new CompanyCollection(this.jdbcTemplate.query("SELECT companies.* FROM companies "
+    public SortedSet<Company> getForUser(@Nonnull final String userId) {
+        return new TreeSet<>(this.jdbcTemplate.query("SELECT companies.* FROM companies "
                 + "JOIN company_users ON (companies.id = company_users.company_id) "
                 + "WHERE company_users.user_id = ?", this.rowMapper, userId));
     }

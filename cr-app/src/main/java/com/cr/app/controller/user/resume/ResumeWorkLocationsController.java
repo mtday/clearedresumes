@@ -56,7 +56,7 @@ public class ResumeWorkLocationsController extends BaseResumeController {
         model.put("resume", resume);
         model.put("workLocations", resume.getWorkLocations());
 
-        model.put("states", this.stateDao.getAll().getStates());
+        model.put("states", this.stateDao.getAll());
 
         final boolean complete = resume.isWorkLocationsComplete();
         model.put("workLocationStatusColor", complete ? "success" : "info");

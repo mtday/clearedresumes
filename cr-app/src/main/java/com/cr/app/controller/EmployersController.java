@@ -1,6 +1,5 @@
 package com.cr.app.controller;
 
-import com.cr.common.model.PriceCollection;
 import com.cr.db.PriceDao;
 import java.util.Map;
 import javax.annotation.Nonnull;
@@ -39,8 +38,7 @@ public class EmployersController extends BaseController {
     @GetMapping("/employers")
     @Nonnull
     public String employers(@Nonnull final Map<String, Object> model) {
-        final PriceCollection prices = this.priceDao.getAll();
-        prices.getPrices().forEach(price -> model.put(price.getType().name(), price.getPrice().toString()));
+        this.priceDao.getAll().forEach(price -> model.put(price.getType().name(), price.getPrice().toString()));
 
         setCurrentAccount(model);
         return "employers";

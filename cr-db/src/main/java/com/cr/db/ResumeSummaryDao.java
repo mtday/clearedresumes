@@ -1,6 +1,7 @@
 package com.cr.db;
 
-import com.cr.common.model.ResumeSummaryCollection;
+import com.cr.common.model.ResumeSummary;
+import java.util.SortedSet;
 import javax.annotation.Nonnull;
 
 /**
@@ -15,5 +16,5 @@ public interface ResumeSummaryDao {
      * @return the requested resume summaries
      */
     @Nonnull
-    ResumeSummaryCollection getAll(@Nonnull String userId, @Nonnull String companyId);
+    SortedSet<ResumeSummary> getAll(@Nonnull String userId, @Nonnull String companyId);
 }

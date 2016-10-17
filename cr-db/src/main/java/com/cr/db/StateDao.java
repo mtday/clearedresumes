@@ -1,7 +1,7 @@
 package com.cr.db;
 
 import com.cr.common.model.State;
-import com.cr.common.model.StateCollection;
+import java.util.SortedSet;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -15,7 +15,7 @@ public interface StateDao {
      * @return all of the available states that were found
      */
     @Nonnull
-    StateCollection getAll();
+    SortedSet<State> getAll();
 
     /**
      * Retrieve the specified state from the database based on unique id.

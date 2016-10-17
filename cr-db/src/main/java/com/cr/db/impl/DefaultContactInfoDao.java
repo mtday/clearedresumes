@@ -1,10 +1,11 @@
 package com.cr.db.impl;
 
 import com.cr.common.model.ContactInfo;
-import com.cr.common.model.ContactInfoCollection;
 import com.cr.db.ContactInfoDao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,21 +47,23 @@ public class DefaultContactInfoDao implements ContactInfoDao {
 
     @Nonnull
     @Override
-    public ContactInfoCollection getForResume(@Nonnull final String resumeId) {
-        return new ContactInfoCollection(
+    public SortedSet<ContactInfo> getForResume(@Nonnull final String resumeId) {
+        return new TreeSet<>(
                 this.jdbcTemplate.query("SELECT * FROM contact_infos WHERE resume_id = ?", this.rowMapper, resumeId));
     }
 
     @Override
     public void add(@Nonnull final ContactInfo contactInfo) {
-        this.jdbcTemplate.update("INSERT INTO contact_infos (id, resume_id, value) VALUES (?, ?, ?)",
-                contactInfo.getId(), contactInfo.getResumeId(), contactInfo.getValue());
+        this.jdbcTemplate
+                .update("INSERT INTO contact_infos (id, resume_id, value) VALUES (?, ?, ?)", contactInfo.getId(),
+                        contactInfo.getResumeId(), contactInfo.getValue());
     }
 
     @Override
     public void update(@Nonnull final ContactInfo contactInfo) {
-        this.jdbcTemplate.update("UPDATE contact_infos SET resume_id = ?, value = ? WHERE id = ?",
-                contactInfo.getResumeId(), contactInfo.getValue(), contactInfo.getId());
+        this.jdbcTemplate
+                .update("UPDATE contact_infos SET resume_id = ?, value = ? WHERE id = ?", contactInfo.getResumeId(),
+                        contactInfo.getValue(), contactInfo.getId());
     }
 
     @Override

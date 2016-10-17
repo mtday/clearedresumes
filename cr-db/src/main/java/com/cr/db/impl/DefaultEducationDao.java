@@ -1,10 +1,11 @@
 package com.cr.db.impl;
 
 import com.cr.common.model.Education;
-import com.cr.common.model.EducationCollection;
 import com.cr.db.EducationDao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,8 +47,8 @@ public class DefaultEducationDao implements EducationDao {
 
     @Nonnull
     @Override
-    public EducationCollection getForResume(@Nonnull final String resumeId) {
-        return new EducationCollection(
+    public SortedSet<Education> getForResume(@Nonnull final String resumeId) {
+        return new TreeSet<>(
                 this.jdbcTemplate.query("SELECT * FROM educations WHERE resume_id = ?", this.rowMapper, resumeId));
     }
 

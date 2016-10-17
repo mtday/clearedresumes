@@ -57,7 +57,7 @@ public class ResumeCareerFieldsController extends BaseResumeController {
         model.put("resume", resume);
         model.put("resumeLaborCategories", resume.getLaborCategories());
 
-        model.put("laborCategories", this.laborCategoryDao.getAll().getLaborCategories());
+        model.put("laborCategories", this.laborCategoryDao.getAll());
 
         final boolean complete = resume.isLaborCategoriesComplete();
         model.put("careerFieldStatusColor", complete ? "success" : "info");

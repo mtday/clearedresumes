@@ -7,7 +7,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import com.cr.common.model.Certification;
-import com.cr.common.model.CertificationCollection;
 import com.cr.common.model.Resume;
 import com.cr.common.model.ResumeStatus;
 import com.cr.common.model.User;
@@ -16,6 +15,7 @@ import com.cr.db.ResumeDao;
 import com.cr.db.TestApplication;
 import com.cr.db.UserDao;
 import java.time.LocalDateTime;
+import java.util.SortedSet;
 import java.util.UUID;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -59,9 +59,9 @@ public class DefaultCertificationDaoIT {
             final Certification beforeAdd = this.certificationDao.get(certification.getId());
             assertNull(beforeAdd);
 
-            final CertificationCollection beforeAddByResumeColl = this.certificationDao.getForResume(resume.getId());
+            final SortedSet<Certification> beforeAddByResumeColl = this.certificationDao.getForResume(resume.getId());
             assertNotNull(beforeAddByResumeColl);
-            final int beforeSize = beforeAddByResumeColl.getCertifications().size(); // may be non-zero from test data
+            final int beforeSize = beforeAddByResumeColl.size(); // may be non-zero from test data
 
             this.certificationDao.add(certification);
 
@@ -69,10 +69,10 @@ public class DefaultCertificationDaoIT {
             assertNotNull(getById);
             assertEquals(certification, getById);
 
-            final CertificationCollection getByResumeColl = this.certificationDao.getForResume(resume.getId());
+            final SortedSet<Certification> getByResumeColl = this.certificationDao.getForResume(resume.getId());
             assertNotNull(getByResumeColl);
-            assertEquals(beforeSize + 1, getByResumeColl.getCertifications().size());
-            assertTrue(getByResumeColl.getCertifications().contains(certification));
+            assertEquals(beforeSize + 1, getByResumeColl.size());
+            assertTrue(getByResumeColl.contains(certification));
 
             final Certification updated =
                     new Certification(certification.getId(), resume.getId(), "new certificate", 2020);
@@ -82,19 +82,19 @@ public class DefaultCertificationDaoIT {
             assertNotNull(afterUpdate);
             assertEquals(updated, afterUpdate);
 
-            final CertificationCollection afterUpdateByResumeColl = this.certificationDao.getForResume(resume.getId());
+            final SortedSet<Certification> afterUpdateByResumeColl = this.certificationDao.getForResume(resume.getId());
             assertNotNull(afterUpdateByResumeColl);
-            assertEquals(beforeSize + 1, afterUpdateByResumeColl.getCertifications().size());
-            assertTrue(afterUpdateByResumeColl.getCertifications().contains(updated));
+            assertEquals(beforeSize + 1, afterUpdateByResumeColl.size());
+            assertTrue(afterUpdateByResumeColl.contains(updated));
 
             this.certificationDao.delete(certification.getId());
 
             final Certification afterDelete = this.certificationDao.get(certification.getId());
             assertNull(afterDelete);
 
-            final CertificationCollection afterDeleteByResume = this.certificationDao.getForResume(resume.getId());
+            final SortedSet<Certification> afterDeleteByResume = this.certificationDao.getForResume(resume.getId());
             assertNotNull(afterDeleteByResume);
-            assertEquals(beforeSize, afterDeleteByResume.getCertifications().size());
+            assertEquals(beforeSize, afterDeleteByResume.size());
         } finally {
             this.resumeDao.delete(resume.getId());
         }

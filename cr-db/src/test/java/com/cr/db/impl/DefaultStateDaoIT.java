@@ -6,9 +6,9 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import com.cr.common.model.State;
-import com.cr.common.model.StateCollection;
 import com.cr.db.StateDao;
 import com.cr.db.TestApplication;
+import java.util.SortedSet;
 import java.util.UUID;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,9 +30,9 @@ public class DefaultStateDaoIT {
      */
     @Test
     public void test() {
-        final StateCollection beforeAddColl = this.stateDao.getAll();
+        final SortedSet<State> beforeAddColl = this.stateDao.getAll();
         assertNotNull(beforeAddColl);
-        final int beforeSize = beforeAddColl.getStates().size(); // may be non-zero from test data
+        final int beforeSize = beforeAddColl.size(); // may be non-zero from test data
 
         final State state = new State(UUID.randomUUID().toString(), "State");
         final State beforeAdd = this.stateDao.get(state.getId());
@@ -40,10 +40,10 @@ public class DefaultStateDaoIT {
 
         this.stateDao.add(state);
 
-        final StateCollection afterAddColl = this.stateDao.getAll();
+        final SortedSet<State> afterAddColl = this.stateDao.getAll();
         assertNotNull(afterAddColl);
-        assertEquals(beforeSize + 1, afterAddColl.getStates().size());
-        assertTrue(afterAddColl.getStates().contains(state));
+        assertEquals(beforeSize + 1, afterAddColl.size());
+        assertTrue(afterAddColl.contains(state));
 
         final State afterAdd = this.stateDao.get(state.getId());
         assertNotNull(afterAdd);
@@ -52,10 +52,10 @@ public class DefaultStateDaoIT {
         final State updated = new State(state.getId(), "New Name");
         this.stateDao.update(updated);
 
-        final StateCollection afterUpdateColl = this.stateDao.getAll();
+        final SortedSet<State> afterUpdateColl = this.stateDao.getAll();
         assertNotNull(afterUpdateColl);
-        assertEquals(beforeSize + 1, afterUpdateColl.getStates().size());
-        assertTrue(afterUpdateColl.getStates().contains(updated));
+        assertEquals(beforeSize + 1, afterUpdateColl.size());
+        assertTrue(afterUpdateColl.contains(updated));
 
         final State afterUpdate = this.stateDao.get(updated.getId());
         assertNotNull(afterUpdate);
@@ -63,9 +63,9 @@ public class DefaultStateDaoIT {
 
         this.stateDao.delete(state.getId());
 
-        final StateCollection afterDeleteColl = this.stateDao.getAll();
+        final SortedSet<State> afterDeleteColl = this.stateDao.getAll();
         assertNotNull(afterDeleteColl);
-        assertEquals(beforeSize, afterDeleteColl.getStates().size());
+        assertEquals(beforeSize, afterDeleteColl.size());
 
         final State afterDelete = this.stateDao.get(state.getId());
         assertNull(afterDelete);

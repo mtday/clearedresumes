@@ -7,7 +7,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import com.cr.common.model.ContactInfo;
-import com.cr.common.model.ContactInfoCollection;
 import com.cr.common.model.Resume;
 import com.cr.common.model.ResumeStatus;
 import com.cr.common.model.User;
@@ -16,6 +15,7 @@ import com.cr.db.ResumeDao;
 import com.cr.db.TestApplication;
 import com.cr.db.UserDao;
 import java.time.LocalDateTime;
+import java.util.SortedSet;
 import java.util.UUID;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -59,9 +59,9 @@ public class DefaultContactInfoDaoIT {
             final ContactInfo beforeAdd = this.contactInfoDao.get(contactInfo.getId());
             assertNull(beforeAdd);
 
-            final ContactInfoCollection beforeAddByResumeColl = this.contactInfoDao.getForResume(resume.getId());
+            final SortedSet<ContactInfo> beforeAddByResumeColl = this.contactInfoDao.getForResume(resume.getId());
             assertNotNull(beforeAddByResumeColl);
-            assertEquals(0, beforeAddByResumeColl.getContactInfos().size());
+            assertEquals(0, beforeAddByResumeColl.size());
 
             this.contactInfoDao.add(contactInfo);
 
@@ -69,10 +69,10 @@ public class DefaultContactInfoDaoIT {
             assertNotNull(getById);
             assertEquals(contactInfo, getById);
 
-            final ContactInfoCollection getByResumeColl = this.contactInfoDao.getForResume(resume.getId());
+            final SortedSet<ContactInfo> getByResumeColl = this.contactInfoDao.getForResume(resume.getId());
             assertNotNull(getByResumeColl);
-            assertEquals(1, getByResumeColl.getContactInfos().size());
-            assertTrue(getByResumeColl.getContactInfos().contains(contactInfo));
+            assertEquals(1, getByResumeColl.size());
+            assertTrue(getByResumeColl.contains(contactInfo));
 
             final ContactInfo updated = new ContactInfo(contactInfo.getId(), resume.getId(), "123-456-7777");
             this.contactInfoDao.update(updated);
@@ -81,19 +81,19 @@ public class DefaultContactInfoDaoIT {
             assertNotNull(afterUpdate);
             assertEquals(updated, afterUpdate);
 
-            final ContactInfoCollection afterUpdateByResumeColl = this.contactInfoDao.getForResume(resume.getId());
+            final SortedSet<ContactInfo> afterUpdateByResumeColl = this.contactInfoDao.getForResume(resume.getId());
             assertNotNull(afterUpdateByResumeColl);
-            assertEquals(1, afterUpdateByResumeColl.getContactInfos().size());
-            assertTrue(afterUpdateByResumeColl.getContactInfos().contains(updated));
+            assertEquals(1, afterUpdateByResumeColl.size());
+            assertTrue(afterUpdateByResumeColl.contains(updated));
 
             this.contactInfoDao.delete(contactInfo.getId());
 
             final ContactInfo afterDelete = this.contactInfoDao.get(contactInfo.getId());
             assertNull(afterDelete);
 
-            final ContactInfoCollection afterDeleteByResume = this.contactInfoDao.getForResume(resume.getId());
+            final SortedSet<ContactInfo> afterDeleteByResume = this.contactInfoDao.getForResume(resume.getId());
             assertNotNull(afterDeleteByResume);
-            assertEquals(0, afterDeleteByResume.getContactInfos().size());
+            assertEquals(0, afterDeleteByResume.size());
         } finally {
             this.resumeDao.delete(resume.getId());
         }

@@ -9,7 +9,6 @@ import static org.junit.Assert.fail;
 import com.cr.common.model.Company;
 import com.cr.common.model.PlanType;
 import com.cr.common.model.Transaction;
-import com.cr.common.model.TransactionCollection;
 import com.cr.common.model.User;
 import com.cr.db.CompanyDao;
 import com.cr.db.TestApplication;
@@ -17,6 +16,7 @@ import com.cr.db.TransactionDao;
 import com.cr.db.UserDao;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.SortedSet;
 import java.util.UUID;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -53,17 +53,17 @@ public class DefaultTransactionDaoIT {
         this.companyDao.add(company);
 
         try {
-            final TransactionCollection beforeAddColl = this.transactionDao.getAll();
+            final SortedSet<Transaction> beforeAddColl = this.transactionDao.getAll();
             assertNotNull(beforeAddColl);
-            assertEquals(0, beforeAddColl.getTransactions().size());
+            assertEquals(0, beforeAddColl.size());
 
-            final TransactionCollection beforeAddByCompanyColl = this.transactionDao.getForCompany(company.getId());
+            final SortedSet<Transaction> beforeAddByCompanyColl = this.transactionDao.getForCompany(company.getId());
             assertNotNull(beforeAddByCompanyColl);
-            assertEquals(0, beforeAddByCompanyColl.getTransactions().size());
+            assertEquals(0, beforeAddByCompanyColl.size());
 
-            final TransactionCollection beforeAddByUserColl = this.transactionDao.getForUser(user.getId());
+            final SortedSet<Transaction> beforeAddByUserColl = this.transactionDao.getForUser(user.getId());
             assertNotNull(beforeAddByUserColl);
-            assertEquals(0, beforeAddByUserColl.getTransactions().size());
+            assertEquals(0, beforeAddByUserColl.size());
 
             final Transaction beforeAdd = this.transactionDao.get("id");
             assertNull(beforeAdd);
@@ -73,20 +73,20 @@ public class DefaultTransactionDaoIT {
                             new BigDecimal("1.23").setScale(2, BigDecimal.ROUND_HALF_UP));
             this.transactionDao.add(transaction);
 
-            final TransactionCollection afterAddColl = this.transactionDao.getAll();
+            final SortedSet<Transaction> afterAddColl = this.transactionDao.getAll();
             assertNotNull(afterAddColl);
-            assertEquals(1, afterAddColl.getTransactions().size());
-            assertTrue(afterAddColl.getTransactions().contains(transaction));
+            assertEquals(1, afterAddColl.size());
+            assertTrue(afterAddColl.contains(transaction));
 
-            final TransactionCollection afterAddByCompanyColl = this.transactionDao.getForCompany(company.getId());
+            final SortedSet<Transaction> afterAddByCompanyColl = this.transactionDao.getForCompany(company.getId());
             assertNotNull(afterAddByCompanyColl);
-            assertEquals(1, afterAddByCompanyColl.getTransactions().size());
-            assertTrue(afterAddByCompanyColl.getTransactions().contains(transaction));
+            assertEquals(1, afterAddByCompanyColl.size());
+            assertTrue(afterAddByCompanyColl.contains(transaction));
 
-            final TransactionCollection afterAddByUserColl = this.transactionDao.getForUser(user.getId());
+            final SortedSet<Transaction> afterAddByUserColl = this.transactionDao.getForUser(user.getId());
             assertNotNull(afterAddByUserColl);
-            assertEquals(1, afterAddByUserColl.getTransactions().size());
-            assertTrue(afterAddByUserColl.getTransactions().contains(transaction));
+            assertEquals(1, afterAddByUserColl.size());
+            assertTrue(afterAddByUserColl.contains(transaction));
 
             final Transaction afterAdd = this.transactionDao.get(transaction.getId());
             assertNotNull(afterAdd);
@@ -97,10 +97,10 @@ public class DefaultTransactionDaoIT {
                             LocalDateTime.now(), new BigDecimal("2.34").setScale(2, BigDecimal.ROUND_HALF_UP));
             this.transactionDao.update(updated);
 
-            final TransactionCollection afterUpdateColl = this.transactionDao.getAll();
+            final SortedSet<Transaction> afterUpdateColl = this.transactionDao.getAll();
             assertNotNull(afterUpdateColl);
-            assertEquals(1, afterUpdateColl.getTransactions().size());
-            assertTrue(afterUpdateColl.getTransactions().contains(updated));
+            assertEquals(1, afterUpdateColl.size());
+            assertTrue(afterUpdateColl.contains(updated));
 
             final Transaction afterUpdate = this.transactionDao.get(updated.getId());
             assertNotNull(afterUpdate);
@@ -108,9 +108,9 @@ public class DefaultTransactionDaoIT {
 
             this.transactionDao.delete(transaction.getId());
 
-            final TransactionCollection afterDeleteColl = this.transactionDao.getAll();
+            final SortedSet<Transaction> afterDeleteColl = this.transactionDao.getAll();
             assertNotNull(afterDeleteColl);
-            assertEquals(0, afterDeleteColl.getTransactions().size());
+            assertEquals(0, afterDeleteColl.size());
 
             final Transaction afterDelete = this.transactionDao.get(transaction.getId());
             assertNull(afterDelete);

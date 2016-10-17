@@ -8,7 +8,6 @@ import static org.junit.Assert.fail;
 
 import com.cr.common.model.Resume;
 import com.cr.common.model.ResumeLaborCategory;
-import com.cr.common.model.ResumeLaborCategoryCollection;
 import com.cr.common.model.ResumeStatus;
 import com.cr.common.model.User;
 import com.cr.db.ResumeDao;
@@ -16,6 +15,7 @@ import com.cr.db.ResumeLaborCategoryDao;
 import com.cr.db.TestApplication;
 import com.cr.db.UserDao;
 import java.time.LocalDateTime;
+import java.util.SortedSet;
 import java.util.UUID;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -59,9 +59,10 @@ public class DefaultResumeLaborCategoryDaoIT {
             final ResumeLaborCategory beforeAdd = this.resumeLcatDao.get(resumeLcat.getId());
             assertNull(beforeAdd);
 
-            final ResumeLaborCategoryCollection beforeAddByResumeColl = this.resumeLcatDao.getForResume(resume.getId());
+            final SortedSet<ResumeLaborCategory> beforeAddByResumeColl =
+                    this.resumeLcatDao.getForResume(resume.getId());
             assertNotNull(beforeAddByResumeColl);
-            assertEquals(0, beforeAddByResumeColl.getResumeLaborCategories().size());
+            assertEquals(0, beforeAddByResumeColl.size());
 
             this.resumeLcatDao.add(resumeLcat);
 
@@ -69,10 +70,10 @@ public class DefaultResumeLaborCategoryDaoIT {
             assertNotNull(getById);
             assertEquals(resumeLcat, getById);
 
-            final ResumeLaborCategoryCollection getByResumeColl = this.resumeLcatDao.getForResume(resume.getId());
+            final SortedSet<ResumeLaborCategory> getByResumeColl = this.resumeLcatDao.getForResume(resume.getId());
             assertNotNull(getByResumeColl);
-            assertEquals(1, getByResumeColl.getResumeLaborCategories().size());
-            assertTrue(getByResumeColl.getResumeLaborCategories().contains(resumeLcat));
+            assertEquals(1, getByResumeColl.size());
+            assertTrue(getByResumeColl.contains(resumeLcat));
 
             final ResumeLaborCategory updated =
                     new ResumeLaborCategory(resumeLcat.getId(), resume.getId(), "Labor Category", 11);
@@ -82,20 +83,20 @@ public class DefaultResumeLaborCategoryDaoIT {
             assertNotNull(afterUpdate);
             assertEquals(updated, afterUpdate);
 
-            final ResumeLaborCategoryCollection afterUpdateByResumeColl =
+            final SortedSet<ResumeLaborCategory> afterUpdateByResumeColl =
                     this.resumeLcatDao.getForResume(resume.getId());
             assertNotNull(afterUpdateByResumeColl);
-            assertEquals(1, afterUpdateByResumeColl.getResumeLaborCategories().size());
-            assertTrue(afterUpdateByResumeColl.getResumeLaborCategories().contains(updated));
+            assertEquals(1, afterUpdateByResumeColl.size());
+            assertTrue(afterUpdateByResumeColl.contains(updated));
 
             this.resumeLcatDao.delete(resumeLcat.getId());
 
             final ResumeLaborCategory afterDelete = this.resumeLcatDao.get(resumeLcat.getId());
             assertNull(afterDelete);
 
-            final ResumeLaborCategoryCollection afterDeleteByResume = this.resumeLcatDao.getForResume(resume.getId());
+            final SortedSet<ResumeLaborCategory> afterDeleteByResume = this.resumeLcatDao.getForResume(resume.getId());
             assertNotNull(afterDeleteByResume);
-            assertEquals(0, afterDeleteByResume.getResumeLaborCategories().size());
+            assertEquals(0, afterDeleteByResume.size());
         } finally {
             this.resumeDao.delete(resume.getId());
         }

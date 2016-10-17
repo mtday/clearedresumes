@@ -1,7 +1,7 @@
 package com.cr.db;
 
 import com.cr.common.model.Company;
-import com.cr.common.model.CompanyCollection;
+import java.util.SortedSet;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -15,7 +15,7 @@ public interface CompanyDao {
      * @return all of the available companies that were found
      */
     @Nonnull
-    CompanyCollection getAll();
+    SortedSet<Company> getAll();
 
     /**
      * Retrieve the specified company from the database based on unique id.
@@ -33,7 +33,7 @@ public interface CompanyDao {
      * @return the requested companies
      */
     @Nonnull
-    CompanyCollection getForUser(@Nonnull String userId);
+    SortedSet<Company> getForUser(@Nonnull String userId);
 
     /**
      * Add a new company into the database.

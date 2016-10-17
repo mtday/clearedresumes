@@ -1,10 +1,11 @@
 package com.cr.db.impl;
 
 import com.cr.common.model.LaborCategory;
-import com.cr.common.model.LaborCategoryCollection;
 import com.cr.db.LaborCategoryDao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +37,8 @@ public class DefaultLaborCategoryDao implements LaborCategoryDao {
 
     @Nonnull
     @Override
-    public LaborCategoryCollection getAll() {
-        return new LaborCategoryCollection(this.jdbcTemplate.query("SELECT * FROM labor_categories", this.rowMapper));
+    public SortedSet<LaborCategory> getAll() {
+        return new TreeSet<>(this.jdbcTemplate.query("SELECT * FROM labor_categories", this.rowMapper));
     }
 
     @Nullable

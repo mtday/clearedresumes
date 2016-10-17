@@ -2,7 +2,6 @@ package com.cr.db.impl;
 
 import com.cr.common.model.Resume;
 import com.cr.common.model.ResumeReview;
-import com.cr.common.model.ResumeReviewCollection;
 import com.cr.common.model.ResumeReviewStatus;
 import com.cr.db.ResumeReviewDao;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
@@ -16,6 +15,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,15 +61,15 @@ public class DefaultResumeReviewDao implements ResumeReviewDao {
 
     @Nonnull
     @Override
-    public ResumeReviewCollection getForCompany(@Nonnull final String companyId) {
-        return new ResumeReviewCollection(this.jdbcTemplate
+    public SortedSet<ResumeReview> getForCompany(@Nonnull final String companyId) {
+        return new TreeSet<>(this.jdbcTemplate
                 .query("SELECT * FROM resume_reviews WHERE company_id = ?", this.rowMapper, companyId));
     }
 
     @Nonnull
     @Override
-    public ResumeReviewCollection getForResume(@Nonnull final String resumeId) {
-        return new ResumeReviewCollection(
+    public SortedSet<ResumeReview> getForResume(@Nonnull final String resumeId) {
+        return new TreeSet<>(
                 this.jdbcTemplate.query("SELECT * FROM resume_reviews WHERE resume_id = ?", this.rowMapper, resumeId));
     }
 

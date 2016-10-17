@@ -1,7 +1,7 @@
 package com.cr.db;
 
 import com.cr.common.model.PolygraphType;
-import com.cr.common.model.PolygraphTypeCollection;
+import java.util.SortedSet;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -15,7 +15,7 @@ public interface PolygraphTypeDao {
      * @return all of the available polygraph types that were found
      */
     @Nonnull
-    PolygraphTypeCollection getAll();
+    SortedSet<PolygraphType> getAll();
 
     /**
      * Retrieve the specified polygraph type from the database based on unique id.

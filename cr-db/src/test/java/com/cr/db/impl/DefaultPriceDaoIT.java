@@ -5,11 +5,11 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import com.cr.common.model.Price;
-import com.cr.common.model.PriceCollection;
 import com.cr.common.model.PriceType;
 import com.cr.db.PriceDao;
 import com.cr.db.TestApplication;
 import java.math.BigDecimal;
+import java.util.SortedSet;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +30,9 @@ public class DefaultPriceDaoIT {
      */
     @Test
     public void test() {
-        final PriceCollection prices = this.priceDao.getAll();
+        final SortedSet<Price> prices = this.priceDao.getAll();
         assertNotNull(prices);
-        assertEquals(3, prices.getPrices().size());
+        assertEquals(3, prices.size());
 
         final Price price = this.priceDao.get(PriceType.ENTERPRISE_PACKAGE);
         assertNotNull(price);

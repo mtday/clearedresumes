@@ -6,7 +6,6 @@ import com.cr.common.model.ResumeIntroduction;
 import com.cr.common.model.ResumeLaborCategory;
 import com.cr.common.model.ResumeReview;
 import com.cr.common.model.ResumeSummary;
-import com.cr.common.model.ResumeSummaryCollection;
 import com.cr.common.model.WorkLocation;
 import com.cr.db.ClearanceDao;
 import com.cr.db.ResumeDao;
@@ -73,9 +72,9 @@ public class DefaultResumeSummaryDao implements ResumeSummaryDao {
 
     @Nonnull
     @Override
-    public ResumeSummaryCollection getAll(@Nonnull final String userId, @Nonnull final String companyId) {
+    public SortedSet<ResumeSummary> getAll(@Nonnull final String userId, @Nonnull final String companyId) {
         final Map<String, Resume> resumeMap = new HashMap<>();
-        this.resumeDao.getViewable(userId).getResumes().forEach(resume -> resumeMap.put(resume.getId(), resume));
+        this.resumeDao.getViewable(userId).forEach(resume -> resumeMap.put(resume.getId(), resume));
 
         final Map<String, ResumeIntroduction> introMap = this.resumeIntroductionDao.getForResumes(resumeMap);
         final Map<String, Collection<ResumeLaborCategory>> lcatMap =
@@ -99,7 +98,6 @@ public class DefaultResumeSummaryDao implements ResumeSummaryDao {
                     Optional.ofNullable(reviewMap.get(resumeId)).orElse(Collections.emptyList());
             summaries.add(new ResumeSummary(fullName, resume, lcats, workLocations, clearances, reviews));
         });
-
-        return new ResumeSummaryCollection(summaries);
+        return summaries;
     }
 }

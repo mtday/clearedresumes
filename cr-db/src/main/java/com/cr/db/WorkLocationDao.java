@@ -2,9 +2,9 @@ package com.cr.db;
 
 import com.cr.common.model.Resume;
 import com.cr.common.model.WorkLocation;
-import com.cr.common.model.WorkLocationCollection;
 import java.util.Collection;
 import java.util.Map;
+import java.util.SortedSet;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -28,7 +28,7 @@ public interface WorkLocationDao {
      * @return the requested work locations
      */
     @Nonnull
-    WorkLocationCollection getForResume(@Nonnull String resumeId);
+    SortedSet<WorkLocation> getForResume(@Nonnull String resumeId);
 
     /**
      * Retrieve all the work locations associated with the specified resumes.

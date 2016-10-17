@@ -1,12 +1,13 @@
 package com.cr.db.impl;
 
 import com.cr.common.model.WorkSummary;
-import com.cr.common.model.WorkSummaryCollection;
 import com.cr.db.WorkSummaryDao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,8 +51,8 @@ public class DefaultWorkSummaryDao implements WorkSummaryDao {
 
     @Nonnull
     @Override
-    public WorkSummaryCollection getForResume(@Nonnull final String resumeId) {
-        return new WorkSummaryCollection(
+    public SortedSet<WorkSummary> getForResume(@Nonnull final String resumeId) {
+        return new TreeSet<>(
                 this.jdbcTemplate.query("SELECT * FROM work_summaries WHERE resume_id = ?", this.rowMapper, resumeId));
     }
 

@@ -2,7 +2,6 @@ package com.cr.db;
 
 import com.cr.common.model.Authority;
 import com.cr.common.model.User;
-import com.cr.common.model.UserCollection;
 import java.util.Collection;
 import java.util.SortedSet;
 import javax.annotation.Nonnull;
@@ -34,7 +33,7 @@ public interface UserDao {
      * @return all of the available user accounts that were found
      */
     @Nonnull
-    UserCollection getAll();
+    SortedSet<User> getAll();
 
     /**
      * Retrieve the specified user accounts from the database based on unique id.
@@ -43,7 +42,7 @@ public interface UserDao {
      * @return the requested users
      */
     @Nonnull
-    UserCollection get(@Nonnull Collection<String> ids);
+    SortedSet<User> get(@Nonnull Collection<String> ids);
 
     /**
      * Retrieve the specified user from the database based on unique id.
@@ -61,7 +60,7 @@ public interface UserDao {
      * @return the requested user accounts
      */
     @Nonnull
-    UserCollection getForCompany(@Nonnull String companyId);
+    SortedSet<User> getForCompany(@Nonnull String companyId);
 
     /**
      * Retrieve the specified user from the database based on unique login.

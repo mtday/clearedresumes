@@ -1,8 +1,8 @@
 package com.cr.db;
 
 import com.cr.common.model.KeyWord;
-import com.cr.common.model.KeyWordCollection;
 import java.util.Collection;
+import java.util.SortedSet;
 import javax.annotation.Nonnull;
 
 /**
@@ -16,7 +16,7 @@ public interface KeyWordDao {
      * @return the requested key words
      */
     @Nonnull
-    KeyWordCollection getForResume(@Nonnull String resumeId);
+    SortedSet<KeyWord> getForResume(@Nonnull String resumeId);
 
     /**
      * Add new key words into the database.

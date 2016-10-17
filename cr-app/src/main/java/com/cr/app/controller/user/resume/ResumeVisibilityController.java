@@ -62,10 +62,10 @@ public class ResumeVisibilityController extends BaseResumeController {
         final ResumeContainer resume = createResumeContainer();
         model.put("resume", resume);
 
-        final Collection<Company> companies = new ArrayList<>(this.companyDao.getAll().getCompanies());
+        final Collection<Company> companies = new ArrayList<>(this.companyDao.getAll());
 
         final Collection<ResumeReview> reviews =
-                this.resumeReviewDao.getForResume(resume.getResume().getId()).getResumeReviews();
+                this.resumeReviewDao.getForResume(resume.getResume().getId());
         final Set<String> excludedCompanyIds =
                 reviews.stream().filter(r -> r.getStatus() == ResumeReviewStatus.EXCLUDED)
                         .map(ResumeReview::getCompanyId).collect(Collectors.toSet());

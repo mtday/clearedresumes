@@ -16,7 +16,6 @@ import com.cr.common.model.ResumeReview;
 import com.cr.common.model.ResumeReviewStatus;
 import com.cr.common.model.ResumeStatus;
 import com.cr.common.model.ResumeSummary;
-import com.cr.common.model.ResumeSummaryCollection;
 import com.cr.common.model.User;
 import com.cr.common.model.WorkLocation;
 import com.cr.db.ClearanceDao;
@@ -31,6 +30,7 @@ import com.cr.db.TestApplication;
 import com.cr.db.UserDao;
 import com.cr.db.WorkLocationDao;
 import java.time.LocalDateTime;
+import java.util.SortedSet;
 import java.util.UUID;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -118,10 +118,10 @@ public class DefaultResumeSummaryDaoIT {
         this.companyUserDao.add(companyUser);
 
         try {
-            final ResumeSummaryCollection coll = this.resumeSummaryDao.getAll(user.getId(), company.getId());
+            final SortedSet<ResumeSummary> coll = this.resumeSummaryDao.getAll(user.getId(), company.getId());
             assertNotNull(coll);
-            assertEquals(1, coll.getResumeSummaries().size());
-            final ResumeSummary summary = coll.getResumeSummaries().first();
+            assertEquals(1, coll.size());
+            final ResumeSummary summary = coll.first();
             assertNotNull(summary);
             assertEquals(introduction.getFullName(), summary.getFullName());
             assertEquals(1, summary.getLaborCategories().size());

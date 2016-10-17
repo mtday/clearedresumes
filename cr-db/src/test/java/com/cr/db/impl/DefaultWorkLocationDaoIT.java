@@ -10,12 +10,12 @@ import com.cr.common.model.Resume;
 import com.cr.common.model.ResumeStatus;
 import com.cr.common.model.User;
 import com.cr.common.model.WorkLocation;
-import com.cr.common.model.WorkLocationCollection;
 import com.cr.db.ResumeDao;
 import com.cr.db.TestApplication;
 import com.cr.db.UserDao;
 import com.cr.db.WorkLocationDao;
 import java.time.LocalDateTime;
+import java.util.SortedSet;
 import java.util.UUID;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -59,9 +59,9 @@ public class DefaultWorkLocationDaoIT {
             final WorkLocation beforeAdd = this.workLocationDao.get(workLocation.getId());
             assertNull(beforeAdd);
 
-            final WorkLocationCollection beforeAddByResumeColl = this.workLocationDao.getForResume(resume.getId());
+            final SortedSet<WorkLocation> beforeAddByResumeColl = this.workLocationDao.getForResume(resume.getId());
             assertNotNull(beforeAddByResumeColl);
-            assertEquals(0, beforeAddByResumeColl.getWorkLocations().size());
+            assertEquals(0, beforeAddByResumeColl.size());
 
             this.workLocationDao.add(workLocation);
 
@@ -69,10 +69,10 @@ public class DefaultWorkLocationDaoIT {
             assertNotNull(getById);
             assertEquals(workLocation, getById);
 
-            final WorkLocationCollection getByResumeColl = this.workLocationDao.getForResume(resume.getId());
+            final SortedSet<WorkLocation> getByResumeColl = this.workLocationDao.getForResume(resume.getId());
             assertNotNull(getByResumeColl);
-            assertEquals(1, getByResumeColl.getWorkLocations().size());
-            assertTrue(getByResumeColl.getWorkLocations().contains(workLocation));
+            assertEquals(1, getByResumeColl.size());
+            assertTrue(getByResumeColl.contains(workLocation));
 
             final WorkLocation updated =
                     new WorkLocation(workLocation.getId(), resume.getId(), "Maryland", "Indian Head");
@@ -82,19 +82,19 @@ public class DefaultWorkLocationDaoIT {
             assertNotNull(afterUpdate);
             assertEquals(updated, afterUpdate);
 
-            final WorkLocationCollection afterUpdateByResumeColl = this.workLocationDao.getForResume(resume.getId());
+            final SortedSet<WorkLocation> afterUpdateByResumeColl = this.workLocationDao.getForResume(resume.getId());
             assertNotNull(afterUpdateByResumeColl);
-            assertEquals(1, afterUpdateByResumeColl.getWorkLocations().size());
-            assertTrue(afterUpdateByResumeColl.getWorkLocations().contains(updated));
+            assertEquals(1, afterUpdateByResumeColl.size());
+            assertTrue(afterUpdateByResumeColl.contains(updated));
 
             this.workLocationDao.delete(workLocation.getId());
 
             final WorkLocation afterDelete = this.workLocationDao.get(workLocation.getId());
             assertNull(afterDelete);
 
-            final WorkLocationCollection afterDeleteByResume = this.workLocationDao.getForResume(resume.getId());
+            final SortedSet<WorkLocation> afterDeleteByResume = this.workLocationDao.getForResume(resume.getId());
             assertNotNull(afterDeleteByResume);
-            assertEquals(0, afterDeleteByResume.getWorkLocations().size());
+            assertEquals(0, afterDeleteByResume.size());
         } finally {
             this.resumeDao.delete(resume.getId());
         }

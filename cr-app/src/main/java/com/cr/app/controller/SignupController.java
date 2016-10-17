@@ -5,7 +5,6 @@ import com.cr.common.model.Authority;
 import com.cr.common.model.Company;
 import com.cr.common.model.CompanyUser;
 import com.cr.common.model.PlanType;
-import com.cr.common.model.PriceCollection;
 import com.cr.common.model.User;
 import com.cr.db.CompanyDao;
 import com.cr.db.CompanyUserDao;
@@ -99,8 +98,7 @@ public class SignupController extends BaseController {
             @Nonnull @PathVariable("plan") final String plan, @Nonnull final Map<String, Object> model) {
         setCurrentAccount(model);
 
-        final PriceCollection prices = this.priceDao.getAll();
-        prices.getPrices().forEach(price -> model.put(price.getType().name(), price.getPrice().toString()));
+        this.priceDao.getAll().forEach(price -> model.put(price.getType().name(), price.getPrice().toString()));
         model.put("plan", plan);
         return "signup-company";
     }

@@ -1,18 +1,18 @@
 package com.cr.db.impl;
 
-import com.cr.common.model.CertificationCollection;
-import com.cr.common.model.ClearanceCollection;
-import com.cr.common.model.ContactInfoCollection;
-import com.cr.common.model.EducationCollection;
-import com.cr.common.model.KeyWordCollection;
+import com.cr.common.model.Certification;
+import com.cr.common.model.Clearance;
+import com.cr.common.model.ContactInfo;
+import com.cr.common.model.Education;
+import com.cr.common.model.KeyWord;
 import com.cr.common.model.Resume;
 import com.cr.common.model.ResumeContainer;
 import com.cr.common.model.ResumeIntroduction;
-import com.cr.common.model.ResumeLaborCategoryCollection;
-import com.cr.common.model.ResumeReviewCollection;
+import com.cr.common.model.ResumeLaborCategory;
+import com.cr.common.model.ResumeReview;
 import com.cr.common.model.User;
-import com.cr.common.model.WorkLocationCollection;
-import com.cr.common.model.WorkSummaryCollection;
+import com.cr.common.model.WorkLocation;
+import com.cr.common.model.WorkSummary;
 import com.cr.db.CertificationDao;
 import com.cr.db.ClearanceDao;
 import com.cr.db.ContactInfoDao;
@@ -28,6 +28,7 @@ import com.cr.db.WorkLocationDao;
 import com.cr.db.WorkSummaryDao;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
+import java.util.SortedSet;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,20 +124,18 @@ public class DefaultResumeContainerDao implements ResumeContainerDao {
             final ResumeIntroduction resumeIntroduction =
                     Optional.ofNullable(this.resumeIntroductionDao.get(resume.getId()))
                             .orElse(new ResumeIntroduction(resume.getId(), "", ""));
-            final ResumeReviewCollection reviews = this.resumeReviewDao.getForResume(resume.getId());
-            final ResumeLaborCategoryCollection lcats = this.resumeLaborCategoryDao.getForResume(resume.getId());
-            final ContactInfoCollection contactInfos = this.contactInfoDao.getForResume(resume.getId());
-            final WorkLocationCollection workLocations = this.workLocationDao.getForResume(resume.getId());
-            final WorkSummaryCollection workSummaries = this.workSummaryDao.getForResume(resume.getId());
-            final ClearanceCollection clearances = this.clearanceDao.getForResume(resume.getId());
-            final EducationCollection educations = this.educationDao.getForResume(resume.getId());
-            final CertificationCollection certifications = this.certificationDao.getForResume(resume.getId());
-            final KeyWordCollection keyWords = this.keyWordDao.getForResume(resume.getId());
+            final SortedSet<ResumeReview> reviews = this.resumeReviewDao.getForResume(resume.getId());
+            final SortedSet<ResumeLaborCategory> lcats = this.resumeLaborCategoryDao.getForResume(resume.getId());
+            final SortedSet<ContactInfo> contactInfos = this.contactInfoDao.getForResume(resume.getId());
+            final SortedSet<WorkLocation> workLocations = this.workLocationDao.getForResume(resume.getId());
+            final SortedSet<WorkSummary> workSummaries = this.workSummaryDao.getForResume(resume.getId());
+            final SortedSet<Clearance> clearances = this.clearanceDao.getForResume(resume.getId());
+            final SortedSet<Education> educations = this.educationDao.getForResume(resume.getId());
+            final SortedSet<Certification> certifications = this.certificationDao.getForResume(resume.getId());
+            final SortedSet<KeyWord> keyWords = this.keyWordDao.getForResume(resume.getId());
 
-            return new ResumeContainer(user, resume, resumeIntroduction, reviews.getResumeReviews(),
-                    lcats.getResumeLaborCategories(), contactInfos.getContactInfos(), workLocations.getWorkLocations(),
-                    workSummaries.getWorkSummaries(), clearances.getClearances(), educations.getEducations(),
-                    certifications.getCertifications(), keyWords.getKeyWords());
+            return new ResumeContainer(user, resume, resumeIntroduction, reviews, lcats, contactInfos, workLocations,
+                    workSummaries, clearances, educations, certifications, keyWords);
         }
         return null;
     }

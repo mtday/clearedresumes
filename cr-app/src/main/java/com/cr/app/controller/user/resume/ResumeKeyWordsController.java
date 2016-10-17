@@ -94,10 +94,10 @@ public class ResumeKeyWordsController extends BaseResumeController {
         final ResumeContainer resumeContainer = createResumeContainer();
 
         final Set<String> existingWords =
-                this.keyWordDao.getForResume(resumeContainer.getResume().getId()).getKeyWords().stream()
-                        .map(KeyWord::getWord).collect(Collectors.toSet());
+                this.keyWordDao.getForResume(resumeContainer.getResume().getId()).stream().map(KeyWord::getWord)
+                        .collect(Collectors.toSet());
         final Set<KeyWord> newKeyWords =
-                Arrays.asList(words.split("\\s+")).stream().map(word -> word.toLowerCase(Locale.ENGLISH))
+                Arrays.stream(words.split("\\s+")).map(word -> word.toLowerCase(Locale.ENGLISH))
                         .filter(word -> !existingWords.contains(word))
                         .map(word -> new KeyWord(resumeContainer.getResume().getId(), word))
                         .collect(Collectors.toSet());

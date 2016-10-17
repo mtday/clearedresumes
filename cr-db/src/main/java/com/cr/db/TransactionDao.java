@@ -1,7 +1,7 @@
 package com.cr.db;
 
 import com.cr.common.model.Transaction;
-import com.cr.common.model.TransactionCollection;
+import java.util.SortedSet;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -15,7 +15,7 @@ public interface TransactionDao {
      * @return all of the available transactions that were found
      */
     @Nonnull
-    TransactionCollection getAll();
+    SortedSet<Transaction> getAll();
 
     /**
      * Retrieve the specified transaction from the database based on unique id.
@@ -33,7 +33,7 @@ public interface TransactionDao {
      * @return the requested transactions
      */
     @Nonnull
-    TransactionCollection getForCompany(@Nonnull String companyId);
+    SortedSet<Transaction> getForCompany(@Nonnull String companyId);
 
     /**
      * Retrieve the transactions associated with the specified unique user id.
@@ -42,7 +42,7 @@ public interface TransactionDao {
      * @return the requested transactions
      */
     @Nonnull
-    TransactionCollection getForUser(@Nonnull String userId);
+    SortedSet<Transaction> getForUser(@Nonnull String userId);
 
     /**
      * Add a new transaction into the database.

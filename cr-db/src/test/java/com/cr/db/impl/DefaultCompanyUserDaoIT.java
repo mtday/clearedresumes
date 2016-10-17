@@ -6,15 +6,14 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import com.cr.common.model.Company;
-import com.cr.common.model.CompanyCollection;
 import com.cr.common.model.CompanyUser;
 import com.cr.common.model.PlanType;
 import com.cr.common.model.User;
-import com.cr.common.model.UserCollection;
 import com.cr.db.CompanyDao;
 import com.cr.db.CompanyUserDao;
 import com.cr.db.TestApplication;
 import com.cr.db.UserDao;
+import java.util.SortedSet;
 import java.util.UUID;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -53,36 +52,36 @@ public class DefaultCompanyUserDaoIT {
         this.companyDao.add(company);
 
         try {
-            final CompanyCollection beforeAddByUserColl = this.companyDao.getForUser(user.getId());
+            final SortedSet<Company> beforeAddByUserColl = this.companyDao.getForUser(user.getId());
             assertNotNull(beforeAddByUserColl);
-            final int beforeSize = beforeAddByUserColl.getCompanies().size(); // may be non-zero from test data
+            final int beforeSize = beforeAddByUserColl.size(); // may be non-zero from test data
 
-            final UserCollection beforeAddByCompanyColl = this.userDao.getForCompany(company.getId());
+            final SortedSet<User> beforeAddByCompanyColl = this.userDao.getForCompany(company.getId());
             assertNotNull(beforeAddByCompanyColl);
-            assertEquals(0, beforeAddByCompanyColl.getUsers().size());
+            assertEquals(0, beforeAddByCompanyColl.size());
 
             final CompanyUser companyUser = new CompanyUser(user.getId(), company.getId());
             this.companyUserDao.add(companyUser);
 
-            final CompanyCollection afterAddByUserColl = this.companyDao.getForUser(user.getId());
+            final SortedSet<Company> afterAddByUserColl = this.companyDao.getForUser(user.getId());
             assertNotNull(afterAddByUserColl);
-            assertEquals(beforeSize + 1, afterAddByUserColl.getCompanies().size());
-            assertTrue(afterAddByUserColl.getCompanies().contains(company));
+            assertEquals(beforeSize + 1, afterAddByUserColl.size());
+            assertTrue(afterAddByUserColl.contains(company));
 
-            final UserCollection afterAddByCompanyColl = this.userDao.getForCompany(company.getId());
+            final SortedSet<User> afterAddByCompanyColl = this.userDao.getForCompany(company.getId());
             assertNotNull(afterAddByCompanyColl);
-            assertEquals(1, afterAddByCompanyColl.getUsers().size());
-            assertTrue(afterAddByCompanyColl.getUsers().contains(user));
+            assertEquals(1, afterAddByCompanyColl.size());
+            assertTrue(afterAddByCompanyColl.contains(user));
 
             this.companyUserDao.delete(companyUser);
 
-            final CompanyCollection afterDeleteByUserColl = this.companyDao.getForUser(user.getId());
+            final SortedSet<Company> afterDeleteByUserColl = this.companyDao.getForUser(user.getId());
             assertNotNull(afterDeleteByUserColl);
-            assertEquals(beforeSize, afterDeleteByUserColl.getCompanies().size());
+            assertEquals(beforeSize, afterDeleteByUserColl.size());
 
-            final UserCollection afterDeleteByCompanyColl = this.userDao.getForCompany(company.getId());
+            final SortedSet<User> afterDeleteByCompanyColl = this.userDao.getForCompany(company.getId());
             assertNotNull(afterDeleteByCompanyColl);
-            assertEquals(0, afterDeleteByCompanyColl.getUsers().size());
+            assertEquals(0, afterDeleteByCompanyColl.size());
         } finally {
             this.companyDao.delete(company.getId());
         }

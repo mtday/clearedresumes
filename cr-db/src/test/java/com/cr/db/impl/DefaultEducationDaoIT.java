@@ -7,7 +7,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import com.cr.common.model.Education;
-import com.cr.common.model.EducationCollection;
 import com.cr.common.model.Resume;
 import com.cr.common.model.ResumeStatus;
 import com.cr.common.model.User;
@@ -16,6 +15,7 @@ import com.cr.db.ResumeDao;
 import com.cr.db.TestApplication;
 import com.cr.db.UserDao;
 import java.time.LocalDateTime;
+import java.util.SortedSet;
 import java.util.UUID;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -59,9 +59,9 @@ public class DefaultEducationDaoIT {
             final Education beforeAdd = this.educationDao.get(education.getId());
             assertNull(beforeAdd);
 
-            final EducationCollection beforeAddByResumeColl = this.educationDao.getForResume(resume.getId());
+            final SortedSet<Education> beforeAddByResumeColl = this.educationDao.getForResume(resume.getId());
             assertNotNull(beforeAddByResumeColl);
-            assertEquals(0, beforeAddByResumeColl.getEducations().size());
+            assertEquals(0, beforeAddByResumeColl.size());
 
             this.educationDao.add(education);
 
@@ -69,10 +69,10 @@ public class DefaultEducationDaoIT {
             assertNotNull(getById);
             assertEquals(education, getById);
 
-            final EducationCollection getByResumeColl = this.educationDao.getForResume(resume.getId());
+            final SortedSet<Education> getByResumeColl = this.educationDao.getForResume(resume.getId());
             assertNotNull(getByResumeColl);
-            assertEquals(1, getByResumeColl.getEducations().size());
-            assertTrue(getByResumeColl.getEducations().contains(education));
+            assertEquals(1, getByResumeColl.size());
+            assertTrue(getByResumeColl.contains(education));
 
             final Education updated =
                     new Education(education.getId(), resume.getId(), "new institution", "new field", "new degree",
@@ -83,19 +83,19 @@ public class DefaultEducationDaoIT {
             assertNotNull(afterUpdate);
             assertEquals(updated, afterUpdate);
 
-            final EducationCollection afterUpdateByResumeColl = this.educationDao.getForResume(resume.getId());
+            final SortedSet<Education> afterUpdateByResumeColl = this.educationDao.getForResume(resume.getId());
             assertNotNull(afterUpdateByResumeColl);
-            assertEquals(1, afterUpdateByResumeColl.getEducations().size());
-            assertTrue(afterUpdateByResumeColl.getEducations().contains(updated));
+            assertEquals(1, afterUpdateByResumeColl.size());
+            assertTrue(afterUpdateByResumeColl.contains(updated));
 
             this.educationDao.delete(education.getId());
 
             final Education afterDelete = this.educationDao.get(education.getId());
             assertNull(afterDelete);
 
-            final EducationCollection afterDeleteByResume = this.educationDao.getForResume(resume.getId());
+            final SortedSet<Education> afterDeleteByResume = this.educationDao.getForResume(resume.getId());
             assertNotNull(afterDeleteByResume);
-            assertEquals(0, afterDeleteByResume.getEducations().size());
+            assertEquals(0, afterDeleteByResume.size());
         } finally {
             this.resumeDao.delete(resume.getId());
         }

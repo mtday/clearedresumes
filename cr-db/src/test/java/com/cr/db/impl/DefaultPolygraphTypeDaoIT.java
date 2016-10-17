@@ -6,9 +6,9 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import com.cr.common.model.PolygraphType;
-import com.cr.common.model.PolygraphTypeCollection;
 import com.cr.db.PolygraphTypeDao;
 import com.cr.db.TestApplication;
+import java.util.SortedSet;
 import java.util.UUID;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,9 +30,9 @@ public class DefaultPolygraphTypeDaoIT {
      */
     @Test
     public void test() {
-        final PolygraphTypeCollection beforeAddColl = this.polygraphTypeDao.getAll();
+        final SortedSet<PolygraphType> beforeAddColl = this.polygraphTypeDao.getAll();
         assertNotNull(beforeAddColl);
-        final int beforeSize = beforeAddColl.getPolygraphTypes().size(); // may be non-zero from test data
+        final int beforeSize = beforeAddColl.size(); // may be non-zero from test data
 
         final PolygraphType polygraphType = new PolygraphType(UUID.randomUUID().toString(), "Polygraph Type");
         final PolygraphType beforeAdd = this.polygraphTypeDao.get(polygraphType.getId());
@@ -40,10 +40,10 @@ public class DefaultPolygraphTypeDaoIT {
 
         this.polygraphTypeDao.add(polygraphType);
 
-        final PolygraphTypeCollection afterAddColl = this.polygraphTypeDao.getAll();
+        final SortedSet<PolygraphType> afterAddColl = this.polygraphTypeDao.getAll();
         assertNotNull(afterAddColl);
-        assertEquals(beforeSize + 1, afterAddColl.getPolygraphTypes().size());
-        assertTrue(afterAddColl.getPolygraphTypes().contains(polygraphType));
+        assertEquals(beforeSize + 1, afterAddColl.size());
+        assertTrue(afterAddColl.contains(polygraphType));
 
         final PolygraphType afterAdd = this.polygraphTypeDao.get(polygraphType.getId());
         assertNotNull(afterAdd);
@@ -52,10 +52,10 @@ public class DefaultPolygraphTypeDaoIT {
         final PolygraphType updated = new PolygraphType(polygraphType.getId(), "New Name");
         this.polygraphTypeDao.update(updated);
 
-        final PolygraphTypeCollection afterUpdateColl = this.polygraphTypeDao.getAll();
+        final SortedSet<PolygraphType> afterUpdateColl = this.polygraphTypeDao.getAll();
         assertNotNull(afterUpdateColl);
-        assertEquals(beforeSize + 1, afterUpdateColl.getPolygraphTypes().size());
-        assertTrue(afterUpdateColl.getPolygraphTypes().contains(updated));
+        assertEquals(beforeSize + 1, afterUpdateColl.size());
+        assertTrue(afterUpdateColl.contains(updated));
 
         final PolygraphType afterUpdate = this.polygraphTypeDao.get(updated.getId());
         assertNotNull(afterUpdate);
@@ -63,9 +63,9 @@ public class DefaultPolygraphTypeDaoIT {
 
         this.polygraphTypeDao.delete(polygraphType.getId());
 
-        final PolygraphTypeCollection afterDeleteColl = this.polygraphTypeDao.getAll();
+        final SortedSet<PolygraphType> afterDeleteColl = this.polygraphTypeDao.getAll();
         assertNotNull(afterDeleteColl);
-        assertEquals(beforeSize, afterDeleteColl.getPolygraphTypes().size());
+        assertEquals(beforeSize, afterDeleteColl.size());
 
         final PolygraphType afterDelete = this.polygraphTypeDao.get(polygraphType.getId());
         assertNull(afterDelete);

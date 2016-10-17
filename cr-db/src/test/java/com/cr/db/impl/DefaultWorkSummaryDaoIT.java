@@ -10,13 +10,13 @@ import com.cr.common.model.Resume;
 import com.cr.common.model.ResumeStatus;
 import com.cr.common.model.User;
 import com.cr.common.model.WorkSummary;
-import com.cr.common.model.WorkSummaryCollection;
 import com.cr.db.ResumeDao;
 import com.cr.db.TestApplication;
 import com.cr.db.UserDao;
 import com.cr.db.WorkSummaryDao;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.SortedSet;
 import java.util.UUID;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -65,9 +65,9 @@ public class DefaultWorkSummaryDaoIT {
             final WorkSummary beforeAdd = this.workSummaryDao.get(workSummary1.getId());
             assertNull(beforeAdd);
 
-            final WorkSummaryCollection beforeAddByResumeColl = this.workSummaryDao.getForResume(resume.getId());
+            final SortedSet<WorkSummary> beforeAddByResumeColl = this.workSummaryDao.getForResume(resume.getId());
             assertNotNull(beforeAddByResumeColl);
-            assertEquals(0, beforeAddByResumeColl.getWorkSummaries().size());
+            assertEquals(0, beforeAddByResumeColl.size());
 
             this.workSummaryDao.add(workSummary1);
             this.workSummaryDao.add(workSummary2);
@@ -80,11 +80,11 @@ public class DefaultWorkSummaryDaoIT {
             assertNotNull(get2ById);
             assertEquals(workSummary2, get2ById);
 
-            final WorkSummaryCollection getByResumeColl = this.workSummaryDao.getForResume(resume.getId());
+            final SortedSet<WorkSummary> getByResumeColl = this.workSummaryDao.getForResume(resume.getId());
             assertNotNull(getByResumeColl);
-            assertEquals(2, getByResumeColl.getWorkSummaries().size());
-            assertTrue(getByResumeColl.getWorkSummaries().contains(workSummary1));
-            assertTrue(getByResumeColl.getWorkSummaries().contains(workSummary2));
+            assertEquals(2, getByResumeColl.size());
+            assertTrue(getByResumeColl.contains(workSummary1));
+            assertTrue(getByResumeColl.contains(workSummary2));
 
             final WorkSummary updated1 =
                     new WorkSummary(workSummary1.getId(), resume.getId(), "New Title", "New Employer",
@@ -103,11 +103,11 @@ public class DefaultWorkSummaryDaoIT {
             assertNotNull(afterUpdate2);
             assertEquals(updated2, afterUpdate2);
 
-            final WorkSummaryCollection afterUpdateByResumeColl = this.workSummaryDao.getForResume(resume.getId());
+            final SortedSet<WorkSummary> afterUpdateByResumeColl = this.workSummaryDao.getForResume(resume.getId());
             assertNotNull(afterUpdateByResumeColl);
-            assertEquals(2, afterUpdateByResumeColl.getWorkSummaries().size());
-            assertTrue(afterUpdateByResumeColl.getWorkSummaries().contains(updated1));
-            assertTrue(afterUpdateByResumeColl.getWorkSummaries().contains(updated2));
+            assertEquals(2, afterUpdateByResumeColl.size());
+            assertTrue(afterUpdateByResumeColl.contains(updated1));
+            assertTrue(afterUpdateByResumeColl.contains(updated2));
 
             this.workSummaryDao.delete(workSummary1.getId());
             this.workSummaryDao.delete(workSummary2.getId());
@@ -117,9 +117,9 @@ public class DefaultWorkSummaryDaoIT {
             final WorkSummary afterDelete2 = this.workSummaryDao.get(workSummary2.getId());
             assertNull(afterDelete2);
 
-            final WorkSummaryCollection afterDeleteByResume = this.workSummaryDao.getForResume(resume.getId());
+            final SortedSet<WorkSummary> afterDeleteByResume = this.workSummaryDao.getForResume(resume.getId());
             assertNotNull(afterDeleteByResume);
-            assertEquals(0, afterDeleteByResume.getWorkSummaries().size());
+            assertEquals(0, afterDeleteByResume.size());
         } finally {
             this.resumeDao.delete(resume.getId());
         }

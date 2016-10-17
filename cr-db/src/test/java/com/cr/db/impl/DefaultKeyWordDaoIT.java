@@ -6,7 +6,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import com.cr.common.model.KeyWord;
-import com.cr.common.model.KeyWordCollection;
 import com.cr.common.model.Resume;
 import com.cr.common.model.ResumeStatus;
 import com.cr.common.model.User;
@@ -17,6 +16,7 @@ import com.cr.db.UserDao;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -57,25 +57,25 @@ public class DefaultKeyWordDaoIT {
         this.resumeDao.add(resume);
 
         try {
-            final KeyWordCollection beforeAddColl = this.keyWordDao.getForResume(resume.getId());
+            final SortedSet<KeyWord> beforeAddColl = this.keyWordDao.getForResume(resume.getId());
             assertNotNull(beforeAddColl);
-            assertEquals(0, beforeAddColl.getKeyWords().size());
+            assertEquals(0, beforeAddColl.size());
 
             final Set<String> words = new TreeSet<>(Arrays.asList("a", "fringilla", "id", "lorem", "quis", "sit"));
             final Set<KeyWord> keyWords =
                     words.stream().map(word -> new KeyWord(resume.getId(), word)).collect(Collectors.toSet());
             this.keyWordDao.add(keyWords);
 
-            final KeyWordCollection getColl = this.keyWordDao.getForResume(resume.getId());
+            final SortedSet<KeyWord> getColl = this.keyWordDao.getForResume(resume.getId());
             assertNotNull(getColl);
-            assertEquals(keyWords.size(), getColl.getKeyWords().size());
-            assertTrue(getColl.getKeyWords().containsAll(keyWords));
+            assertEquals(keyWords.size(), getColl.size());
+            assertTrue(getColl.containsAll(keyWords));
 
             keyWords.forEach(keyWord -> this.keyWordDao.delete(keyWord));
 
-            final KeyWordCollection afterDelete = this.keyWordDao.getForResume(resume.getId());
+            final SortedSet<KeyWord> afterDelete = this.keyWordDao.getForResume(resume.getId());
             assertNotNull(afterDelete);
-            assertEquals(0, afterDelete.getKeyWords().size());
+            assertEquals(0, afterDelete.size());
         } finally {
             this.resumeDao.delete(resume.getId());
         }

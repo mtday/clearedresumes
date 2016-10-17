@@ -1,13 +1,14 @@
 package com.cr.db.impl;
 
 import com.cr.common.model.Price;
-import com.cr.common.model.PriceCollection;
 import com.cr.common.model.PriceType;
 import com.cr.db.PriceDao;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,8 +42,8 @@ public class DefaultPriceDao implements PriceDao {
 
     @Nonnull
     @Override
-    public PriceCollection getAll() {
-        return new PriceCollection(this.jdbcTemplate.query("SELECT * FROM prices", this.rowMapper));
+    public SortedSet<Price> getAll() {
+        return new TreeSet<>(this.jdbcTemplate.query("SELECT * FROM prices", this.rowMapper));
     }
 
     @Nullable

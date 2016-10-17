@@ -45,7 +45,7 @@ public class ResumeExpirationTask {
      */
     @Scheduled(fixedDelay = 60000, initialDelay = 10000)
     public void markResumesAsExpired() {
-        final SortedSet<Resume> expiredResumes = this.resumeDao.getPublishedExpiredResumes().getResumes();
+        final SortedSet<Resume> expiredResumes = this.resumeDao.getPublishedExpiredResumes();
 
         expiredResumes.forEach(resume -> {
             final Resume updated =
@@ -54,7 +54,7 @@ public class ResumeExpirationTask {
         });
 
         final Set<String> userIds = expiredResumes.stream().map(Resume::getUserId).collect(Collectors.toSet());
-        final SortedSet<User> users = this.userDao.get(userIds).getUsers();
+        final SortedSet<User> users = this.userDao.get(userIds);
 
         // TODO: Send out email notifications to the expired resume owners.
         users.forEach(user -> LOG.info("Need to alert user {} that their resume has expired.", user.getEmail()));

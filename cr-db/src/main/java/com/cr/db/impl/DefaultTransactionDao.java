@@ -1,13 +1,14 @@
 package com.cr.db.impl;
 
 import com.cr.common.model.Transaction;
-import com.cr.common.model.TransactionCollection;
 import com.cr.db.TransactionDao;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,8 +42,8 @@ public class DefaultTransactionDao implements TransactionDao {
 
     @Nonnull
     @Override
-    public TransactionCollection getAll() {
-        return new TransactionCollection(this.jdbcTemplate.query("SELECT * FROM transactions", this.rowMapper));
+    public SortedSet<Transaction> getAll() {
+        return new TreeSet<>(this.jdbcTemplate.query("SELECT * FROM transactions", this.rowMapper));
     }
 
     @Nullable
@@ -57,15 +58,15 @@ public class DefaultTransactionDao implements TransactionDao {
 
     @Nonnull
     @Override
-    public TransactionCollection getForCompany(@Nonnull final String companyId) {
-        return new TransactionCollection(
+    public SortedSet<Transaction> getForCompany(@Nonnull final String companyId) {
+        return new TreeSet<>(
                 this.jdbcTemplate.query("SELECT * FROM transactions WHERE company_id = ?", this.rowMapper, companyId));
     }
 
     @Nonnull
     @Override
-    public TransactionCollection getForUser(@Nonnull final String userId) {
-        return new TransactionCollection(
+    public SortedSet<Transaction> getForUser(@Nonnull final String userId) {
+        return new TreeSet<>(
                 this.jdbcTemplate.query("SELECT * FROM transactions WHERE user_id = ?", this.rowMapper, userId));
     }
 
@@ -73,7 +74,7 @@ public class DefaultTransactionDao implements TransactionDao {
     public void add(@Nonnull final Transaction transaction) {
         this.jdbcTemplate.update("INSERT INTO transactions (id, company_id, user_id, description, created, amount) "
                         + "VALUES (?, ?, ?, ?, ?, ?)", transaction.getId(), transaction.getCompanyId(), transaction
-                .getUserId(),
+                        .getUserId(),
                 transaction.getDescription(), transaction.getCreated().format(FORMATTER), transaction.getAmount());
     }
 

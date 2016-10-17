@@ -1,7 +1,6 @@
 package com.cr.db.impl;
 
 import com.cr.common.model.KeyWord;
-import com.cr.common.model.KeyWordCollection;
 import com.cr.db.KeyWordDao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,6 +8,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import javax.annotation.Nonnull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
@@ -39,8 +40,8 @@ public class DefaultKeyWordDao implements KeyWordDao {
 
     @Nonnull
     @Override
-    public KeyWordCollection getForResume(@Nonnull final String resumeId) {
-        return new KeyWordCollection(
+    public SortedSet<KeyWord> getForResume(@Nonnull final String resumeId) {
+        return new TreeSet<>(
                 this.jdbcTemplate.query("SELECT * FROM key_words WHERE resume_id = ?", this.rowMapper, resumeId));
     }
 

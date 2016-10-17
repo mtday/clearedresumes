@@ -1,10 +1,11 @@
 package com.cr.db.impl;
 
 import com.cr.common.model.Certification;
-import com.cr.common.model.CertificationCollection;
 import com.cr.db.CertificationDao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,8 +47,8 @@ public class DefaultCertificationDao implements CertificationDao {
 
     @Nonnull
     @Override
-    public CertificationCollection getForResume(@Nonnull final String resumeId) {
-        return new CertificationCollection(
+    public SortedSet<Certification> getForResume(@Nonnull final String resumeId) {
+        return new TreeSet<>(
                 this.jdbcTemplate.query("SELECT * FROM certifications WHERE resume_id = ?", this.rowMapper, resumeId));
     }
 

@@ -1,7 +1,7 @@
 package com.cr.db;
 
 import com.cr.common.model.ContactInfo;
-import com.cr.common.model.ContactInfoCollection;
+import java.util.SortedSet;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -25,7 +25,7 @@ public interface ContactInfoDao {
      * @return the requested contact info
      */
     @Nonnull
-    ContactInfoCollection getForResume(@Nonnull String resumeId);
+    SortedSet<ContactInfo> getForResume(@Nonnull String resumeId);
 
     /**
      * Add a new contact info into the database.

@@ -1,10 +1,11 @@
 package com.cr.db.impl;
 
 import com.cr.common.model.ClearanceType;
-import com.cr.common.model.ClearanceTypeCollection;
 import com.cr.db.ClearanceTypeDao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +37,8 @@ public class DefaultClearanceTypeDao implements ClearanceTypeDao {
 
     @Nonnull
     @Override
-    public ClearanceTypeCollection getAll() {
-        return new ClearanceTypeCollection(this.jdbcTemplate.query("SELECT * FROM clearance_types", this.rowMapper));
+    public SortedSet<ClearanceType> getAll() {
+        return new TreeSet<>(this.jdbcTemplate.query("SELECT * FROM clearance_types", this.rowMapper));
     }
 
     @Nullable

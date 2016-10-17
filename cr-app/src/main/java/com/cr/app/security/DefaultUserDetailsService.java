@@ -56,7 +56,7 @@ public class DefaultUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("Failed to find user with name: " + loginOrEmail);
         }
         final Collection<Authority> authorities = this.userDao.getAuthorities(user.getId());
-        final Collection<Company> companies = this.companyDao.getForUser(user.getId()).getCompanies();
+        final Collection<Company> companies = this.companyDao.getForUser(user.getId());
         final ResumeContainer resumeContainer = this.resumeContainerDao.getForUser(user.getId());
         final Account account = new Account(user, authorities, companies, resumeContainer);
         return new DefaultUserDetails(account);

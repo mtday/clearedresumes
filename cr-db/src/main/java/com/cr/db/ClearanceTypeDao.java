@@ -1,7 +1,7 @@
 package com.cr.db;
 
 import com.cr.common.model.ClearanceType;
-import com.cr.common.model.ClearanceTypeCollection;
+import java.util.SortedSet;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -15,7 +15,7 @@ public interface ClearanceTypeDao {
      * @return all of the available clearance types that were found
      */
     @Nonnull
-    ClearanceTypeCollection getAll();
+    SortedSet<ClearanceType> getAll();
 
     /**
      * Retrieve the specified clearance type from the database based on unique id.

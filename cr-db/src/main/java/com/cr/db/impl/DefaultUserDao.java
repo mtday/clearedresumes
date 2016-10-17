@@ -2,7 +2,6 @@ package com.cr.db.impl;
 
 import com.cr.common.model.Authority;
 import com.cr.common.model.User;
-import com.cr.common.model.UserCollection;
 import com.cr.db.UserDao;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.sql.Array;
@@ -56,14 +55,14 @@ public class DefaultUserDao implements UserDao {
 
     @Nonnull
     @Override
-    public UserCollection getAll() {
-        return new UserCollection(this.jdbcTemplate.query("SELECT * FROM users", this.userMapper));
+    public SortedSet<User> getAll() {
+        return new TreeSet<>(this.jdbcTemplate.query("SELECT * FROM users", this.userMapper));
     }
 
     @Nonnull
     @Override
-    public UserCollection get(@Nonnull final Collection<String> ids) {
-        return new UserCollection(this.jdbcTemplate.query(connection -> {
+    public SortedSet<User> get(@Nonnull final Collection<String> ids) {
+        return new TreeSet<>(this.jdbcTemplate.query(connection -> {
             final Array userIds = connection.createArrayOf("VARCHAR", ids.toArray());
             final PreparedStatement ps = connection.prepareStatement("SELECT * FROM users WHERE id = ANY (?)");
             ps.setArray(1, userIds);
@@ -116,8 +115,8 @@ public class DefaultUserDao implements UserDao {
 
     @Nonnull
     @Override
-    public UserCollection getForCompany(@Nonnull final String companyId) {
-        return new UserCollection(this.jdbcTemplate
+    public SortedSet<User> getForCompany(@Nonnull final String companyId) {
+        return new TreeSet<>(this.jdbcTemplate
                 .query("SELECT users.* FROM users JOIN company_users ON (users.id = company_users.user_id) "
                         + "WHERE company_users.company_id = ?", this.userMapper, companyId));
     }

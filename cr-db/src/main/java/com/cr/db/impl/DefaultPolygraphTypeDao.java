@@ -1,10 +1,11 @@
 package com.cr.db.impl;
 
 import com.cr.common.model.PolygraphType;
-import com.cr.common.model.PolygraphTypeCollection;
 import com.cr.db.PolygraphTypeDao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +37,8 @@ public class DefaultPolygraphTypeDao implements PolygraphTypeDao {
 
     @Nonnull
     @Override
-    public PolygraphTypeCollection getAll() {
-        return new PolygraphTypeCollection(this.jdbcTemplate.query("SELECT * FROM polygraph_types", this.rowMapper));
+    public SortedSet<PolygraphType> getAll() {
+        return new TreeSet<>(this.jdbcTemplate.query("SELECT * FROM polygraph_types", this.rowMapper));
     }
 
     @Nullable

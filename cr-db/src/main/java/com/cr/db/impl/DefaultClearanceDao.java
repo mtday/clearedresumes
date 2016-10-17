@@ -1,7 +1,6 @@
 package com.cr.db.impl;
 
 import com.cr.common.model.Clearance;
-import com.cr.common.model.ClearanceCollection;
 import com.cr.common.model.Resume;
 import com.cr.db.ClearanceDao;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
@@ -13,6 +12,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,8 +56,8 @@ public class DefaultClearanceDao implements ClearanceDao {
 
     @Nonnull
     @Override
-    public ClearanceCollection getForResume(@Nonnull final String resumeId) {
-        return new ClearanceCollection(
+    public SortedSet<Clearance> getForResume(@Nonnull final String resumeId) {
+        return new TreeSet<>(
                 this.jdbcTemplate.query("SELECT * FROM clearances WHERE resume_id = ?", this.rowMapper, resumeId));
     }
 

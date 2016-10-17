@@ -1,7 +1,7 @@
 package com.cr.db;
 
 import com.cr.common.model.Resume;
-import com.cr.common.model.ResumeCollection;
+import java.util.SortedSet;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -34,7 +34,7 @@ public interface ResumeDao {
      * @return the requested resumes
      */
     @Nonnull
-    ResumeCollection getViewable(@Nonnull String userId);
+    SortedSet<Resume> getViewable(@Nonnull String userId);
 
     /**
      * Retrieve all of the resumes that have expired but are still in a published state.
@@ -42,7 +42,7 @@ public interface ResumeDao {
      * @return the resumes that are expired but are still in a published state
      */
     @Nonnull
-    ResumeCollection getPublishedExpiredResumes();
+    SortedSet<Resume> getPublishedExpiredResumes();
 
     /**
      * Add a new resume into the database.

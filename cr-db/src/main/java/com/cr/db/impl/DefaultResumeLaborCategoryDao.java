@@ -2,7 +2,6 @@ package com.cr.db.impl;
 
 import com.cr.common.model.Resume;
 import com.cr.common.model.ResumeLaborCategory;
-import com.cr.common.model.ResumeLaborCategoryCollection;
 import com.cr.db.ResumeLaborCategoryDao;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.sql.Array;
@@ -13,6 +12,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,8 +56,8 @@ public class DefaultResumeLaborCategoryDao implements ResumeLaborCategoryDao {
 
     @Nonnull
     @Override
-    public ResumeLaborCategoryCollection getForResume(@Nonnull final String resumeId) {
-        return new ResumeLaborCategoryCollection(
+    public SortedSet<ResumeLaborCategory> getForResume(@Nonnull final String resumeId) {
+        return new TreeSet<>(
                 this.jdbcTemplate.query("SELECT * FROM resume_lcats WHERE resume_id = ?", this.rowMapper, resumeId));
     }
 

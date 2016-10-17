@@ -1,10 +1,11 @@
 package com.cr.db.impl;
 
 import com.cr.common.model.State;
-import com.cr.common.model.StateCollection;
 import com.cr.db.StateDao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +37,8 @@ public class DefaultStateDao implements StateDao {
 
     @Nonnull
     @Override
-    public StateCollection getAll() {
-        return new StateCollection(this.jdbcTemplate.query("SELECT * FROM states", this.rowMapper));
+    public SortedSet<State> getAll() {
+        return new TreeSet<>(this.jdbcTemplate.query("SELECT * FROM states", this.rowMapper));
     }
 
     @Nullable

@@ -1,7 +1,7 @@
 package com.cr.db;
 
 import com.cr.common.model.Education;
-import com.cr.common.model.EducationCollection;
+import java.util.SortedSet;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -25,7 +25,7 @@ public interface EducationDao {
      * @return the requested educations
      */
     @Nonnull
-    EducationCollection getForResume(@Nonnull String resumeId);
+    SortedSet<Education> getForResume(@Nonnull String resumeId);
 
     /**
      * Add a new education into the database.

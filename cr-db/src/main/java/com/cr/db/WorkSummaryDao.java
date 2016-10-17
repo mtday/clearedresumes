@@ -1,7 +1,7 @@
 package com.cr.db;
 
 import com.cr.common.model.WorkSummary;
-import com.cr.common.model.WorkSummaryCollection;
+import java.util.SortedSet;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -25,7 +25,7 @@ public interface WorkSummaryDao {
      * @return the requested work summaries
      */
     @Nonnull
-    WorkSummaryCollection getForResume(@Nonnull String resumeId);
+    SortedSet<WorkSummary> getForResume(@Nonnull String resumeId);
 
     /**
      * Add a new work summary into the database.

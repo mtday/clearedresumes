@@ -61,8 +61,8 @@ public class ResumeClearancesController extends BaseResumeController {
         model.put("resume", resume);
         model.put("clearances", resume.getClearances());
 
-        model.put("types", this.clearanceTypeDao.getAll().getClearanceTypes());
-        model.put("polygraphs", this.polygraphTypeDao.getAll().getPolygraphTypes());
+        model.put("types", this.clearanceTypeDao.getAll());
+        model.put("polygraphs", this.polygraphTypeDao.getAll());
 
         final boolean complete = resume.isClearancesComplete();
         model.put("clearanceStatusColor", complete ? "success" : "info");

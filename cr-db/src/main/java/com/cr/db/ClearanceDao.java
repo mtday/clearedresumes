@@ -1,10 +1,10 @@
 package com.cr.db;
 
 import com.cr.common.model.Clearance;
-import com.cr.common.model.ClearanceCollection;
 import com.cr.common.model.Resume;
 import java.util.Collection;
 import java.util.Map;
+import java.util.SortedSet;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -28,7 +28,7 @@ public interface ClearanceDao {
      * @return the requested clearance
      */
     @Nonnull
-    ClearanceCollection getForResume(@Nonnull String resumeId);
+    SortedSet<Clearance> getForResume(@Nonnull String resumeId);
 
     /**
      * Retrieve all the clearances associated with the specified resumes.

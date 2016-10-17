@@ -6,9 +6,9 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import com.cr.common.model.LaborCategory;
-import com.cr.common.model.LaborCategoryCollection;
 import com.cr.db.LaborCategoryDao;
 import com.cr.db.TestApplication;
+import java.util.SortedSet;
 import java.util.UUID;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,9 +30,9 @@ public class DefaultLaborCategoryDaoIT {
      */
     @Test
     public void test() {
-        final LaborCategoryCollection beforeAddColl = this.laborCategoryDao.getAll();
+        final SortedSet<LaborCategory> beforeAddColl = this.laborCategoryDao.getAll();
         assertNotNull(beforeAddColl);
-        final int beforeSize = beforeAddColl.getLaborCategories().size(); // may be non-zero from test data
+        final int beforeSize = beforeAddColl.size(); // may be non-zero from test data
 
         final LaborCategory lcat = new LaborCategory(UUID.randomUUID().toString(), "Labor Category");
         final LaborCategory beforeAdd = this.laborCategoryDao.get(lcat.getId());
@@ -40,10 +40,10 @@ public class DefaultLaborCategoryDaoIT {
 
         this.laborCategoryDao.add(lcat);
 
-        final LaborCategoryCollection afterAddColl = this.laborCategoryDao.getAll();
+        final SortedSet<LaborCategory> afterAddColl = this.laborCategoryDao.getAll();
         assertNotNull(afterAddColl);
-        assertEquals(beforeSize + 1, afterAddColl.getLaborCategories().size());
-        assertTrue(afterAddColl.getLaborCategories().contains(lcat));
+        assertEquals(beforeSize + 1, afterAddColl.size());
+        assertTrue(afterAddColl.contains(lcat));
 
         final LaborCategory afterAdd = this.laborCategoryDao.get(lcat.getId());
         assertNotNull(afterAdd);
@@ -52,10 +52,10 @@ public class DefaultLaborCategoryDaoIT {
         final LaborCategory updated = new LaborCategory(lcat.getId(), "New Name");
         this.laborCategoryDao.update(updated);
 
-        final LaborCategoryCollection afterUpdateColl = this.laborCategoryDao.getAll();
+        final SortedSet<LaborCategory> afterUpdateColl = this.laborCategoryDao.getAll();
         assertNotNull(afterUpdateColl);
-        assertEquals(beforeSize + 1, afterUpdateColl.getLaborCategories().size());
-        assertTrue(afterUpdateColl.getLaborCategories().contains(updated));
+        assertEquals(beforeSize + 1, afterUpdateColl.size());
+        assertTrue(afterUpdateColl.contains(updated));
 
         final LaborCategory afterUpdate = this.laborCategoryDao.get(updated.getId());
         assertNotNull(afterUpdate);
@@ -63,9 +63,9 @@ public class DefaultLaborCategoryDaoIT {
 
         this.laborCategoryDao.delete(lcat.getId());
 
-        final LaborCategoryCollection afterDeleteColl = this.laborCategoryDao.getAll();
+        final SortedSet<LaborCategory> afterDeleteColl = this.laborCategoryDao.getAll();
         assertNotNull(afterDeleteColl);
-        assertEquals(beforeSize, afterDeleteColl.getLaborCategories().size());
+        assertEquals(beforeSize, afterDeleteColl.size());
 
         final LaborCategory afterDelete = this.laborCategoryDao.get(lcat.getId());
         assertNull(afterDelete);

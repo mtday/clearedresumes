@@ -7,7 +7,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import com.cr.common.model.Clearance;
-import com.cr.common.model.ClearanceCollection;
 import com.cr.common.model.Resume;
 import com.cr.common.model.ResumeStatus;
 import com.cr.common.model.User;
@@ -16,6 +15,7 @@ import com.cr.db.ResumeDao;
 import com.cr.db.TestApplication;
 import com.cr.db.UserDao;
 import java.time.LocalDateTime;
+import java.util.SortedSet;
 import java.util.UUID;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -59,9 +59,9 @@ public class DefaultClearanceDaoIT {
             final Clearance beforeAdd = this.clearanceDao.get(clearance.getId());
             assertNull(beforeAdd);
 
-            final ClearanceCollection beforeAddByResumeColl = this.clearanceDao.getForResume(resume.getId());
+            final SortedSet<Clearance> beforeAddByResumeColl = this.clearanceDao.getForResume(resume.getId());
             assertNotNull(beforeAddByResumeColl);
-            final int beforeSize = beforeAddByResumeColl.getClearances().size(); // may be non-zero from test data
+            final int beforeSize = beforeAddByResumeColl.size(); // may be non-zero from test data
 
             this.clearanceDao.add(clearance);
 
@@ -69,10 +69,10 @@ public class DefaultClearanceDaoIT {
             assertNotNull(getById);
             assertEquals(clearance, getById);
 
-            final ClearanceCollection getByResumeColl = this.clearanceDao.getForResume(resume.getId());
+            final SortedSet<Clearance> getByResumeColl = this.clearanceDao.getForResume(resume.getId());
             assertNotNull(getByResumeColl);
-            assertEquals(beforeSize + 1, getByResumeColl.getClearances().size());
-            assertTrue(getByResumeColl.getClearances().contains(clearance));
+            assertEquals(beforeSize + 1, getByResumeColl.size());
+            assertTrue(getByResumeColl.contains(clearance));
 
             final Clearance updated =
                     new Clearance(clearance.getId(), resume.getId(), "TS", "DNI", "Counter-Intelligence");
@@ -82,19 +82,19 @@ public class DefaultClearanceDaoIT {
             assertNotNull(afterUpdate);
             assertEquals(updated, afterUpdate);
 
-            final ClearanceCollection afterUpdateByResumeColl = this.clearanceDao.getForResume(resume.getId());
+            final SortedSet<Clearance> afterUpdateByResumeColl = this.clearanceDao.getForResume(resume.getId());
             assertNotNull(afterUpdateByResumeColl);
-            assertEquals(beforeSize + 1, afterUpdateByResumeColl.getClearances().size());
-            assertTrue(afterUpdateByResumeColl.getClearances().contains(updated));
+            assertEquals(beforeSize + 1, afterUpdateByResumeColl.size());
+            assertTrue(afterUpdateByResumeColl.contains(updated));
 
             this.clearanceDao.delete(clearance.getId());
 
             final Clearance afterDelete = this.clearanceDao.get(clearance.getId());
             assertNull(afterDelete);
 
-            final ClearanceCollection afterDeleteByResume = this.clearanceDao.getForResume(resume.getId());
+            final SortedSet<Clearance> afterDeleteByResume = this.clearanceDao.getForResume(resume.getId());
             assertNotNull(afterDeleteByResume);
-            assertEquals(beforeSize, afterDeleteByResume.getClearances().size());
+            assertEquals(beforeSize, afterDeleteByResume.size());
         } finally {
             this.resumeDao.delete(resume.getId());
         }

@@ -1,7 +1,7 @@
 package com.cr.db;
 
 import com.cr.common.model.LaborCategory;
-import com.cr.common.model.LaborCategoryCollection;
+import java.util.SortedSet;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -15,7 +15,7 @@ public interface LaborCategoryDao {
      * @return all of the available labor categories that were found
      */
     @Nonnull
-    LaborCategoryCollection getAll();
+    SortedSet<LaborCategory> getAll();
 
     /**
      * Retrieve the specified labor category from the database based on unique id.

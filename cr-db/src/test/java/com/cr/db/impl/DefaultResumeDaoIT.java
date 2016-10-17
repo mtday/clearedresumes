@@ -7,13 +7,13 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import com.cr.common.model.Resume;
-import com.cr.common.model.ResumeCollection;
 import com.cr.common.model.ResumeStatus;
 import com.cr.common.model.User;
 import com.cr.db.ResumeDao;
 import com.cr.db.TestApplication;
 import com.cr.db.UserDao;
 import java.time.LocalDateTime;
+import java.util.SortedSet;
 import java.util.UUID;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,10 +44,12 @@ public class DefaultResumeDaoIT {
         this.userDao.add(user2);
 
         try {
-            final Resume resume1 = new Resume(UUID.randomUUID().toString(), user1.getId(), ResumeStatus.PUBLISHED,
-                    LocalDateTime.now(), LocalDateTime.now().plusDays(30));
-            final Resume resume2 = new Resume(UUID.randomUUID().toString(), user2.getId(), ResumeStatus.PUBLISHED,
-                    LocalDateTime.now(), LocalDateTime.now().plusDays(30));
+            final Resume resume1 =
+                    new Resume(UUID.randomUUID().toString(), user1.getId(), ResumeStatus.PUBLISHED, LocalDateTime.now(),
+                            LocalDateTime.now().plusDays(30));
+            final Resume resume2 =
+                    new Resume(UUID.randomUUID().toString(), user2.getId(), ResumeStatus.PUBLISHED, LocalDateTime.now(),
+                            LocalDateTime.now().plusDays(30));
 
             final Resume beforeAdd = this.resumeDao.get(resume1.getId());
             assertNull(beforeAdd);
@@ -74,17 +76,17 @@ public class DefaultResumeDaoIT {
             assertNotNull(get2ByUser);
             assertEquals(resume2, get2ByUser);
 
-            final ResumeCollection viewable1 = this.resumeDao.getViewable(user1.getId());
+            final SortedSet<Resume> viewable1 = this.resumeDao.getViewable(user1.getId());
             assertNotNull(viewable1);
-            assertFalse(viewable1.getResumes().isEmpty());
-            assertTrue(viewable1.getResumes().contains(resume1));
-            assertTrue(viewable1.getResumes().contains(resume2));
+            assertFalse(viewable1.isEmpty());
+            assertTrue(viewable1.contains(resume1));
+            assertTrue(viewable1.contains(resume2));
 
-            final ResumeCollection viewable2 = this.resumeDao.getViewable(user2.getId());
+            final SortedSet<Resume> viewable2 = this.resumeDao.getViewable(user2.getId());
             assertNotNull(viewable2);
-            assertFalse(viewable2.getResumes().isEmpty());
-            assertTrue(viewable2.getResumes().contains(resume1));
-            assertTrue(viewable2.getResumes().contains(resume2));
+            assertFalse(viewable2.isEmpty());
+            assertTrue(viewable2.contains(resume1));
+            assertTrue(viewable2.contains(resume2));
 
             final Resume updated1 =
                     new Resume(resume1.getId(), user1.getId(), ResumeStatus.PUBLISHED, resume1.getCreated(),
