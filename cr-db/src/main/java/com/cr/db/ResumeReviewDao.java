@@ -41,6 +41,16 @@ public interface ResumeReviewDao {
     SortedSet<ResumeReview> getForResume(@Nonnull String resumeId);
 
     /**
+     * Retrieve all of the resume reviews for the specified resume, limited to the provided company.
+     *
+     * @param resumeId the unique id of the resume for which reviews will be retrieved
+     * @param companyId the unique id of the company for which reviews will be retrieved
+     * @return the requested resume reviews
+     */
+    @Nonnull
+    SortedSet<ResumeReview> getForResume(@Nonnull String resumeId, @Nullable String companyId);
+
+    /**
      * Retrieve all the resume reviews associated with the specified resumes.
      *
      * @param resumeMap the resume id mapped to resume indicating which resume reviews to retrieve
@@ -70,7 +80,7 @@ public interface ResumeReviewDao {
      *
      * @param resumeId the unique id of the resume of the reviews to remove
      * @param companyId the unique id of the company of the reviews to remove
-     * @param status the status of the reviews to remove
+     * @param statuses the status values of the reviews to remove
      */
-    void delete(@Nonnull String resumeId, @Nonnull String companyId, @Nonnull ResumeReviewStatus status);
+    void delete(@Nonnull String resumeId, @Nonnull String companyId, @Nonnull ResumeReviewStatus... statuses);
 }

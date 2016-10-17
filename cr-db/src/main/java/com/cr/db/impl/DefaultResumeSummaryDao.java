@@ -73,8 +73,32 @@ public class DefaultResumeSummaryDao implements ResumeSummaryDao {
     @Nonnull
     @Override
     public SortedSet<ResumeSummary> getAll(@Nonnull final String userId, @Nonnull final String companyId) {
+        return createSummaries(this.resumeDao.getAllResumes(userId, companyId), companyId);
+    }
+
+    @Nonnull
+    @Override
+    public SortedSet<ResumeSummary> getLiked(@Nonnull final String userId, @Nonnull final String companyId) {
+        return createSummaries(this.resumeDao.getLikedResumes(userId, companyId), companyId);
+    }
+
+    @Nonnull
+    @Override
+    public SortedSet<ResumeSummary> getPurchased(@Nonnull final String userId, @Nonnull final String companyId) {
+        return createSummaries(this.resumeDao.getPurchasedResumes(userId, companyId), companyId);
+    }
+
+    @Nonnull
+    @Override
+    public SortedSet<ResumeSummary> getIgnored(@Nonnull final String userId, @Nonnull final String companyId) {
+        return createSummaries(this.resumeDao.getIgnoredResumes(userId, companyId), companyId);
+    }
+
+    @Nonnull
+    private SortedSet<ResumeSummary> createSummaries(
+            @Nonnull final SortedSet<Resume> resumes, @Nonnull final String companyId) {
         final Map<String, Resume> resumeMap = new HashMap<>();
-        this.resumeDao.getViewable(userId).forEach(resume -> resumeMap.put(resume.getId(), resume));
+        resumes.forEach(resume -> resumeMap.put(resume.getId(), resume));
 
         final Map<String, ResumeIntroduction> introMap = this.resumeIntroductionDao.getForResumes(resumeMap);
         final Map<String, Collection<ResumeLaborCategory>> lcatMap =

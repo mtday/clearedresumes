@@ -28,10 +28,23 @@
                         </div>
                         <div th:if="${visible} == false">
                             <div class="text-center">
-                                <a th:href="@{/employer/dashboard/like/{id}(id=${resume.resume.id})}"
-                                   class="btn btn-info">Like</a>
-                                <a th:href="@{/employer/dashboard/purchase/{id}(id=${resume.resume.id})}"
-                                   class="btn btn-success">Purchase</a>
+                                <a th:if="${!resume.isIgnored(company.id) and !resume.isPurchased(company.id)}"
+                                   th:href="@{/employer/dashboard/ignore/{id}(id=${resume.resume.id})}"
+                                   class="btn btn-warning btn-sm">Ignore</a>
+                                <a th:if="${resume.isIgnored(company.id)}"
+                                   th:href="@{/employer/dashboard/unignore/{id}(id=${resume.resume.id})}"
+                                   class="btn btn-warning btn-sm">Remove Ignore</a>
+                                <a th:if="${!resume.isLiked(company.id) and !resume.isPurchased(company.id)}"
+                                   th:href="@{/employer/dashboard/like/{id}(id=${resume.resume.id})}"
+                                   class="btn btn-info btn-sm">Like</a>
+                                <a th:if="${resume.isLiked(company.id)}"
+                                   th:href="@{/employer/dashboard/unlike/{id}(id=${resume.resume.id})}"
+                                   class="btn btn-info btn-sm">Remove Like</a>
+                                <a th:if="${!resume.isPurchased(company.id)}"
+                                   th:href="@{/employer/dashboard/purchase/{id}(id=${resume.resume.id})}"
+                                   class="btn btn-success btn-sm">Purchase
+                                    <span class="badge" th:text="${company.slots}">Slots</span></a>
+                                <p th:if="${resume.isPurchased(company.id)}" class="btn btn-info btn-sm">Purchased</p>
                             </div>
                         </div>
                     </div>

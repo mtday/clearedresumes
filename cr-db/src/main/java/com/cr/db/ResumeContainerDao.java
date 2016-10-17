@@ -18,6 +18,17 @@ public interface ResumeContainerDao {
     ResumeContainer get(@Nonnull String id);
 
     /**
+     * Retrieve the specified resume container from the database based on unique id, limiting the information returned
+     * to that visible to the specified company.
+     *
+     * @param id the unique id of the resume to retrieve
+     * @param companyId the unique id of the company that will view the resume
+     * @return the requested resume container, possibly null if not found
+     */
+    @Nullable
+    ResumeContainer get(@Nonnull String id, @Nonnull String companyId);
+
+    /**
      * Retrieve the resume container associated with the specified user account.
      *
      * @param userId the unique id of the user that owns the resume

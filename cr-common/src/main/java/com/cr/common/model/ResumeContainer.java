@@ -424,6 +424,39 @@ public class ResumeContainer implements Serializable, Comparable<ResumeContainer
         return true; // exclusions are not required
     }
 
+    /**
+     * Retrieve whether the resume represented by this summary has been liked by the specified company.
+     *
+     * @param companyId the unique id of the company to check for likes
+     * @return whether the resume represented by this summary has been liked by the specified company
+     */
+    public boolean isLiked(@Nonnull final String companyId) {
+        return getReviews().stream().filter(review -> review.getCompanyId().equals(companyId))
+                .anyMatch(review -> review.getStatus() == ResumeReviewStatus.LIKED);
+    }
+
+    /**
+     * Retrieve whether the resume represented by this summary has been purchased by the specified company.
+     *
+     * @param companyId the unique id of the company to check for purchases
+     * @return whether the resume represented by this summary has been purchased by the specified company
+     */
+    public boolean isPurchased(@Nonnull final String companyId) {
+        return getReviews().stream().filter(review -> review.getCompanyId().equals(companyId))
+                .anyMatch(review -> review.getStatus() == ResumeReviewStatus.PURCHASED);
+    }
+
+    /**
+     * Retrieve whether the resume represented by this summary has been ignored by the specified company.
+     *
+     * @param companyId the unique id of the company to check for purchases
+     * @return whether the resume represented by this summary has been ignored by the specified company
+     */
+    public boolean isIgnored(@Nonnull final String companyId) {
+        return getReviews().stream().filter(review -> review.getCompanyId().equals(companyId))
+                .anyMatch(review -> review.getStatus() == ResumeReviewStatus.IGNORED);
+    }
+
     @Override
     public int compareTo(@Nullable final ResumeContainer other) {
         if (other == null) {

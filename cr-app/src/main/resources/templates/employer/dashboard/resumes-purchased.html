@@ -6,13 +6,131 @@
 <nav th:replace="fragments/navbar :: navbar (currentPage='dashboard')"></nav>
 <div class="container">
 
-    <div th:replace="fragments/employer-dashboard-nav :: dashboard-nav (currentPage='resumes-purchased')"></div>
+    <div class="row dashboard-row">
+        <div class="col-md-2 well well-sm">
+            <!-- Navigation -->
+            <div th:replace="fragments/employer-dashboard-nav :: dashboard-nav (currentPage='resumes-purchased')"></div>
+        </div>
+        <div class="col-md-10 resume-content-container">
+            <div class="content-header">
+                <span class="pull-left">
+                    <h2>Purchased Resumes</h2>
+                </span>
+                <span class="pull-right">
+                    <div th:replace="fragments/employer-active-company :: employer-active-company"></div>
+                </span>
+            </div>
 
-    TODO - Resumes Purchased
+            <div class="resume-content">
+                <div th:if="${#lists.isEmpty(summaries)}" class="alert alert-warning">
+                    <h4>No resumes have been purchased.</h4>
+                </div>
+
+                <div th:if="${#lists.size(summaries) > 0}">
+                    <div class="pull-right resume-buttons">
+                        <a href="#" onclick="view();" id="button-view" class="disabled btn btn-primary">View</a>
+                    </div>
+
+                    <table id="resumes" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Labor Category</th>
+                                <th>Location</th>
+                                <th>Clearance</th>
+                                <th>Published</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="summary : ${summaries}">
+                                <td class="resume-id-cell" th:text="${summary.resume.id}">ID</td>
+                                <td class="resume-labor-category-cell">
+                                    <div th:each="laborCategory : ${summary.laborCategories}"
+                                         th:text="${laborCategory.laborCategory} + ' (' + ${laborCategory.experience} + ' years)'">
+                                        Labor Category (Experience years)
+                                    </div>
+                                </td>
+                                <td class="resume-location-cell">
+                                    <div th:each="workLocation : ${summary.workLocations}"
+                                         th:text="${workLocation.region} + ', ' + ${workLocation.state}">
+                                        Region, State
+                                    </div>
+                                </td>
+                                <td class="resume-clearance-cell">
+                                    <div th:each="clearance : ${summary.clearances}" th:text="${clearance.type}">
+                                        Clearance
+                                    </div>
+                                </td>
+                                <td class="resume-published-cell">
+                                    <div th:text="${summary.resume.getCreated('yyyy-MM-dd HH:mm')}">
+                                        Publish Date
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>
 
 <footer th:replace="fragments/footer :: footer"></footer>
 <div th:replace="fragments/scripts :: scripts"></div>
+<div th:replace="fragments/employer-active-company-script :: employer-active-company-script"></div>
+<script>
+/*<![CDATA[*/
+    var resumes = undefined;
+    $(document).ready(function() {
+        resumes = $('#resumes').DataTable({
+            order: [4, 'desc'],
+            columnDefs: [
+                {
+                    targets: [ 0 ],
+                    visible: false,
+                    searchable: false
+                }
+            ],
+            select: {
+                style: 'multi',
+                className: 'resume-row-selected'
+            }
+        });
+
+        resumes.on('select', function() {
+            updateButtons();
+        });
+
+        resumes.on('deselect', function() {
+            updateButtons();
+        });
+    });
+
+    function updateButtons() {
+        var selectedCount = resumes.rows({selected: true}).count();
+        if (selectedCount == 0) {
+            $('#button-view').addClass('disabled');
+        } else if (selectedCount == 1) {
+            $('#button-view').removeClass('disabled');
+        } else {
+            $('#button-view').addClass('disabled');
+        }
+    }
+
+    function view() {
+        document.location = '/employer/dashboard/view/' + getSelectedIds().join(',');
+    }
+
+    function getSelectedIds() {
+        var ids = [ ];
+        var data = resumes.rows({selected: true}).data();
+        for (row = 0; row < data.length; row++) {
+            ids.push(data[row][0]);
+        }
+        return ids;
+    }
+/*]]>*/
+</script>
 </body>
 </html>

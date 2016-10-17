@@ -7,6 +7,9 @@ public enum ResumeReviewStatus {
     /** The company has viewed this resume. */
     VIEWED,
 
+    /** The company has chosen to ignore this resume. */
+    IGNORED,
+
     /** The company has liked this resume. */
     LIKED,
 

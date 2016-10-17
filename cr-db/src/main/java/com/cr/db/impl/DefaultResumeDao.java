@@ -63,14 +63,70 @@ public class DefaultResumeDao implements ResumeDao {
 
     @Nonnull
     @Override
-    public SortedSet<Resume> getViewable(@Nonnull final String userId) {
+    public SortedSet<Resume> getAllResumes(@Nonnull final String userId, @Nonnull final String companyId) {
+        // Need to get resumes that:
+        // * Are published (status = PUBLISHED)
+        // * Are not expired (expiration >= NOW)
+        // * Have not been excluded for any of the user's companies
+        // * Have not been ignored by the company
+        // * Have not been liked by the company
+        // * Have not been purchased by the company
         return new TreeSet<>(this.jdbcTemplate
-                .query("SELECT * FROM resumes WHERE status = ? AND expiration >= ? AND id NOT IN "
-                                + "(SELECT resume_reviews.resume_id FROM resume_reviews JOIN company_users ON "
-                                + "(company_users.company_id = resume_reviews.company_id) "
-                                + "WHERE company_users.user_id = ? AND resume_reviews.status = ?)", this.rowMapper,
+                .query("SELECT * FROM resumes WHERE status = ? AND expiration >= ? AND id NOT IN ("
+                                + "SELECT rr.resume_id FROM resume_reviews rr JOIN company_users cu ON "
+                                + "(cu.company_id = rr.company_id) WHERE cu.user_id = ? AND rr.status = ?) AND "
+                                + "id NOT IN (SELECT resume_id FROM resume_reviews WHERE company_id = ? "
+                                + "AND (status = ? OR status = ? OR status = ?))", this.rowMapper,
                         ResumeStatus.PUBLISHED.name(), LocalDateTime.now().format(FORMATTER), userId,
-                        ResumeReviewStatus.EXCLUDED.name()));
+                        ResumeReviewStatus.EXCLUDED.name(), companyId, ResumeReviewStatus.IGNORED.name(),
+                        ResumeReviewStatus.LIKED.name(), ResumeReviewStatus.PURCHASED.name()));
+    }
+
+    @Nonnull
+    @Override
+    public SortedSet<Resume> getLikedResumes(@Nonnull final String userId, @Nonnull final String companyId) {
+        // Need to get resumes that:
+        // * Are published (status = PUBLISHED)
+        // * Are not expired (expiration >= NOW)
+        // * Have been liked by the company
+        // * Have not been excluded for any of the user's companies
+        return new TreeSet<>(this.jdbcTemplate
+                .query("SELECT * FROM resumes WHERE status = ? AND expiration >= ? AND id IN "
+                                + "(SELECT resume_id FROM resume_reviews WHERE company_id = ? AND status = ?)"
+                                + "AND id NOT IN (SELECT rr.resume_id FROM resume_reviews rr JOIN company_users cu ON "
+                                + "(cu.company_id = rr.company_id) WHERE cu.user_id = ? AND rr.status = ?)", this
+                                .rowMapper,
+                        ResumeStatus.PUBLISHED.name(), LocalDateTime.now().format(FORMATTER), companyId,
+                        ResumeReviewStatus.LIKED.name(), userId, ResumeReviewStatus.EXCLUDED.name()));
+    }
+
+    @Nonnull
+    @Override
+    public SortedSet<Resume> getPurchasedResumes(@Nonnull final String userId, @Nonnull final String companyId) {
+        // Need to get resumes that:
+        // * Have been purchased by the company
+        return new TreeSet<>(this.jdbcTemplate
+                .query("SELECT r.* FROM resumes r JOIN resume_reviews rr ON (r.id = rr.resume_id) "
+                                + "WHERE rr.status = ? AND rr.company_id = ?", this.rowMapper,
+                        ResumeReviewStatus.PURCHASED.name(), companyId));
+    }
+
+    @Nonnull
+    @Override
+    public SortedSet<Resume> getIgnoredResumes(@Nonnull final String userId, @Nonnull final String companyId) {
+        // Need to get resumes that:
+        // * Are published (status = PUBLISHED)
+        // * Are not expired (expiration >= NOW)
+        // * Have been ignored by the company
+        // * Have not been excluded for any of the user's companies
+        return new TreeSet<>(this.jdbcTemplate
+                .query("SELECT * FROM resumes WHERE status = ? AND expiration >= ? AND id IN "
+                                + "(SELECT resume_id FROM resume_reviews WHERE company_id = ? AND status = ?)"
+                                + "AND id NOT IN (SELECT rr.resume_id FROM resume_reviews rr JOIN company_users cu ON "
+                                + "(cu.company_id = rr.company_id) WHERE cu.user_id = ? AND rr.status = ?)", this
+                                .rowMapper,
+                        ResumeStatus.PUBLISHED.name(), LocalDateTime.now().format(FORMATTER), companyId,
+                        ResumeReviewStatus.IGNORED.name(), userId, ResumeReviewStatus.EXCLUDED.name()));
     }
 
     @Override

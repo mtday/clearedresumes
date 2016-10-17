@@ -107,24 +107,30 @@ public class DefaultResumeContainerDao implements ResumeContainerDao {
     @Nullable
     @Override
     public ResumeContainer get(@Nonnull final String id) {
-        return build(this.resumeDao.get(id));
+        return build(this.resumeDao.get(id), null);
+    }
+
+    @Nullable
+    @Override
+    public ResumeContainer get(@Nonnull final String id, @Nonnull final String companyId) {
+        return build(this.resumeDao.get(id), companyId);
     }
 
     @Nullable
     @Override
     public ResumeContainer getForUser(@Nonnull final String userId) {
-        return build(this.resumeDao.getForUser(userId));
+        return build(this.resumeDao.getForUser(userId), null);
     }
 
     @Nullable
-    private ResumeContainer build(@Nullable final Resume resume) {
+    private ResumeContainer build(@Nullable final Resume resume, @Nullable final String companyId) {
         if (resume != null) {
             final User user = Optional.ofNullable(this.userDao.get(resume.getUserId()))
                     .orElse(new User(resume.getId(), "", "", "", false));
             final ResumeIntroduction resumeIntroduction =
                     Optional.ofNullable(this.resumeIntroductionDao.get(resume.getId()))
                             .orElse(new ResumeIntroduction(resume.getId(), "", ""));
-            final SortedSet<ResumeReview> reviews = this.resumeReviewDao.getForResume(resume.getId());
+            final SortedSet<ResumeReview> reviews = this.resumeReviewDao.getForResume(resume.getId(), companyId);
             final SortedSet<ResumeLaborCategory> lcats = this.resumeLaborCategoryDao.getForResume(resume.getId());
             final SortedSet<ContactInfo> contactInfos = this.contactInfoDao.getForResume(resume.getId());
             final SortedSet<WorkLocation> workLocations = this.workLocationDao.getForResume(resume.getId());

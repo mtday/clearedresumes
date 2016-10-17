@@ -5,6 +5,7 @@ import com.cr.common.model.ResumeContainer;
 import com.cr.common.model.ResumeReview;
 import com.cr.common.model.ResumeReviewStatus;
 import com.cr.common.model.User;
+import com.cr.db.CompanyDao;
 import com.cr.db.ResumeContainerDao;
 import com.cr.db.ResumeDao;
 import com.cr.db.ResumeReviewDao;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,15 +38,17 @@ public class ViewController extends BaseDashboardController {
      * Create an instance of this controller.
      *
      * @param httpSession the current user's session
+     * @param companyDao the {@link CompanyDao} used to retrieve companies from the database
      * @param resumeDao the {@link ResumeDao} used to retrieve resumes from the database
      * @param resumeContainerDao the {@link ResumeContainerDao} used to retrieve resume from the database
      * @param resumeReviewDao the {@link ResumeReviewDao} used to manage resume reviews in the database
      */
     @Autowired
     public ViewController(
-            @Nonnull final HttpSession httpSession, @Nonnull final ResumeDao resumeDao,
-            @Nonnull final ResumeContainerDao resumeContainerDao, @Nonnull final ResumeReviewDao resumeReviewDao) {
-        super(httpSession, resumeDao);
+            @Nonnull final HttpSession httpSession, @Nonnull final CompanyDao companyDao,
+            @Nonnull final ResumeDao resumeDao, @Nonnull final ResumeContainerDao resumeContainerDao,
+            @Nonnull final ResumeReviewDao resumeReviewDao) {
+        super(httpSession, companyDao, resumeDao);
         this.resumeContainerDao = resumeContainerDao;
         this.resumeReviewDao = resumeReviewDao;
     }
@@ -63,10 +67,14 @@ public class ViewController extends BaseDashboardController {
         final User user = getCurrentUser();
         final Company company = getCurrentCompany();
 
-        final ResumeContainer resumeContainer = this.resumeContainerDao.get(resumeId);
+        if (company == null || user == null) {
+            throw new AccessDeniedException("User or company not found");
+        }
+
+        final ResumeContainer resumeContainer = this.resumeContainerDao.get(resumeId, company.getId());
         model.put("resume", resumeContainer);
 
-        if (user != null && company != null && resumeContainer != null) {
+        if (resumeContainer != null) {
             final ResumeReview resumeReview =
                     new ResumeReview(UUID.randomUUID().toString(), resumeContainer.getResume().getId(), company.getId(),
                             ResumeReviewStatus.VIEWED, user.getId(), LocalDateTime.now());

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head th:replace="fragments/head :: head (title='Dashboard: Liked Resumes')"></head>
+<head th:replace="fragments/head :: head (title='Dashboard: Ignored Resumes')"></head>
 <body>
 
 <nav th:replace="fragments/navbar :: navbar (currentPage='dashboard')"></nav>
@@ -9,12 +9,12 @@
     <div class="row dashboard-row">
         <div class="col-md-2 well well-sm">
             <!-- Navigation -->
-            <div th:replace="fragments/employer-dashboard-nav :: dashboard-nav (currentPage='resumes-liked')"></div>
+            <div th:replace="fragments/employer-dashboard-nav :: dashboard-nav (currentPage='resumes-ignored')"></div>
         </div>
         <div class="col-md-10 resume-content-container">
             <div class="content-header">
                 <span class="pull-left">
-                    <h2>Liked Resumes</h2>
+                    <h2>Ignored Resumes</h2>
                 </span>
                 <span class="pull-right">
                     <div th:replace="fragments/employer-active-company :: employer-active-company"></div>
@@ -23,14 +23,15 @@
 
             <div class="resume-content">
                 <div th:if="${#lists.isEmpty(summaries)}" class="alert alert-warning">
-                    <h4>No resumes have been liked yet.</h4>
+                    <h4>No resumes have been ignored.</h4>
                 </div>
 
                 <div th:if="${#lists.size(summaries) > 0}">
                     <div class="pull-right resume-buttons">
                         <a href="#" onclick="view();" id="button-view" class="disabled btn btn-primary">View</a>
-                        <a href="#" onclick="ignore();" id="button-ignore" class="disabled btn btn-warning">Ignore</a>
-                        <a href="#" onclick="unlike();" id="button-unlike" class="disabled btn btn-info">Remove Like</a>
+                        <a href="#" onclick="unignore();" id="button-unignore" class="disabled btn btn-warning">Remove
+                            Ignore</a>
+                        <a href="#" onclick="like();" id="button-like" class="disabled btn btn-info">Like</a>
                         <a href="#" onclick="purchase();" id="button-purchase" class="disabled btn btn-success">Purchase
                             <span class="badge" th:text="${company.slots}">Slots</span></a>
                     </div>
@@ -83,8 +84,11 @@
 <footer th:replace="fragments/footer :: footer"></footer>
 <div th:replace="fragments/scripts :: scripts"></div>
 <div th:replace="fragments/employer-active-company-script :: employer-active-company-script"></div>
-<form id="unlike-form" th:action="@{/employer/dashboard/unlike}" method="POST">
-    <input type="hidden" id="unlike-ids" name="ids"/>
+<form id="unignore-form" th:action="@{/employer/dashboard/unignore}" method="POST">
+    <input type="hidden" id="unignore-ids" name="ids"/>
+</form>
+<form id="like-form" th:action="@{/employer/dashboard/like}" method="POST">
+    <input type="hidden" id="like-ids" name="ids"/>
 </form>
 <form id="purchase-form" th:action="@{/employer/dashboard/purchase}" method="POST">
     <input type="hidden" id="purchase-ids" name="ids"/>
@@ -124,19 +128,19 @@
         var selectedCount = resumes.rows({selected: true}).count();
         if (selectedCount == 0) {
             $('#button-view').addClass('disabled');
-            $('#button-unlike').addClass('disabled');
+            $('#button-like').addClass('disabled');
             $('#button-purchase').addClass('disabled');
-            $('#button-ignore').addClass('disabled');
+            $('#button-unignore').addClass('disabled');
         } else if (selectedCount == 1) {
             $('#button-view').removeClass('disabled');
-            $('#button-unlike').removeClass('disabled');
+            $('#button-like').removeClass('disabled');
             $('#button-purchase').removeClass('disabled');
-            $('#button-ignore').removeClass('disabled');
+            $('#button-unignore').removeClass('disabled');
         } else {
             $('#button-view').addClass('disabled');
-            $('#button-unlike').removeClass('disabled');
+            $('#button-like').removeClass('disabled');
             $('#button-purchase').removeClass('disabled');
-            $('#button-ignore').removeClass('disabled');
+            $('#button-unignore').removeClass('disabled');
         }
     }
 
@@ -144,9 +148,9 @@
         document.location = '/employer/dashboard/view/' + getSelectedIds().join(',');
     }
 
-    function unlike() {
-        $('#unlike-ids')[0].value = getSelectedIds().join(',');
-        $('#unlike-form').submit();
+    function like() {
+        $('#like-ids')[0].value = getSelectedIds().join(',');
+        $('#like-form').submit();
     }
 
     function purchase() {
@@ -154,9 +158,9 @@
         $('#purchase-form').submit();
     }
 
-    function ignore() {
-        $('#ignore-ids')[0].value = getSelectedIds().join(',');
-        $('#ignore-form').submit();
+    function unignore() {
+        $('#unignore-ids')[0].value = getSelectedIds().join(',');
+        $('#unignore-form').submit();
     }
 
     function getSelectedIds() {

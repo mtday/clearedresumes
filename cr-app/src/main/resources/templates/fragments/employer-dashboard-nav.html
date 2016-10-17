@@ -4,14 +4,27 @@
 
 <div th:fragment="dashboard-nav (currentPage)" class="dashboard-nav-container">
     <ul class="nav nav-pills nav-stacked">
+        <li role="presentation">
+            <h4>Resumes</h4>
+        </li>
         <li role="presentation" th:class="${currentPage == 'resumes-all'}? 'active'">
-            <a th:href="@{/employer/dashboard/resumes-all}">All Resumes</a></li>
-        <li role="presentation" th:class="${currentPage == 'resumes-saved'}? 'active'">
-            <a th:href="@{/employer/dashboard/resumes-liked}">Liked Resumes</a></li>
+            <a th:href="@{/employer/dashboard/resumes-all}">All</a></li>
+        <li role="presentation" th:class="${currentPage == 'resumes-liked'}? 'active'">
+            <a th:href="@{/employer/dashboard/resumes-liked}">Liked</a></li>
         <li role="presentation" th:class="${currentPage == 'resumes-purchased'}? 'active'">
-            <a th:href="@{/employer/dashboard/resumes-purchased}">Purchased Resumes</a></li>
-        <li role="presentation" th:class="${currentPage == 'my-company'}? 'active'">
-            <a th:href="@{/employer/dashboard/my-company}">My Company</a></li>
+            <a th:href="@{/employer/dashboard/resumes-purchased}">Purchased</a></li>
+        <li role="presentation" th:class="${currentPage == 'resumes-ignored'}? 'active'">
+            <a th:href="@{/employer/dashboard/resumes-ignored}">Ignored</a></li>
+
+        <li role="presentation">
+            <h4>Company</h4>
+        </li>
+        <li role="presentation" th:class="${currentPage == 'my-account'}? 'active'">
+            <a th:href="@{/employer/dashboard/my-account}">My Account</a></li>
+        <li role="presentation" th:class="${currentPage == 'transactions'}? 'active'">
+            <a th:href="@{/employer/dashboard/transactions}">Transactions</a></li>
+        <li role="presentation" th:class="${currentPage == 'members'}? 'active'">
+            <a th:href="@{/employer/dashboard/members}">Members</a></li>
     </ul>
 </div>
 

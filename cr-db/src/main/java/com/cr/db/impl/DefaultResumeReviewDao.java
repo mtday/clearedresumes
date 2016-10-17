@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -75,6 +76,17 @@ public class DefaultResumeReviewDao implements ResumeReviewDao {
 
     @Nonnull
     @Override
+    public SortedSet<ResumeReview> getForResume(@Nonnull final String resumeId, @Nullable final String companyId) {
+        if (companyId == null) {
+            return getForResume(resumeId);
+        }
+        return new TreeSet<>(this.jdbcTemplate
+                .query("SELECT * FROM resume_reviews WHERE resume_id = ? AND company_id = ?", this.rowMapper, resumeId,
+                        companyId));
+    }
+
+    @Nonnull
+    @Override
     public Map<String, Collection<ResumeReview>> getForResumes(
             @Nonnull final Map<String, Resume> resumeMap, @Nonnull final String companyId) {
         final Map<String, Collection<ResumeReview>> reviewMap = new HashMap<>();
@@ -112,10 +124,11 @@ public class DefaultResumeReviewDao implements ResumeReviewDao {
 
     @Override
     public void delete(
-            @Nonnull final String resumeId, @Nonnull final String companyId, @Nonnull final ResumeReviewStatus status) {
-        this.jdbcTemplate
+            @Nonnull final String resumeId, @Nonnull final String companyId,
+            @Nonnull final ResumeReviewStatus... statuses) {
+        Arrays.stream(statuses).forEach(status -> this.jdbcTemplate
                 .update("DELETE FROM resume_reviews WHERE resume_id = ? AND company_id = ? AND status = ?", resumeId,
-                        companyId, status.name());
+                        companyId, status.name()));
     }
 
     private static final class ResumeReviewRowMapper implements RowMapper<ResumeReview> {

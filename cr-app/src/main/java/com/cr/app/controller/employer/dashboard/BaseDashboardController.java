@@ -1,9 +1,12 @@
 package com.cr.app.controller.employer.dashboard;
 
+import static java.util.Optional.ofNullable;
+
 import com.cr.app.controller.BaseController;
 import com.cr.common.model.Account;
 import com.cr.common.model.Company;
 import com.cr.common.model.User;
+import com.cr.db.CompanyDao;
 import com.cr.db.ResumeDao;
 import java.util.Map;
 import java.util.Optional;
@@ -24,16 +27,22 @@ public class BaseDashboardController extends BaseController {
     @Nonnull
     private final HttpSession httpSession;
     @Nonnull
+    private final CompanyDao companyDao;
+    @Nonnull
     private final ResumeDao resumeDao;
 
     /**
      * Create an instance of this controller.
      *
      * @param httpSession the current user's session
+     * @param companyDao the {@link CompanyDao} used to retrieve companies from the database
      * @param resumeDao the {@link ResumeDao} used to retrieve resumes from the database
      */
-    public BaseDashboardController(@Nonnull final HttpSession httpSession, @Nonnull final ResumeDao resumeDao) {
+    public BaseDashboardController(
+            @Nonnull final HttpSession httpSession, @Nonnull final CompanyDao companyDao,
+            @Nonnull final ResumeDao resumeDao) {
         this.httpSession = httpSession;
+        this.companyDao = companyDao;
         this.resumeDao = resumeDao;
     }
 
@@ -45,6 +54,16 @@ public class BaseDashboardController extends BaseController {
     @Nonnull
     public HttpSession getHttpSession() {
         return this.httpSession;
+    }
+
+    /**
+     * Retrieve the company DAO used to manage companies in the database.
+     *
+     * @return the company DAO used to manage companies in the database
+     */
+    @Nonnull
+    public CompanyDao getCompanyDao() {
+        return this.companyDao;
     }
 
     /**
@@ -85,10 +104,28 @@ public class BaseDashboardController extends BaseController {
      */
     @Nullable
     public Company getCurrentCompany() {
-        final Object company = getHttpSession().getAttribute("company");
+        return getCurrentCompany(false);
+    }
+
+    /**
+     * Retrieve the current active company in the session.
+     *
+     * @param forceUpdate whether to force an update of the company by pulling from the database
+     * @return the current active company in the session
+     */
+    @Nullable
+    public Company getCurrentCompany(final boolean forceUpdate) {
+        Object company = getHttpSession().getAttribute("company");
         if (company == null) {
-            return Optional.ofNullable(getCurrentAccount()).map(account -> account.getCompanies().stream().findFirst())
-                    .filter(Optional::isPresent).map(Optional::get).orElse(null);
+            company =
+                    Optional.ofNullable(getCurrentAccount()).map(account -> account.getCompanies().stream().findFirst())
+                            .filter(Optional::isPresent).map(Optional::get).orElse(null);
+        }
+
+        if (forceUpdate && company != null) {
+            final Company updated = getCompanyDao().get(((Company) company).getId());
+            getHttpSession().setAttribute("company", updated);
+            return updated;
         }
         return (Company) company;
     }
@@ -100,6 +137,6 @@ public class BaseDashboardController extends BaseController {
      */
     @Nullable
     public User getCurrentUser() {
-        return Optional.ofNullable(getCurrentAccount()).map(Account::getUser).orElse(null);
+        return ofNullable(getCurrentAccount()).map(Account::getUser).orElse(null);
     }
 }

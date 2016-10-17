@@ -73,7 +73,7 @@ public class DefaultResumeReviewDaoIT {
         this.companyUserDao.add(companyUser);
 
         try {
-            final SortedSet<Resume> viewable = this.resumeDao.getViewable(user.getId());
+            final SortedSet<Resume> viewable = this.resumeDao.getAllResumes(user.getId(), company.getId());
             assertNotNull(viewable);
             assertFalse(viewable.isEmpty());
             assertTrue(viewable.contains(resume));
@@ -83,25 +83,24 @@ public class DefaultResumeReviewDaoIT {
                             ResumeReviewStatus.EXCLUDED, user.getId(), LocalDateTime.now());
             this.resumeReviewDao.add(excludeReview);
 
-            final SortedSet<Resume> notViewable = this.resumeDao.getViewable(user.getId());
+            final SortedSet<Resume> notViewable = this.resumeDao.getAllResumes(user.getId(), company.getId());
             assertNotNull(notViewable);
             assertFalse(notViewable.contains(resume));
 
             this.resumeReviewDao.delete(excludeReview.getId());
 
-            final ResumeReview savedReview =
+            final ResumeReview likedReview =
                     new ResumeReview(UUID.randomUUID().toString(), resume.getId(), company.getId(),
                             ResumeReviewStatus.LIKED, user.getId(), LocalDateTime.now());
-            this.resumeReviewDao.add(savedReview);
+            this.resumeReviewDao.add(likedReview);
 
-            final SortedSet<Resume> savedViewable = this.resumeDao.getViewable(user.getId());
-            assertNotNull(savedViewable);
-            assertFalse(savedViewable.isEmpty());
-            assertTrue(savedViewable.contains(resume));
+            final SortedSet<Resume> likedGetAll = this.resumeDao.getAllResumes(user.getId(), company.getId());
+            assertNotNull(likedGetAll);
+            assertTrue(likedGetAll.isEmpty());
 
-            this.resumeReviewDao.delete(savedReview.getId());
+            this.resumeReviewDao.delete(likedReview.getId());
 
-            final SortedSet<Resume> viewableAgain = this.resumeDao.getViewable(user.getId());
+            final SortedSet<Resume> viewableAgain = this.resumeDao.getAllResumes(user.getId(), company.getId());
             assertNotNull(viewableAgain);
             assertFalse(viewableAgain.isEmpty());
             assertTrue(viewableAgain.contains(resume));

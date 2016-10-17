@@ -28,13 +28,44 @@ public interface ResumeDao {
     Resume getForUser(@Nonnull String userId);
 
     /**
-     * Retrieve the resumes available for viewing by the specified user account.
+     * Retrieve all resumes available for viewing by the specified user account and company.
      *
      * @param userId the unique id of the user for which resumes will be retrieved
+     * @param companyId the unique id of the company for which resumes will be retrieved
      * @return the requested resumes
      */
     @Nonnull
-    SortedSet<Resume> getViewable(@Nonnull String userId);
+    SortedSet<Resume> getAllResumes(@Nonnull String userId, @Nonnull String companyId);
+
+    /**
+     * Retrieve liked resumes available for viewing by the specified user account and company.
+     *
+     * @param userId the unique id of the user for which resumes will be retrieved
+     * @param companyId the unique id of the company for which resumes will be retrieved
+     * @return the requested resumes
+     */
+    @Nonnull
+    SortedSet<Resume> getLikedResumes(@Nonnull String userId, @Nonnull String companyId);
+
+    /**
+     * Retrieve purchased resumes available for viewing by the specified user account and company.
+     *
+     * @param userId the unique id of the user for which resumes will be retrieved
+     * @param companyId the unique id of the company for which resumes will be retrieved
+     * @return the requested resumes
+     */
+    @Nonnull
+    SortedSet<Resume> getPurchasedResumes(@Nonnull String userId, @Nonnull String companyId);
+
+    /**
+     * Retrieve ignored resumes available for viewing by the specified user account and company.
+     *
+     * @param userId the unique id of the user for which resumes will be retrieved
+     * @param companyId the unique id of the company for which resumes will be retrieved
+     * @return the requested resumes
+     */
+    @Nonnull
+    SortedSet<Resume> getIgnoredResumes(@Nonnull String userId, @Nonnull String companyId);
 
     /**
      * Retrieve all of the resumes that have expired but are still in a published state.

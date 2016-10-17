@@ -111,17 +111,17 @@ public class DefaultResumeSummaryDaoIT {
 
         final ResumeReview resumeReview =
                 new ResumeReview(UUID.randomUUID().toString(), resume.getId(), company.getId(),
-                        ResumeReviewStatus.LIKED, user.getId(), LocalDateTime.now());
+                        ResumeReviewStatus.VIEWED, user.getId(), LocalDateTime.now());
         this.resumeReviewDao.add(resumeReview);
 
         final CompanyUser companyUser = new CompanyUser(user.getId(), company.getId());
         this.companyUserDao.add(companyUser);
 
         try {
-            final SortedSet<ResumeSummary> coll = this.resumeSummaryDao.getAll(user.getId(), company.getId());
-            assertNotNull(coll);
-            assertEquals(1, coll.size());
-            final ResumeSummary summary = coll.first();
+            final SortedSet<ResumeSummary> summaries = this.resumeSummaryDao.getAll(user.getId(), company.getId());
+            assertNotNull(summaries);
+            assertEquals(1, summaries.size());
+            final ResumeSummary summary = summaries.first();
             assertNotNull(summary);
             assertEquals(introduction.getFullName(), summary.getFullName());
             assertEquals(1, summary.getLaborCategories().size());

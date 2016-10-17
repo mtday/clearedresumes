@@ -24,11 +24,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
- * Used to like one or more resumes.
+ * Used to ignore one or more resumes.
  */
 @Controller
-public class LikeController extends BaseDashboardController {
-    private static final Logger LOG = LoggerFactory.getLogger(LikeController.class);
+public class IgnoreController extends BaseDashboardController {
+    private static final Logger LOG = LoggerFactory.getLogger(IgnoreController.class);
 
     @Nonnull
     private final ResumeReviewDao resumeReviewDao;
@@ -42,7 +42,7 @@ public class LikeController extends BaseDashboardController {
      * @param resumeReviewDao the {@link ResumeReviewDao} used to manage resume reviews in the database
      */
     @Autowired
-    public LikeController(
+    public IgnoreController(
             @Nonnull final HttpSession httpSession, @Nonnull final CompanyDao companyDao,
             @Nonnull final ResumeDao resumeDao, @Nonnull final ResumeReviewDao resumeReviewDao) {
         super(httpSession, companyDao, resumeDao);
@@ -50,40 +50,39 @@ public class LikeController extends BaseDashboardController {
     }
 
     /**
-     * Like the specified resume.
+     * Ignore the specified resume.
      *
-     * @param resumeId the unique id of the resume to mark as liked
+     * @param resumeId the unique id of the resume to mark as ignored
      * @param model the web model
      * @return the name of the template to display
      */
-    @GetMapping("/employer/dashboard/like/{resumeId}")
+    @GetMapping("/employer/dashboard/ignore/{resumeId}")
     @Nonnull
-    public String likeOne(
+    public String ignoreOne(
             @Nonnull @PathVariable("resumeId") final String resumeId, @Nonnull final Map<String, Object> model) {
         final User user = getCurrentUser();
         final Company company = getCurrentCompany();
 
         if (user != null && company != null) {
-            final ResumeReview resumeReview =
-                    new ResumeReview(UUID.randomUUID().toString(), resumeId, company.getId(), ResumeReviewStatus.LIKED,
-                            user.getId(), LocalDateTime.now());
+            final ResumeReview resumeReview = new ResumeReview(UUID.randomUUID().toString(), resumeId, company.getId(),
+                    ResumeReviewStatus.IGNORED, user.getId(), LocalDateTime.now());
             this.resumeReviewDao.add(resumeReview);
-            this.resumeReviewDao.delete(resumeId, company.getId(), ResumeReviewStatus.IGNORED);
+            this.resumeReviewDao.delete(resumeId, company.getId(), ResumeReviewStatus.LIKED);
         }
 
-        return "redirect:/employer/dashboard/resumes-liked";
+        return "redirect:/employer/dashboard/resumes-all";
     }
 
     /**
-     * Like the specified resumes.
+     * Ignore the specified resumes.
      *
-     * @param ids the unique resume ids to mark as liked
+     * @param ids the unique resume ids to mark as ignored
      * @param model the web model
      * @return the name of the template to display
      */
-    @PostMapping("/employer/dashboard/like")
+    @PostMapping("/employer/dashboard/ignore")
     @Nonnull
-    public String likeAll(
+    public String ignoreAll(
             @Nonnull @RequestParam("ids") final String ids, @Nonnull final Map<String, Object> model) {
         final List<String> resumeIds = Arrays.asList(ids.split(","));
 
@@ -92,45 +91,45 @@ public class LikeController extends BaseDashboardController {
 
         if (user != null && company != null) {
             resumeIds.stream().map(resumeId -> new ResumeReview(UUID.randomUUID().toString(), resumeId, company.getId(),
-                    ResumeReviewStatus.LIKED, user.getId(), LocalDateTime.now())).forEach(this.resumeReviewDao::add);
+                    ResumeReviewStatus.IGNORED, user.getId(), LocalDateTime.now())).forEach(this.resumeReviewDao::add);
             resumeIds.forEach(
-                    resumeId -> this.resumeReviewDao.delete(resumeId, company.getId(), ResumeReviewStatus.IGNORED));
+                    resumeId -> this.resumeReviewDao.delete(resumeId, company.getId(), ResumeReviewStatus.LIKED));
         }
 
-        return "redirect:/employer/dashboard/resumes-liked";
+        return "redirect:/employer/dashboard/resumes-all";
     }
 
     /**
-     * Unlike the specified resume.
+     * Unignore the specified resume.
      *
-     * @param resumeId the unique id of the resume to remove as liked
+     * @param resumeId the unique id of the resume to remove as ignored
      * @param model the web model
      * @return the name of the template to display
      */
-    @GetMapping("/employer/dashboard/unlike/{resumeId}")
+    @GetMapping("/employer/dashboard/unignore/{resumeId}")
     @Nonnull
-    public String unlikeOne(
+    public String unignoreOne(
             @Nonnull @PathVariable("resumeId") final String resumeId, @Nonnull final Map<String, Object> model) {
         final User user = getCurrentUser();
         final Company company = getCurrentCompany();
 
         if (user != null && company != null) {
-            this.resumeReviewDao.delete(resumeId, company.getId(), ResumeReviewStatus.LIKED);
+            this.resumeReviewDao.delete(resumeId, company.getId(), ResumeReviewStatus.IGNORED);
         }
 
-        return "redirect:/employer/dashboard/resumes-liked";
+        return "redirect:/employer/dashboard/resumes-all";
     }
 
     /**
-     * Unlike the specified resumes.
+     * Ignore the specified resumes.
      *
-     * @param ids the unique resume ids to remove as liked
+     * @param ids the unique resume ids to mark as ignored
      * @param model the web model
      * @return the name of the template to display
      */
-    @PostMapping("/employer/dashboard/unlike")
+    @PostMapping("/employer/dashboard/unignore")
     @Nonnull
-    public String unlikeAll(
+    public String unignoreAll(
             @Nonnull @RequestParam("ids") final String ids, @Nonnull final Map<String, Object> model) {
         final List<String> resumeIds = Arrays.asList(ids.split(","));
 
@@ -139,9 +138,9 @@ public class LikeController extends BaseDashboardController {
 
         if (user != null && company != null) {
             resumeIds.forEach(
-                    resumeId -> this.resumeReviewDao.delete(resumeId, company.getId(), ResumeReviewStatus.LIKED));
+                    resumeId -> this.resumeReviewDao.delete(resumeId, company.getId(), ResumeReviewStatus.IGNORED));
         }
 
-        return "redirect:/employer/dashboard/resumes-liked";
+        return "redirect:/employer/dashboard/resumes-all";
     }
 }
