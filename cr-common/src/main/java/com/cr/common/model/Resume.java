@@ -98,6 +98,18 @@ public class Resume implements Serializable, Comparable<Resume> {
     }
 
     /**
+     * Retrieve the formatted time stamp when this resume was created.
+     *
+     * @param format the date format to use
+     * @return the formatted time stamp when this resume was created
+     */
+    @JsonIgnore
+    @Nonnull
+    public String getCreated(@Nonnull final String format) {
+        return this.created.format(DateTimeFormatter.ofPattern(format, Locale.ENGLISH));
+    }
+
+    /**
      * Retrieve the time stamp when this resume becomes inactive.
      *
      * @return the time stamp when this resume becomes inactive

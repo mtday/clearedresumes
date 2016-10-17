@@ -103,6 +103,11 @@
                 <version>1.4.2</version>
             </dependency>
             <dependency>
+                <groupId>org.webjars.bower</groupId>
+                <artifactId>datatables.net-select</artifactId>
+                <version>1.2.0</version>
+            </dependency>
+            <dependency>
                 <groupId>org.webjars.npm</groupId>
                 <artifactId>moment</artifactId>
                 <version>2.15.1</version>
@@ -193,6 +198,7 @@
                         <ignoredUnusedDeclaredDependency>org.postgresql:postgresql</ignoredUnusedDeclaredDependency>
                         <ignoredUnusedDeclaredDependency>org.springframework.boot:</ignoredUnusedDeclaredDependency>
                         <ignoredUnusedDeclaredDependency>org.webjars:</ignoredUnusedDeclaredDependency>
+                        <ignoredUnusedDeclaredDependency>org.webjars.bower:</ignoredUnusedDeclaredDependency>
                         <ignoredUnusedDeclaredDependency>org.webjars.npm:</ignoredUnusedDeclaredDependency>
                     </ignoredUnusedDeclaredDependencies>
                 </configuration>

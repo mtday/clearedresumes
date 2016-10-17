@@ -3,10 +3,12 @@ package com.cr.app.controller.employer.dashboard;
 import com.cr.app.controller.BaseController;
 import com.cr.common.model.Account;
 import com.cr.common.model.Company;
+import com.cr.common.model.User;
 import com.cr.db.ResumeDao;
 import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,5 +76,30 @@ public class BaseDashboardController extends BaseController {
             }
         }
         model.put("company", company);
+    }
+
+    /**
+     * Retrieve the current active company in the session.
+     *
+     * @return the current active company in the session
+     */
+    @Nullable
+    public Company getCurrentCompany() {
+        final Object company = getHttpSession().getAttribute("company");
+        if (company == null) {
+            return Optional.ofNullable(getCurrentAccount()).map(account -> account.getCompanies().stream().findFirst())
+                    .filter(Optional::isPresent).map(Optional::get).orElse(null);
+        }
+        return (Company) company;
+    }
+
+    /**
+     * Retrieve the currently logged in user.
+     *
+     * @return the currently logged in user
+     */
+    @Nullable
+    public User getCurrentUser() {
+        return Optional.ofNullable(getCurrentAccount()).map(Account::getUser).orElse(null);
     }
 }

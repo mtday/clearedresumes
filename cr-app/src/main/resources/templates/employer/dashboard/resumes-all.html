@@ -11,12 +11,73 @@
             <!-- Navigation -->
             <div th:replace="fragments/employer-dashboard-nav :: dashboard-nav (currentPage='resumes-all')"></div>
         </div>
-        <div class="col-md-10 resume-content-container">&nbsp;
-            <div class="pull-left">
-                <h2>All Resumes</h2>
+        <div class="col-md-10 resume-content-container">
+            <div class="content-header">
+                <span class="pull-left">
+                    <h2>All Resumes</h2>
+                </span>
+                <span class="pull-right">
+                    <div th:replace="fragments/employer-active-company :: employer-active-company"></div>
+                </span>
             </div>
-            <div class="pull-right">
-                <div th:replace="fragments/employer-active-company :: employer-active-company"></div>
+
+            <div class="resume-content">
+                <div th:if="${#lists.isEmpty(summaries)}" class="alert alert-warning">
+                    <h4>No resumes currently available.</h4>
+
+                    <p>Note that this is currently expected - this web site is in it's infancy and we have only been
+                        marketing it to defense contracting employers so far. After a suitable number of employers have
+                        signed up, we will market this site to job seekers in earnest. This site would not be valuable
+                        to job seekers with only a very small number of employers really. In the mean time, please hang
+                        tight and check back often since we are ramping up quickly.</p>
+                </div>
+
+                <div th:if="${#lists.size(summaries) > 0}">
+                    <div class="pull-right resume-buttons">
+                        <a href="#" onclick="view();" id="button-view" class="disabled btn btn-primary">View</a>
+                        <a href="#" onclick="like();" id="button-like" class="disabled btn btn-info">Like</a>
+                        <a href="#" onclick="purchase();" id="button-purchase" class="disabled btn btn-success">Purchase</a>
+                    </div>
+
+                    <table id="resumes" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Labor Category</th>
+                                <th>Location</th>
+                                <th>Clearance</th>
+                                <th>Published</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="summary : ${summaries}">
+                                <td class="resume-id-cell" th:text="${summary.resume.id}">ID</td>
+                                <td class="resume-labor-category-cell">
+                                    <div th:each="laborCategory : ${summary.laborCategories}"
+                                         th:text="${laborCategory.laborCategory} + ' (' + ${laborCategory.experience} + ' years)'">
+                                        Labor Category (Experience years)
+                                    </div>
+                                </td>
+                                <td class="resume-location-cell">
+                                    <div th:each="workLocation : ${summary.workLocations}"
+                                         th:text="${workLocation.region} + ', ' + ${workLocation.state}">
+                                        Region, State
+                                    </div>
+                                </td>
+                                <td class="resume-clearance-cell">
+                                    <div th:each="clearance : ${summary.clearances}" th:text="${clearance.type}">
+                                        Clearance
+                                    </div>
+                                </td>
+                                <td class="resume-published-cell">
+                                    <div th:text="${summary.resume.getCreated('yyyy-MM-dd')}">
+                                        Publish Date
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -26,5 +87,80 @@
 <footer th:replace="fragments/footer :: footer"></footer>
 <div th:replace="fragments/scripts :: scripts"></div>
 <div th:replace="fragments/employer-active-company-script :: employer-active-company-script"></div>
+<form id="like-form" th:action="@{/employer/dashboard/like}" method="POST">
+    <input type="hidden" id="like-ids" name="ids"/>
+</form>
+<form id="purchase-form" th:action="@{/employer/dashboard/purchase}" method="POST">
+    <input type="hidden" id="purchase-ids" name="ids"/>
+</form>
+<script>
+/*<![CDATA[*/
+    var resumes = undefined;
+    $(document).ready(function() {
+        resumes = $('#resumes').DataTable({
+            order: [3, 'desc'],
+            columnDefs: [
+                {
+                    targets: [ 0 ],
+                    visible: false,
+                    searchable: false
+                }
+            ],
+            select: {
+                style: 'multi',
+                className: 'resume-row-selected'
+            }
+        });
+
+        resumes.on('select', function() {
+            updateButtons();
+        });
+
+        resumes.on('deselect', function() {
+            updateButtons();
+        });
+    });
+
+    function updateButtons() {
+        var selectedCount = resumes.rows({selected: true}).count();
+        if (selectedCount == 0) {
+            $('#button-view').addClass('disabled');
+            $('#button-like').addClass('disabled');
+            $('#button-purchase').addClass('disabled');
+        } else if (selectedCount == 1) {
+            $('#button-view').removeClass('disabled');
+            $('#button-like').removeClass('disabled');
+            $('#button-purchase').removeClass('disabled');
+        } else {
+            $('#button-view').addClass('disabled');
+            $('#button-like').removeClass('disabled');
+            $('#button-purchase').removeClass('disabled');
+        }
+    }
+
+    function view() {
+        document.location = '/employer/dashboard/view/' + getSelectedIds().join(',');
+    }
+
+    function like() {
+        $('#like-ids')[0].value = getSelectedIds().join(',');
+        $('#like-form').submit();
+    }
+
+    function purchase() {
+        $('#purchase-ids')[0].value = getSelectedIds().join(',');
+        $('#purchase-form').submit();
+    }
+
+    function getSelectedIds() {
+        var ids = [ ];
+        var data = resumes.rows({selected: true}).data();
+        for (row = 0; row < data.length; row++) {
+            ids.push(data[row][0]);
+        }
+        return ids;
+    }
+/*]]>*/
+</script>
 </body>
 </html>

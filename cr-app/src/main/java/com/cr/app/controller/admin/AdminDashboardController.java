@@ -202,7 +202,7 @@ public class AdminDashboardController extends BaseController {
             this.userDao.add(user);
             this.userDao.addAuthority(user.getId(), Authority.USER);
 
-            final LocalDateTime created = LocalDateTime.now().minusDays(-random.nextInt(20));
+            final LocalDateTime created = LocalDateTime.now().minusDays(random.nextInt(20));
             final LocalDateTime expiration = created.plusDays(14);
             final Resume resume =
                     new Resume(UUID.randomUUID().toString(), user.getId(), ResumeStatus.PUBLISHED, created, expiration);
@@ -232,10 +232,10 @@ public class AdminDashboardController extends BaseController {
                 this.contactInfoDao.add(contactInfo);
             }
 
-            final int locationCount = random.nextInt(2);
+            final int locationCount = 1 + (random.nextFloat() < 0.1 ? 1 : 0); // 10% of the time, there will be 2
             for (int locationNum = 0; locationNum < locationCount; locationNum++) {
                 final String state = states.get(random.nextInt(states.size())).getName();
-                final String region = String.format("Region %d", random.nextInt());
+                final String region = String.format("Region %d", random.nextInt(10000));
                 final WorkLocation workLocation =
                         new WorkLocation(UUID.randomUUID().toString(), resume.getId(), state, region);
                 this.workLocationDao.add(workLocation);

@@ -137,6 +137,10 @@
             <artifactId>respond</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.webjars.bower</groupId>
+            <artifactId>datatables.net-select</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.webjars.npm</groupId>
             <artifactId>moment</artifactId>
         </dependency>

@@ -38,8 +38,7 @@ public class ResumeSummary implements Serializable, Comparable<ResumeSummary> {
      * Default constructor required for Jackson deserialization.
      */
     ResumeSummary() {
-        this(
-                "", new Resume(), Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),
+        this("", new Resume(), Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),
                 Collections.emptyList());
     }
 

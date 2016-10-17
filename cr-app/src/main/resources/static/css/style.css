@@ -278,6 +278,18 @@ body {
   padding-top: 0px;
   margin-top: 0px;
 }
+.resume-content-container .resume-content {
+  margin-top: 50px;
+}
+.resume-content-container .resume-content .select-info {
+  padding-left: 20px;
+}
+.resume-row-selected td {
+  background-color: #bbb !important;
+}
+.resume-buttons {
+  margin: 0px 0px 10px 300px;
+}
 .resume-nav-divider {
   border-bottom: 3px solid #aaa;
   margin: 9px 0px;
