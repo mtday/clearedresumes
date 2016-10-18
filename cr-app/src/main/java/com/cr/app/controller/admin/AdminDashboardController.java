@@ -14,7 +14,6 @@ import com.cr.common.model.Resume;
 import com.cr.common.model.ResumeIntroduction;
 import com.cr.common.model.ResumeLaborCategory;
 import com.cr.common.model.ResumeStatus;
-import com.cr.common.model.State;
 import com.cr.common.model.User;
 import com.cr.common.model.WorkLocation;
 import com.cr.common.model.WorkSummary;
@@ -29,7 +28,6 @@ import com.cr.db.PolygraphTypeDao;
 import com.cr.db.ResumeDao;
 import com.cr.db.ResumeIntroductionDao;
 import com.cr.db.ResumeLaborCategoryDao;
-import com.cr.db.StateDao;
 import com.cr.db.UserDao;
 import com.cr.db.WorkLocationDao;
 import com.cr.db.WorkSummaryDao;
@@ -46,6 +44,7 @@ import java.util.TreeSet;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
+import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,8 +87,6 @@ public class AdminDashboardController extends BaseController {
     @Nonnull
     private final LaborCategoryDao laborCategoryDao;
     @Nonnull
-    private final StateDao stateDao;
-    @Nonnull
     private final ClearanceTypeDao clearanceTypeDao;
     @Nonnull
     private final PolygraphTypeDao polygraphTypeDao;
@@ -110,7 +107,6 @@ public class AdminDashboardController extends BaseController {
      * @param workSummaryDao the DAO used to manage work summaries in the database
      * @param keyWordDao the DAO used to manage key words in the database
      * @param laborCategoryDao the DAO used to manage labor categories in the database
-     * @param stateDao the DAO used to manage states in the database
      * @param clearanceTypeDao the DAO used to manage clearance types in the database
      * @param polygraphTypeDao the DAO used to manage polygraph types in the database
      */
@@ -122,8 +118,8 @@ public class AdminDashboardController extends BaseController {
             @Nonnull final WorkLocationDao workLocationDao, @Nonnull final ClearanceDao clearanceDao,
             @Nonnull final EducationDao educationDao, @Nonnull final CertificationDao certificationDao,
             @Nonnull final WorkSummaryDao workSummaryDao, @Nonnull final KeyWordDao keyWordDao,
-            @Nonnull final LaborCategoryDao laborCategoryDao, @Nonnull final StateDao stateDao,
-            @Nonnull final ClearanceTypeDao clearanceTypeDao, @Nonnull final PolygraphTypeDao polygraphTypeDao) {
+            @Nonnull final LaborCategoryDao laborCategoryDao, @Nonnull final ClearanceTypeDao clearanceTypeDao,
+            @Nonnull final PolygraphTypeDao polygraphTypeDao) {
         this.passwordEncoder = passwordEncoder;
         this.userDao = userDao;
         this.resumeDao = resumeDao;
@@ -137,7 +133,6 @@ public class AdminDashboardController extends BaseController {
         this.workSummaryDao = workSummaryDao;
         this.keyWordDao = keyWordDao;
         this.laborCategoryDao = laborCategoryDao;
-        this.stateDao = stateDao;
         this.clearanceTypeDao = clearanceTypeDao;
         this.polygraphTypeDao = polygraphTypeDao;
     }
@@ -168,7 +163,12 @@ public class AdminDashboardController extends BaseController {
             @RequestParam(value = "count", defaultValue = "50") final int count,
             @Nonnull final Map<String, Object> model) {
         final List<LaborCategory> laborCategories = new ArrayList<>(this.laborCategoryDao.getAll());
-        final List<State> states = new ArrayList<>(this.stateDao.getAll());
+        final List<Pair<String, String>> locations =
+                Arrays.asList(Pair.of("Fort Meade", "Maryland"), Pair.of("Columbia", "Maryland"),
+                        Pair.of("Huntsville", "Alabama"), Pair.of("Quantico", "Virginia"),
+                        Pair.of("Crystal City", "Virginia"), Pair.of("Alexandria", "Virginia"),
+                        Pair.of("Aberdeen", "Maryland"), Pair.of("Redstone Arsenal", "Alabama"),
+                        Pair.of("State Department", "Washington D.C."));
         final List<ClearanceType> clearanceTypes = new ArrayList<>(this.clearanceTypeDao.getAll());
         final List<PolygraphType> polygraphTypes = new ArrayList<>(this.polygraphTypeDao.getAll());
         final List<String> words =
@@ -207,7 +207,7 @@ public class AdminDashboardController extends BaseController {
                     new Resume(UUID.randomUUID().toString(), user.getId(), ResumeStatus.PUBLISHED, created, expiration);
             this.resumeDao.add(resume);
 
-            final String fullName = String.format("Full Name %d", userNum);
+            final String fullName = String.format("%s Doe", userNum % 2 == 0 ? "John" : "Jane");
             final String objective = getRandomText();
             final ResumeIntroduction resumeIntroduction = new ResumeIntroduction(resume.getId(), fullName, objective);
             this.resumeIntroductionDao.add(resumeIntroduction);
@@ -233,10 +233,10 @@ public class AdminDashboardController extends BaseController {
 
             final int locationCount = 1 + (random.nextFloat() < 0.1 ? 1 : 0); // 10% of the time, there will be 2
             for (int locationNum = 0; locationNum < locationCount; locationNum++) {
-                final String state = states.get(random.nextInt(states.size())).getName();
-                final String region = String.format("Region %d", random.nextInt(10000));
+                final Pair<String, String> location = locations.get(random.nextInt(locations.size()));
                 final WorkLocation workLocation =
-                        new WorkLocation(UUID.randomUUID().toString(), resume.getId(), state, region);
+                        new WorkLocation(UUID.randomUUID().toString(), resume.getId(), location.getRight(),
+                                location.getLeft());
                 this.workLocationDao.add(workLocation);
             }
 

@@ -18,6 +18,7 @@ public class ResumeContainerTest {
     @Test
     public void testDefaultConstructor() {
         final ResumeContainer resumeContainer = new ResumeContainer();
+        assertNotNull(resumeContainer.getUser());
         assertNotNull(resumeContainer.getResume());
         assertNotNull(resumeContainer.getIntroduction());
         assertEquals(0, resumeContainer.getReviews().size());
@@ -57,6 +58,7 @@ public class ResumeContainerTest {
                         Collections.singleton(clearance), Collections.singleton(education),
                         Collections.singleton(certification), Collections.singleton(keyWord));
 
+        assertEquals(user, resumeContainer.getUser());
         assertEquals(resume, resumeContainer.getResume());
         assertEquals(introduction, resumeContainer.getIntroduction());
         assertEquals(1, resumeContainer.getReviews().size());

@@ -6,10 +6,12 @@ import com.cr.common.model.Company;
 import com.cr.common.model.CompanyUser;
 import com.cr.common.model.PlanType;
 import com.cr.common.model.User;
+import com.cr.common.model.UserInvitation;
 import com.cr.db.CompanyDao;
 import com.cr.db.CompanyUserDao;
 import com.cr.db.PriceDao;
 import com.cr.db.UserDao;
+import com.cr.db.UserInvitationDao;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -38,13 +40,12 @@ public class SignupController extends BaseController {
 
     @Nonnull
     private final UserDao userDao;
-
     @Nonnull
     private final CompanyDao companyDao;
-
     @Nonnull
     private final CompanyUserDao companyUserDao;
-
+    @Nonnull
+    private final UserInvitationDao userInvitationDao;
     @Nonnull
     private final PriceDao priceDao;
 
@@ -57,17 +58,19 @@ public class SignupController extends BaseController {
      * @param userDao used to perform user operations on the database
      * @param companyDao used to perform company operations on the database
      * @param companyUserDao used to perform company user operations on the database
+     * @param userInvitationDao used to perform user invitation operations on the database
      * @param priceDao the {@link PriceDao} used to retrieve pricing data from the database
      * @param passwordEncoder used to perform password encoding
      */
     @Autowired
     public SignupController(
             @Nonnull final UserDao userDao, @Nonnull final CompanyDao companyDao,
-            @Nonnull final CompanyUserDao companyUserDao, @Nonnull final PriceDao priceDao,
-            @Nonnull final PasswordEncoder passwordEncoder) {
+            @Nonnull final CompanyUserDao companyUserDao, @Nonnull final UserInvitationDao userInvitationDao,
+            @Nonnull final PriceDao priceDao, @Nonnull final PasswordEncoder passwordEncoder) {
         this.userDao = userDao;
         this.companyDao = companyDao;
         this.companyUserDao = companyUserDao;
+        this.userInvitationDao = userInvitationDao;
         this.priceDao = priceDao;
         this.passwordEncoder = passwordEncoder;
     }
@@ -147,6 +150,10 @@ public class SignupController extends BaseController {
         }
         createCompany(name, plan);
 
+        if (account != null) {
+            handleInvitations(account);
+        }
+
         setCurrentAccount(model);
         return "redirect:/employer/dashboard";
     }
@@ -176,6 +183,12 @@ public class SignupController extends BaseController {
         }
 
         createAccount(username, email, password);
+
+        final Account account = getCurrentAccount();
+        if (account != null && handleInvitations(account)) {
+            setCurrentAccount(model);
+            return "redirect:/employer/dashboard";
+        }
 
         setCurrentAccount(model);
         return "redirect:/user/resume";
@@ -260,5 +273,25 @@ public class SignupController extends BaseController {
 
             setCurrentAccount(new Account(account.getUser(), authorities, companies, account.getResumeContainer()));
         }
+    }
+
+    private boolean handleInvitations(@Nonnull final Account account) {
+        final UserInvitation userInvitation = this.userInvitationDao.getByEmail(account.getUser().getEmail());
+        if (userInvitation != null) {
+            this.companyUserDao.add(new CompanyUser(account.getUser().getId(), userInvitation.getCompanyId()));
+            this.userInvitationDao.delete(userInvitation.getId());
+
+            if (!account.isEmployer()) {
+                this.userDao.addAuthority(account.getUser().getId(), Authority.EMPLOYER);
+
+                final Collection<Authority> authorities = new LinkedHashSet<>(account.getAuthorities());
+                authorities.add(Authority.EMPLOYER);
+                final Collection<Company> companies = new LinkedList<>(account.getCompanies());
+                companies.add(this.companyDao.get(userInvitation.getCompanyId()));
+                setCurrentAccount(new Account(account.getUser(), authorities, companies, account.getResumeContainer()));
+            }
+            return true;
+        }
+        return false;
     }
 }

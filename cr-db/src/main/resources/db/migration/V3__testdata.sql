@@ -1,6 +1,6 @@
 
 INSERT INTO users (id, login, email, password, enabled) VALUES
-('1', 'test', 'test@clearedresumes.com', '$2a$10$BVkDFSdtJbj0oURvZWDMBur.NVvoafMuycwiE2RbIoIn9pv4.lh32', TRUE);
+('1', 'test', 'jdoe@clearedresumes.com', '$2a$10$BVkDFSdtJbj0oURvZWDMBur.NVvoafMuycwiE2RbIoIn9pv4.lh32', TRUE);
 
 INSERT INTO companies (id, name, plan_type, slots, active) VALUES
 ('1', 'Basic Company No Slots', 'BASIC', 0, true),
@@ -18,7 +18,7 @@ INSERT INTO resumes (id, user_id, status, created, expiration) VALUES
 ('1', '1', 'UNPUBLISHED', '2016-01-01 02:03:04.000', null);
 
 INSERT INTO resume_introductions (resume_id, full_name, objective) VALUES
-('1', 'Test User Name', 'Lorem ipsum **dolor** sit amet, consectetur adipiscing elit. Nulla vehicula nulla lacus, et molestie nunc dictum quis. Praesent tellus turpis, suscipit et mauris ac, pulvinar auctor tellus. Donec lectus neque, rhoncus nec posuere sollicitudin, pharetra vel quam. Duis nec nunc nisl. Fusce ultrices ut orci a mattis. Cras eleifend magna risus, id scelerisque enim tempor id. Quisque venenatis congue magna, quis fringilla orci ultricies eget. Sed pharetra libero in sem facilisis, a semper nisi egestas.');
+('1', 'John Doe', 'Lorem ipsum **dolor** sit amet, consectetur adipiscing elit. Nulla vehicula nulla lacus, et molestie nunc dictum quis. Praesent tellus turpis, suscipit et mauris ac, pulvinar auctor tellus. Donec lectus neque, rhoncus nec posuere sollicitudin, pharetra vel quam. Duis nec nunc nisl. Fusce ultrices ut orci a mattis. Cras eleifend magna risus, id scelerisque enim tempor id. Quisque venenatis congue magna, quis fringilla orci ultricies eget. Sed pharetra libero in sem facilisis, a semper nisi egestas.');
 
 INSERT INTO resume_lcats (id, resume_id, lcat, experience) VALUES
 ('1', '1', 'Software Engineering', 15);

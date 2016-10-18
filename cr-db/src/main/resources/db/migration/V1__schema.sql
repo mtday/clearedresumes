@@ -43,6 +43,18 @@ CREATE TABLE company_users (
 );
 
 
+CREATE TABLE user_invitations (
+    id                VARCHAR(36)    NOT NULL,
+    email             VARCHAR(36)    NOT NULL,
+    company_id        VARCHAR(36)    NOT NULL,
+    created           VARCHAR(24)    NOT NULL,
+
+    CONSTRAINT user_invitations_pk PRIMARY KEY (id),
+    CONSTRAINT user_invitations_uniq UNIQUE (email, company_id),
+    CONSTRAINT user_invitations_fk_company_id FOREIGN KEY (company_id) REFERENCES companies (id) ON DELETE CASCADE
+);
+
+
 CREATE TABLE transactions (
     id                VARCHAR(36)    NOT NULL,
     company_id        VARCHAR(36)    NOT NULL,

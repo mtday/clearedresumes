@@ -67,7 +67,7 @@ public class DefaultUserDetailsServiceIT {
      */
     @Test
     public void testLoadByEmailMatchingCase() {
-        final UserDetails userDetails = this.userDetailsService.loadUserByUsername("test@clearedresumes.com");
+        final UserDetails userDetails = this.userDetailsService.loadUserByUsername("jdoe@clearedresumes.com");
         assertTrue(userDetails instanceof DefaultUserDetails);
 
         assertEquals("test", userDetails.getUsername());
@@ -82,7 +82,7 @@ public class DefaultUserDetailsServiceIT {
      */
     @Test
     public void testLoadByEmailIncorrectCase() {
-        final UserDetails userDetails = this.userDetailsService.loadUserByUsername("TEST@CLEAREDRESUMES.COM");
+        final UserDetails userDetails = this.userDetailsService.loadUserByUsername("JDOE@CLEAREDRESUMES.COM");
         assertTrue(userDetails instanceof DefaultUserDetails);
 
         assertEquals("test", userDetails.getUsername());

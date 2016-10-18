@@ -20,6 +20,39 @@
                     <div th:replace="fragments/employer-active-company :: employer-active-company"></div>
                 </span>
             </div>
+
+            <div class="resume-content">
+                <div th:if="${#lists.isEmpty(transactions)}" class="alert alert-info">
+                    <p>No transactions currently available.</p>
+                </div>
+
+                <div th:if="${#lists.size(transactions) > 0}">
+                    <table id="transactions" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>User</th>
+                                <th>Description</th>
+                                <th>Timestamp</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="tx : ${transactions}">
+                                <td class="transaction-id-cell" th:text="${tx.transaction.id}">ID</td>
+                                <td class="transaction-user-cell" th:text="${tx.user.login}">User</td>
+                                <td class="transaction-description-cell" th:text="${tx.transaction.description}">
+                                    Description
+                                </td>
+                                <td class="transaction-timestamp-cell" th:text="${tx.transaction.getCreated('yyyy-MM-dd HH:mm')}">
+                                    Timestamp
+                                </td>
+                                <td class="transaction-amount-cell" th:text="'$' + ${tx.transaction.amount}">Amount</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -27,5 +60,22 @@
 
 <footer th:replace="fragments/footer :: footer"></footer>
 <div th:replace="fragments/scripts :: scripts"></div>
+<script>
+/*<![CDATA[*/
+    var transactions = undefined;
+    $(document).ready(function() {
+        transactions = $('#transactions').DataTable({
+            order: [3, 'desc'],
+            columnDefs: [
+                {
+                    targets: [ 0 ],
+                    visible: false,
+                    searchable: false
+                }
+            ]
+        });
+    });
+/*]]>*/
+</script>
 </body>
 </html>

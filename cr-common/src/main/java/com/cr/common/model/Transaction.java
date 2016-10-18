@@ -2,6 +2,7 @@ package com.cr.common.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -103,6 +104,17 @@ public class Transaction implements Comparable<Transaction> {
     @Nonnull
     public LocalDateTime getCreated() {
         return this.created;
+    }
+
+    /**
+     * Retrieve the time stamp when this resume was created in the specified format.
+     *
+     * @param format the format to use when returning the creation time stamp
+     * @return the time stamp when this resume was created in the specified format
+     */
+    @Nonnull
+    public String getCreated(@Nonnull final String format) {
+        return this.created.format(DateTimeFormatter.ofPattern(format));
     }
 
     /**
