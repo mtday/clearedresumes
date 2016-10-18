@@ -60,10 +60,8 @@ public class DefaultResumeDaoIT {
         this.userDao.add(user1);
         this.userDao.add(user2);
 
-        final Company company1 =
-                new Company(UUID.randomUUID().toString(), "Company1", "http://web", PlanType.BASIC, 0, true);
-        final Company company2 =
-                new Company(UUID.randomUUID().toString(), "Company2", "http://web", PlanType.BASIC, 0, true);
+        final Company company1 = new Company(UUID.randomUUID().toString(), "Company1", PlanType.BASIC, 0, true);
+        final Company company2 = new Company(UUID.randomUUID().toString(), "Company2", PlanType.BASIC, 0, true);
         this.companyDao.add(company1);
         this.companyDao.add(company2);
 

@@ -49,7 +49,7 @@ public class DefaultTransactionDaoIT {
             fail("Failed to find test user");
         }
 
-        final Company company = new Company(UUID.randomUUID().toString(), "name", "website", PlanType.BASIC, 10, true);
+        final Company company = new Company(UUID.randomUUID().toString(), "name", PlanType.BASIC, 10, true);
         this.companyDao.add(company);
 
         try {

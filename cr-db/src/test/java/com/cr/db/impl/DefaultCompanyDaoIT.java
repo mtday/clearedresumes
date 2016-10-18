@@ -45,9 +45,7 @@ public class DefaultCompanyDaoIT {
         assertNotNull(beforeAddColl);
         final int beforeCount = beforeAddColl.size(); // may be non-zero from test data
 
-        final Company company =
-                new Company(UUID.randomUUID().toString(), "Company Name", "https://company-website.com/",
-                        PlanType.BASIC, 10, true);
+        final Company company = new Company(UUID.randomUUID().toString(), "Company Name", PlanType.BASIC, 10, true);
         final Company beforeAdd = this.companyDao.get(company.getId());
         assertNull(beforeAdd);
 
@@ -62,9 +60,7 @@ public class DefaultCompanyDaoIT {
         assertNotNull(afterAdd);
         assertEquals(company, afterAdd);
 
-        final Company updated =
-                new Company(company.getId(), "New Company Name", "https://updated-website.com/", PlanType.BASIC, 15,
-                        true);
+        final Company updated = new Company(company.getId(), "New Company Name", PlanType.BASIC, 15, true);
         this.companyDao.update(updated);
 
         final SortedSet<Company> afterUpdateColl = this.companyDao.getAll();

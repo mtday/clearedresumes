@@ -128,7 +128,7 @@ public class DefaultUserDaoIT {
         assertNotNull(forCompanyDne);
         assertEquals(0, forCompanyDne.size());
 
-        final Company company = new Company(UUID.randomUUID().toString(), "name", "website", PlanType.BASIC, 10, true);
+        final Company company = new Company(UUID.randomUUID().toString(), "name", PlanType.BASIC, 10, true);
         this.companyDao.add(company);
         final CompanyUser companyUser = new CompanyUser(user.getId(), company.getId());
         this.companyUserDao.add(companyUser);

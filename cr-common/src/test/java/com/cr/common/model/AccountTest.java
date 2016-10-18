@@ -30,7 +30,7 @@ public class AccountTest {
         final User user1 = new User("uid1", "login", "email", "password", true);
         final User user2 = new User("uid2", "login", "email", "password", true);
         final Collection<Authority> authorities = Arrays.asList(Authority.USER, Authority.EMPLOYER);
-        final Company company = new Company("cid", "Company Name", "website", PlanType.BASIC, 10, true);
+        final Company company = new Company("cid", "Company Name", PlanType.BASIC, 10, true);
         final Collection<Company> companies = Collections.singleton(company);
         final LocalDateTime created = LocalDateTime.of(2016, 1, 1, 2, 3, 4);
         final Resume resume1 = new Resume("rid-1", user1.getId(), ResumeStatus.UNPUBLISHED, created, null);
@@ -96,7 +96,7 @@ public class AccountTest {
     private Account getAccount() {
         final User user = new User("uid", "login", "email", "password", true);
         final Collection<Authority> authorities = Arrays.asList(Authority.USER, Authority.EMPLOYER);
-        final Company company = new Company("cid", "Company Name", "website", PlanType.BASIC, 10, true);
+        final Company company = new Company("cid", "Company Name", PlanType.BASIC, 10, true);
         final Collection<Company> companies = Collections.singleton(company);
         final LocalDateTime created = LocalDateTime.of(2016, 1, 1, 2, 3, 4);
         final Resume resume = new Resume("rid", user.getId(), ResumeStatus.UNPUBLISHED, created, null);

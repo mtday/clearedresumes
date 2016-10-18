@@ -62,18 +62,16 @@ public class DefaultCompanyDao implements CompanyDao {
 
     @Override
     public void add(@Nonnull final Company company) {
-        this.jdbcTemplate.update(
-                "INSERT INTO companies (id, name, website, plan_type, slots, active) VALUES (?, ?, ?, ?, ?, ?)",
-                company.getId(), company.getName(), company.getWebsite(), company.getPlanType().name(),
-                company.getSlots(), company.isActive());
+        this.jdbcTemplate.update("INSERT INTO companies (id, name, plan_type, slots, active) VALUES (?, ?, ?, ?, ?)",
+                company.getId(), company.getName(), company.getPlanType().name(), company.getSlots(),
+                company.isActive());
     }
 
     @Override
     public void update(@Nonnull final Company company) {
-        this.jdbcTemplate.update(
-                "UPDATE companies SET name = ?, website = ?, plan_type = ?, slots = ?, active = ? WHERE id = ?",
-                company.getName(), company.getWebsite(), company.getPlanType().name(), company.getSlots(),
-                company.isActive(), company.getId());
+        this.jdbcTemplate.update("UPDATE companies SET name = ?, plan_type = ?, slots = ?, active = ? WHERE id = ?",
+                company.getName(), company.getPlanType().name(), company.getSlots(), company.isActive(),
+                company.getId());
     }
 
     @Override
@@ -87,11 +85,10 @@ public class DefaultCompanyDao implements CompanyDao {
         public Company mapRow(@Nonnull final ResultSet resultSet, final int rowNum) throws SQLException {
             final String id = resultSet.getString("id");
             final String name = resultSet.getString("name");
-            final String website = resultSet.getString("website");
             final PlanType planType = PlanType.valueOf(resultSet.getString("plan_type"));
             final int slots = resultSet.getInt("slots");
             final boolean active = resultSet.getBoolean("active");
-            return new Company(id, name, website, planType, slots, active);
+            return new Company(id, name, planType, slots, active);
         }
     }
 }

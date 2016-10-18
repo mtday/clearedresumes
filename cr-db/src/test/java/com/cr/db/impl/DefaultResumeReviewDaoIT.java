@@ -64,9 +64,7 @@ public class DefaultResumeReviewDaoIT {
                         LocalDateTime.now().plusDays(10));
         this.resumeDao.add(resume);
 
-        final Company company =
-                new Company(UUID.randomUUID().toString(), "Company Name", "https://company-website.com/",
-                        PlanType.BASIC, 10, true);
+        final Company company = new Company(UUID.randomUUID().toString(), "Company Name", PlanType.BASIC, 10, true);
         this.companyDao.add(company);
 
         final CompanyUser companyUser = new CompanyUser(user.getId(), company.getId());

@@ -111,7 +111,6 @@ public class SignupController extends BaseController {
      * @param password the password requested of the user signing up
      * @param confirm the password confirmation of the user signing up
      * @param name the name of the company to create
-     * @param website the website of the company to create
      * @param plan the type of plan the company is signing up for
      * @param model the web model
      * @return the name of the template to display
@@ -124,7 +123,6 @@ public class SignupController extends BaseController {
             @Nonnull @RequestParam(value = "password", defaultValue = "") final String password,
             @Nonnull @RequestParam(value = "confirm", defaultValue = "") final String confirm,
             @Nonnull @RequestParam(value = "name", defaultValue = "") final String name,
-            @Nonnull @RequestParam(value = "website", defaultValue = "") final String website,
             @Nonnull @RequestParam(value = "plan", defaultValue = "BASIC") final PlanType plan,
             @Nonnull final Map<String, Object> model) {
         final Account account = getCurrentAccount();
@@ -133,13 +131,11 @@ public class SignupController extends BaseController {
             model.put("username", username);
             model.put("email", email);
             model.put("name", name);
-            model.put("website", website);
             model.put("plan", plan.name().toLowerCase(Locale.ENGLISH));
             return "signup-company";
         }
-        if (!validateCompany(name, website, plan, model)) {
+        if (!validateCompany(name, plan, model)) {
             model.put("name", name);
-            model.put("website", website);
             model.put("plan", plan.name().toLowerCase(Locale.ENGLISH));
             return "signup-company";
         }
@@ -149,7 +145,7 @@ public class SignupController extends BaseController {
         if (account == null) {
             createAccount(username, email, password);
         }
-        createCompany(name, website, plan);
+        createCompany(name, plan);
 
         setCurrentAccount(model);
         return "redirect:/employer/dashboard";
@@ -222,15 +218,9 @@ public class SignupController extends BaseController {
     }
 
     private boolean validateCompany(
-            @Nonnull final String name, @Nonnull final String website, @Nonnull final PlanType planType,
-            @Nonnull final Map<String, Object> model) {
+            @Nonnull final String name, @Nonnull final PlanType planType, @Nonnull final Map<String, Object> model) {
         if (StringUtils.isBlank(name)) {
             model.put("signupError", "A valid company name must be provided.");
-            return false;
-        }
-
-        if (StringUtils.isBlank(website) || !website.startsWith("http")) {
-            model.put("signupError", "A valid website address must be provided, for example, http://mycompany.com.");
             return false;
         }
 
@@ -251,8 +241,8 @@ public class SignupController extends BaseController {
     }
 
     private void createCompany(
-            @Nonnull final String name, @Nonnull final String website, @Nonnull final PlanType plan) {
-        final Company company = new Company(UUID.randomUUID().toString(), name, website, plan, 0, true);
+            @Nonnull final String name, @Nonnull final PlanType plan) {
+        final Company company = new Company(UUID.randomUUID().toString(), name, plan, 0, true);
         this.companyDao.add(company);
 
         final Account account = getCurrentAccount();

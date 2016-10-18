@@ -104,9 +104,7 @@ public class DefaultResumeSummaryDaoIT {
                 new Clearance(UUID.randomUUID().toString(), resume.getId(), "Type", "Organization", "Polygraph");
         this.clearanceDao.add(clearance);
 
-        final Company company =
-                new Company(UUID.randomUUID().toString(), "Company Name", "https://company-website.com/",
-                        PlanType.BASIC, 10, true);
+        final Company company = new Company(UUID.randomUUID().toString(), "Company Name", PlanType.BASIC, 10, true);
         this.companyDao.add(company);
 
         final ResumeReview resumeReview =

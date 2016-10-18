@@ -74,8 +74,8 @@ public class PurchaseController extends BaseDashboardController {
             } else {
                 // Decrement the slots available to the company.
                 final Company updated =
-                        new Company(company.getId(), company.getName(), company.getWebsite(), company.getPlanType(),
-                                company.getSlots() - 1, company.isActive());
+                        new Company(company.getId(), company.getName(), company.getPlanType(), company.getSlots() - 1,
+                                company.isActive());
                 getCompanyDao().update(updated);
 
                 // Mark the resume as purchased.
@@ -115,9 +115,8 @@ public class PurchaseController extends BaseDashboardController {
                 return "employer/dashboard/purchase";
             } else {
                 // Decrement the slots available to the company.
-                final Company updated =
-                        new Company(company.getId(), company.getName(), company.getWebsite(), company.getPlanType(),
-                                company.getSlots() - resumeIds.size(), company.isActive());
+                final Company updated = new Company(company.getId(), company.getName(), company.getPlanType(),
+                        company.getSlots() - resumeIds.size(), company.isActive());
                 getCompanyDao().update(updated);
 
                 // Mark the resumes as purchased

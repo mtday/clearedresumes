@@ -46,9 +46,7 @@ public class DefaultCompanyUserDaoIT {
             fail("Failed to find test user");
         }
 
-        final Company company =
-                new Company(UUID.randomUUID().toString(), "Company Name", "https://company-website.com/",
-                        PlanType.BASIC, 10, true);
+        final Company company = new Company(UUID.randomUUID().toString(), "Company Name", PlanType.BASIC, 10, true);
         this.companyDao.add(company);
 
         try {

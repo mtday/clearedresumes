@@ -60,11 +60,6 @@
                     <input type="text" name="name" id="signup-name" class="form-control" placeholder="Company Name"
                            required="required" autofocus="autofocus" th:value="${name}"/>
 
-                    <label for="signup-website" class="sr-only">Company Web Site</label>
-                    <input type="text" name="website" id="signup-website" class="form-control"
-                           placeholder="Company Web Site (http://mycompany.com)" required="required"
-                           autofocus="autofocus" th:value="${website}"/>
-
                     <label for="signup-plan" class="sr-only">Plan</label>
                     <select class="form-control" id="signup-plan" name="plan">
                         <option value="BASIC" selected="selected" th:if="${plan} == 'basic'">
