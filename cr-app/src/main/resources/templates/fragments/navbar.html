@@ -17,6 +17,7 @@
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li th:class="${currentPage == 'home'}? 'active'"><a th:href="@{/}">Home</a></li>
+                <li th:class="${currentPage == 'job-seekers'}? 'active'"><a th:href="@{/job-seekers}">For Job-Seekers</a></li>
                 <li th:class="${currentPage == 'employers'}? 'active'"><a th:href="@{/employers}">For Employers</a></li>
             </ul>
 

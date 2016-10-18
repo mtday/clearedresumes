@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head th:replace="fragments/head :: head (title='Home')"></head>
+<head th:replace="fragments/head :: head (title='For Job-Seekers')"></head>
 <body>
 
-<nav th:replace="fragments/navbar :: navbar (currentPage=home)"></nav>
+<nav th:replace="fragments/navbar :: navbar (currentPage='job-seekers')"></nav>
 <div class="container">
 
     <div class="jumbotron">
-        <h2>A Resume Marketplace for People with Clearances</h2>
-        <p>Connecting cleared personnel with federal and defense contracting companies.</p>
+        <h2>Publish Your Resume</h2>
+        <p>Get noticed by defense contracting companies in your area by publishing your resume.</p>
         <p>
             <a class="btn btn-lg btn-primary" th:href="@{/signup}" role="button">Get Started for Free &raquo;</a>
         </p>

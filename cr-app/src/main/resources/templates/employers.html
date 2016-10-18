@@ -9,88 +9,9 @@
     <div class="jumbotron">
         <h2>Access to Candidates</h2>
         <p>Gain access to resumes, paying only for the contact information of candidates you want to hire.</p>
-    </div>
-
-    <div class="row pricing-row">
-        <!-- Basic Plan -->
-        <div class="col-md-4">
-            <div class="panel price panel-red">
-                <div class="panel-heading  text-center">
-                    <h3>BASIC</h3>
-                </div>
-                <div class="panel-body text-center">
-                    <p class="lead" style="font-size:40px"><strong>Free</strong></p>
-                </div>
-                <ul class="list-group list-group-flush text-center">
-                    <li class="list-group-item"><i class="icon-ok text-info"></i>
-                        Unlimited Resume Viewing
-                    </li>
-                    <li class="list-group-item"><i class="icon-ok text-info"></i>
-                        $<span th:text="${INDIVIDUAL_RESUME}"></span> for Resume Contact Info
-                    </li>
-                    <li class="list-group-item"><i class="icon-ok text-info"></i>
-                        3-day Delay on Resume Viewing
-                    </li>
-                </ul>
-                <div class="panel-footer">
-                    <a class="btn btn-lg btn-block btn-danger" th:href="@{/signup/basic}">Sign Up &raquo;</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Premium Plan -->
-        <div class="col-md-4">
-            <div class="panel price panel-blue">
-                <div class="panel-heading arrow_box text-center">
-                    <h3>PREMIUM</h3>
-                </div>
-                <div class="panel-body text-center">
-                    <p class="lead" style="font-size:40px">
-                        <strong>$<span th:text="${PREMIUM_PACKAGE}"></span> / month</strong></p>
-                </div>
-                <ul class="list-group list-group-flush text-center">
-                    <li class="list-group-item"><i class="icon-ok text-info"></i>
-                        Unlimited Resume Viewing
-                    </li>
-                    <li class="list-group-item"><i class="icon-ok text-info"></i>
-                        $<span th:text="${INDIVIDUAL_RESUME}"></span> for Resume Contact Info
-                    </li>
-                    <li class="list-group-item"><i class="icon-ok text-info"></i>
-                        Immediate Resume Visibility
-                    </li>
-                </ul>
-                <div class="panel-footer">
-                    <a class="btn btn-lg btn-block btn-info" th:href="@{/signup/premium}">Coming Soon!</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Enterprise Plan -->
-        <div class="col-md-4">
-            <div class="panel price panel-green">
-                <div class="panel-heading arrow_box text-center">
-                    <h3>ENTERPRISE</h3>
-                </div>
-                <div class="panel-body text-center">
-                    <p class="lead" style="font-size:40px">
-                        <strong>$<span th:text="${ENTERPRISE_PACKAGE}"></span> / month</strong></p>
-                </div>
-                <ul class="list-group list-group-flush text-center">
-                    <li class="list-group-item"><i class="icon-ok text-info"></i>
-                        Unlimited Resume Viewing
-                    </li>
-                    <li class="list-group-item"><i class="icon-ok text-info"></i>
-                        Unlimited Resume Contact Info
-                    </li>
-                    <li class="list-group-item"><i class="icon-ok text-info"></i>
-                        Immediate Resume Visibility
-                    </li>
-                </ul>
-                <div class="panel-footer">
-                    <a class="btn btn-lg btn-block btn-success" th:href="@{/signup/enterprise}">Coming Soon!</a>
-                </div>
-            </div>
-        </div>
+        <p>
+            <a class="btn btn-lg btn-primary" th:href="@{/signup/basic}" role="button">Get Started for Free &raquo;</a>
+        </p>
     </div>
 
 </div>

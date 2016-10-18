@@ -67,9 +67,14 @@
 
                     <label for="signup-plan" class="sr-only">Plan</label>
                     <select class="form-control" id="signup-plan" name="plan">
-                        <option value="BASIC" selected="selected" th:if="${plan} == 'basic'">Basic Plan</option>
-                        <option value="BASIC" th:if="${plan} != 'basic'">Basic Plan</option>
+                        <option value="BASIC" selected="selected" th:if="${plan} == 'basic'">
+                            Basic Plan (Pay per Resume Contact)
+                        </option>
+                        <option value="BASIC" th:if="${plan} != 'basic'">
+                            Basic Plan (Pay per Resume Contact)
+                        </option>
 
+                        <!--
                         <option value="PREMIUM" selected="selected" th:if="${plan} == 'premium'">
                             Premium Plan
                         </option>
@@ -79,6 +84,7 @@
                             Enterprise Plan
                         </option>
                         <option value="ENTERPRISE" th:if="${plan} != 'enterprise'">Enterprise Plan</option>
+                        -->
                     </select>
 
                     <div class="btn-group pull-right">
