@@ -74,8 +74,8 @@
                                 they will automatically be added as a member of <b><span
                                         th:text="${company.name}">Company Name</span></b>.</p>
 
-                            <p th:if="${inviteMessage}" class="alert alert-info" th:text="${inviteMessage}">
-                                Message</p>
+                            <p th:if="${inviteDanger}" class="alert alert-danger" th:text="${inviteDanger}">Msg</p>
+                            <p th:if="${inviteSuccess}" class="alert alert-success" th:text="${inviteSuccess}">Msg</p>
 
                             <form class="form-member-invite" name="inviteForm"
                                   th:action="@{/employer/dashboard/members/invite}" method="POST">

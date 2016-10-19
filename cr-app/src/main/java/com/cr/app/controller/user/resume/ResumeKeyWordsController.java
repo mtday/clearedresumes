@@ -101,7 +101,6 @@ public class ResumeKeyWordsController extends BaseResumeController {
                         .filter(word -> !existingWords.contains(word))
                         .map(word -> new KeyWord(resumeContainer.getResume().getId(), word))
                         .collect(Collectors.toSet());
-        LOG.info("New Key Words: {}", newKeyWords);
         this.keyWordDao.add(newKeyWords);
 
         updateResumeContainer(resumeContainer.getResume().getId());

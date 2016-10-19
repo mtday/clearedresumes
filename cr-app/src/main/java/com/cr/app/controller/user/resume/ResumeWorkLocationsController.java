@@ -99,8 +99,18 @@ public class ResumeWorkLocationsController extends BaseResumeController {
             populateModel(model);
             return "user/resume/work-locations";
         }
+        if (state.length() > 50) {
+            model.put("workLocationMessage", "The state must be 50 characters or less.");
+            populateModel(model);
+            return "user/resume/work-locations";
+        }
         if (StringUtils.isBlank(region)) {
             model.put("workLocationMessage", "Please enter a valid work location region.");
+            populateModel(model);
+            return "user/resume/work-locations";
+        }
+        if (region.length() > 50) {
+            model.put("workLocationMessage", "The region must be 50 characters or less.");
             populateModel(model);
             return "user/resume/work-locations";
         }

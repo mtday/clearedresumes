@@ -95,6 +95,11 @@ public class AccountController extends BaseDashboardController {
             model.put("profileDanger", "Please provide a valid company name.");
             return "employer/dashboard/account";
         }
+        if (name.length() > 100) {
+            populateModel(model);
+            model.put("profileDanger", "Your company name must be 100 characters or less.");
+            return "employer/dashboard/account";
+        }
 
         final Company company = getCurrentCompany();
         if (company != null) {
@@ -127,16 +132,23 @@ public class AccountController extends BaseDashboardController {
             return "employer/dashboard/account";
         }
 
-        final PlanType planType = PlanType.valueOf(plan);
+        try {
+            final PlanType planType = PlanType.valueOf(plan);
 
-        final Company company = getCurrentCompany();
-        if (company != null) {
-            final Company updated =
-                    new Company(company.getId(), company.getName(), planType, company.getSlots(), company.isActive());
-            getCompanyDao().update(updated);
-            setCurrentCompany(updated);
+            final Company company = getCurrentCompany();
+            if (company != null) {
+                final Company updated = new Company(company.getId(), company.getName(), planType, company.getSlots(),
+                        company.isActive());
 
-            // TODO: Update how much the company is paying for the plan change.
+                getCompanyDao().update(updated);
+                setCurrentCompany(updated);
+
+                // TODO: Update how much the company is paying for the plan change.
+            }
+        } catch (final IllegalArgumentException badPlanType) {
+            populateModel(model);
+            model.put("planDanger", "Please specify a valid plan.");
+            return "employer/dashboard/account";
         }
 
         populateModel(model);

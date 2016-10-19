@@ -45,7 +45,7 @@ CREATE TABLE company_users (
 
 CREATE TABLE user_invitations (
     id                VARCHAR(36)    NOT NULL,
-    email             VARCHAR(36)    NOT NULL,
+    email             VARCHAR(256)   NOT NULL,
     company_id        VARCHAR(36)    NOT NULL,
     created           VARCHAR(24)    NOT NULL,
 
@@ -154,7 +154,7 @@ CREATE TABLE clearances (
     resume_id         VARCHAR(36)    NOT NULL,
     type              VARCHAR(40)    NOT NULL,
     organization      VARCHAR(100)   NOT NULL,
-    polygraph         VARCHAR(100)   NOT NULL,
+    polygraph         VARCHAR(40)    NOT NULL,
 
     CONSTRAINT clearances_pk PRIMARY KEY (id),
     CONSTRAINT clearances_fk_resume_id FOREIGN KEY (resume_id) REFERENCES resumes (id) ON DELETE CASCADE

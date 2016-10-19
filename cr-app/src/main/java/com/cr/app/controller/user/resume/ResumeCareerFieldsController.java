@@ -100,6 +100,11 @@ public class ResumeCareerFieldsController extends BaseResumeController {
             populateModel(model);
             return "user/resume/career-fields";
         }
+        if (laborCategory.length() > 80) {
+            model.put("careerFieldMessage", "The career field must be 80 characters or less.");
+            populateModel(model);
+            return "user/resume/career-fields";
+        }
         if (experience <= 0) {
             model.put("careerFieldMessage", "Please enter a valid number of years of experience.");
             populateModel(model);

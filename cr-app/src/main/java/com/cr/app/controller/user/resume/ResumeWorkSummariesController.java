@@ -100,6 +100,16 @@ public class ResumeWorkSummariesController extends BaseResumeController {
             populateModel(model);
             return "user/resume/work-summaries";
         }
+        if (jobTitle.length() > 200) {
+            model.put("workSummaryMessage", "The job title must be 200 characters or less.");
+            populateModel(model);
+            return "user/resume/work-summaries";
+        }
+        if (employer.length() > 200) {
+            model.put("workSummaryMessage", "The employer must be 200 characters or less.");
+            populateModel(model);
+            return "user/resume/work-summaries";
+        }
         if (StringUtils.isBlank(begin)) {
             model.put("workSummaryMessage", "Please enter a valid begin date.");
             populateModel(model);
@@ -107,6 +117,11 @@ public class ResumeWorkSummariesController extends BaseResumeController {
         }
         if (StringUtils.isBlank(summary)) {
             model.put("workSummaryMessage", "Please enter a valid summary.");
+            populateModel(model);
+            return "user/resume/work-summaries";
+        }
+        if (summary.length() > 40000) {
+            model.put("workSummaryMessage", "The summary must be 40,000 characters or less.");
             populateModel(model);
             return "user/resume/work-summaries";
         }

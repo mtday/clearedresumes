@@ -91,6 +91,11 @@ public class ResumeCertificationsController extends BaseResumeController {
             populateModel(model);
             return "user/resume/certifications";
         }
+        if (certificate.length() > 100) {
+            model.put("certificationMessage", "The certificate name must be 100 characters or less.");
+            populateModel(model);
+            return "user/resume/certifications";
+        }
         if (year <= 0) {
             model.put("certificationMessage", "Please enter a valid year when the certification completed.");
             populateModel(model);

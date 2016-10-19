@@ -77,8 +77,18 @@ public class ProfileController extends BaseController {
             setCurrentAccount(model);
             return "user/profile";
         }
+        if (login.length() > 40) {
+            model.put("profileDanger", "Your login must be 40 characters or less.");
+            setCurrentAccount(model);
+            return "user/profile";
+        }
         if (StringUtils.isBlank(email)) {
             model.put("profileDanger", "Please enter a valid email address.");
+            setCurrentAccount(model);
+            return "user/profile";
+        }
+        if (email.length() > 256) {
+            model.put("profileDanger", "Your email address must be 256 characters or less.");
             setCurrentAccount(model);
             return "user/profile";
         }

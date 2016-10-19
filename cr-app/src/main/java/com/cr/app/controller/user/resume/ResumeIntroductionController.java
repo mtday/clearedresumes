@@ -84,6 +84,11 @@ public class ResumeIntroductionController extends BaseResumeController {
             model.put("aboutYouMessage", "Please specify a valid name.");
             return "user/resume/introduction";
         }
+        if (fullName.length() > 80) {
+            populateModel(model);
+            model.put("aboutYouMessage", "Your full name must be 80 characters or less.");
+            return "user/resume/introduction";
+        }
 
         final ResumeContainer resumeContainer = createResumeContainer();
 
@@ -113,6 +118,11 @@ public class ResumeIntroductionController extends BaseResumeController {
         if (StringUtils.isBlank(objective)) {
             populateModel(model);
             model.put("objectiveMessage", "Please populate the objective field.");
+            return "user/resume/introduction";
+        }
+        if (objective.length() > 40000) {
+            populateModel(model);
+            model.put("objectiveMessage", "Your objective must be 40,000 characters or less.");
             return "user/resume/introduction";
         }
 

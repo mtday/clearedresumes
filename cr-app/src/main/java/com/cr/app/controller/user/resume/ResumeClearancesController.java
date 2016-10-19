@@ -107,13 +107,28 @@ public class ResumeClearancesController extends BaseResumeController {
             populateModel(model);
             return "user/resume/clearances";
         }
+        if (type.length() > 40) {
+            model.put("clearanceMessage", "The clearance type must be 40 characters or less.");
+            populateModel(model);
+            return "user/resume/clearances";
+        }
         if (StringUtils.isBlank(organization)) {
             model.put("clearanceMessage", "Please enter a valid granting organization.");
             populateModel(model);
             return "user/resume/clearances";
         }
+        if (organization.length() > 100) {
+            model.put("clearanceMessage", "The organization must be 100 characters or less.");
+            populateModel(model);
+            return "user/resume/clearances";
+        }
         if (StringUtils.isBlank(polygraph)) {
             model.put("clearanceMessage", "Please enter a valid polygraph type.");
+            populateModel(model);
+            return "user/resume/clearances";
+        }
+        if (polygraph.length() > 40) {
+            model.put("clearanceMessage", "The polygraph type must be 40 characters or less.");
             populateModel(model);
             return "user/resume/clearances";
         }

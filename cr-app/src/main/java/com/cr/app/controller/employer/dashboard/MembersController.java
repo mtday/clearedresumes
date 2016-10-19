@@ -121,7 +121,12 @@ public class MembersController extends BaseDashboardController {
             @Nonnull final Map<String, Object> model) {
         if (StringUtils.isBlank(email)) {
             populateModel(model);
-            model.put("inviteMessage", "Please provide a valid email address indicating who to invite.");
+            model.put("inviteDanger", "Please provide a valid email address indicating who to invite.");
+            return "employer/dashboard/members";
+        }
+        if (email.length() > 256) {
+            populateModel(model);
+            model.put("inviteDanger", "Invitation email addresses must be 256 characters or less.");
             return "employer/dashboard/members";
         }
 
@@ -145,7 +150,7 @@ public class MembersController extends BaseDashboardController {
 
         populateModel(model);
         model.put(
-                "inviteMessage",
+                "inviteSuccess",
                 String.format("An invitation to join %s has been sent to %s.", company.getName(), email));
         return "employer/dashboard/members";
     }

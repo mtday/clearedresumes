@@ -95,6 +95,11 @@ public class ResumeContactInfoController extends BaseResumeController {
             populateModel(model);
             return "user/resume/contact-info";
         }
+        if (value.length() > 100) {
+            model.put("contactInfoMessage", "Your contact information must be 100 characters or less.");
+            populateModel(model);
+            return "user/resume/contact-info";
+        }
 
         final ResumeContainer resumeContainer = createResumeContainer();
 

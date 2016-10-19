@@ -95,13 +95,28 @@ public class ResumeEducationController extends BaseResumeController {
             populateModel(model);
             return "user/resume/education";
         }
+        if (institution.length() > 100) {
+            model.put("educationMessage", "The institution name must be 100 characters or less.");
+            populateModel(model);
+            return "user/resume/education";
+        }
         if (StringUtils.isBlank(field)) {
             model.put("educationMessage", "Please enter a valid field of study.");
             populateModel(model);
             return "user/resume/education";
         }
+        if (field.length() > 100) {
+            model.put("educationMessage", "The field of study must be 100 characters or less.");
+            populateModel(model);
+            return "user/resume/education";
+        }
         if (StringUtils.isBlank(degree)) {
             model.put("educationMessage", "Please enter a valid degree.");
+            populateModel(model);
+            return "user/resume/education";
+        }
+        if (degree.length() > 100) {
+            model.put("educationMessage", "The degree earned must be 100 characters or less.");
             populateModel(model);
             return "user/resume/education";
         }

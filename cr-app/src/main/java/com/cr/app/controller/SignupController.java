@@ -202,8 +202,18 @@ public class SignupController extends BaseController {
             return false;
         }
 
+        if (username.length() > 40) {
+            model.put("signupError", "Your user name must be 40 characters or less.");
+            return false;
+        }
+
         if (StringUtils.isBlank(email)) {
             model.put("signupError", "A valid email address must be provided.");
+            return false;
+        }
+
+        if (email.length() > 256) {
+            model.put("signupError", "Your email address must be 256 characters or less.");
             return false;
         }
 
@@ -234,6 +244,11 @@ public class SignupController extends BaseController {
             @Nonnull final String name, @Nonnull final PlanType planType, @Nonnull final Map<String, Object> model) {
         if (StringUtils.isBlank(name)) {
             model.put("signupError", "A valid company name must be provided.");
+            return false;
+        }
+
+        if (name.length() > 100) {
+            model.put("signupError", "Your company name must be 100 characters or less.");
             return false;
         }
 
