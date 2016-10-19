@@ -460,6 +460,22 @@ body {
 }
 
 
+.form-employer-account-profile .form-control:focus {
+  z-index: 2;
+}
+.form-employer-account-profile .form-control {
+  margin-bottom: 10px;
+}
+
+
+.form-employer-account-plan .form-control:focus {
+  z-index: 2;
+}
+.form-employer-account-plan .form-control {
+  margin-bottom: 10px;
+}
+
+
 /* SimpleMDE minimum height */
 .CodeMirror, .CodeMirror-scroll {
     min-height: 80px;

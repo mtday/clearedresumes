@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="fragments/head :: head (title='Dashboard: Account')"></head>
+<body>
+
+<nav th:replace="fragments/navbar :: navbar (currentPage='dashboard')"></nav>
+<div class="container">
+
+    <div class="row dashboard-row">
+        <div class="col-md-2 well well-sm">
+            <!-- Navigation -->
+            <div th:replace="fragments/employer-dashboard-nav :: dashboard-nav (currentPage='account')"></div>
+        </div>
+        <div class="col-md-10 resume-content-container">
+            <div class="content-header">
+                <span class="pull-left">
+                    <h2>Company Account</h2>
+                </span>
+                <span class="pull-right">
+                    <div th:replace="fragments/employer-active-company :: employer-active-company"></div>
+                </span>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <!-- Profile panel -->
+                    <div class="panel panel-default employer-account-profile-panel">
+                        <div class="panel-heading">
+                            <span class="panel-title">Profile</span>
+                        </div>
+                        <div class="panel-body">
+                            <p th:if="${profileMessage}" class="alert alert-info" th:text="${profileMessage}">
+                                Message</p>
+
+                            <form class="form-employer-account-profile" name="profileForm"
+                                  th:action="@{/employer/dashboard/account/profile}" method="POST">
+
+                                <label for="account-name" class="sr-only">Company Name</label>
+                                <input type="text" name="name" id="account-name" class="form-control"
+                                       placeholder="Company Name" required="required" autofocus="autofocus"
+                                       th:value="${company.name}"/>
+
+                                <div class="btn-group">
+                                    <button class="btn btn-default btn-primary" type="submit">Save</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <!-- Plan panel -->
+                    <div class="panel panel-default employer-account-plan-panel">
+                        <div class="panel-heading">
+                            <span class="panel-title">Plan</span>
+                        </div>
+                        <div class="panel-body">
+                            <p th:if="${planMessage}" class="alert alert-info" th:text="${planMessage}">
+                                Message</p>
+
+                            <form class="form-employer-account-plan" name="planForm"
+                                  th:action="@{/employer/dashboard/account/plan}" method="POST">
+
+                                <label for="account-plan" class="sr-only">Plan</label>
+                                <select class="form-control" id="account-plan" name="plan">
+                                    <option value="BASIC" selected="selected" th:if="${company.planType} == 'basic'">
+                                        Basic Plan (Pay per Resume Contact) - FREE
+                                    </option>
+                                    <option value="BASIC" th:if="${company.planType} != 'basic'">
+                                        Basic Plan (Pay per Resume Contact) - FREE
+                                    </option>
+                                </select>
+
+                                <div class="btn-group">
+                                    <button class="btn btn-default btn-primary" type="submit">Save</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <!-- Plan panel -->
+                    <div class="panel panel-default employer-account-plan-panel">
+                        <div class="panel-heading">
+                            <span class="panel-title">Resume Statistics</span>
+                        </div>
+                        <div class="panel-body">
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <span class="badge" th:text="${viewed}">Num</span>
+                                    Total number of resumes <strong>Viewed</strong>:
+                                </li>
+                                <li class="list-group-item">
+                                    <span class="badge" th:text="${liked}">Num</span>
+                                    Total number of resumes <strong>Liked</strong>:
+                                </li>
+                                <li class="list-group-item">
+                                    <span class="badge" th:text="${ignored}">Num</span>
+                                    Total number of resumes <strong>Ignored</strong>:
+                                </li>
+                                <li class="list-group-item">
+                                    <span class="badge" th:text="${purchased}">Num</span>
+                                    Total number of resumes <strong>Purchased</strong>:
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<footer th:replace="fragments/footer :: footer"></footer>
+<div th:replace="fragments/scripts :: scripts"></div>
+</body>
+</html>

@@ -98,6 +98,15 @@ public class BaseDashboardController extends BaseController {
     }
 
     /**
+     * Set the current company in the user session.
+     *
+     * @param company the new company to set in the user session
+     */
+    public void setCurrentCompany(@Nonnull final Company company) {
+        getHttpSession().setAttribute("company", company);
+    }
+
+    /**
      * Retrieve the current active company in the session.
      *
      * @return the current active company in the session
@@ -124,7 +133,9 @@ public class BaseDashboardController extends BaseController {
 
         if (forceUpdate && company != null) {
             final Company updated = getCompanyDao().get(((Company) company).getId());
-            getHttpSession().setAttribute("company", updated);
+            if (updated != null) {
+                setCurrentCompany(updated);
+            }
             return updated;
         }
         return (Company) company;
