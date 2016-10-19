@@ -92,7 +92,7 @@ public class AccountController extends BaseDashboardController {
             @Nonnull final Map<String, Object> model) {
         if (StringUtils.isBlank(name)) {
             populateModel(model);
-            model.put("profileMessage", "Please provide a valid company name.");
+            model.put("profileDanger", "Please provide a valid company name.");
             return "employer/dashboard/account";
         }
 
@@ -105,6 +105,7 @@ public class AccountController extends BaseDashboardController {
         }
 
         populateModel(model);
+        model.put("profileSuccess", "Your profile information was saved successfully.");
         return "employer/dashboard/account";
     }
 
@@ -122,7 +123,7 @@ public class AccountController extends BaseDashboardController {
             @Nonnull final Map<String, Object> model) {
         if (StringUtils.isBlank(plan)) {
             populateModel(model);
-            model.put("planMessage", "Please provide a valid plan.");
+            model.put("planDanger", "Please provide a valid plan.");
             return "employer/dashboard/account";
         }
 
@@ -139,6 +140,7 @@ public class AccountController extends BaseDashboardController {
         }
 
         populateModel(model);
+        model.put("planSuccess", "Your plan was updated successfully.");
         return "employer/dashboard/account";
     }
 }

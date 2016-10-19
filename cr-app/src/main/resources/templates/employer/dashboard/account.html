@@ -29,7 +29,9 @@
                             <span class="panel-title">Profile</span>
                         </div>
                         <div class="panel-body">
-                            <p th:if="${profileMessage}" class="alert alert-info" th:text="${profileMessage}">
+                            <p th:if="${profileDanger}" class="alert alert-danger" th:text="${profileDanger}">
+                                Message</p>
+                            <p th:if="${profileSuccess}" class="alert alert-success" th:text="${profileSuccess}">
                                 Message</p>
 
                             <form class="form-employer-account-profile" name="profileForm"
@@ -54,7 +56,9 @@
                             <span class="panel-title">Plan</span>
                         </div>
                         <div class="panel-body">
-                            <p th:if="${planMessage}" class="alert alert-info" th:text="${planMessage}">
+                            <p th:if="${planDanger}" class="alert alert-danger" th:text="${planDanger}">
+                                Message</p>
+                            <p th:if="${planSuccess}" class="alert alert-success" th:text="${planSuccess}">
                                 Message</p>
 
                             <form class="form-employer-account-plan" name="planForm"

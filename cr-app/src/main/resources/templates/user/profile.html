@@ -6,11 +6,150 @@
 <nav th:replace="fragments/navbar :: navbar (currentPage=profile)"></nav>
 <div class="container">
 
-    TODO
+    <h1>Profile</h1>
+
+    <p th:if="${success}" class="alert alert-success" th:text="${success}">Message</p>
+    <p th:if="${error}" class="alert alert-danger" th:text="${error}">Message</p>
+
+    <div class="row">
+        <div class="col-md-6">
+            <!-- Plan panel -->
+            <div class="panel panel-default employer-account-plan-panel">
+                <div class="panel-heading">
+                    <span class="panel-title">My Account</span>
+                </div>
+                <div class="panel-body">
+
+                    <p th:if="${profileSuccess}" class="alert alert-success" th:text="${profileSuccess}">Message</p>
+                    <p th:if="${profileDanger}" class="alert alert-danger" th:text="${profileDanger}">Message</p>
+
+                    <form class="form-profile" name="profileForm"
+                          th:action="@{/user/profile/update}" method="POST">
+
+                        <label for="profile-login" class="sr-only">Login</label>
+                        <input type="text" name="login" id="profile-login" class="form-control"
+                               placeholder="Login" required="required" autofocus="autofocus"
+                               th:value="${account.user.login}"/>
+
+                        <label for="profile-email" class="sr-only">E-Mail</label>
+                        <input type="email" name="email" id="profile-email" class="form-control"
+                               placeholder="E-Mail" required="required" autofocus="autofocus"
+                               th:value="${account.user.email}"/>
+
+                        <div class="btn-group">
+                            <button class="btn btn-default btn-primary" type="submit">Save</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <!-- Password Reset panel -->
+            <div class="panel panel-default employer-account-plan-panel">
+                <div class="panel-heading">
+                    <span class="panel-title">Password Reset</span>
+                </div>
+                <div class="panel-body">
+
+                    <p th:if="${passwordSuccess}" class="alert alert-success" th:text="${passwordSuccess}">Message</p>
+                    <p th:if="${passwordDanger}" class="alert alert-danger" th:text="${passwordDanger}">Message</p>
+
+                    <form class="form-password" name="passwordForm"
+                          th:action="@{/user/profile/password}" method="POST">
+
+                        <label for="password-current" class="sr-only">Current Password</label>
+                        <input type="password" name="current" id="password-current" class="form-control"
+                               placeholder="Current Password" required="required" autofocus="autofocus"/>
+
+                        <label for="password-new" class="sr-only">New Password</label>
+                        <input type="password" name="password" id="password-new" class="form-control"
+                               placeholder="New Password" required="required" autofocus="autofocus"/>
+
+                        <label for="password-confirm" class="sr-only">Confirm Password</label>
+                        <input type="password" name="confirm" id="password-confirm" class="form-control"
+                               placeholder="Confirm Password" required="required" autofocus="autofocus"/>
+
+                        <div class="btn-group">
+                            <button class="btn btn-default btn-primary" type="submit">Save</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <!-- Resume panel -->
+            <div class="panel panel-default employer-account-plan-panel">
+                <div class="panel-heading">
+                    <span class="panel-title">My Resume</span>
+                </div>
+                <div class="panel-body" th:if="${account.resumeContainer} == null">
+                    You currently have no resume.
+                    <a th:href="@{/user/resume}" class="label label-info">Create One</a>
+                </div>
+                <div class="panel-body" th:if="${account.resumeContainer} != null">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            Resume completion status:
+                            <a th:href="@{/user/resume}" class="pull-right label label-success"
+                                  th:if="${account.resumeContainer.isComplete()}">Complete</a>
+                            <a th:href="@{/user/resume}" class="pull-right label label-info"
+                                  th:if="${!account.resumeContainer.isComplete()}">Incomplete</a>
+                        </li>
+                        <li class="list-group-item">
+                            Resume publish status:
+                            <a th:href="@{/user/resume}" class="pull-right label label-success"
+                               th:if="${account.resumeContainer.isPublished()}">Published</a>
+                            <a th:href="@{/user/resume}" class="pull-right label label-info"
+                               th:if="${account.resumeContainer.isUnpublished()}">Unpublished</a>
+                            <a th:href="@{/user/resume}" class="pull-right label label-warning"
+                               th:if="${account.resumeContainer.isExpired()}">Expired</a>
+                            <a th:href="@{/user/resume}" class="pull-right label label-danger"
+                               th:if="${account.resumeContainer.isDeactivated()}">Deactivated</a>
+                        </li>
+                        <li class="list-group-item" th:if="${account.resumeContainer.isPublished()}">
+                            Resume Expiration:
+                            <span class="pull-right"
+                                  th:text="${account.resumeContainer.resume.getExpiration('MMM dd, yyyy HH:mm')}"></span>
+                        </li>
+                    </ul>
+
+                    Permanently delete your resume?
+                    <a class="label label-danger" data-toggle="popover" data-placement="top">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>
 
 <footer th:replace="fragments/footer :: footer"></footer>
 <div th:replace="fragments/scripts :: scripts"></div>
+<script>
+    $(document).ready(function() {
+        $('[data-toggle="popover"]').popover({
+            html: true,
+            content: function() {
+                var str = 'Are you sure?<div class="text-center">';
+                str += '<a href="#" class="label label-danger" onclick="remove();">Yes</a> ';
+                str += '<a href="#" class="label label-default" onclick="cancel();">No</a></div>';
+                return str;
+            }
+        });
+    });
+
+    function remove(id) {
+        document.location = '/user/profile/resume/delete';
+        $('[data-toggle="popover"]').popover('hide');
+    }
+
+    function cancel() {
+        $('[data-toggle="popover"]').popover('hide');
+    }
+</script>
 </body>
 </html>

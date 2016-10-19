@@ -476,6 +476,22 @@ body {
 }
 
 
+.form-profile .form-control:focus {
+  z-index: 2;
+}
+.form-profile .form-control {
+  margin-bottom: 10px;
+}
+
+
+.form-password .form-control:focus {
+  z-index: 2;
+}
+.form-password .form-control {
+  margin-bottom: 10px;
+}
+
+
 /* SimpleMDE minimum height */
 .CodeMirror, .CodeMirror-scroll {
     min-height: 80px;
