@@ -1,6 +1,9 @@
 package com.cr.db;
 
+import com.cr.common.model.Resume;
 import com.cr.common.model.WorkSummary;
+import java.util.Collection;
+import java.util.Map;
 import java.util.SortedSet;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -26,6 +29,15 @@ public interface WorkSummaryDao {
      */
     @Nonnull
     SortedSet<WorkSummary> getForResume(@Nonnull String resumeId);
+
+    /**
+     * Retrieve all the work summaries associated with the specified resumes.
+     *
+     * @param resumeMap the resume id mapped to resume indicating which resume work summaries to retrieve
+     * @return the requested work summaries mapped by resume id
+     */
+    @Nonnull
+    Map<String, Collection<WorkSummary>> getForResumes(@Nonnull Map<String, Resume> resumeMap);
 
     /**
      * Add a new work summary into the database.

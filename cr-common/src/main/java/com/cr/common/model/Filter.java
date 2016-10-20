@@ -1,22 +1,32 @@
 package com.cr.common.model;
 
 import com.cr.common.util.CollectionComparator;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.apache.commons.lang3.tuple.Pair;
 
 /**
  * Defines the information associated with a resume filter in this system.
  */
-public class Filter implements Comparable<Filter> {
+public class Filter implements Serializable, Comparable<Filter> {
+    // Must be serializable since it is stored in the user session.
+    private static final long serialVersionUID = 293781342187L;
+
     @Nonnull
     private final String id;
     @Nonnull
@@ -129,6 +139,159 @@ public class Filter implements Comparable<Filter> {
     @Nonnull
     public SortedSet<String> getContentWords() {
         return this.contentWords;
+    }
+
+    /**
+     * Check to see if the provided resume matches against this filter.
+     *
+     * @param resumeContainer the resume to compare with this filter
+     * @return a {@link MatchResult} indicating the result of this filter comparison
+     */
+    @Nonnull
+    public MatchResult matches(@Nonnull final ResumeContainer resumeContainer) {
+        final boolean match =
+                locationMatch(resumeContainer) && laborCategoryMatch(resumeContainer) && contentMatch(resumeContainer);
+
+        if (!match) {
+            return new MatchResult(false, 0f);
+        }
+
+        final Pair<Integer, Integer> lcatScore = laborCategoryScore(resumeContainer);
+        final Pair<Integer, Integer> contentScore = contentScore(resumeContainer);
+        final int quotient = lcatScore.getLeft() + contentScore.getLeft();
+        final int divisor = lcatScore.getRight() + contentScore.getRight();
+        final float score = quotient / (float) divisor;
+        return new MatchResult(true, score);
+    }
+
+    private boolean locationMatch(@Nonnull final ResumeContainer resumeContainer) {
+        return getStates().isEmpty() || resumeContainer.getWorkLocations().stream().map(WorkLocation::getState)
+                .map(state -> state.toLowerCase(Locale.ENGLISH)).anyMatch(state -> getStates().contains(state));
+    }
+
+    private boolean laborCategoryMatch(@Nonnull final ResumeContainer resumeContainer) {
+        return getLaborCategoryWords().isEmpty() || resumeContainer.getLaborCategories().stream()
+                .map(ResumeLaborCategory::getLaborCategory).anyMatch(lcat -> getLaborCategoryWords().stream()
+                        .anyMatch(word -> StringUtils.containsIgnoreCase(lcat, word)));
+    }
+
+    @Nonnull
+    private Pair<Integer, Integer> laborCategoryScore(@Nonnull final ResumeContainer resumeContainer) {
+        if (getLaborCategoryWords().isEmpty()) {
+            return Pair.of(1, 1);
+        }
+
+        final int matches = (int) getLaborCategoryWords().parallelStream()
+                .filter(word -> resumeContainer.getLaborCategories().stream().map(ResumeLaborCategory::getLaborCategory)
+                        .anyMatch(lcat -> StringUtils.containsIgnoreCase(lcat, word))).count();
+        return Pair.of(matches, getLaborCategoryWords().size());
+    }
+
+    private boolean contentMatch(@Nonnull final ResumeContainer resumeContainer) {
+        return objectiveContentMatch(resumeContainer) || workSummaryContentMatch(resumeContainer)
+                || educationContentMatch(resumeContainer) || certificationContentMatch(resumeContainer)
+                || keyWordContentMatch(resumeContainer);
+    }
+
+    @Nonnull
+    private Pair<Integer, Integer> contentScore(@Nonnull final ResumeContainer resumeContainer) {
+        final Set<String> allMatches = new HashSet<>();
+        allMatches.addAll(objectiveContentMatches(resumeContainer));
+        allMatches.addAll(workSummaryContentMatches(resumeContainer));
+        allMatches.addAll(educationContentMatches(resumeContainer));
+        allMatches.addAll(certificationContentMatches(resumeContainer));
+        allMatches.addAll(keyWordContentMatches(resumeContainer));
+        return Pair.of(allMatches.size(), getContentWords().size());
+    }
+
+    private boolean objectiveContentMatch(@Nonnull final ResumeContainer resumeContainer) {
+        return getContentWords().isEmpty() || getContentWords().parallelStream().anyMatch(
+                word -> StringUtils.containsIgnoreCase(resumeContainer.getIntroduction().getObjective(), word));
+    }
+
+    @Nonnull
+    private Set<String> objectiveContentMatches(@Nonnull final ResumeContainer resumeContainer) {
+        if (getContentWords().isEmpty()) {
+            return Collections.emptySet();
+        }
+
+        return getContentWords().parallelStream()
+                .filter(word -> StringUtils.containsIgnoreCase(resumeContainer.getIntroduction().getObjective(), word))
+                .collect(Collectors.toSet());
+    }
+
+    private boolean workSummaryContentMatch(@Nonnull final ResumeContainer resumeContainer) {
+        return getContentWords().isEmpty() || getContentWords().parallelStream().anyMatch(
+                word -> resumeContainer.getWorkSummaries().stream().anyMatch(
+                        summary -> StringUtils.containsIgnoreCase(summary.getJobTitle(), word) || StringUtils
+                                .containsIgnoreCase(summary.getEmployer(), word) || StringUtils
+                                .containsIgnoreCase(summary.getSummary(), word)));
+    }
+
+    @Nonnull
+    private Set<String> workSummaryContentMatches(@Nonnull final ResumeContainer resumeContainer) {
+        if (getContentWords().isEmpty()) {
+            return Collections.emptySet();
+        }
+
+        return getContentWords().parallelStream().filter(word -> resumeContainer.getWorkSummaries().stream().anyMatch(
+                summary -> StringUtils.containsIgnoreCase(summary.getJobTitle(), word) || StringUtils
+                        .containsIgnoreCase(summary.getEmployer(), word) || StringUtils
+                        .containsIgnoreCase(summary.getSummary(), word))).collect(Collectors.toSet());
+    }
+
+    private boolean educationContentMatch(@Nonnull final ResumeContainer resumeContainer) {
+        return getContentWords().isEmpty() || getContentWords().parallelStream().anyMatch(
+                word -> resumeContainer.getEducations().stream().anyMatch(
+                        education -> StringUtils.containsIgnoreCase(education.getInstitution(), word) || StringUtils
+                                .containsIgnoreCase(education.getField(), word) || StringUtils
+                                .containsIgnoreCase(education.getDegree(), word)));
+    }
+
+    @Nonnull
+    private Set<String> educationContentMatches(@Nonnull final ResumeContainer resumeContainer) {
+        if (getContentWords().isEmpty()) {
+            return Collections.emptySet();
+        }
+
+        return getContentWords().parallelStream().filter(word -> resumeContainer.getEducations().stream().anyMatch(
+                education -> StringUtils.containsIgnoreCase(education.getInstitution(), word) || StringUtils
+                        .containsIgnoreCase(education.getField(), word) || StringUtils
+                        .containsIgnoreCase(education.getDegree(), word))).collect(Collectors.toSet());
+    }
+
+    private boolean certificationContentMatch(@Nonnull final ResumeContainer resumeContainer) {
+        return getContentWords().isEmpty() || getContentWords().parallelStream().anyMatch(
+                word -> resumeContainer.getCertifications().stream().anyMatch(
+                        certification -> StringUtils.containsIgnoreCase(certification.getCertificate(), word)));
+    }
+
+    @Nonnull
+    private Set<String> certificationContentMatches(@Nonnull final ResumeContainer resumeContainer) {
+        if (getContentWords().isEmpty()) {
+            return Collections.emptySet();
+        }
+
+        return getContentWords().parallelStream().filter(word -> resumeContainer.getCertifications().stream()
+                .anyMatch(certification -> StringUtils.containsIgnoreCase(certification.getCertificate(), word)))
+                .collect(Collectors.toSet());
+    }
+
+    private boolean keyWordContentMatch(@Nonnull final ResumeContainer resumeContainer) {
+        return getContentWords().isEmpty() || getContentWords().parallelStream().anyMatch(
+                word -> resumeContainer.getKeyWords().stream()
+                        .anyMatch(keyWord -> StringUtils.containsIgnoreCase(keyWord.getWord(), word)));
+    }
+
+    @Nonnull
+    private Set<String> keyWordContentMatches(@Nonnull final ResumeContainer resumeContainer) {
+        if (getContentWords().isEmpty()) {
+            return Collections.emptySet();
+        }
+
+        return getContentWords().parallelStream().filter(word -> resumeContainer.getKeyWords().stream()
+                .anyMatch(keyWord -> StringUtils.containsIgnoreCase(keyWord.getWord(), word)))
+                .collect(Collectors.toSet());
     }
 
     @Override

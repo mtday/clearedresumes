@@ -1,8 +1,12 @@
 package com.cr.db;
 
+import com.cr.common.model.Filter;
+import com.cr.common.model.MatchResult;
 import com.cr.common.model.ResumeContainer;
+import java.util.SortedSet;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import org.apache.commons.lang3.tuple.Pair;
 
 /**
  * Defines the interface required for retrieving fully populated resume containers.
@@ -36,4 +40,16 @@ public interface ResumeContainerDao {
      */
     @Nullable
     ResumeContainer getForUser(@Nonnull String userId);
+
+    /**
+     * Retrieve the filtered resume containers for the specified user account, company, and filters.
+     *
+     * @param userId the unique id of the user that wants to view resumes
+     * @param companyId the unique id of the company that wants to view resumes
+     * @param filter the filter to use when finding matching resumes
+     * @return the requested resume containers along with the filter match result
+     */
+    @Nonnull
+    SortedSet<Pair<ResumeContainer, MatchResult>> getFiltered(
+            @Nonnull String userId, @Nonnull String companyId, @Nonnull Filter filter);
 }

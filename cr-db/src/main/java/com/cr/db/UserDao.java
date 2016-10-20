@@ -1,8 +1,10 @@
 package com.cr.db;
 
 import com.cr.common.model.Authority;
+import com.cr.common.model.Resume;
 import com.cr.common.model.User;
 import java.util.Collection;
+import java.util.Map;
 import java.util.SortedSet;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -34,6 +36,15 @@ public interface UserDao {
      */
     @Nonnull
     SortedSet<User> getAll();
+
+    /**
+     * Retrieve all of the owner user accounts in the database for the provided resumes.
+     *
+     * @param resumeMap the map of resume id to resume indicating which users should be retrieved
+     * @return all of the available user accounts that were found
+     */
+    @Nonnull
+    Map<String, User> getForResumes(@Nonnull Map<String, Resume> resumeMap);
 
     /**
      * Retrieve the specified user accounts from the database based on unique id.

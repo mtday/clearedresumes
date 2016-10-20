@@ -1,11 +1,19 @@
 package com.cr.db.impl;
 
+import com.cr.common.model.Resume;
 import com.cr.common.model.WorkSummary;
 import com.cr.db.WorkSummaryDao;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import java.sql.Array;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import javax.annotation.Nonnull;
@@ -20,6 +28,7 @@ import org.springframework.stereotype.Service;
  * Provides an implementation of the work summary service.
  */
 @Service
+@SuppressFBWarnings("OBL_UNSATISFIED_OBLIGATION_EXCEPTION_EDGE")
 public class DefaultWorkSummaryDao implements WorkSummaryDao {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -54,6 +63,27 @@ public class DefaultWorkSummaryDao implements WorkSummaryDao {
     public SortedSet<WorkSummary> getForResume(@Nonnull final String resumeId) {
         return new TreeSet<>(
                 this.jdbcTemplate.query("SELECT * FROM work_summaries WHERE resume_id = ?", this.rowMapper, resumeId));
+    }
+
+    @Nonnull
+    @Override
+    public Map<String, Collection<WorkSummary>> getForResumes(@Nonnull final Map<String, Resume> resumeMap) {
+        final Map<String, Collection<WorkSummary>> workSummaryMap = new HashMap<>();
+        this.jdbcTemplate.query(connection -> {
+            final Array resumeIds = connection.createArrayOf("VARCHAR", resumeMap.keySet().toArray());
+            final PreparedStatement ps =
+                    connection.prepareStatement("SELECT * FROM work_summaries WHERE resume_id = ANY (?)");
+            ps.setArray(1, resumeIds);
+            return ps;
+        }, this.rowMapper).forEach(workSummary -> {
+            Collection<WorkSummary> collection = workSummaryMap.get(workSummary.getResumeId());
+            if (collection == null) {
+                collection = new LinkedList<>();
+                workSummaryMap.put(workSummary.getResumeId(), collection);
+            }
+            collection.add(workSummary);
+        });
+        return workSummaryMap;
     }
 
     @Override

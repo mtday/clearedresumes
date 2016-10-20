@@ -491,6 +491,10 @@ body {
 .form-filter p {
   padding-top: 10px;
 }
+#employer-active-filter {
+  padding-bottom: 15px;
+  min-height: 50px;
+}
 
 
 .form-profile .form-control:focus {

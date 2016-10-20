@@ -1,7 +1,6 @@
 package com.cr.common.model;
 
 import com.cr.common.util.CollectionComparator;
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.SortedSet;
@@ -17,10 +16,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 /**
  * Holds summary information associated with a resume.
  */
-public class ResumeSummary implements Serializable, Comparable<ResumeSummary> {
-    // Needs to be serializable since this class is used inside DefaultUserDetails.
-    private static final long serialVersionUID = 71483058734L;
-
+public class ResumeSummary implements Comparable<ResumeSummary> {
     @Nonnull
     private final String fullName;
     @Nonnull
@@ -33,13 +29,15 @@ public class ResumeSummary implements Serializable, Comparable<ResumeSummary> {
     private final SortedSet<Clearance> clearances = new TreeSet<>();
     @Nonnull
     private final SortedSet<ResumeReview> reviews = new TreeSet<>();
+    @Nullable
+    private final MatchResult matchResult;
 
     /**
      * Default constructor required for Jackson deserialization.
      */
     ResumeSummary() {
         this("", new Resume(), Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),
-                Collections.emptyList());
+                Collections.emptyList(), null);
     }
 
     /**
@@ -51,18 +49,20 @@ public class ResumeSummary implements Serializable, Comparable<ResumeSummary> {
      * @param workLocations the locations where the user is willing to work
      * @param clearances the clearances possessed by the user
      * @param reviews the resume reviews that have taken place
+     * @param matchResult the match result describing how this resume matches the filter
      */
     public ResumeSummary(
             @Nonnull final String fullName, @Nonnull final Resume resume,
             @Nonnull final Collection<ResumeLaborCategory> laborCategories,
             @Nonnull final Collection<WorkLocation> workLocations, @Nonnull final Collection<Clearance> clearances,
-            @Nonnull final Collection<ResumeReview> reviews) {
+            @Nonnull final Collection<ResumeReview> reviews, @Nullable final MatchResult matchResult) {
         this.fullName = fullName;
         this.resume = resume;
         this.laborCategories.addAll(laborCategories);
         this.workLocations.addAll(workLocations);
         this.clearances.addAll(clearances);
         this.reviews.addAll(reviews);
+        this.matchResult = matchResult;
     }
 
     /**
@@ -125,6 +125,16 @@ public class ResumeSummary implements Serializable, Comparable<ResumeSummary> {
         return this.reviews;
     }
 
+    /**
+     * Retrieve the match result describing how this resume matched the filter.
+     *
+     * @return the match result describing how this resume matched the filter
+     */
+    @Nullable
+    public MatchResult getMatchResult() {
+        return this.matchResult;
+    }
+
     @Override
     public int compareTo(@Nullable final ResumeSummary other) {
         if (other == null) {
@@ -138,6 +148,7 @@ public class ResumeSummary implements Serializable, Comparable<ResumeSummary> {
         cmp.append(getWorkLocations(), other.getWorkLocations(), new CollectionComparator<>());
         cmp.append(getClearances(), other.getClearances(), new CollectionComparator<>());
         cmp.append(getReviews(), other.getReviews(), new CollectionComparator<>());
+        cmp.append(getMatchResult(), other.getMatchResult());
         return cmp.toComparison();
     }
 
@@ -155,6 +166,7 @@ public class ResumeSummary implements Serializable, Comparable<ResumeSummary> {
         hash.append(getWorkLocations());
         hash.append(getClearances());
         hash.append(getReviews());
+        hash.append(getMatchResult());
         return hash.toHashCode();
     }
 
@@ -168,6 +180,7 @@ public class ResumeSummary implements Serializable, Comparable<ResumeSummary> {
         str.append("workLocations", getWorkLocations());
         str.append("clearances", getClearances());
         str.append("reviews", getReviews());
+        str.append("matchResult", getMatchResult());
         return str.build();
     }
 }

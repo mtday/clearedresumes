@@ -1,6 +1,9 @@
 package com.cr.db;
 
 import com.cr.common.model.ContactInfo;
+import com.cr.common.model.Resume;
+import java.util.Collection;
+import java.util.Map;
 import java.util.SortedSet;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -26,6 +29,15 @@ public interface ContactInfoDao {
      */
     @Nonnull
     SortedSet<ContactInfo> getForResume(@Nonnull String resumeId);
+
+    /**
+     * Retrieve all the contact infos associated with the specified resumes.
+     *
+     * @param resumeMap the resume id mapped to resume indicating which resume contact infos to retrieve
+     * @return the requested contact infos mapped by resume id
+     */
+    @Nonnull
+    Map<String, Collection<ContactInfo>> getForResumes(@Nonnull Map<String, Resume> resumeMap);
 
     /**
      * Add a new contact info into the database.

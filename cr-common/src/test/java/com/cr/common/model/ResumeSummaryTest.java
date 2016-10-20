@@ -32,10 +32,11 @@ public class ResumeSummaryTest {
         final Clearance clearance = new Clearance("id", resume.getId(), "Type", "Organization", "Polygraph");
         final ResumeReview review =
                 new ResumeReview("id", resume.getId(), "cid", ResumeReviewStatus.LIKED, "uid", LocalDateTime.now());
+        final MatchResult matchResult = new MatchResult(true, 0.8f);
 
         final ResumeSummary resumeSummary =
                 new ResumeSummary("Full Name", resume, Collections.singleton(lcat), Collections.singleton(workLocation),
-                        Collections.singleton(clearance), Collections.singleton(review));
+                        Collections.singleton(clearance), Collections.singleton(review), matchResult);
 
         assertEquals(resume, resumeSummary.getResume());
         assertEquals(1, resumeSummary.getLaborCategories().size());
@@ -44,6 +45,7 @@ public class ResumeSummaryTest {
         assertTrue(resumeSummary.getWorkLocations().contains(workLocation));
         assertEquals(1, resumeSummary.getClearances().size());
         assertTrue(resumeSummary.getClearances().contains(clearance));
+        assertEquals(matchResult, resumeSummary.getMatchResult());
     }
 
     @Nonnull
@@ -55,11 +57,14 @@ public class ResumeSummaryTest {
         final Clearance clearance = new Clearance("id", resume1.getId(), "Type", "Organization", "Polygraph");
         final ResumeReview review =
                 new ResumeReview("id", resume1.getId(), "cid", ResumeReviewStatus.LIKED, "uid", LocalDateTime.now());
+        final MatchResult matchResult = new MatchResult(true, 0.8f);
 
         final ResumeSummary a = new ResumeSummary("Full Name 1", resume1, Collections.singleton(lcat),
-                Collections.singleton(workLocation), Collections.singleton(clearance), Collections.singleton(review));
+                Collections.singleton(workLocation), Collections.singleton(clearance), Collections.singleton(review),
+                matchResult);
         final ResumeSummary b = new ResumeSummary("Full Name 2", resume2, Collections.singleton(lcat),
-                Collections.singleton(workLocation), Collections.singleton(clearance), Collections.singleton(review));
+                Collections.singleton(workLocation), Collections.singleton(clearance), Collections.singleton(review),
+                matchResult);
         return new ResumeSummary[] {a, b};
     }
 
@@ -98,14 +103,15 @@ public class ResumeSummaryTest {
         final Clearance clearance = new Clearance("id", resume.getId(), "Type", "Organization", "Polygraph");
         final ResumeReview review =
                 new ResumeReview("id", resume.getId(), "cid", ResumeReviewStatus.LIKED, "uid", created);
+        final MatchResult matchResult = new MatchResult(true, 0.8f);
 
         return new ResumeSummary("Full Name", resume, Collections.singleton(lcat), Collections.singleton(workLocation),
-                Collections.singleton(clearance), Collections.singleton(review));
+                Collections.singleton(clearance), Collections.singleton(review), matchResult);
     }
 
     @Test
     public void testHashCode() {
-        assertEquals(-1724342141, getResumeSummary().hashCode());
+        assertEquals(1685871269, getResumeSummary().hashCode());
     }
 
     @Test

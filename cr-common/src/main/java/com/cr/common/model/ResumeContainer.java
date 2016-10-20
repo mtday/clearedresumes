@@ -108,6 +108,18 @@ public class ResumeContainer implements Serializable, Comparable<ResumeContainer
     }
 
     /**
+     * Retrieve the summary associated with this container.
+     *
+     * @param matchResult the match result indicating how the resume matched in the filter
+     * @return the summary associated with this container
+     */
+    @Nonnull
+    public ResumeSummary asResumeSummary(@Nullable final MatchResult matchResult) {
+        return new ResumeSummary(getIntroduction().getFullName(), getResume(), getLaborCategories(), getWorkLocations(),
+                getClearances(), getReviews(), matchResult);
+    }
+
+    /**
      * Retrieve the user that owns the associated resume.
      *
      * @return the user that owns the associated resume

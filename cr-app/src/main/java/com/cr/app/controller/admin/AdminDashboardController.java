@@ -232,13 +232,14 @@ public class AdminDashboardController extends BaseController {
             }
 
             final int locationCount = 1 + (random.nextFloat() < 0.1 ? 1 : 0); // 10% of the time, there will be 2
+            final Collection<WorkLocation> workLocations = new TreeSet<>();
             for (int locationNum = 0; locationNum < locationCount; locationNum++) {
                 final Pair<String, String> location = locations.get(random.nextInt(locations.size()));
-                final WorkLocation workLocation =
+                workLocations.add(
                         new WorkLocation(UUID.randomUUID().toString(), resume.getId(), location.getRight(),
-                                location.getLeft());
-                this.workLocationDao.add(workLocation);
+                                location.getLeft()));
             }
+            workLocations.forEach(this.workLocationDao::add);
 
             final int wordCount = random.nextInt(40);
             final Collection<String> keyWords = new TreeSet<>();

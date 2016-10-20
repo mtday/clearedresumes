@@ -1,5 +1,6 @@
 package com.cr.db;
 
+import com.cr.common.model.Filter;
 import com.cr.common.model.ResumeSummary;
 import java.util.SortedSet;
 import javax.annotation.Nonnull;
@@ -23,10 +24,12 @@ public interface ResumeSummaryDao {
      *
      * @param userId the unique id of the user that wants to view resumes
      * @param companyId the unique id of the company that wants to view resumes
+     * @param filter the filter to use when finding matching resumes
      * @return the requested resume summaries
      */
     @Nonnull
-    SortedSet<ResumeSummary> getFiltered(@Nonnull String userId, @Nonnull String companyId);
+    SortedSet<ResumeSummary> getFiltered(
+            @Nonnull String userId, @Nonnull String companyId, @Nonnull Filter filter);
 
     /**
      * Retrieve the summary information for liked resumes for the specified user account and company.

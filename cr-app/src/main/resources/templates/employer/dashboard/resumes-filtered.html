@@ -21,10 +21,39 @@
                 </span>
             </div>
 
+            <div id="employer-active-filter">
+                <div th:if="${#lists.size(filters)} == 0" class="alert alert-warning">
+                    <p>No resume filters have been defined yet. You can add filters
+                        <a th:href="@{/employer/dashboard/filters}">here</a>.</p>
+                </div>
+                <div th:if="${#lists.size(filters)} == 1">
+                    Current Filter: <b><span th:text="${filter.name}">Filter Name</span></b>
+                </div>
+                <div th:if="${#lists.size(filters)} > 1" class="dashboard-current-filter-chooser">
+                    <div class="pull-left text-right" style="word-wrap: none; padding: 6px;">
+                        Current Filter:
+                    </div>
+                    <div class="col-md-6 pull-left">
+                        <span class="input-group dropdown">
+                            <label for="current-filter" class="sr-only">Current Filter</label>
+                            <input type="text" name="currentFilter" id="current-filter" th:value="${filter.name}"
+                                   class="form-control dropdown-toggle-type" placeholder="Current Filter"/>
+                            <ul class="dropdown-menu dropdown-type filter-dropdown-type">
+                                <li th:each="filter : ${filters}">
+                                    <a href="#" th:attr="data-value=${filter.id}" th:text="${filter.name}"></a>
+                                </li>
+                            </ul>
+                            <span role="button" class="input-group-addon dropdown-toggle-company" data-toggle="dropdown"
+                                  aria-haspopup="true" aria-expanded="false"><span class="caret"></span></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
             <div class="resume-content">
-                <div th:if="${#lists.isEmpty(summaries)}" class="alert alert-warning">
-                    <p>No resumes currently available that match your configured filters. You can add or modify your
-                        filters <a th:href="@{/employer/dashboard/filters}">here</a>.</p>
+                <div th:if="${#lists.isEmpty(summaries)} and ${filter} != null" class="alert alert-warning">
+                    <p>No resumes available that match the current filter:
+                        <i><span th:text="${filter.name}">Filter Name</span></i></p>
                 </div>
 
                 <div th:if="${#lists.size(summaries) > 0}">
@@ -44,6 +73,7 @@
                                 <th>Location</th>
                                 <th>Clearance</th>
                                 <th>Published</th>
+                                <th th:if="${filter} != null">Match</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -71,6 +101,11 @@
                                         Publish Date
                                     </div>
                                 </td>
+                                <td class="resume-match-cell" th:if="${filter} != null">
+                                    <div th:text="${summary.matchResult.getScorePercent()}">
+                                        Score
+                                    </div>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -93,12 +128,20 @@
 <form id="ignore-form" th:action="@{/employer/dashboard/ignore}" method="POST">
     <input type="hidden" id="ignore-ids" name="ids"/>
 </form>
-<script>
+<script th:inline="javascript">
 /*<![CDATA[*/
+    $(function() {
+        $('.filter-dropdown-type a').click(function() {
+            document.location = '/employer/dashboard/resumes-filtered/' +  $(this).attr('data-value');
+        });
+    });
+
+    var filter = /*[[${filter}]]*/ null;
+
     var resumes = undefined;
     $(document).ready(function() {
         resumes = $('#resumes').DataTable({
-            order: [4, 'desc'],
+            order: [ filter == null ? 4 : 5, 'desc'],
             columnDefs: [
                 {
                     targets: [ 0 ],

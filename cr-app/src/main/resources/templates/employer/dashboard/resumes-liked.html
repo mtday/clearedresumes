@@ -23,7 +23,7 @@
 
             <div class="resume-content">
                 <div th:if="${#lists.isEmpty(summaries)}" class="alert alert-warning">
-                    <h4>No resumes have been liked yet.</h4>
+                    <p>No resumes have been liked.</p>
                 </div>
 
                 <div th:if="${#lists.size(summaries) > 0}">

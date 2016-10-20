@@ -3,10 +3,15 @@ package com.cr.common.model;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import javax.annotation.Nonnull;
 import org.junit.Test;
 
 /**
@@ -138,5 +143,210 @@ public class FilterTest {
                 Arrays.asList("software", "developer"), Arrays.asList("cloud", "java", "cyber"));
         assertEquals("Filter[id=id,companyId=cid,name=name,email=true,states=[alabama, maryland],"
                 + "laborCategoryWords=[developer, software],contentWords=[cloud, cyber, java]]", filter.toString());
+    }
+
+    @Nonnull
+    private ResumeContainer getResumeContainer() {
+        final User user = new User("uid", "login", "email", "password", true);
+        final Resume resume = new Resume("rid", user.getId(), ResumeStatus.PUBLISHED, LocalDateTime.now(),
+                LocalDateTime.now().plusDays(14));
+        final ResumeIntroduction introduction = new ResumeIntroduction(resume.getId(), "Full Name",
+                "This is the resume objective with some words in it to add some fake content java software developer");
+        final ResumeReview review =
+                new ResumeReview("id", resume.getId(), "cid", ResumeReviewStatus.LIKED, user.getId(),
+                        LocalDateTime.now());
+        final ResumeLaborCategory lcat = new ResumeLaborCategory("id", resume.getId(), "Labor Category", 10);
+        final ContactInfo contactInfo = new ContactInfo("id", resume.getId(), "Value");
+        final WorkLocation workLocation = new WorkLocation("id", resume.getId(), "State", "Region");
+        final WorkSummary workSummary =
+                new WorkSummary("id", resume.getId(), "Title", "Employer", LocalDate.now(), null,
+                        "This is the work summary text cloud cyber programming words and stuff");
+        final Clearance clearance = new Clearance("id", resume.getId(), "Type", "Organization", "Polygraph");
+        final Education education = new Education("id", resume.getId(), "Institution", "Field", "Degree", 2000);
+        final Certification certification = new Certification("id", resume.getId(), "Certificate", 2000);
+        final KeyWord keyWord = new KeyWord(resume.getId(), "keyword");
+
+        return new ResumeContainer(user, resume, introduction, Collections.singleton(review),
+                Collections.singleton(lcat), Collections.singleton(contactInfo), Collections.singleton(workLocation),
+                Collections.singleton(workSummary), Collections.singleton(clearance), Collections.singleton(education),
+                Collections.singleton(certification), Collections.singleton(keyWord));
+    }
+
+    @Test
+    public void testMatchesNoMatch() {
+        final Filter filter = new Filter("id", "cid", "name", true, Collections.singleton("nomatch"),
+                Collections.singleton("nomatch"), Collections.singleton("nomatch"));
+
+        final MatchResult result = filter.matches(getResumeContainer());
+        assertNotNull(result);
+        assertFalse(result.isMatch());
+        assertEquals(0f, result.getScore(), 0.01f);
+    }
+
+    @Test
+    public void testMatchesOnlyStateMatches() {
+        final Filter filter =
+                new Filter("id", "cid", "name", true, Collections.singleton("state"), Collections.singleton("nomatch"),
+                        Collections.singleton("nomatch"));
+
+        final MatchResult result = filter.matches(getResumeContainer());
+        assertNotNull(result);
+        assertFalse(result.isMatch());
+        assertEquals(0f, result.getScore(), 0.01f);
+    }
+
+    @Test
+    public void testMatchesOnlyLaborCategoryMatches() {
+        final Filter filter =
+                new Filter("id", "cid", "name", true, Collections.singleton("nomatch"), Collections.singleton("labor"),
+                        Collections.singleton("nomatch"));
+
+        final MatchResult result = filter.matches(getResumeContainer());
+        assertNotNull(result);
+        assertFalse(result.isMatch());
+        assertEquals(0f, result.getScore(), 0.01f);
+    }
+
+    @Test
+    public void testMatchesOnlyContentMatches() {
+        final Filter filter = new Filter("id", "cid", "name", true, Collections.singleton("nomatch"),
+                Collections.singleton("nomatch"), Collections.singleton("cyber"));
+
+        final MatchResult result = filter.matches(getResumeContainer());
+        assertNotNull(result);
+        assertFalse(result.isMatch());
+        assertEquals(0f, result.getScore(), 0.01f);
+    }
+
+    @Test
+    public void testMatchesStateOnly() {
+        final Filter filter = new Filter("id", "cid", "name", true, Collections.singleton("state"),
+                Collections.emptyList(), Collections.emptyList());
+
+        final MatchResult result = filter.matches(getResumeContainer());
+        assertNotNull(result);
+        assertTrue(result.isMatch());
+        assertEquals(1f, result.getScore(), 0.01f);
+    }
+
+    @Test
+    public void testMatchesLaborCategoryOnly() {
+        final Filter filter = new Filter("id", "cid", "name", true, Collections.emptyList(),
+                Collections.singleton("labor"), Collections.emptyList());
+
+        final MatchResult result = filter.matches(getResumeContainer());
+        assertNotNull(result);
+        assertTrue(result.isMatch());
+        assertEquals(1f, result.getScore(), 0.01f);
+    }
+
+    @Test
+    public void testMatchesContentOnlyInObjective() {
+        final Filter filter = new Filter("id", "cid", "name", true, Collections.emptyList(),
+                Collections.emptyList(), Collections.singleton("objective"));
+
+        final MatchResult result = filter.matches(getResumeContainer());
+        assertNotNull(result);
+        assertTrue(result.isMatch());
+        assertEquals(1f, result.getScore(), 0.01f);
+    }
+
+    @Test
+    public void testMatchesContentOnlyInSummary() {
+        final Filter filter = new Filter("id", "cid", "name", true, Collections.emptyList(),
+                Collections.emptyList(), Collections.singleton("summary"));
+
+        final MatchResult result = filter.matches(getResumeContainer());
+        assertNotNull(result);
+        assertTrue(result.isMatch());
+        assertEquals(1f, result.getScore(), 0.01f);
+    }
+
+    @Test
+    public void testMatchesContentInObjective() {
+        final Filter filter = new Filter("id", "cid", "name", true, Collections.singleton("state"),
+                Collections.singleton("labor"), Collections.singleton("objective"));
+
+        final MatchResult result = filter.matches(getResumeContainer());
+        assertNotNull(result);
+        assertTrue(result.isMatch());
+        assertEquals(1f, result.getScore(), 0.01f);
+    }
+
+    @Test
+    public void testMatchesContentInSummary() {
+        final Filter filter = new Filter("id", "cid", "name", true, Collections.singleton("state"),
+                Collections.singleton("labor"), Collections.singleton("summary"));
+
+        final MatchResult result = filter.matches(getResumeContainer());
+        assertNotNull(result);
+        assertTrue(result.isMatch());
+        assertEquals(1f, result.getScore(), 0.01f);
+    }
+
+    @Test
+    public void testMatchesContentInEducationInstitution() {
+        final Filter filter = new Filter("id", "cid", "name", true, Collections.singleton("state"),
+                Collections.singleton("labor"), Collections.singleton("institution"));
+
+        final MatchResult result = filter.matches(getResumeContainer());
+        assertNotNull(result);
+        assertTrue(result.isMatch());
+        assertEquals(1f, result.getScore(), 0.01f);
+    }
+
+    @Test
+    public void testMatchesContentInEducationField() {
+        final Filter filter = new Filter("id", "cid", "name", true, Collections.singleton("state"),
+                Collections.singleton("labor"), Collections.singleton("field"));
+
+        final MatchResult result = filter.matches(getResumeContainer());
+        assertNotNull(result);
+        assertTrue(result.isMatch());
+        assertEquals(1f, result.getScore(), 0.01f);
+    }
+
+    @Test
+    public void testMatchesContentInEducationDegree() {
+        final Filter filter = new Filter("id", "cid", "name", true, Collections.singleton("state"),
+                Collections.singleton("labor"), Collections.singleton("degree"));
+
+        final MatchResult result = filter.matches(getResumeContainer());
+        assertNotNull(result);
+        assertTrue(result.isMatch());
+        assertEquals(1f, result.getScore(), 0.01f);
+    }
+
+    @Test
+    public void testMatchesContentInCertification() {
+        final Filter filter = new Filter("id", "cid", "name", true, Collections.singleton("state"),
+                Collections.singleton("labor"), Collections.singleton("certificate"));
+
+        final MatchResult result = filter.matches(getResumeContainer());
+        assertNotNull(result);
+        assertTrue(result.isMatch());
+        assertEquals(1f, result.getScore(), 0.01f);
+    }
+
+    @Test
+    public void testMatchesContentInKeyWord() {
+        final Filter filter = new Filter("id", "cid", "name", true, Collections.singleton("state"),
+                Collections.singleton("labor"), Collections.singleton("keyword"));
+
+        final MatchResult result = filter.matches(getResumeContainer());
+        assertNotNull(result);
+        assertTrue(result.isMatch());
+        assertEquals(1f, result.getScore(), 0.01f);
+    }
+
+    @Test
+    public void testMatchesPartialContentMatch() {
+        final Filter filter = new Filter("id", "cid", "name", true, Collections.singleton("state"),
+                Collections.singleton("labor"), Arrays.asList("summary", "nomatch"));
+
+        final MatchResult result = filter.matches(getResumeContainer());
+        assertNotNull(result);
+        assertTrue(result.isMatch());
+        assertEquals(0.66f, result.getScore(), 0.01f);
     }
 }

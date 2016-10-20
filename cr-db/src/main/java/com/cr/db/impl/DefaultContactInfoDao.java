@@ -1,9 +1,17 @@
 package com.cr.db.impl;
 
 import com.cr.common.model.ContactInfo;
+import com.cr.common.model.Resume;
 import com.cr.db.ContactInfoDao;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import java.sql.Array;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import javax.annotation.Nonnull;
@@ -18,6 +26,7 @@ import org.springframework.stereotype.Service;
  * Provides an implementation of the contact info service.
  */
 @Service
+@SuppressFBWarnings("OBL_UNSATISFIED_OBLIGATION_EXCEPTION_EDGE")
 public class DefaultContactInfoDao implements ContactInfoDao {
     @Nonnull
     private final JdbcTemplate jdbcTemplate;
@@ -50,6 +59,27 @@ public class DefaultContactInfoDao implements ContactInfoDao {
     public SortedSet<ContactInfo> getForResume(@Nonnull final String resumeId) {
         return new TreeSet<>(
                 this.jdbcTemplate.query("SELECT * FROM contact_infos WHERE resume_id = ?", this.rowMapper, resumeId));
+    }
+
+    @Nonnull
+    @Override
+    public Map<String, Collection<ContactInfo>> getForResumes(@Nonnull final Map<String, Resume> resumeMap) {
+        final Map<String, Collection<ContactInfo>> contactInfoMap = new HashMap<>();
+        this.jdbcTemplate.query(connection -> {
+            final Array resumeIds = connection.createArrayOf("VARCHAR", resumeMap.keySet().toArray());
+            final PreparedStatement ps =
+                    connection.prepareStatement("SELECT * FROM contact_infos WHERE resume_id = ANY (?)");
+            ps.setArray(1, resumeIds);
+            return ps;
+        }, this.rowMapper).forEach(contactInfo -> {
+            Collection<ContactInfo> collection = contactInfoMap.get(contactInfo.getResumeId());
+            if (collection == null) {
+                collection = new LinkedList<>();
+                contactInfoMap.put(contactInfo.getResumeId(), collection);
+            }
+            collection.add(contactInfo);
+        });
+        return contactInfoMap;
     }
 
     @Override

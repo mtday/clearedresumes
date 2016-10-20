@@ -1,6 +1,7 @@
 package com.cr.db.impl;
 
 import com.cr.common.model.Authority;
+import com.cr.common.model.Resume;
 import com.cr.common.model.User;
 import com.cr.db.UserDao;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
@@ -9,8 +10,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +62,23 @@ public class DefaultUserDao implements UserDao {
     @Override
     public SortedSet<User> getAll() {
         return new TreeSet<>(this.jdbcTemplate.query("SELECT * FROM users", this.userMapper));
+    }
+
+    @Nonnull
+    @Override
+    public Map<String, User> getForResumes(@Nonnull final Map<String, Resume> resumeMap) {
+        final Map<String, User> userIdMap = new HashMap<>();
+        final Map<String, User> resumeIdMap = new HashMap<>();
+        this.jdbcTemplate.query(connection -> {
+            final Set<String> userIdSet =
+                    resumeMap.values().stream().map(Resume::getUserId).collect(Collectors.toSet());
+            final Array userIds = connection.createArrayOf("VARCHAR", userIdSet.toArray());
+            final PreparedStatement ps = connection.prepareStatement("SELECT * FROM users WHERE id = ANY (?)");
+            ps.setArray(1, userIds);
+            return ps;
+        }, this.userMapper).forEach(user -> userIdMap.put(user.getId(), user));
+        resumeMap.values().forEach(resume -> resumeIdMap.put(resume.getId(), userIdMap.get(resume.getUserId())));
+        return resumeIdMap;
     }
 
     @Nonnull

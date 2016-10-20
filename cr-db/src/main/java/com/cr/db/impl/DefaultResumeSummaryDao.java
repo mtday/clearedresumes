@@ -1,6 +1,7 @@
 package com.cr.db.impl;
 
 import com.cr.common.model.Clearance;
+import com.cr.common.model.Filter;
 import com.cr.common.model.Resume;
 import com.cr.common.model.ResumeIntroduction;
 import com.cr.common.model.ResumeLaborCategory;
@@ -8,6 +9,7 @@ import com.cr.common.model.ResumeReview;
 import com.cr.common.model.ResumeSummary;
 import com.cr.common.model.WorkLocation;
 import com.cr.db.ClearanceDao;
+import com.cr.db.ResumeContainerDao;
 import com.cr.db.ResumeDao;
 import com.cr.db.ResumeIntroductionDao;
 import com.cr.db.ResumeLaborCategoryDao;
@@ -22,6 +24,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +38,8 @@ public class DefaultResumeSummaryDao implements ResumeSummaryDao {
 
     @Nonnull
     private final ResumeDao resumeDao;
+    @Nonnull
+    private final ResumeContainerDao resumeContainerDao;
     @Nonnull
     private final ResumeIntroductionDao resumeIntroductionDao;
     @Nonnull
@@ -50,6 +55,7 @@ public class DefaultResumeSummaryDao implements ResumeSummaryDao {
      * Create an instance of this service.
      *
      * @param resumeDao the {@link ResumeDao} used to retrieve resumes
+     * @param resumeContainerDao the {@link ResumeContainerDao} used to retrieve resume containers
      * @param resumeIntroductionDao the {@link ResumeIntroductionDao} used to retrieve resume introductions
      * @param resumeLaborCategoryDao the {@link ResumeLaborCategoryDao} used to retrieve resume labor categories
      * @param workLocationDao the {@link WorkLocationDao} used to retrieve resume work locations
@@ -58,11 +64,13 @@ public class DefaultResumeSummaryDao implements ResumeSummaryDao {
      */
     @Autowired
     public DefaultResumeSummaryDao(
-            @Nonnull final ResumeDao resumeDao, @Nonnull final ResumeIntroductionDao resumeIntroductionDao,
+            @Nonnull final ResumeDao resumeDao, @Nonnull final ResumeContainerDao resumeContainerDao,
+            @Nonnull final ResumeIntroductionDao resumeIntroductionDao,
             @Nonnull final ResumeLaborCategoryDao resumeLaborCategoryDao,
             @Nonnull final WorkLocationDao workLocationDao, @Nonnull final ClearanceDao clearanceDao,
             @Nonnull final ResumeReviewDao resumeReviewDao) {
         this.resumeDao = resumeDao;
+        this.resumeContainerDao = resumeContainerDao;
         this.resumeIntroductionDao = resumeIntroductionDao;
         this.resumeLaborCategoryDao = resumeLaborCategoryDao;
         this.workLocationDao = workLocationDao;
@@ -78,8 +86,10 @@ public class DefaultResumeSummaryDao implements ResumeSummaryDao {
 
     @Nonnull
     @Override
-    public SortedSet<ResumeSummary> getFiltered(@Nonnull final String userId, @Nonnull final String companyId) {
-        return createSummaries(this.resumeDao.getFilteredResumes(userId, companyId), companyId);
+    public SortedSet<ResumeSummary> getFiltered(
+            @Nonnull final String userId, @Nonnull final String companyId, @Nonnull final Filter filter) {
+        return new TreeSet<>(this.resumeContainerDao.getFiltered(userId, companyId, filter).parallelStream()
+                .map(pair -> pair.getLeft().asResumeSummary(pair.getRight())).collect(Collectors.toSet()));
     }
 
     @Nonnull
@@ -126,7 +136,7 @@ public class DefaultResumeSummaryDao implements ResumeSummaryDao {
                     Optional.ofNullable(clearanceMap.get(resumeId)).orElse(Collections.emptyList());
             final Collection<ResumeReview> reviews =
                     Optional.ofNullable(reviewMap.get(resumeId)).orElse(Collections.emptyList());
-            summaries.add(new ResumeSummary(fullName, resume, lcats, workLocations, clearances, reviews));
+            summaries.add(new ResumeSummary(fullName, resume, lcats, workLocations, clearances, reviews, null));
         });
         return summaries;
     }

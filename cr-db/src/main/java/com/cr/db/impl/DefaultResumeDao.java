@@ -84,13 +84,6 @@ public class DefaultResumeDao implements ResumeDao {
 
     @Nonnull
     @Override
-    public SortedSet<Resume> getFilteredResumes(@Nonnull final String userId, @Nonnull final String companyId) {
-        // TODO: Need to implement this.
-        return getAllResumes(userId, companyId);
-    }
-
-    @Nonnull
-    @Override
     public SortedSet<Resume> getLikedResumes(@Nonnull final String userId, @Nonnull final String companyId) {
         // Need to get resumes that:
         // * Are published (status = PUBLISHED)

@@ -1,7 +1,9 @@
 package com.cr.db;
 
 import com.cr.common.model.KeyWord;
+import com.cr.common.model.Resume;
 import java.util.Collection;
+import java.util.Map;
 import java.util.SortedSet;
 import javax.annotation.Nonnull;
 
@@ -17,6 +19,15 @@ public interface KeyWordDao {
      */
     @Nonnull
     SortedSet<KeyWord> getForResume(@Nonnull String resumeId);
+
+    /**
+     * Retrieve all the key words associated with the specified resumes.
+     *
+     * @param resumeMap the resume id mapped to resume indicating which resume key words to retrieve
+     * @return the requested key words mapped by resume id
+     */
+    @Nonnull
+    Map<String, Collection<KeyWord>> getForResumes(@Nonnull Map<String, Resume> resumeMap);
 
     /**
      * Add new key words into the database.

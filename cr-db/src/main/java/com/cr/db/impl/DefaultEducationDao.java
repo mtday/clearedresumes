@@ -1,9 +1,17 @@
 package com.cr.db.impl;
 
 import com.cr.common.model.Education;
+import com.cr.common.model.Resume;
 import com.cr.db.EducationDao;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import java.sql.Array;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import javax.annotation.Nonnull;
@@ -18,6 +26,7 @@ import org.springframework.stereotype.Service;
  * Provides an implementation of the education service.
  */
 @Service
+@SuppressFBWarnings("OBL_UNSATISFIED_OBLIGATION_EXCEPTION_EDGE")
 public class DefaultEducationDao implements EducationDao {
     @Nonnull
     private final JdbcTemplate jdbcTemplate;
@@ -50,6 +59,27 @@ public class DefaultEducationDao implements EducationDao {
     public SortedSet<Education> getForResume(@Nonnull final String resumeId) {
         return new TreeSet<>(
                 this.jdbcTemplate.query("SELECT * FROM educations WHERE resume_id = ?", this.rowMapper, resumeId));
+    }
+
+    @Nonnull
+    @Override
+    public Map<String, Collection<Education>> getForResumes(@Nonnull final Map<String, Resume> resumeMap) {
+        final Map<String, Collection<Education>> educationMap = new HashMap<>();
+        this.jdbcTemplate.query(connection -> {
+            final Array resumeIds = connection.createArrayOf("VARCHAR", resumeMap.keySet().toArray());
+            final PreparedStatement ps =
+                    connection.prepareStatement("SELECT * FROM educations WHERE resume_id = ANY (?)");
+            ps.setArray(1, resumeIds);
+            return ps;
+        }, this.rowMapper).forEach(education -> {
+            Collection<Education> collection = educationMap.get(education.getResumeId());
+            if (collection == null) {
+                collection = new LinkedList<>();
+                educationMap.put(education.getResumeId(), collection);
+            }
+            collection.add(education);
+        });
+        return educationMap;
     }
 
     @Override

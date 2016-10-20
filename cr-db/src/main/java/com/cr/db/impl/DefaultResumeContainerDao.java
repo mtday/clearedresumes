@@ -4,7 +4,9 @@ import com.cr.common.model.Certification;
 import com.cr.common.model.Clearance;
 import com.cr.common.model.ContactInfo;
 import com.cr.common.model.Education;
+import com.cr.common.model.Filter;
 import com.cr.common.model.KeyWord;
+import com.cr.common.model.MatchResult;
 import com.cr.common.model.Resume;
 import com.cr.common.model.ResumeContainer;
 import com.cr.common.model.ResumeIntroduction;
@@ -27,10 +29,16 @@ import com.cr.db.UserDao;
 import com.cr.db.WorkLocationDao;
 import com.cr.db.WorkSummaryDao;
 import java.time.format.DateTimeFormatter;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.SortedSet;
+import java.util.TreeSet;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -120,6 +128,63 @@ public class DefaultResumeContainerDao implements ResumeContainerDao {
     @Override
     public ResumeContainer getForUser(@Nonnull final String userId) {
         return build(this.resumeDao.getForUser(userId), null);
+    }
+
+    @Nonnull
+    @Override
+    public SortedSet<Pair<ResumeContainer, MatchResult>> getFiltered(
+            @Nonnull final String userId, @Nonnull final String companyId, @Nonnull final Filter filter) {
+        final Map<String, Resume> resumeMap = new HashMap<>();
+        this.resumeDao.getAllResumes(userId, companyId).forEach(resume -> resumeMap.put(resume.getId(), resume));
+
+        final Map<String, User> userMap = this.userDao.getForResumes(resumeMap);
+        final Map<String, ResumeIntroduction> introMap = this.resumeIntroductionDao.getForResumes(resumeMap);
+        final Map<String, Collection<ResumeReview>> reviewMap =
+                this.resumeReviewDao.getForResumes(resumeMap, companyId);
+        final Map<String, Collection<ResumeLaborCategory>> lcatMap =
+                this.resumeLaborCategoryDao.getForResumes(resumeMap);
+        final Map<String, Collection<ContactInfo>> contactInfoMap = this.contactInfoDao.getForResumes(resumeMap);
+        final Map<String, Collection<WorkLocation>> workLocationMap = this.workLocationDao.getForResumes(resumeMap);
+        final Map<String, Collection<WorkSummary>> workSummaryMap = this.workSummaryDao.getForResumes(resumeMap);
+        final Map<String, Collection<Clearance>> clearanceMap = this.clearanceDao.getForResumes(resumeMap);
+        final Map<String, Collection<Education>> educationMap = this.educationDao.getForResumes(resumeMap);
+        final Map<String, Collection<Certification>> certificationMap = this.certificationDao.getForResumes(resumeMap);
+        final Map<String, Collection<KeyWord>> keyWordMap = this.keyWordDao.getForResumes(resumeMap);
+
+        final SortedSet<Pair<ResumeContainer, MatchResult>> pairs = new TreeSet<>();
+        resumeMap.forEach((resumeId, resume) -> {
+            final User user = Optional.ofNullable(userMap.get(resume.getUserId()))
+                    .orElse(new User(resume.getId(), "", "", "", false));
+            final ResumeIntroduction introduction =
+                    Optional.ofNullable(introMap.get(resumeId)).orElse(new ResumeIntroduction(resumeId, "", ""));
+            final Collection<ResumeReview> reviews =
+                    Optional.ofNullable(reviewMap.get(resumeId)).orElse(Collections.emptyList());
+            final Collection<ResumeLaborCategory> lcats =
+                    Optional.ofNullable(lcatMap.get(resumeId)).orElse(Collections.emptyList());
+            final Collection<ContactInfo> contactInfos =
+                    Optional.ofNullable(contactInfoMap.get(resumeId)).orElse(Collections.emptyList());
+            final Collection<WorkLocation> workLocations =
+                    Optional.ofNullable(workLocationMap.get(resumeId)).orElse(Collections.emptyList());
+            final Collection<WorkSummary> workSummaries =
+                    Optional.ofNullable(workSummaryMap.get(resumeId)).orElse(Collections.emptyList());
+            final Collection<Clearance> clearances =
+                    Optional.ofNullable(clearanceMap.get(resumeId)).orElse(Collections.emptyList());
+            final Collection<Education> educations =
+                    Optional.ofNullable(educationMap.get(resumeId)).orElse(Collections.emptyList());
+            final Collection<Certification> certifications =
+                    Optional.ofNullable(certificationMap.get(resumeId)).orElse(Collections.emptyList());
+            final Collection<KeyWord> keyWords =
+                    Optional.ofNullable(keyWordMap.get(resumeId)).orElse(Collections.emptyList());
+
+            final ResumeContainer resumeContainer =
+                    new ResumeContainer(user, resume, introduction, reviews, lcats, contactInfos, workLocations,
+                            workSummaries, clearances, educations, certifications, keyWords);
+            final MatchResult matchResult = filter.matches(resumeContainer);
+            if (matchResult.isMatch()) {
+                pairs.add(Pair.of(resumeContainer, matchResult));
+            }
+        });
+        return pairs;
     }
 
     @Nullable

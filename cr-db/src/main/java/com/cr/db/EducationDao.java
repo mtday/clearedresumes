@@ -1,6 +1,9 @@
 package com.cr.db;
 
 import com.cr.common.model.Education;
+import com.cr.common.model.Resume;
+import java.util.Collection;
+import java.util.Map;
 import java.util.SortedSet;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -26,6 +29,15 @@ public interface EducationDao {
      */
     @Nonnull
     SortedSet<Education> getForResume(@Nonnull String resumeId);
+
+    /**
+     * Retrieve all the education associated with the specified resumes.
+     *
+     * @param resumeMap the resume id mapped to resume indicating which resume education to retrieve
+     * @return the requested education mapped by resume id
+     */
+    @Nonnull
+    Map<String, Collection<Education>> getForResumes(@Nonnull Map<String, Resume> resumeMap);
 
     /**
      * Add a new education into the database.
