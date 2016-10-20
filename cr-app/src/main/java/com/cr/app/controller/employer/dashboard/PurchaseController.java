@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.servlet.http.HttpSession;
@@ -88,7 +89,8 @@ public class PurchaseController extends BaseDashboardController {
             }
         }
 
-        return "redirect:/employer/dashboard/resumes-purchased";
+        return Optional.ofNullable((String) getHttpSession().getAttribute("resume-page"))
+                .orElse("redirect:/employer/dashboard/resumes-filtered");
     }
 
     /**
@@ -129,6 +131,7 @@ public class PurchaseController extends BaseDashboardController {
             }
         }
 
-        return "redirect:/employer/dashboard/resumes-purchased";
+        return Optional.ofNullable((String) getHttpSession().getAttribute("resume-page"))
+                .orElse("redirect:/employer/dashboard/resumes-filtered");
     }
 }

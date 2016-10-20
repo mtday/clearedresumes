@@ -65,6 +65,7 @@ public class ResumesController extends BaseDashboardController {
 
         setCurrentCompany(model);
         setCurrentAccount(model);
+        getHttpSession().setAttribute("resume-page", "redirect:/employer/dashboard/resumes-all");
         return "employer/dashboard/resumes-all";
     }
 
@@ -116,6 +117,7 @@ public class ResumesController extends BaseDashboardController {
 
         setCurrentCompany(model);
         setCurrentAccount(model);
+        getHttpSession().setAttribute("resume-page", "redirect:/employer/dashboard/resumes-filtered");
         return "employer/dashboard/resumes-filtered";
     }
 
@@ -136,6 +138,7 @@ public class ResumesController extends BaseDashboardController {
 
         setCurrentCompany(model);
         setCurrentAccount(model);
+        getHttpSession().setAttribute("resume-page", "redirect:/employer/dashboard/resumes-liked");
         return "employer/dashboard/resumes-liked";
     }
 
@@ -156,6 +159,7 @@ public class ResumesController extends BaseDashboardController {
 
         setCurrentCompany(model);
         setCurrentAccount(model);
+        getHttpSession().setAttribute("resume-page", "redirect:/employer/dashboard/resumes-purchased");
         return "employer/dashboard/resumes-purchased";
     }
 
@@ -176,6 +180,7 @@ public class ResumesController extends BaseDashboardController {
 
         setCurrentCompany(model);
         setCurrentAccount(model);
+        getHttpSession().setAttribute("resume-page", "redirect:/employer/dashboard/resumes-ignored");
         return "employer/dashboard/resumes-ignored";
     }
 }

@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.servlet.http.HttpSession;
@@ -71,7 +72,8 @@ public class LikeController extends BaseDashboardController {
             this.resumeReviewDao.delete(resumeId, company.getId(), ResumeReviewStatus.IGNORED);
         }
 
-        return "redirect:/employer/dashboard/resumes-liked";
+        return Optional.ofNullable((String) getHttpSession().getAttribute("resume-page"))
+                .orElse("redirect:/employer/dashboard/resumes-filtered");
     }
 
     /**
@@ -97,7 +99,8 @@ public class LikeController extends BaseDashboardController {
                     resumeId -> this.resumeReviewDao.delete(resumeId, company.getId(), ResumeReviewStatus.IGNORED));
         }
 
-        return "redirect:/employer/dashboard/resumes-liked";
+        return Optional.ofNullable((String) getHttpSession().getAttribute("resume-page"))
+                .orElse("redirect:/employer/dashboard/resumes-filtered");
     }
 
     /**
@@ -118,7 +121,8 @@ public class LikeController extends BaseDashboardController {
             this.resumeReviewDao.delete(resumeId, company.getId(), ResumeReviewStatus.LIKED);
         }
 
-        return "redirect:/employer/dashboard/resumes-liked";
+        return Optional.ofNullable((String) getHttpSession().getAttribute("resume-page"))
+                .orElse("redirect:/employer/dashboard/resumes-filtered");
     }
 
     /**
@@ -142,6 +146,7 @@ public class LikeController extends BaseDashboardController {
                     resumeId -> this.resumeReviewDao.delete(resumeId, company.getId(), ResumeReviewStatus.LIKED));
         }
 
-        return "redirect:/employer/dashboard/resumes-liked";
+        return Optional.ofNullable((String) getHttpSession().getAttribute("resume-page"))
+                .orElse("redirect:/employer/dashboard/resumes-filtered");
     }
 }
