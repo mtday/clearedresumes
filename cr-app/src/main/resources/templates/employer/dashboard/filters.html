@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="fragments/head :: head (title='Dashboard: Filters')"></head>
+<body>
+
+<nav th:replace="fragments/navbar :: navbar (currentPage='dashboard')"></nav>
+<div class="container">
+
+    <div class="row dashboard-row">
+        <div class="col-md-2 well well-sm">
+            <!-- Navigation -->
+            <div th:replace="fragments/employer-dashboard-nav :: dashboard-nav (currentPage='filters')"></div>
+        </div>
+        <div class="col-md-10 resume-content-container">
+            <div class="content-header">
+                <span class="pull-left">
+                    <h2>Filters</h2>
+                </span>
+                <span class="pull-right">
+                    <div th:replace="fragments/employer-active-company :: employer-active-company"></div>
+                </span>
+            </div>
+
+            <div class="resume-content">
+                <div class="row">
+                    <div class="col-md-6">
+                        <!-- Filter List -->
+                        <div class="panel panel-default company-filter-panel">
+                            <div class="panel-heading">
+                                <span class="panel-title" id="company-filter-title">Resume Filters</span>
+                            </div>
+                            <div class="panel-body">
+                                <div th:if="${#lists.isEmpty(filters)}" class="alert alert-info">
+                                    <p>No resume filters currently available.</p>
+                                </div>
+
+                                <div th:if="${#lists.size(filters) > 0}">
+                                    <table class="table table-striped table-bordered filter-table" cellspacing="0"
+                                           width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th class="filter-name-cell">Name</th>
+                                                <th class="action-cell text-center">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="filter : ${filters}">
+                                                <td class="filter-name-cell" th:text="${filter.name}">Name</td>
+                                                <td class="action-cell text-center">
+                                                    <a th:id="'edit-' + ${filter.id}" href="#" class="label label-info"
+                                                       th:onclick="'edit(\'' + ${filter.id} + '\');'">Edit</a>
+                                                    <a th:id="'filter:' + ${filter.id}" class="label label-danger"
+                                                       data-toggle="popover" data-placement="top">Delete</a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <!-- Add/Update Form -->
+                        <div class="panel panel-default company-filter-panel">
+                            <div class="panel-heading">
+                                <span class="panel-title" id="company-filter-form-title">Add Filter</span>
+                            </div>
+                            <div class="panel-body">
+                                <p>Use this form to define more filters to limit the resumes you need to review and
+                                    make it easier for you to find the candidates you need.</p>
+
+                                <p th:if="${filterDanger}" class="alert alert-danger" th:text="${filterDanger}">Msg</p>
+                                <p th:if="${filterSuccess}" class="alert alert-success" th:text="${filterSuccess}">
+                                    Msg</p>
+
+                                <form class="form-filter" name="filterForm" th:action="@{/employer/dashboard/filters}"
+                                      method="POST">
+                                    <input type="hidden" name="id" id="filter-id"/>
+
+                                    <label for="filter-name" class="sr-only">Name (e.g., Software Developers in
+                                        Maryland)</label>
+                                    <input type="name" name="name" id="filter-name" class="form-control"
+                                           placeholder="Name (e.g., Software Developers in Maryland)"
+                                           required="required" autofocus="autofocus"/>
+
+                                    <p>Send e-mail notifications when a matching resume is published?</p>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="email" id="filter-email-true" value="true"
+                                               checked="checked"/>Yes</label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="email" id="filter-email-false"
+                                               value="false"/>No</label>
+
+                                    <p>States you care about:</p>
+                                    <div class="well well-sm">
+                                        <div class="pull-left" style="padding: 0px 20px 0px 0px;">
+                                            <a th:id="state-add" class="label label-success" data-toggle="popover"
+                                               data-placement="top">Add</a>
+                                        </div>
+                                        <span id="states-list">None Specified</span>
+                                        <input id="states-list-input" type="hidden" name="states"/>
+                                    </div>
+
+                                    <p>Optional: Provide a set of key words to match in the resume career field (labor
+                                        category). These words will be matched individually, so entering "software"
+                                        will match both "Software Engineer" and "Software Developer":</p>
+                                    <label for="filter-lcat-words" class="sr-only">Career Field words to match (e.g.,
+                                        network software)</label>
+                                    <textarea name="laborCategoryWords" rows="2" id="filter-lcat-words"
+                                              class="form-control" autofocus="autofocus"
+                                              placeholder="Career Field words to match (e.g., network software)"></textarea>
+
+                                    <p>Optional: Provide a set of key words to match in the resume content:</p>
+                                    <label for="filter-content-words" class="sr-only">Key Words to match (e.g., java
+                                        hadoop cloud cyber mapreduce)</label>
+                                    <textarea name="contentWords" rows="3" id="filter-content-words"
+                                              class="form-control" autofocus="autofocus"
+                                              placeholder="Key Words to match (e.g., java hadoop cloud cyber mapreduce)"></textarea>
+
+                                    <div class="btn-group">
+                                        <button id="filter-submit" class="btn btn-default btn-primary" type="submit">Add
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<footer th:replace="fragments/footer :: footer"></footer>
+<div th:replace="fragments/scripts :: scripts"></div>
+<script th:inline="javascript">
+/*<![CDATA[*/
+    var states = [[${states}]];
+    var filters = [[${filters}]];
+
+    $(document).ready(function() {
+        initializePopovers();
+    });
+
+    function initializePopovers() {
+        $('[data-toggle="popover"]').popover({
+            html: true,
+            content: function() {
+                if (this.id == 'state-add') {
+                    var existingStates = $('#states-list-input')[0].value;
+                    var statesArr = existingStates == '' ? [] : existingStates.split(';');
+
+                    var str = '<font color="#333">Choose a state:</font><div class="text-center">';
+                    str += '<select id="state-chooser">';
+                    for (var i = 0; i < states.length; i++) {
+                        if (statesArr.indexOf(states[i].name)) {
+                            str += '<option value="' + states[i].name + '">' + states[i].name + '</option>';
+                        }
+                    }
+                    str += '</select>';
+                    str += '<div class="text-center">';
+                    str += '<a href="#" class="label label-primary" onclick="addState();">Add</a> ';
+                    str += '<a href="#" class="label label-default" onclick="cancel();">Cancel</a>';
+                    str += '</div>';
+                    return str;
+                } else if (this.id.startsWith('state:')) {
+                    // Need to delete a state.
+                    var state = this.id.split(':')[1];
+                    var str = '<font color="#333">Are you sure?</font><div class="text-center">';
+                    str += '<div class="text-center">';
+                    str += '<a href="#" class="label label-danger" onclick="removeState(\'' + state + '\');">Delete</a> ';
+                    str += '<a href="#" class="label label-default" onclick="cancel();">Cancel</a>';
+                    str += '</div>';
+                    return str;
+                } else if (this.id.startsWith('filter:')) {
+                    // Need to delete a filter.
+                    var filterId = this.id.split(':')[1];
+                    var str = '<font color="#333">Are you sure?</font><div class="text-center">';
+                    str += '<div class="text-center">';
+                    str += '<a href="#" class="label label-danger" onclick="removeFilter(\'' + filterId + '\');">Delete</a> ';
+                    str += '<a href="#" class="label label-default" onclick="cancel();">Cancel</a>';
+                    str += '</div>';
+                    return str;
+                }
+            }
+        });
+    }
+
+    function addState() {
+        var existingStates = $('#states-list-input')[0].value;
+        var newState = $('#state-chooser')[0].value;
+
+        var statesArr = existingStates == '' ? [] : existingStates.split(';');
+        statesArr.push(newState);
+
+        $('#states-list-input')[0].value = statesArr.join(';');
+        updateStatesHtml(statesArr);
+
+        $('[data-toggle="popover"]').popover('hide');
+        initializePopovers();
+    }
+
+    function removeState(state) {
+        var existingStates = $('#states-list-input')[0].value;
+        var statesArr = existingStates == '' ? [] : existingStates.split(';');
+        var index = statesArr.indexOf(state);
+        if (index > -1) {
+            statesArr.splice(index, 1);
+        }
+        $('#states-list-input')[0].value = statesArr.join(';');
+        updateStatesHtml(statesArr);
+
+        $('[data-toggle="popover"]').popover('hide');
+        initializePopovers();
+    }
+
+    function updateStatesHtml(statesArr) {
+        var html = statesArr.length == 0 ? 'None Specified' : '';
+        for (var i = 0; i < statesArr.length; i++) {
+            html += ' <span class="label label-info">' + statesArr[i];
+            html += ' <a id="state:' + statesArr[i] + '" class="label label-danger" ';
+            html += 'data-toggle="popover" data-placement="top">X</a></span>';
+        }
+        $('#states-list')[0].innerHTML = html;
+    }
+
+    function removeFilter(filterId) {
+        document.location = '/employer/dashboard/filters/delete/' + filterId;
+    }
+
+    function edit(filterId) {
+        for (var i = 0; i < filters.length; i++) {
+            if (filters[i].id == filterId) {
+                var filter = filters[i];
+                $('#filter-id')[0].value = filter.id;
+                $('#filter-name')[0].value = filter.name;
+                $('#filter-name')[0].focus();
+                $('#filter-email-' + filter.email)[0].checked = true;
+                updateStatesHtml(filter.states);
+                $('#filter-lcat-words')[0].value = filter.laborCategoryWords.join(' ');
+                $('#filter-content-words')[0].value = filter.contentWords.join(' ');
+                $('#filter-submit')[0].innerHTML = 'Save';
+                $('#filter-submit').addClass('btn-success');
+                $('#filter-submit').removeClass('btn-primary');
+                $('#company-filter-form-title')[0].innerHTML = 'Edit Filter';
+            }
+        }
+    }
+
+    function cancel() {
+        $('[data-toggle="popover"]').popover('hide');
+    }
+/*]]>*/
+</script>
+</body>
+</html>

@@ -41,7 +41,7 @@ public class DashboardController extends BaseController {
     @GetMapping("/employer/dashboard")
     @Nonnull
     public String dashboard(@Nonnull final Map<String, Object> model) {
-        return "redirect:/employer/dashboard/resumes-all";
+        return "redirect:/employer/dashboard/resumes-filtered";
     }
 
     /**
@@ -61,6 +61,6 @@ public class DashboardController extends BaseController {
                     .forEach(company -> this.httpSession.setAttribute("company", company));
         }
 
-        return "redirect:/employer/dashboard/resumes-all";
+        return "redirect:/employer/dashboard/resumes-filtered";
     }
 }

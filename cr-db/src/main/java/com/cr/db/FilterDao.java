@@ -19,12 +19,12 @@ public interface FilterDao {
     Filter get(@Nonnull String id);
 
     /**
-     * Retrieve all active filters.
+     * Retrieve all filters.
      *
      * @return the requested filters
      */
     @Nonnull
-    SortedSet<Filter> getActive();
+    SortedSet<Filter> getAll();
 
     /**
      * Retrieve filters owned by a specific company.
@@ -53,6 +53,7 @@ public interface FilterDao {
      * Remove the filter from the database with the specified unique id.
      *
      * @param id the unique id of the filter to be deleted
+     * @param companyId the unique id of the company that owns the filter
      */
-    void delete(@Nonnull String id);
+    void delete(@Nonnull String id, @Nonnull String companyId);
 }

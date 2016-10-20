@@ -5,10 +5,14 @@ import com.cr.db.FilterDao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -50,8 +54,8 @@ public class DefaultFilterDao implements FilterDao {
 
     @Nonnull
     @Override
-    public SortedSet<Filter> getActive() {
-        return new TreeSet<>(this.jdbcTemplate.query("SELECT * FROM filters WHERE active = TRUE", this.rowMapper));
+    public SortedSet<Filter> getAll() {
+        return new TreeSet<>(this.jdbcTemplate.query("SELECT * FROM filters", this.rowMapper));
     }
 
     @Nonnull
@@ -63,19 +67,27 @@ public class DefaultFilterDao implements FilterDao {
 
     @Override
     public void add(@Nonnull final Filter filter) {
-        this.jdbcTemplate.update("INSERT INTO filters (id, company_id, name, email, active) VALUES (?, ?, ?, ?, ?)",
-                filter.getId(), filter.getCompanyId(), filter.getName(), filter.isEmail(), filter.isActive());
+        this.jdbcTemplate
+                .update("INSERT INTO filters (id, company_id, name, email, states, lcat_words, content_words) VALUES "
+                                + "(?, ?, ?, ?, LOWER(?), LOWER(?), LOWER(?))", filter.getId(), filter.getCompanyId(),
+                        filter.getName(), filter.isEmail(), String.join(";", filter.getStates()),
+                        String.join(";", filter.getLaborCategoryWords()), String.join(";", filter.getContentWords()));
     }
 
     @Override
     public void update(@Nonnull final Filter filter) {
-        this.jdbcTemplate.update("UPDATE filters SET company_id = ?, name = ?, email = ?, active = ? WHERE id = ?",
-                filter.getCompanyId(), filter.getName(), filter.isEmail(), filter.isActive(), filter.getId());
+        this.jdbcTemplate
+                .update("UPDATE filters SET company_id = ?, name = ?, email = ?, states = LOWER(?), lcat_words = "
+                                + "LOWER(?), content_words = LOWER(?) WHERE id = ?", filter.getCompanyId(), filter
+                                .getName(),
+                        filter.isEmail(), String.join(";", filter.getStates()),
+                        String.join(";", filter.getLaborCategoryWords()), String.join(";", filter.getContentWords()),
+                        filter.getId());
     }
 
     @Override
-    public void delete(@Nonnull final String id) {
-        this.jdbcTemplate.update("DELETE FROM filters WHERE id = ?", id);
+    public void delete(@Nonnull final String id, @Nonnull final String companyId) {
+        this.jdbcTemplate.update("DELETE FROM filters WHERE id = ? AND company_id = ?", id, companyId);
     }
 
     private static final class FilterRowMapper implements RowMapper<Filter> {
@@ -86,8 +98,14 @@ public class DefaultFilterDao implements FilterDao {
             final String companyId = resultSet.getString("company_id");
             final String name = resultSet.getString("name");
             final boolean email = resultSet.getBoolean("email");
-            final boolean active = resultSet.getBoolean("active");
-            return new Filter(id, companyId, name, email, active);
+            final Collection<String> states =
+                    Arrays.stream(resultSet.getString("states").split(";")).filter(word -> !StringUtils.isBlank(word))
+                            .collect(Collectors.toSet());
+            final Collection<String> laborCategoryWords = Arrays.stream(resultSet.getString("lcat_words").split(";"))
+                    .filter(word -> !StringUtils.isBlank(word)).collect(Collectors.toSet());
+            final Collection<String> contentWords = Arrays.stream(resultSet.getString("content_words").split(";"))
+                    .filter(word -> !StringUtils.isBlank(word)).collect(Collectors.toSet());
+            return new Filter(id, companyId, name, email, states, laborCategoryWords, contentWords);
         }
     }
 }

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head th:replace="fragments/head :: head (title='Dashboard: All Resumes')"></head>
+<head th:replace="fragments/head :: head (title='Dashboard: Filtered Resumes')"></head>
 <body>
 
 <nav th:replace="fragments/navbar :: navbar (currentPage='dashboard')"></nav>
@@ -9,12 +9,12 @@
     <div class="row dashboard-row">
         <div class="col-md-2 well well-sm">
             <!-- Navigation -->
-            <div th:replace="fragments/employer-dashboard-nav :: dashboard-nav (currentPage='resumes-all')"></div>
+            <div th:replace="fragments/employer-dashboard-nav :: dashboard-nav (currentPage='resumes-filtered')"></div>
         </div>
         <div class="col-md-10 resume-content-container">
             <div class="content-header">
                 <span class="pull-left">
-                    <h2>All Resumes</h2>
+                    <h2>Filtered Resumes</h2>
                 </span>
                 <span class="pull-right">
                     <div th:replace="fragments/employer-active-company :: employer-active-company"></div>
@@ -23,14 +23,8 @@
 
             <div class="resume-content">
                 <div th:if="${#lists.isEmpty(summaries)}" class="alert alert-warning">
-                    <h4>No resumes currently available.</h4>
-
-                    <p>Note that this is currently expected - this web site is in it's infancy and we have only been
-                        marketing it to employers so far. After a suitable number of employers have signed up, we will
-                        market this site to job-seekers in earnest. This site would not be valuable to job-seekers with
-                        only a very small number of employers, so that is our current focus. In the meantime, set up
-                        some resume <a th:href="@{/employer/dashboard/filters}">filters</a> and we will automatically
-                        notify you when matching resumes arrive.</p>
+                    <p>No resumes currently available that match your configured filters. You can add or modify your
+                        filters <a th:href="@{/employer/dashboard/filters}">here</a>.</p>
                 </div>
 
                 <div th:if="${#lists.size(summaries) > 0}">

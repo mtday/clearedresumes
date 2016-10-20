@@ -7,6 +7,8 @@
         <li role="presentation">
             <h4>Resumes</h4>
         </li>
+        <li role="presentation" th:class="${currentPage == 'resumes-filtered'}? 'active'">
+            <a th:href="@{/employer/dashboard/resumes-filtered}">Filtered</a></li>
         <li role="presentation" th:class="${currentPage == 'resumes-all'}? 'active'">
             <a th:href="@{/employer/dashboard/resumes-all}">All</a></li>
         <li role="presentation" th:class="${currentPage == 'resumes-liked'}? 'active'">
@@ -19,6 +21,8 @@
         <li role="presentation">
             <h4>Company</h4>
         </li>
+        <li role="presentation" th:class="${currentPage == 'filters'}? 'active'">
+            <a th:href="@{/employer/dashboard/filters}">Filters</a></li>
         <li role="presentation" th:class="${currentPage == 'account'}? 'active'">
             <a th:href="@{/employer/dashboard/account}">Account</a></li>
         <li role="presentation" th:class="${currentPage == 'transactions'}? 'active'">

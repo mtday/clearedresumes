@@ -19,6 +19,16 @@ public interface ResumeSummaryDao {
     SortedSet<ResumeSummary> getAll(@Nonnull String userId, @Nonnull String companyId);
 
     /**
+     * Retrieve the summary information for filtered resumes for the specified user account and company.
+     *
+     * @param userId the unique id of the user that wants to view resumes
+     * @param companyId the unique id of the company that wants to view resumes
+     * @return the requested resume summaries
+     */
+    @Nonnull
+    SortedSet<ResumeSummary> getFiltered(@Nonnull String userId, @Nonnull String companyId);
+
+    /**
      * Retrieve the summary information for liked resumes for the specified user account and company.
      *
      * @param userId the unique id of the user that wants to view resumes

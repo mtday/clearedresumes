@@ -1,5 +1,10 @@
 package com.cr.common.model;
 
+import com.cr.common.util.CollectionComparator;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -19,13 +24,18 @@ public class Filter implements Comparable<Filter> {
     @Nonnull
     private final String name;
     private final boolean email;
-    private final boolean active;
+    @Nonnull
+    private final SortedSet<String> states = new TreeSet<>();
+    @Nonnull
+    private final SortedSet<String> laborCategoryWords = new TreeSet<>();
+    @Nonnull
+    private final SortedSet<String> contentWords = new TreeSet<>();
 
     /**
      * Default constructor required for Jackson deserialization.
      */
     Filter() {
-        this("", "", "", false, false);
+        this("", "", "", false, Collections.emptyList(), Collections.emptyList(), Collections.emptyList());
     }
 
     /**
@@ -35,16 +45,21 @@ public class Filter implements Comparable<Filter> {
      * @param companyId the unique id of the company that owns this resume filter
      * @param name the name of the filter
      * @param email whether new matches against this filter should result in an email notification
-     * @param active whether this filter is active
+     * @param states the states on which this filter matches for location
+     * @param laborCategoryWords the words on which this filter matches in the resume labor categories
+     * @param contentWords the words on which this filter matches in the resume content
      */
     public Filter(
             @Nonnull final String id, @Nonnull final String companyId, @Nonnull final String name, final boolean email,
-            final boolean active) {
+            @Nonnull final Collection<String> states, @Nonnull final Collection<String> laborCategoryWords,
+            @Nonnull final Collection<String> contentWords) {
         this.id = id;
         this.companyId = companyId;
         this.name = name;
         this.email = email;
-        this.active = active;
+        this.states.addAll(states);
+        this.laborCategoryWords.addAll(laborCategoryWords);
+        this.contentWords.addAll(contentWords);
     }
 
     /**
@@ -87,12 +102,33 @@ public class Filter implements Comparable<Filter> {
     }
 
     /**
-     * Retrieve whether this filter is currently active.
+     * Retrieve the states to match on in resume work locations.
      *
-     * @return whether this filter is currently active
+     * @return the states to match on in resume work locations
      */
-    public boolean isActive() {
-        return this.active;
+    @Nonnull
+    public SortedSet<String> getStates() {
+        return this.states;
+    }
+
+    /**
+     * Retrieve the words to match on in resume labor categories.
+     *
+     * @return the words to match on in resume labor categories
+     */
+    @Nonnull
+    public SortedSet<String> getLaborCategoryWords() {
+        return this.laborCategoryWords;
+    }
+
+    /**
+     * Retrieve the words to match on in resume contents.
+     *
+     * @return the words to match on in resume contents
+     */
+    @Nonnull
+    public SortedSet<String> getContentWords() {
+        return this.contentWords;
     }
 
     @Override
@@ -101,12 +137,15 @@ public class Filter implements Comparable<Filter> {
             return 1;
         }
 
+        final CollectionComparator<String> comparator = new CollectionComparator<>();
         final CompareToBuilder cmp = new CompareToBuilder();
         cmp.append(getId(), other.getId());
         cmp.append(getCompanyId(), other.getCompanyId());
         cmp.append(getName(), other.getName());
         cmp.append(other.isEmail(), isEmail());
-        cmp.append(other.isActive(), isActive());
+        cmp.append(getStates(), other.getStates(), comparator);
+        cmp.append(getLaborCategoryWords(), other.getLaborCategoryWords(), comparator);
+        cmp.append(getContentWords(), other.getContentWords(), comparator);
         return cmp.toComparison();
     }
 
@@ -122,7 +161,9 @@ public class Filter implements Comparable<Filter> {
         hash.append(getCompanyId());
         hash.append(getName());
         hash.append(isEmail());
-        hash.append(isActive());
+        hash.append(getStates());
+        hash.append(getLaborCategoryWords());
+        hash.append(getContentWords());
         return hash.toHashCode();
     }
 
@@ -134,7 +175,9 @@ public class Filter implements Comparable<Filter> {
         str.append("companyId", getCompanyId());
         str.append("name", getName());
         str.append("email", isEmail());
-        str.append("active", isActive());
+        str.append("states", getStates());
+        str.append("laborCategoryWords", getLaborCategoryWords());
+        str.append("contentWords", getContentWords());
         return str.build();
     }
 }

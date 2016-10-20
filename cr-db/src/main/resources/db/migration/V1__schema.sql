@@ -74,40 +74,12 @@ CREATE TABLE filters (
     company_id        VARCHAR(36)    NOT NULL,
     name              VARCHAR(100)   NOT NULL,
     email             BOOLEAN        NOT NULL,
-    active            BOOLEAN        NOT NULL,
+    states            VARCHAR(2000)  NOT NULL,
+    lcat_words        VARCHAR(40000) NOT NULL,
+    content_words     VARCHAR(40000) NOT NULL,
 
     CONSTRAINT filters_pk PRIMARY KEY (id),
     CONSTRAINT filters_fk_company_id FOREIGN KEY (company_id) REFERENCES companies (id) ON DELETE CASCADE
-);
-
-
-CREATE TABLE filter_locations (
-    id                VARCHAR(36)    NOT NULL,
-    filter_id         VARCHAR(36)    NOT NULL,
-    state             VARCHAR(50)    NOT NULL,
-
-    CONSTRAINT filters_locations_pk PRIMARY KEY (id),
-    CONSTRAINT filters_locations_fk_filter_id FOREIGN KEY (filter_id) REFERENCES filters (id) ON DELETE CASCADE
-);
-
-
-CREATE TABLE filter_lcats (
-    id                VARCHAR(36)    NOT NULL,
-    filter_id         VARCHAR(36)    NOT NULL,
-    word              VARCHAR(40)    NOT NULL,
-
-    CONSTRAINT filters_lcats_pk PRIMARY KEY (id),
-    CONSTRAINT filters_lcats_fk_filter_id FOREIGN KEY (filter_id) REFERENCES filters (id) ON DELETE CASCADE
-);
-
-
-CREATE TABLE filter_contents (
-    id                VARCHAR(36)    NOT NULL,
-    filter_id         VARCHAR(36)    NOT NULL,
-    word              VARCHAR(40)    NOT NULL,
-
-    CONSTRAINT filters_contents_pk PRIMARY KEY (id),
-    CONSTRAINT filters_contents_fk_filter_id FOREIGN KEY (filter_id) REFERENCES filters (id) ON DELETE CASCADE
 );
 
 

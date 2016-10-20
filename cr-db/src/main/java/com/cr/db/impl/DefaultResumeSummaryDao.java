@@ -78,6 +78,12 @@ public class DefaultResumeSummaryDao implements ResumeSummaryDao {
 
     @Nonnull
     @Override
+    public SortedSet<ResumeSummary> getFiltered(@Nonnull final String userId, @Nonnull final String companyId) {
+        return createSummaries(this.resumeDao.getFilteredResumes(userId, companyId), companyId);
+    }
+
+    @Nonnull
+    @Override
     public SortedSet<ResumeSummary> getLiked(@Nonnull final String userId, @Nonnull final String companyId) {
         return createSummaries(this.resumeDao.getLikedResumes(userId, companyId), companyId);
     }

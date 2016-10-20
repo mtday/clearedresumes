@@ -11,6 +11,7 @@ import com.cr.common.model.PlanType;
 import com.cr.db.CompanyDao;
 import com.cr.db.FilterDao;
 import com.cr.db.TestApplication;
+import java.util.Arrays;
 import java.util.SortedSet;
 import java.util.UUID;
 import org.junit.Test;
@@ -40,14 +41,16 @@ public class DefaultFilterDaoIT {
         this.companyDao.add(company);
 
         try {
-            final Filter filter = new Filter(UUID.randomUUID().toString(), company.getId(), "Filter Name", true, true);
+            final Filter filter = new Filter(UUID.randomUUID().toString(), company.getId(), "Filter Name", true,
+                    Arrays.asList("alabama", "maryland"), Arrays.asList("software", "developer"),
+                    Arrays.asList("cloud", "java", "cyber"));
 
             final Filter beforeAdd = this.filterDao.get(filter.getId());
             assertNull(beforeAdd);
 
-            final SortedSet<Filter> beforeAddActive = this.filterDao.getActive();
-            assertNotNull(beforeAddActive);
-            assertEquals(0, beforeAddActive.size());
+            final SortedSet<Filter> beforeAddAll = this.filterDao.getAll();
+            assertNotNull(beforeAddAll);
+            assertEquals(0, beforeAddAll.size());
 
             final SortedSet<Filter> beforeAddForCompany = this.filterDao.getForCompany(company.getId());
             assertNotNull(beforeAddForCompany);
@@ -59,40 +62,43 @@ public class DefaultFilterDaoIT {
             assertNotNull(afterAdd);
             assertEquals(filter, afterAdd);
 
-            final SortedSet<Filter> afterAddActive = this.filterDao.getActive();
-            assertNotNull(afterAddActive);
-            assertEquals(1, afterAddActive.size());
-            assertTrue(afterAddActive.contains(filter));
+            final SortedSet<Filter> afterAddAll = this.filterDao.getAll();
+            assertNotNull(afterAddAll);
+            assertEquals(1, afterAddAll.size());
+            assertTrue(afterAddAll.contains(filter));
 
             final SortedSet<Filter> afterAddForCompany = this.filterDao.getForCompany(company.getId());
             assertNotNull(afterAddForCompany);
             assertEquals(1, afterAddForCompany.size());
             assertTrue(afterAddForCompany.contains(filter));
 
-            final Filter updated = new Filter(filter.getId(), company.getId(), "New Name", false, false);
+            final Filter updated = new Filter(filter.getId(), company.getId(), "New Name", false,
+                    Arrays.asList("virginia", "colorado"), Arrays.asList("network", "engineer"),
+                    Arrays.asList("cisco", "bgp"));
             this.filterDao.update(updated);
 
             final Filter afterUpdate = this.filterDao.get(filter.getId());
             assertNotNull(afterUpdate);
             assertEquals(updated, afterUpdate);
 
-            final SortedSet<Filter> afterUpdateActive = this.filterDao.getActive();
-            assertNotNull(afterUpdateActive);
-            assertEquals(0, afterUpdateActive.size());
+            final SortedSet<Filter> afterUpdateAll = this.filterDao.getAll();
+            assertNotNull(afterUpdateAll);
+            assertEquals(1, afterUpdateAll.size());
+            assertTrue(afterUpdateAll.contains(updated));
 
             final SortedSet<Filter> afterUpdateForCompany = this.filterDao.getForCompany(company.getId());
             assertNotNull(afterUpdateForCompany);
             assertEquals(1, afterUpdateForCompany.size());
             assertTrue(afterUpdateForCompany.contains(updated));
 
-            this.filterDao.delete(updated.getId());
+            this.filterDao.delete(updated.getId(), company.getId());
 
             final Filter afterDelete = this.filterDao.get(updated.getId());
             assertNull(afterDelete);
 
-            final SortedSet<Filter> afterDeleteActive = this.filterDao.getActive();
-            assertNotNull(afterDeleteActive);
-            assertEquals(0, afterDeleteActive.size());
+            final SortedSet<Filter> afterDeleteAll = this.filterDao.getAll();
+            assertNotNull(afterDeleteAll);
+            assertEquals(0, afterDeleteAll.size());
 
             final SortedSet<Filter> afterDeleteForCompany = this.filterDao.getForCompany(company.getId());
             assertNotNull(afterDeleteForCompany);

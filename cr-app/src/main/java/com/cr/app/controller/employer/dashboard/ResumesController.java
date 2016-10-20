@@ -59,6 +59,26 @@ public class ResumesController extends BaseDashboardController {
     }
 
     /**
+     * Display the employer dashboard page that shows filtered resumes.
+     *
+     * @param model the web model
+     * @return the name of the template to display
+     */
+    @GetMapping("/employer/dashboard/resumes-filtered")
+    @Nonnull
+    public String filteredResumes(@Nonnull final Map<String, Object> model) {
+        final User user = getCurrentUser();
+        final Company company = getCurrentCompany();
+        if (company != null && user != null) {
+            model.put("summaries", this.resumeSummaryDao.getFiltered(user.getId(), company.getId()));
+        }
+
+        setCurrentCompany(model);
+        setCurrentAccount(model);
+        return "employer/dashboard/resumes-filtered";
+    }
+
+    /**
      * Display the employer dashboard page that shows liked resumes.
      *
      * @param model the web model

@@ -38,6 +38,16 @@ public interface ResumeDao {
     SortedSet<Resume> getAllResumes(@Nonnull String userId, @Nonnull String companyId);
 
     /**
+     * Retrieve filtered resumes available for viewing by the specified user account and company.
+     *
+     * @param userId the unique id of the user for which resumes will be retrieved
+     * @param companyId the unique id of the company for which resumes will be retrieved
+     * @return the requested resumes
+     */
+    @Nonnull
+    SortedSet<Resume> getFilteredResumes(@Nonnull String userId, @Nonnull String companyId);
+
+    /**
      * Retrieve liked resumes available for viewing by the specified user account and company.
      *
      * @param userId the unique id of the user for which resumes will be retrieved

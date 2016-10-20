@@ -476,6 +476,23 @@ body {
 }
 
 
+.filter-table .filter-name-cell {
+  width: 90%;
+}
+.filter-table .action-cell {
+  min-width: 120px;
+}
+.form-filter .form-control:focus {
+  z-index: 2;
+}
+.form-filter .form-control {
+  margin-bottom: 10px;
+}
+.form-filter p {
+  padding-top: 10px;
+}
+
+
 .form-profile .form-control:focus {
   z-index: 2;
 }
