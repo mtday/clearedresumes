@@ -130,7 +130,7 @@ public class SignupController extends BaseController {
             @Nonnull final Map<String, Object> model) {
         final Account account = getCurrentAccount();
 
-        if (account == null && !validateUser(username, email, password, confirm, model)) {
+        if (account == null && !validateUser(username, email, password, confirm, true, model)) {
             model.put("username", username);
             model.put("email", email);
             model.put("name", name);
@@ -165,6 +165,7 @@ public class SignupController extends BaseController {
      * @param email the email address of the user signing up
      * @param password the password requested of the user signing up
      * @param confirm the password confirmation of the user signing up
+     * @param clearance whether the user has a clearance
      * @param model the web model
      * @return the name of the template to display
      */
@@ -175,8 +176,9 @@ public class SignupController extends BaseController {
             @Nonnull @RequestParam(value = "email", defaultValue = "") final String email,
             @Nonnull @RequestParam(value = "password", defaultValue = "") final String password,
             @Nonnull @RequestParam(value = "confirm", defaultValue = "") final String confirm,
+            @RequestParam(value = "clearance", defaultValue = "false") final boolean clearance,
             @Nonnull final Map<String, Object> model) {
-        if (!validateUser(username, email, password, confirm, model)) {
+        if (!validateUser(username, email, password, confirm, clearance, model)) {
             model.put("username", username);
             model.put("email", email);
             return "signup";
@@ -196,7 +198,12 @@ public class SignupController extends BaseController {
 
     private boolean validateUser(
             @Nonnull final String username, @Nonnull final String email, @Nonnull final String password,
-            @Nonnull final String confirm, @Nonnull final Map<String, Object> model) {
+            @Nonnull final String confirm, final boolean clearance, @Nonnull final Map<String, Object> model) {
+        if (!clearance) {
+            model.put("signupError", "Sorry, you must have a clearance to use this site.");
+            return false;
+        }
+
         if (StringUtils.isBlank(username)) {
             model.put("signupError", "A valid user name must be provided.");
             return false;

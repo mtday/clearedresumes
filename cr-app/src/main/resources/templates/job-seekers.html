@@ -13,6 +13,102 @@
     </div>
 </div>
 
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <h2 class="text-center">How It Works</h2>
+
+            <ul class="timeline">
+                <li>
+                    <div class="timeline-image">
+                        <img class="img-circle img-responsive" th:src="@{/img/job-seeker-1.jpg}"
+                             alt="Welcome On Board Image"/>
+                    </div>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <h4>Step One</h4>
+                            <h4 class="subheading">Sign Up</h4>
+                        </div>
+                        <div class="timeline-body">
+                            <p class="text-muted">
+                                Sign up for an account - it is simple, easy, and free. All we need is the the usual
+                                login information (login, email, password), a quick email confirmation, and you are in.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="line"></div>
+                </li>
+                <li class="timeline-inverted">
+                    <div class="timeline-image">
+                        <img class="img-circle img-responsive" th:src="@{/img/job-seeker-2.jpg}"
+                             alt="Populating Resume Image"/>
+                    </div>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <h4>Step Two</h4>
+                            <h4 class="subheading">Populate Resume</h4>
+                        </div>
+                        <div class="timeline-body">
+                            <p class="text-muted">
+                                Once you are signed up, you have be able to start adding content to your resume. The
+                                forms used to add the information are simple and intuitive. If you have a resume already
+                                with the content you want, you can copy/paste your way through our forms in a few
+                                minutes.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="line"></div>
+                </li>
+                <li>
+                    <div class="timeline-image">
+                        <img class="img-circle img-responsive" th:src="@{/img/job-seeker-3.jpg}"
+                             alt="Published Book with Glasses Image"/>
+                    </div>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <h4>Step Three</h4>
+                            <h4 class="subheading">Publish Resume</h4>
+                        </div>
+                        <div class="timeline-body">
+                            <p class="text-muted">
+                                Once your resume has been fully populated, you can publish it with the click of a
+                                button. Publishing your resume immediately makes your resume available for review by
+                                all the companies that have accounts in this system (except those you indicated should
+                                not have access to it).
+                            </p>
+                        </div>
+                    </div>
+                    <div class="line"></div>
+                </li>
+                <li class="timeline-inverted">
+                    <div class="timeline-image">
+                        <img class="img-circle img-responsive" th:src="@{/img/job-seeker-4.jpg}"
+                             alt="Mobile Phone Image"/>
+                    </div>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <h4>Step Four</h4>
+                            <h4 class="subheading">Get Contacted</h4>
+                        </div>
+                        <div class="timeline-body">
+                            <p class="text-muted">
+                                Now that your resume is published, you can sit back and let the employers contact you.
+                                The waiting can be difficult, so we have added some metrics so you know when your
+                                resume is viewed or liked by employers, as well as when your contact information has
+                                been purchased. This will give you confidence that you are getting the exposure you
+                                want from our employers.
+                            </p>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="text-center" style="padding-top:60px;">
+    <p><a class="btn btn-lg btn-danger" th:href="@{/signup}" role="button">Free Sign Up</a></p>
+</div>
 
 <footer th:replace="fragments/footer :: footer"></footer>
 <div th:replace="fragments/scripts :: scripts"></div>
