@@ -1,10 +1,13 @@
 
 INSERT INTO clearance_types (id, name) VALUES
-('ee426e2e-e7b8-4528-84f3-e75b210d096c', 'TS/SCI'),
-('173ac0bf-7195-4eb1-8a0c-329f3178f0b5', 'TS'),
-('ac31ce88-ebae-4542-a283-f4a67cf1694e', 'S'),
-('a765e094-d916-4ce0-a104-2a978bd8fde0', 'Other'),
-('092a69ce-67b6-4762-86e0-edd3acf51698', 'None');
+('ee426e2e-e7b8-4528-84f3-e75b210d096c', 'DoE Q or L'),
+('a698ae1b-ebd0-4928-bc14-b696ae6de609', 'Dept. of Homeland Security'),
+('8500400c-c3bb-481f-a0c7-823fd992523b', 'Top Secret/SCI'),
+('173ac0bf-7195-4eb1-8a0c-329f3178f0b5', 'Top Secret'),
+('ac31ce88-ebae-4542-a283-f4a67cf1694e', 'Secret'),
+('a71bcee4-2141-4e03-8c9c-bfd8d30fd827', 'Confidential'),
+('48bfc175-b24d-4cb2-95eb-a0143c127c80', 'Public Trust'),
+('a765e094-d916-4ce0-a104-2a978bd8fde0', 'Other');
 
 INSERT INTO polygraph_types (id, name) VALUES
 ('4bba6562-4717-4b46-9fc6-2638235a9eed', 'Full-Scope'),

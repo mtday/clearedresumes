@@ -37,7 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(@Nonnull final HttpSecurity http) throws Exception {
         // @formatter:off
         http.authorizeRequests()
-                .regexMatchers("/[a-z-]*", "/signup/.*", "/css/.*", "/js/.*").permitAll()
+                .regexMatchers("/[a-z-]*", "/signup/.*", "/css/.*", "/js/.*", "/img/.*").permitAll()
                 .anyRequest().fullyAuthenticated()
                 .antMatchers("/admin/**", "/api/admin/**").hasAuthority(Authority.ADMIN.name())
                 .antMatchers("/employer/**", "/api/employer/**").hasAuthority(Authority.EMPLOYER.name())

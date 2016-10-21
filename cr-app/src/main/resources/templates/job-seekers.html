@@ -4,17 +4,15 @@
 <body>
 
 <nav th:replace="fragments/navbar :: navbar (currentPage='job-seekers')"></nav>
-<div class="container">
 
-    <div class="jumbotron">
+<div class="hero-unit">
+    <div class="container text-center">
         <h2>Publish Your Resume</h2>
-        <p>Get noticed by defense contracting companies in your area by publishing your resume.</p>
-        <p>
-            <a class="btn btn-lg btn-primary" th:href="@{/signup}" role="button">Get Started for Free &raquo;</a>
-        </p>
+        <p>Get noticed by defense contracting companies in your area by signing up and publishing your resume.</p>
+        <p><a class="btn btn-lg btn-danger" th:href="@{/signup}" role="button">Free Sign Up</a></p>
     </div>
-
 </div>
+
 
 <footer th:replace="fragments/footer :: footer"></footer>
 <div th:replace="fragments/scripts :: scripts"></div>

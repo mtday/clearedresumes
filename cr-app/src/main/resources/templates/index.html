@@ -4,14 +4,74 @@
 <body>
 
 <nav th:replace="fragments/navbar :: navbar (currentPage=home)"></nav>
-<div class="container">
 
-    <div class="jumbotron">
+<div class="hero-unit">
+    <div class="container text-center">
         <h2>A Resume Marketplace for People with Clearances</h2>
-        <p>Connecting cleared personnel with federal and defense contracting companies through the sharing of resumes.</p>
+        <p>Connecting cleared personnel with Government contracting companies through the sharing of resumes.</p>
     </div>
-
 </div>
+
+<div class="container home-container">
+    <div class="row">
+        <div class="col-md-6 job-seekers">
+            <div class="text-center">
+                <h1>For Job-Seekers</h1>
+            </div>
+
+            <div class="home-info">
+                <h3>Publish your Resume</h3>
+                <p>Use our simple and intuitive forms to create your online resume. Go from sign-up to published
+                    resume in minutes.</p>
+            </div>
+
+            <div class="home-info">
+                <h3>No Employer Visibility</h3>
+                <p>No need to worry about your current employer seeing your resume. You get to choose who does and
+                    doesn't get access to it.</p>
+            </div>
+
+            <div class="home-info">
+                <h3>Resume Statistics</h3>
+                <p>After you publish your resume, we provide you with real-time statistics on how many views and likes
+                    your resume is getting.</p>
+            </div>
+
+            <div class="home-info text-center">
+                <a th:href="@{/signup}" class="btn btn-danger">Sign Up</a>
+                <a th:href="@{/job-seekers}" class="btn btn-default">Learn More</a>
+            </div>
+        </div>
+        <div class="col-md-6 employers">
+            <div class="text-center">
+                <h1>For Employers</h1>
+            </div>
+
+            <div class="home-info">
+                <h3>Access Resumes Immediately</h3>
+                <p>Our simple sign-up process will have you logged in and reviewing resumes in seconds.</p>
+            </div>
+
+            <div class="home-info">
+                <h3>No Recurring Costs</h3>
+                <p>No monthly or annual fees. If you find a resume you like, you pay a small fee for the contact
+                    information in that resume.</p>
+            </div>
+
+            <div class="home-info">
+                <h3>Simply and Efficient</h3>
+                <p>Your recruiting staff can easily set up resume filters and get notified when viable candidates
+                    become available.</p>
+            </div>
+
+            <div class="home-info text-center">
+                <a th:href="@{/signup/basic}" class="btn btn-danger">Sign Up</a>
+                <a th:href="@{/employers}" class="btn btn-default">Learn More</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <footer th:replace="fragments/footer :: footer"></footer>
 <div th:replace="fragments/scripts :: scripts"></div>
