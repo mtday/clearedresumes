@@ -1,0 +1,7 @@
+{
+  "name": "clearedresumes",
+  "description": "ClearedResumes",
+  "repository": "https://github.com/clearedresumes/clearedresumes",
+  "image": "heroku/java",
+  "addons": [ "heroku-postgresql" ]
+}
